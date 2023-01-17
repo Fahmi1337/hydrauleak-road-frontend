@@ -32,5 +32,4 @@
 //         </div>
 //     );
 // };
-
 // export default connect(null, { googleAuthenticate })(Google);
