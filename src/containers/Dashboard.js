@@ -1,16 +1,51 @@
-import React from 'react';
+import React, { useRef, useEffect, useState } from 'react';
+
 import { Link } from 'react-router-dom';
 
-const Dashboard = () => (
-    <div className='container'>
-        <div className='jumbotron mt-5'>
-            <h1 className='display-4'>Welcome to Dashboard Hydrauleak Road!</h1>
-            <p className='lead'>This is an incredible Hydrauleak Road system with production level features!</p>
-            <hr className='my-4' />
-            <p>Click the Log In button</p>
-            <Link className='btn btn-primary btn-lg' to='/login' role='button'>Login</Link>
-        </div>
-    </div>
-);
+import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
+ import Table from './Table.js';
+mapboxgl.accessToken = 'pk.eyJ1IjoiaHlkcmF1bGVhayIsImEiOiJjbGQzOWxwN3YwZzduM3ZueWloenY2bmV2In0.sb2MhxaSXUvO_EqhQWXQLA';
 
-export default Dashboard;
+
+
+
+
+
+
+export default function Dashboard(){
+    const mapContainer = useRef(null);
+const map = useRef(null);
+const [lng, setLng] = useState(-70.9);
+const [lat, setLat] = useState(42.35);
+const [zoom, setZoom] = useState(9);
+ 
+useEffect(() => {
+if (map.current) return; // initialize map only once
+map.current = new mapboxgl.Map({
+container: mapContainer.current,
+style: 'mapbox://styles/mapbox/streets-v12',
+center: [lng, lat],
+zoom: zoom
+});
+});
+ 
+useEffect(() => {
+if (!map.current) return; // wait for map to initialize
+map.current.on('move', () => {
+setLng(map.current.getCenter().lng.toFixed(4));
+setLat(map.current.getCenter().lat.toFixed(4));
+setZoom(map.current.getZoom().toFixed(2));
+});
+});
+ 
+return (
+<div>
+<div className="sidebar">
+Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
+</div>
+
+<div ref={mapContainer} className="map-container" />
+{/* <Table/> */}
+</div>
+);
+}

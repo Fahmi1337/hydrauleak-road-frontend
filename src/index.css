@@ -1,0 +1,204 @@
+.map-container {
+    height: 400px;
+    }
+     
+    .sidebar {
+    background-color: rgba(35, 55, 75, 0.9);
+    color: #fff;
+    padding: 6px 12px;
+    font-family: monospace;
+    z-index: 1;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    margin: 12px;
+    border-radius: 4px;
+    }
+
+    .App {
+        font-family: sans-serif;
+        position: relative;
+        width: 80vw;
+        margin-right: auto;
+        margin-left: auto;
+        margin-top: 30px;
+        color: #14877c;
+      }
+      .heading {
+        color: #14877c;
+        border-bottom: 1px solid #14877c;
+        margin-bottom: 30px;
+        padding-bottom: 10px;
+      }
+      input {
+        width: 40%;
+        min-width: 200px;
+        border-radius: 10px;
+        border: 2px solid #14877c;
+        padding: 10px;
+        font-size: 14px;
+      }
+      button {
+        height: 40px;
+        border-radius: 4px;
+        margin-top: 10px;
+        font-size: 15px;
+        display: inline-block;
+        text-align: center;
+        user-select: none;
+        font-weight: 600;
+        border-radius: 4px;
+        color: #ffffff;
+        border: 1px solid #14877c;
+        background-color: #14877c;
+        cursor: pointer;
+        margin: 0px 15px;
+        min-width: 100px;
+      }
+      
+      button:hover {
+        background: #14877c;
+        color: #ffffff;
+      }
+      
+      table {
+        width: 100%;
+        padding: 1em;
+        margin: 20px 0;
+        border-collapse: collapse;
+        box-shadow: 0 1px 2px 0 #c6e8c9;
+      }
+      
+      thead {
+        background-color: #caf0ec;
+        font-size: 16px;
+      }
+      
+      th {
+        text-align: left;
+        padding: 8px;
+        background-color: 1px solid #ffffff;
+        color: #14877c;
+      }
+      td {
+        text-align: left;
+        padding: 8px;
+      }
+      
+      tr {
+        height: 50px;
+      }
+      
+      tr:nth-child(even) {
+        background-color: #e0e0e0;
+      }
+      
+
+
+      /* .pagination a {
+        height: 40px;
+        border-radius: 4px;
+        margin-top: 10px;
+        font-size: 15px;
+        display: inline-block;
+        text-align: center;
+        -webkit-user-select: none;
+        user-select: none;
+        font-weight: 600;
+        border-radius: 4px;
+        color: #ffffff;
+        border: 1px solid #14877c;
+        background-color: #14877c;
+        cursor: pointer;
+        margin: 0px 15px;
+        min-width: 100px;
+      }
+      .pagination li.active a {
+        height: 40px;
+        border-radius: 4px;
+        margin-top: 10px;
+        font-size: 15px;
+        display: inline-block;
+        text-align: center;
+        -webkit-user-select: none;
+        user-select: none;
+        font-weight: 600;
+        border-radius: 4px;
+        color: #ffffff;
+        border: 1px solid #14877c;
+        background-color: #000000;
+        cursor: pointer;
+        margin: 0px 15px;
+        min-width: 100px;
+      } */
+
+      .pagination a {
+        background-color: #14877c;
+        color: white;
+        padding: 8px 24px;
+        text-decoration: none;
+        border-radius: 5px;
+        margin: 0 10px;
+        transition: all 0.2s ease-in-out;
+      }
+      
+      .pagination a:hover {
+        background-color: #08413b;
+        color: white;
+        font-size: 1.2em;
+      }
+      
+      .pagination li.active a {
+        background-color: #333;
+        color: white;
+      }
+      .pagination-container {
+        margin: 50px auto;
+        display: flex;
+        justify-content: center;
+      }
+      .listingform {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px #ccc;
+        }
+        
+        .listingformsection {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        margin: 10px;
+        }
+        
+        .listingformlabel {
+        font-size: 18px;
+        font-weight: 600;
+        margin-right: 10px;
+        }
+        
+        .listingforminput {
+        width: 100%;
+        padding: 12px;
+        border-radius: 5px;
+        border: none;
+        margin-bottom: 10px;
+        font-size: 18px;
+        }
+        
+        .listingformselect {
+        width: 100%;
+        padding: 12px;
+        border-radius: 5px;
+        border: none;
+        }
+        .home__form{
+          text-align: right;
+          margin-right: 50px;
+        }

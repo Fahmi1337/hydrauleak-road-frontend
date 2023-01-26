@@ -28,7 +28,7 @@ const navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
                         { !loading && (<Fragment>{ isAuthenticated ? authLinks : guestLinks }</Fragment>) }
                     </div>
                 </div>
-                <div className='navbar__bottom'>
+                {/* <div className='navbar__bottom'>
                     <li className='navbar__bottom__item'>
                         <NavLink className='navbar__bottom__item__link' exact to='/'>Dashboard</NavLink>
                     </li>
@@ -41,7 +41,7 @@ const navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
                     <li className='navbar__bottom__item'>
                         <NavLink className='navbar__bottom__item__link' exact to='/report'>Reports</NavLink>
                     </li>
-                </div>
+                </div> */}
             </nav>
             <Alert />
         </Fragment>

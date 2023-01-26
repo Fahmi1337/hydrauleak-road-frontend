@@ -10,11 +10,12 @@ const SignUp = ({ setAlert, signup, isAuthenticated }) => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
+        phone: '',
         password: '',
         re_password: ''
     });
 
-    const { name, email, password, re_password } = formData;
+    const { name, email, phone, password, re_password } = formData;
 
     const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -24,7 +25,7 @@ const SignUp = ({ setAlert, signup, isAuthenticated }) => {
         if (password !== re_password)
             setAlert('Passwords do not match', 'error');
         else
-            signup({ name, email, password, re_password });
+            signup({ name, email, phone, password, re_password });
     };
 
     if (isAuthenticated)
@@ -60,6 +61,17 @@ const SignUp = ({ setAlert, signup, isAuthenticated }) => {
                         placeholder='Email'
                         name='email'
                         value={email}
+                        onChange={e => onChange(e)}
+                        required 
+                    />
+                </div>
+                <div className='auth__form__group'>
+                    <input 
+                        className='auth__form__input'
+                        type='phone'
+                        placeholder='Phone'
+                        name='phone'
+                        value={phone}
                         onChange={e => onChange(e)}
                         required 
                     />

@@ -8,7 +8,7 @@ import Dashboard from './containers/Dashboard';
 import Login from './containers/Login';
 import Signup from './containers/Signup';
 import Contracts from './containers/Contracts'
-import ContractDetail from './containers/ContractDetail';
+// import ContractDetail from './containers/ContractDetail';
 import Report from './containers/Report'
 import Interventions from './containers/Interventions'
 // import Activate from './containers/Activate';
@@ -26,8 +26,10 @@ import Layout from './hocs/Layout';
 
 
 import './sass/main.scss';
+import "./index.css";
 
 const App = () => (
+    
     <Provider store={store}>
         <Router>
             <Layout>
@@ -36,7 +38,7 @@ const App = () => (
                     <Route exact path='/login' element={<Login/>} />
                     <Route exact path='/signup' element={<Signup/>} />
                     <Route exact path='/contracts' element={<Contracts/>} />
-                    <Route exact path='/contract-detail' element={<ContractDetail/>} />
+                    {/* <Route exact path='/contract-detail' element={<ContractDetail/>} /> */}
                     <Route exact path='/report' element={<Report/>} />
                     <Route exact path='/interventions' element={<Interventions/>} />
                     
