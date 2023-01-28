@@ -364,7 +364,7 @@ return (
               .map(data => (
                 <tr key={data.id}>
                    <td>{data.id}</td>
-                  <td>{data.contract_title}</td>
+                  <td >{data.contract_title}</td>
                   <td>{data.contract_description}</td>
                   <td>{data.contract_type}</td>
                   <td>{data.contract_status}</td>
