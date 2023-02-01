@@ -100,8 +100,8 @@ console.log(err);
     e.preventDefault();
     console.log("zone coordinates 2", zoneCoordinates);
     
-    const newzone = { zone_date: '2021-01-01T00:00:00Z', zone_status: 'notStart', zone_color: 'Red', zone_area: 23.0, zone_coordinates: zoneCoordinates, map: 2 };
-    axios.post(`${process.env.REACT_APP_API_URL}/api/zones/`, { zone_status: 'notStart', zone_color: 'red', zone_area: 23.0, zone_coordinates: zoneCoordinates, map: 2}, 
+    
+    axios.post(`${process.env.REACT_APP_API_URL}/api/zones/`, { zone_status: 'notStart', zone_color: 'green', zone_area: 23.0, zone_coordinates: zoneCoordinates, map: 2}, 
     {
             headers: {
               'Content-Type': 'application/json',
@@ -240,22 +240,6 @@ console.log(err);
 
   });
 
-
-  map.on('click', function (e) {
-    map.dragPan.disable();
-    map.dragPan.enable();
-  });
-
-  map.on('dragend', function (e) {
-    const coordinates = e.target.getBounds().getCenter().toArray();
-    setZoneCoordinates(coordinates);
-    console.log("new coordinates", coordinates)
-  });
-
-
-
-
-
   const draw = new MapboxDraw({
     displayControlsDefault: false,
     // Select which mapbox-gl-draw control buttons to add to the map.
@@ -277,9 +261,6 @@ function updateArea(e) {
     const data = draw.getAll();
     const answer = document.getElementById('calculated-area');
     if (data.features.length > 0) {
-
-   
-      
         const area = turf.area(data);
         // Restrict the area to 2 decimal points.
         const rounded_area = Math.round(area * 100) / 100;
@@ -292,27 +273,20 @@ function updateArea(e) {
         if (e.type !== 'draw.delete')
             alert('Click the map to draw a polygon.');
     }
-    // console.log("area", data);
-    // console.log("zone coordinates 1", zoneCoordinates);
 }
-
-
-
-
-
 });
+
+
+
 }
 }, [sensorsData, pipesData, zones, center]);
-
-
-
-
 
 return (
 <div>
   <div id="map" style={{ width: '99vw', height: '88vh' }} />
   <div class="calculation-box">
     <p>Click the map to draw a polygon.</p>
+    
     <button onClick={handlePolygonCreated} >add Zone</button>
     <div id="calculated-area"></div>
 </div>
