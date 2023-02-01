@@ -214,3 +214,53 @@
         .mapboxgl-marker svg{
           display: none;
         }
+
+
+
+        body { margin: 0; padding: 0; }
+#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+
+    .calculation-box {
+        height: 75px;
+        width: 150px;
+        position: absolute;
+        bottom: 40px;
+        left: 10px;
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 15px;
+        text-align: center;
+    }
+
+    p {
+        font-family: 'Open Sans';
+        margin: 0;
+        font-size: 13px;
+    }
+
+    button.mapbox-gl-draw_polygon{
+      background-image: url('https://icons.iconarchive.com/icons/icons8/ios7/512/Maps-Polygon-icon.png');
+          background-size: contain;
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          cursor: pointer;
+          background-repeat: no-repeat;
+          background-position: center;
+          margin: 10px auto;
+    }
+
+    button.mapbox-gl-draw_trash{
+      background-image: url('https://cdn-icons-png.flaticon.com/512/860/860829.png');
+          background-size: contain;
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          cursor: pointer;
+          background-repeat: no-repeat;
+          background-position: center;
+          margin: 10px auto;
+    }
+    .mapboxgl-ctrl-group {
+      background: #5a454500;
+      border-radius: 4px;
+  }
