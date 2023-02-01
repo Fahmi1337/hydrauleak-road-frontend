@@ -17,10 +17,15 @@ const Map = () => {
 
 
 
+
+
+
+
+
  // add sensor by clicking on the maps and a add sensor details
 
- const [showPopup, setShowPopup] = useState(false);
 
+const [runEffect, setRunEffect] = useState(false);
   const [lng, setLng] = useState(5);
   const [lat, setLat] = useState(34);
   const [marker, setMarker] = useState(null);
@@ -35,6 +40,14 @@ const Map = () => {
     sensor_Indication: "unknown",
     map: 2,
   });
+
+
+
+
+
+
+
+
 
 
 
@@ -405,13 +418,15 @@ function updateArea(e) {
 //   map.off("click", handleClick);
 // };
 
-
-
-map.on("click", handleClick);
+if (runEffect) {
+  map.on("click", handleClick);
 
 return () => {
   map.off("click", handleClick);
 };
+
+}
+
 
 
 
@@ -420,7 +435,7 @@ return () => {
 
 }
 
-}, [sensorsData, pipesData, zones, center, marker, lng, lat]);
+}, [sensorsData, pipesData, zones, center, marker, lng, lat,    runEffect]);
 
 
 
@@ -474,8 +489,8 @@ return (
 <div ref={mapContainer} style={{ width: '99vw', height: '80vh' }} />
   <div className="calculation-box">
     <p>Click the map to draw a polygon.</p>
-    <button onClick={handlePolygonCreated} >add Zone</button>
-    
+    <button onClick={handlePolygonCreated} >Add Zone</button>
+    <button onClick={() => setRunEffect(true)}>Add Sensor</button>
     <div id="calculated-area"></div>   
   </div>
 
