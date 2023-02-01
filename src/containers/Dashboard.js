@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import mapboxgl from 'mapbox-gl';
+import MapboxDraw from "@mapbox/mapbox-gl-draw";
+import * as turf from '@turf/turf'
 
 const Map = () => {
   const [sensorsData, setSensorsData] = useState([]);
   const [pipesData, setPipes] = useState([]);
-  const [map, setMap] = useState(null);
 const [center, setCoordinates] = useState([-71.3583, 50.1686]);
+const [zones, setZones] = useState([]);
+const [isDrawing, setIsDrawing] = useState(false);
+const [polygonCoordinates, setPolygonCoordinates] = useState([]);
 
-
+const [map, setMap] = useState(null);
+ 
+    
 
 
   useEffect(() => {
@@ -33,6 +39,20 @@ const [center, setCoordinates] = useState([-71.3583, 50.1686]);
           })
           .then((res) => {
         setPipes(res.data.results);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  useEffect(() => {
+    axios.get(`${process.env.REACT_APP_API_URL}/api/zones/`, {
+            headers: {
+              'Authorization': 'Bearer' +  localStorage.getItem("token")
+            }
+          })
+          .then((res) => {
+        setZones(res.data.results);
       })
       .catch((err) => {
         console.log(err);
@@ -110,9 +130,55 @@ const [center, setCoordinates] = useState([-71.3583, 50.1686]);
       },
     });   
   });
+
+
+
+
+
+  zones.forEach(zone => {
+    map.addSource(zone.id.toString(), {
+      type: 'geojson',
+      data: {
+        type: 'Feature',
+        geometry: {
+          type: 'Polygon',
+          coordinates: [zone.zone_coordinates]
+        }
+      }
+    });
+  
+    map.addLayer({
+      id: zone.id.toString(),
+      type: 'fill',
+      source: zone.id.toString(),
+      layout: {},
+      paint: {
+        'fill-color': '#0080ff',
+        'fill-opacity': 0.5
+      }
+    });
+  
+    map.addLayer({
+      id: zone.id.toString() + 'outline',
+      type: 'line',
+      source: zone.id.toString(),
+      layout: {},
+      paint: {
+        'line-color': '#000',
+        'line-width': 3
+      }
+    });
+  });
+
+
+
 });
 }
-}, [sensorsData, pipesData]);
+}, [sensorsData, pipesData, zones, center]);
+
+
+
+
 
 return (
 <div>
