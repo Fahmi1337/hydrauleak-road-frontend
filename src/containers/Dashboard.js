@@ -9,69 +9,112 @@ const Map = () => {
   const [pipesData, setPipes] = useState([]);
 const [center, setCoordinates] = useState([-71.3583, 50.1686]);
 const [zones, setZones] = useState([]);
-const [isDrawing, setIsDrawing] = useState(false);
-const [polygonCoordinates, setPolygonCoordinates] = useState([]);
 
-const [map, setMap] = useState(null);
+const [zoneCoordinates, setZoneCoordinates] = useState([]);
+
+
  
-    
+const getMaps = e => {
+  axios.get(`${process.env.REACT_APP_API_URL}/api/maps/`, {
+    headers: {
+      'Authorization': 'Bearer ' +  localStorage.getItem("token")
+    }
+  })
+  .then((res) => {
+    setCoordinates(res.data.data);
+})
+.catch((err) => {
+console.log(err);
+});
+}
 
 
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_API_URL}/api/maps/`, {
-            headers: {
-              'Authorization': 'Bearer' +  localStorage.getItem("token")
-            }
-          })
-          .then((res) => {
-            setCoordinates(res.data.results);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    getMaps();
   }, []);
 
-  useEffect(() => {
+
+
+  const getPipes = e => {
     axios.get(`${process.env.REACT_APP_API_URL}/api/pipes/`, {
-            headers: {
-              'Authorization': 'Bearer' +  localStorage.getItem("token")
-            }
-          })
-          .then((res) => {
-        setPipes(res.data.results);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+      headers: {
+        'Authorization': 'Bearer ' +  localStorage.getItem("token")
+      }
+    })
+    .then((res) => {
+  setPipes(res.data.data);
+})
+.catch((err) => {
+  console.log(err);
+});
+  }
+
 
   useEffect(() => {
+    getPipes();
+  }, []);
+
+
+
+  const getZones = e => {
     axios.get(`${process.env.REACT_APP_API_URL}/api/zones/`, {
-            headers: {
-              'Authorization': 'Bearer' +  localStorage.getItem("token")
-            }
-          })
-          .then((res) => {
-        setZones(res.data.results);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+      headers: {
+        'Authorization': 'Bearer ' +  localStorage.getItem("token")
+      }
+    })
+    .then((res) => {
+  setZones(res.data.data);
+})
+.catch((err) => {
+  console.log(err);
+});
+  }
+
 
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_API_URL}/api/sensors/`, {
-            headers: {
-              'Authorization': 'Bearer' +  localStorage.getItem("token")
-            }
-          })
-          .then((res) => {
-        setSensorsData(res.data.results);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    getZones();
   }, []);
+
+
+  const getSensors = e => {
+    axios.get(`${process.env.REACT_APP_API_URL}/api/sensors/`, {
+      headers: {
+        'Authorization': 'Bearer ' +  localStorage.getItem("token")
+      }
+    })
+    .then((res) => {
+  setSensorsData(res.data.data);
+})
+.catch((err) => {
+  console.log(err);
+});
+  }
+
+  useEffect(() => {
+    getSensors();
+  }, []);
+
+
+
+  const handlePolygonCreated = e => {
+    e.preventDefault();
+    console.log("zone coordinates 2", zoneCoordinates);
+    
+    const newzone = { zone_date: '2021-01-01T00:00:00Z', zone_status: 'notStart', zone_color: 'Red', zone_area: 23.0, zone_coordinates: zoneCoordinates, map: 2 };
+    axios.post(`${process.env.REACT_APP_API_URL}/api/zones/`, { zone_status: 'notStart', zone_color: 'red', zone_area: 23.0, zone_coordinates: zoneCoordinates, map: 2}, 
+    {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' +   localStorage.getItem("token")
+}})
+          .then(res => console.log(res))
+          .catch(err => console.error(err));
+          getZones();
+          getZones();
+  };
+
+
+ 
 
   const accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
   useEffect(() => {
@@ -153,22 +196,107 @@ const [map, setMap] = useState(null);
       source: zone.id.toString(),
       layout: {},
       paint: {
-        'fill-color': '#0080ff',
+        'fill-color': zone.zone_color,
         'fill-opacity': 0.5
       }
     });
-  
+  console.log("zone colors",  zone.zone_color.toString().trim() );
     map.addLayer({
       id: zone.id.toString() + 'outline',
       type: 'line',
       source: zone.id.toString(),
       layout: {},
       paint: {
-        'line-color': '#000',
+        'line-color': "black",
         'line-width': 3
       }
     });
+
+
+
+    map.on('click', zone.id.toString(), (e) => {
+      new mapboxgl.Popup()
+      .setLngLat(e.lngLat)
+      .setHTML(`
+      <h3>ID : ${zone.id}</h3>
+          <p>Map : ${zone.zone_color}</p>
+`)
+      .addTo(map);
+      console.log("my e", zone.id);
+      });
+       
+      // Change the cursor to a pointer when
+      // the mouse is over the states layer.
+      map.on('mouseenter', 'states-layer', () => {
+      map.getCanvas().style.cursor = 'pointer';
+      });
+       
+      // Change the cursor back to a pointer
+      // when it leaves the states layer.
+      map.on('mouseleave', 'states-layer', () => {
+      map.getCanvas().style.cursor = '';
+      });
+
+
   });
+
+
+  map.on('click', function (e) {
+    map.dragPan.disable();
+    map.dragPan.enable();
+  });
+
+  map.on('dragend', function (e) {
+    const coordinates = e.target.getBounds().getCenter().toArray();
+    setZoneCoordinates(coordinates);
+    console.log("new coordinates", coordinates)
+  });
+
+
+
+
+
+  const draw = new MapboxDraw({
+    displayControlsDefault: false,
+    // Select which mapbox-gl-draw control buttons to add to the map.
+    controls: {
+        polygon: true,
+        trash: true
+    },
+    // Set mapbox-gl-draw to draw by default.
+    // The user does not have to click the polygon control button first.
+    // defaultMode: 'draw_polygon'
+});
+map.addControl(draw);
+
+map.on('draw.create', updateArea);
+map.on('draw.delete', updateArea);
+map.on('draw.update', updateArea);
+
+function updateArea(e) {
+    const data = draw.getAll();
+    const answer = document.getElementById('calculated-area');
+    if (data.features.length > 0) {
+
+   
+      
+        const area = turf.area(data);
+        // Restrict the area to 2 decimal points.
+        const rounded_area = Math.round(area * 100) / 100;
+        answer.innerHTML = `<p><strong>${rounded_area}</strong></p><p>square meters</p>`;
+
+        setZoneCoordinates(data.features[0].geometry.coordinates[0])
+
+    } else {
+        answer.innerHTML = '';
+        if (e.type !== 'draw.delete')
+            alert('Click the map to draw a polygon.');
+    }
+    // console.log("area", data);
+    // console.log("zone coordinates 1", zoneCoordinates);
+}
+
+
 
 
 
@@ -183,6 +311,12 @@ const [map, setMap] = useState(null);
 return (
 <div>
   <div id="map" style={{ width: '99vw', height: '88vh' }} />
+  <div class="calculation-box">
+    <p>Click the map to draw a polygon.</p>
+    <button onClick={handlePolygonCreated} >add Zone</button>
+    <div id="calculated-area"></div>
+</div>
+
 </div>
 );
 };

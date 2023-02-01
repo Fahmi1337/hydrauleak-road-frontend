@@ -5,7 +5,7 @@ import { Sidebar } from '../containers/sidebar';
 const layout = (props) => (
     <div>
         <Navbar />
-        <Sidebar />
+        {/* <Sidebar /> */}
         {props.children}
     </div>
 );
