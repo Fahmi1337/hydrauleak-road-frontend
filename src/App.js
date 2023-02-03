@@ -4,6 +4,7 @@ import store from './store';
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 //container
+import Test from './containers/Test'
 import Dashboard from './containers/Dashboard';
 import Login from './containers/Login';
 import Signup from './containers/Signup';
@@ -34,6 +35,9 @@ const App = () => (
         <Router>
             <Layout>
                 <Routes>
+
+                    <Route exact path='/test' element={<Test/>} />
+
                     <Route exact path='/' element={<Dashboard/>} />
                     <Route exact path='/login' element={<Login/>} />
                     <Route exact path='/signup' element={<Signup/>} />

@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { logout } from '../actions/auth';
 import Alert from './Alert';
 import PropTypes from 'prop-types';
+import "./Navbar.css"
+
 
 const navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
     const authLinks = (
@@ -19,30 +21,26 @@ const navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
 
     return (
         <Fragment>
-            <nav className='navbar'>
+
+
+<nav>
+      <ul>
                 <div className='navbar__top'>
                     <div className='navbar__top__logo'>
                         <Link className='navbar__top__logo__link' to='/'>Hydrauleak Road</Link>
                     </div>
-                    <div className='navbar__top__auth'>
-                        { !loading && (<Fragment>{ isAuthenticated ? authLinks : guestLinks }</Fragment>) }
-                    </div>
+                    
                 </div>
-                {/* <div className='navbar__bottom'>
-                    <li className='navbar__bottom__item'>
-                        <NavLink className='navbar__bottom__item__link' exact to='/'>Dashboard</NavLink>
-                    </li>
-                    <li className='navbar__bottom__item'>
-                        <NavLink className='navbar__bottom__item__link' exact to='/contracts'>Contracts</NavLink>
-                    </li>
-                    <li className='navbar__bottom__item'>
-                        <NavLink className='navbar__bottom__item__link' exact to='/interventions'>Interventions</NavLink>
-                    </li>
-                    <li className='navbar__bottom__item'>
-                        <NavLink className='navbar__bottom__item__link' exact to='/report'>Reports</NavLink>
-                    </li>
-                </div> */}
-            </nav>
+        <li><a href="/">Dashboard</a></li>
+        <li><a href="/contracts">Contracts</a></li>
+        <li><a href="/interventions">Interventions</a></li>
+        <li><a href="/reports">Reports</a></li>
+                <div className='navbar__top__auth'>
+                                { !loading && (<Fragment>{ isAuthenticated ? authLinks : guestLinks }</Fragment>) }
+                </div>
+      </ul>
+    </nav>
+            
             <Alert />
         </Fragment>
     );

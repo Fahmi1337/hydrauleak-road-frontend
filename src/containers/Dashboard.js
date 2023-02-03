@@ -3,6 +3,9 @@ import axios from 'axios';
 import mapboxgl from 'mapbox-gl';
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import * as turf from '@turf/turf'
+import ButtonWithPopup from "../components/AddButtonPopup"
+
+
 
 const Map = () => {
   const [sensorsData, setSensorsData] = useState([]);
@@ -26,7 +29,8 @@ const Map = () => {
 
 
 const [runEffect, setRunEffect] = useState(false);
-  const [lng, setLng] = useState(5);
+  
+const [lng, setLng] = useState(5);
   const [lat, setLat] = useState(34);
   const [marker, setMarker] = useState(null);
   const [addSensor, setAddSensor] = useState(false);
@@ -40,17 +44,6 @@ const [runEffect, setRunEffect] = useState(false);
     sensor_Indication: "unknown",
     map: 2,
   });
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -100,6 +93,50 @@ const [runEffect, setRunEffect] = useState(false);
       });
     setAddSensor(false);
   };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//add Pipes
+
+// const [lngPipe, setLngPipe] = useState(5);
+// const [latPipe, setLatPipe] = useState(34);
+
+// const [runEffectPipe, setRunEffectPipe] = useState(false);
+// const [coordinatesPipe, setCoordinatesPipe] = useState([]);
+
+
+
+//   const handleClickPipe = (event) => {
+//     if (event.lngLat) {
+//     setCoordinatesPipe([...coordinatesPipe, [setLngPipe(event.lngLat.lng), setLatPipe(event.lngLat.lat)]]);
+//     console.log("pipe coordinates:", coordinatesPipe)
+//   }
+//   };
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -429,13 +466,40 @@ return () => {
 
 
 
+// map.on('load', () => {
+//   map.on('click', handleClickPipe);
+
+//   map.addLayer({
+//     id: 'pipe',
+//     type: 'line',
+//     source: {
+//       type: 'geojson',
+//       data: {
+//         type: 'Feature',
+//         properties: {},
+//         geometry: {
+//           type: 'LineString',
+//           coordinatesPipe,
+//         },
+//       },
+//     },
+//     layout: {
+//       'line-join': 'round',
+//       'line-cap': 'round',
+//     },
+//     paint: {
+//       'line-color': '#888',
+//       'line-width': 8,
+//     },
+//   });
+// });
+
 
 
 
 
 }
-
-}, [sensorsData, pipesData, zones, center, marker, lng, lat,    runEffect]);
+}, [sensorsData, pipesData, zones, center, marker, lng, lat, runEffect ]);
 
 
 
@@ -491,6 +555,7 @@ return (
     <p>Click the map to draw a polygon.</p>
     <button onClick={handlePolygonCreated} >Add Zone</button>
     <button onClick={() => setRunEffect(true)}>Add Sensor</button>
+    <ButtonWithPopup setRunEffect={setRunEffect}/>
     <div id="calculated-area"></div>   
   </div>
 
