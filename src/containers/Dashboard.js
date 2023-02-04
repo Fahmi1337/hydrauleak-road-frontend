@@ -4,10 +4,10 @@ import mapboxgl from 'mapbox-gl';
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import * as turf from '@turf/turf'
 import ButtonWithPopup from "../components/AddButtonPopup"
+import RightAddSensorPopup from '../components/popups/RightAddSensorPopup';
 
 
-
-const Map = () => {
+const Map = (props) => {
   const [sensorsData, setSensorsData] = useState([]);
   const [pipesData, setPipes] = useState([]);
   
@@ -51,10 +51,11 @@ const [lng, setLng] = useState(5);
   const handleClick = (e) => {
     setLng(e.lngLat.lng);
     setLat(e.lngLat.lat);
-    setAddSensor(true);
-    console.log("new sensor coordinates", lng, lat)
-
-
+    // setAddSensor(true);
+    console.log("new sensor coordinates", lng, lat);
+    window.localStorage.setItem("newSensorLng", e.lngLat.lng);
+    window.localStorage.setItem("newSensorLat", e.lngLat.lat);
+    window.dispatchEvent(new Event("storage"));
   };
 
   const handleAddSensor = () => {
@@ -494,23 +495,11 @@ return () => {
 //   });
 // });
 
-
-
-
-
 }
 }, [sensorsData, pipesData, zones, center, marker, lng, lat, runEffect ]);
 
-
-
-
-
 return (
 <div>
-  
-
-  
-
       {addSensor && (
         <div className="form-container">
           <h3>Add Sensor</h3>
@@ -556,7 +545,7 @@ return (
     <button onClick={handlePolygonCreated} >Add Zone</button>
     <button onClick={() => setRunEffect(true)}>Add Sensor</button>
     
-    <ButtonWithPopup setRunEffect={setRunEffect}/>
+    <ButtonWithPopup setRunEffect={setRunEffect} getSensors={getSensors}/>
     
     <div id="calculated-area"></div>   
   </div>

@@ -25,7 +25,7 @@ const ContractForm = () => {
 
     const { contract_title, contract_description, contract_type, contract_status, contract_date, address, city, state, zipcode, is_published } = formData;
 
-    const [loading, setLoading] = useState({false});
+    // const [loading, setLoading] = useState({false});
 
     const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value});
 

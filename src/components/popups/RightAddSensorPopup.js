@@ -1,29 +1,111 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import "./RightAddSensorPopup.css"
-
+import axios from 'axios';
 
 
 const RightAddSensorPopup = (props) => {
+  
+ 
+ 
+
+  // const handleChange = (e) => {
+  //   setSensorData({
+  //     ...sensorData,
+  //     [e.target.name]: e.target.value
+  //   });
+  // };
+
+
+ // add sensor by clicking on the maps and a add sensor details
+
+
+//  useEffect(() => {
+//   setLat(localStorage.getItem("newSensorLat"));
+//   setLng(localStorage.getItem("newSensorLng"));
+
+//   console.log("lat :" ,lat);
+//   console.log("lng :" ,lng);
+// }, [lat, lng]);
+  const [addSensor, setAddSensor] = useState(false);
+
+ 
+ 
+
+
+
+
+
+
+  const initialState = '';
+  const [lat, setLat] = useState(initialState);
+  const [lng, setLng] = useState(initialState);
+
+
+  function getLatLng() {
+    const lat = localStorage.getItem("newSensorLat");
+    const lng = localStorage.getItem("newSensorLng");
+   
+    
+      setLat(lat);
+      setLng(lng);
+    setSensorData({sensor_coordinates : [lng, lat]});
+  }
+ 
+
+ 
+
+  useEffect(() => {
+    getLatLng();
+  }, []);
+  window.addEventListener("storage", () => {
+    getLatLng();
+  });
+  useEffect(() => {
+    if (lat !== initialState) {
+      localStorage.setItem("newSensorLat", lat);
+    }
+  }, [lng, lat]);
+
+
+
   const [sensorData, setSensorData] = useState({
-    sensor_coordinates: [1.0, 2.0],
-    sensor_creationdate: "2023-01-21T17:08:39Z",
-    sensor_type: "Sensor type:",
-    sensor_title: "Sensor title:",
-    sensor_description: "Sensor description:",
-    sensor_frequency: [
-      [1.0, 2.0, 1, 3],
-      [2.0, 1, 3, 5]
-    ],
-    sensor_Indication: "unknown",
-    map: 1
   });
 
-  const handleChange = (e) => {
+
+
+  const handleSensorDataChange = (e) => {
     setSensorData({
       ...sensorData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
+      
     });
   };
+
+  const handleSubmitData = () => {
+
+
+    axios
+      .post(`${process.env.REACT_APP_API_URL}/api/sensors/`, sensorData,
+      
+      {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' +   localStorage.getItem("token")
+  }}
+  
+  )    
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+    setAddSensor(false);
+    props.handleClose2();
+    props.getSensors();
+  };
+
+console.log("sensor frequency", sensorData.sensor_frequency)
 
   return (
     <div className="sensorPopup">
@@ -33,59 +115,60 @@ const RightAddSensorPopup = (props) => {
           type="text"
           name="reading_coordinates"
           value={sensorData.sensor_coordinates}
-          onChange={handleChange}
+          onChange={e => handleSensorDataChange(e)}
         />
         <label>Sensor creation date:</label>
         <input
-          type="text"
+          type="date"
           name="sensor_creationdate"
           value={sensorData.sensor_creationdate}
-          onChange={handleChange}
+          onChange={e => handleSensorDataChange(e)}
         />
         <label>Sensor type:</label>
         <input
           type="text"
           name="sensor_type"
           value={sensorData.sensor_type}
-          onChange={handleChange}
+          onChange={e => handleSensorDataChange(e)}
         />
         <label>Sensor title:</label>
         <input
           type="text"
           name="sensor_title"
           value={sensorData.sensor_title}
-          onChange={handleChange}
+          onChange={e => handleSensorDataChange(e)}
         />
         <label>Sensor description:</label>
         <input
           type="text"
           name="sensor_description"
           value={sensorData.sensor_description}
-          onChange={handleChange}
+          onChange={e => handleSensorDataChange(e)}
         />
         <label>Sensor frequency:</label>
         <input
           type="text"
           name="sensor_frequency"
           value={sensorData.sensor_frequency}
-          onChange={handleChange}
+          onChange={e => handleSensorDataChange(e)}
         />
         <label>Sensor Indication:</label>
         <input
           type="text"
           name="sensor_Indication"
           value={sensorData.sensor_Indication}
-          onChange={handleChange}
+          onChange={e => handleSensorDataChange(e)}
         />
         <label>Map:</label>
         <input
           type="text"
           name="map"
           value={sensorData.map}
-          onChange={handleChange}
+          onChange={e => handleSensorDataChange(e)}
         />
       </form>
-      <button onClick={props.onClose}>Close Popup</button>
+      <button onClick={handleSubmitData}>Submit</button>
+      <button onClick={props.handleClose2}>Cancel</button>
     </div>
   );
 };
