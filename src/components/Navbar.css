@@ -1,0 +1,56 @@
+
+body {
+    background-color: #f2f2f2;
+    font-family: sans-serif;
+  }
+  
+  header {
+    background-color: #333;
+    padding: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logo img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+  }
+  
+  nav {
+    display: flex;
+  }
+  
+  nav ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: green;
+  }
+  
+  nav li {
+    padding: 0 10px;
+  }
+  
+  nav a {
+    color: #2f00ff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  
+  .auth a {
+    background-color: #e8491d;
+    padding: 10px;
+    color: #f2f2f2;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 4px;
+    display: inline-block;
+  }

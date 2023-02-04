@@ -1,0 +1,51 @@
+
+.sensorPopup {
+    background-color: #fff;
+    padding: 20px;
+    width: 400px;
+    position: absolute;
+    top: 50%;
+    left: 87%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 5px #ccc;
+    border-radius: 3px;
+    overflow: auto;
+    max-height: 100%;
+  }
+  
+  
+  
+.sensorPopup input,
+.sensorPopup label {
+  width: 100%;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.sensorPopup input {
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.sensorPopup label {
+    font-weight: bold;
+    color: #555;
+  } 
+
+.sensorPopup button {
+  padding: 10px;
+  font-size: 14px;
+  background-color: #0087ff;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  width: 100%;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.sensorPopup button:hover {
+  background-color: #0064cc;
+}
