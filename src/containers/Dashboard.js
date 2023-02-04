@@ -4,7 +4,7 @@ import mapboxgl from 'mapbox-gl';
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import * as turf from '@turf/turf'
 import ButtonWithPopup from "../components/AddButtonPopup"
-import RightAddSensorPopup from '../components/popups/RightAddSensorPopup';
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder'; 
 
 
 const Map = (props) => {
@@ -12,13 +12,14 @@ const Map = (props) => {
   const [pipesData, setPipes] = useState([]);
   
   const [center, setCoordinates] = useState([-71.3583, 50.1686]);
+  const [searchCoordinates, setSearchCoordinates] = useState([-71.3583, 50.1686]);
   const [zones, setZones] = useState([]);
 
   const [zoneCoordinates, setZoneCoordinates] = useState([]);
 
 
 
-
+  const [value, setValue] = React.useState('');
 
 
 
@@ -46,7 +47,7 @@ const [lng, setLng] = useState(5);
   });
 
 
-
+ 
 
   const handleClick = (e) => {
     setLng(e.lngLat.lng);
@@ -137,9 +138,33 @@ const [lng, setLng] = useState(5);
 
 
 
+function handleChange(event) {
+  // console.log(event.target.value);
+  getSeatchSuggestions(event.target.value);
+  
+}
+const [viewport, setViewport] = useState({
+  latitude: 24.8607,
+  longitude: 67.0011,
+  zoom: 11.4
+});
+
+// Get search suggestions 
+const getSeatchSuggestions = e => {
+  axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${e}.json?access_token=pk.eyJ1IjoiZGV2bGlucm9jaGEiLCJhIjoiY2t2bG82eTk4NXFrcDJvcXBsemZzdnJoYSJ9.aq3RAvhuRww7R_7q-giWpA`).then(res => {
+            const { data } = res;
+            console.log({ latitude: viewport.latitude, longitude: viewport.longitude, location: data.features[0].place_name });
+            setSearchCoordinates(data);
+            console.log("my center",data)
+        })
+}
 
 
+// Get Maps while opening the dashboard
 
+useEffect(() => {
+  getSeatchSuggestions();
+}, []);
 
 
 
@@ -260,10 +285,11 @@ const getPipes = e => {
       const map = new mapboxgl.Map({
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/streets-v12',
-        center: center[0].map_coordinate,
+        center: searchCoordinates.features[0].center || center[0].map_coordinate,
         zoom: 12
       });
-
+console.log("map coordinates", center[0].map_coordinate);
+console.log("search coordinates", searchCoordinates);
       map.on('load', () => {
 
     // Add Sensors to the map 
@@ -496,10 +522,20 @@ return () => {
 // });
 
 }
-}, [sensorsData, pipesData, zones, center, marker, lng, lat, runEffect ]);
+}, [sensorsData, pipesData, zones, center, marker, lng, lat, runEffect, searchCoordinates ]);
 
 return (
 <div>
+
+<div>
+  <label>Search:</label>
+  <input name="firstName" onChange={handleChange} />
+
+
+ 
+</div>
+
+
       {addSensor && (
         <div className="form-container">
           <h3>Add Sensor</h3>
@@ -551,7 +587,7 @@ return (
   </div>
 
 
-
+  
 
 
 </div>
