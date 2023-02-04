@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { faSignalStream, faDrawPolygon, faPipeSection, faPipeValve, faLocationXmark, faMapPin } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
 import RightAddSensorPopup from './popups/RightAddSensorPopup';
+import PopupTrigger from '../components/popups/RightAddSensorPopupTrigger'
 
     const AddButtonPopup = (props) => {
     const [showPopup, setShowPopup] = useState(false);
@@ -14,6 +15,7 @@ import RightAddSensorPopup from './popups/RightAddSensorPopup';
 
     const handleRightPopupOpen = () => {
       setIsRightPopupOpen(true);
+      togglePopup();
     };
   
     const handleRightPopupClose = () => {
@@ -32,22 +34,16 @@ import RightAddSensorPopup from './popups/RightAddSensorPopup';
           Click Here
         </button>
         {showPopup ? 
-        <div className='popup' style={{height: 400, width: 600}}>
+        <div className='addPopup' style={{height: 400, width: 600}}>
           <div className='icons'>
          
           <button  onClick={() => {setRunEffect(true); togglePopup();}} >Add pipe</button>
           <button onClick={() => { setRunEffect(true); togglePopup();}} >Add pipe Access </button>
-          <button onClick={() => { setRunEffect(true); togglePopup();handleRightPopupOpen()}} >Add Sensor</button>
+          <button onClick={() => { setRunEffect(true); togglePopup();handleRightPopupOpen();}} >Add Sensor</button>
+          {/* <PopupTrigger onClick={() => {setRunEffect(true); togglePopup();}} /> */}
           <button onClick={() => { setRunEffect(true); togglePopup();}} >Add mark</button>
           <button onClick={() => { setRunEffect(true); togglePopup();}} >Add zone</button>
-          <button
-onClick={() => {
-  setRunEffect(true);
-  handleRightPopupOpen();
-}}
->
-Add Map
-</button>
+          <button onClick={() => { setRunEffect(true); handleRightPopupOpen();}}>Add Map</button>
 {isRightPopupOpen ? <RightAddSensorPopup onClose={handleRightPopupClose} /> : null}
           
 

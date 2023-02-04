@@ -555,7 +555,9 @@ return (
     <p>Click the map to draw a polygon.</p>
     <button onClick={handlePolygonCreated} >Add Zone</button>
     <button onClick={() => setRunEffect(true)}>Add Sensor</button>
+    
     <ButtonWithPopup setRunEffect={setRunEffect}/>
+    
     <div id="calculated-area"></div>   
   </div>
 

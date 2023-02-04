@@ -1,11 +1,11 @@
 
-/* .popup {
+.sensorPopup {
     background-color: #fff;
     padding: 20px;
-    width: 300px;
+    width: 400px;
     position: absolute;
     top: 50%;
-    left: 90%;
+    left: 87%;
     transform: translate(-50%, -50%);
     box-shadow: 0 0 5px #ccc;
     border-radius: 3px;
@@ -13,28 +13,28 @@
     max-height: 100%;
   }
   
-   */
   
-.popup input,
-.popup label {
+  
+.sensorPopup input,
+.sensorPopup label {
   width: 100%;
   display: block;
   margin-bottom: 10px;
 }
 
-.popup input {
+.sensorPopup input {
   padding: 10px;
   font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 3px;
 }
 
-.popup label {
+.sensorPopup label {
     font-weight: bold;
     color: #555;
   } 
 
-.popup button {
+.sensorPopup button {
   padding: 10px;
   font-size: 14px;
   background-color: #0087ff;
@@ -46,6 +46,6 @@
   cursor: pointer;
 }
 
-.popup button:hover {
+.sensorPopup button:hover {
   background-color: #0064cc;
 }

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import RightAddSensorPopup from './RightAddSensorPopup';
 
-const PopupTrigger = () => {
+const PopupTrigger = (props) => {
   
   const [isRightPopupOpen, setIsRightPopupOpen] = useState(false);
 
@@ -18,10 +18,12 @@ const PopupTrigger = () => {
     setIsRightPopupOpen(false);
   };
 
+  const funcList = [props.onClick(),handleRightPopupOpen() ]
+
   return (
     <div>
-      
-      <button onClick={handleRightPopupOpen}>Open Right Popup</button>
+          
+      <button onClick={()=>funcList.forEach(func => func()) }>Open Right Popup</button>
       
       {isRightPopupOpen ? <RightAddSensorPopup onClose={handleRightPopupClose} /> : null}
     </div>

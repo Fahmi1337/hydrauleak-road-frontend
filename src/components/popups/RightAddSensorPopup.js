@@ -26,7 +26,7 @@ const RightAddSensorPopup = (props) => {
   };
 
   return (
-    <div className="popup">
+    <div className="sensorPopup">
       <form>
         <label>Sensor coordinates:</label>
         <input
