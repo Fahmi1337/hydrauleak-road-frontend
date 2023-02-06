@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import "../assets/css/AddButtonPopup.css"
+import "./AddButtonPopup.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { faSignalStream, faDrawPolygon, faPipeSection, faPipeValve, faLocationXmark, faMapPin } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
-import RightAddSensorPopup from './popups/RightAddSensorPopup';
-import PopupTrigger from '../components/popups/RightAddSensorPopupTrigger';
+import RightAddSensorPopup from '../addsensorpopup/RightAddSensorPopup';
+
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -59,6 +59,10 @@ const handleOpen2 = () => setOpen2(true);
 const handleClose2 = () => setOpen2(false);
 //POPUP2
 
+const [addSensorPop, setAddSensorPop] = useState(false)
+
+
+
 
     const handleRightPopupOpen = () => {
       setIsRightPopupOpen(true);
@@ -74,6 +78,18 @@ const handleClose2 = () => setOpen2(false);
 
       
     }
+
+
+
+   
+      const handleClickSensor = () => {
+        props.handleClickSensor(props.data);
+      };
+
+   
+
+
+
     const {setRunEffect} = props;
     return (
         <div>
@@ -118,11 +134,11 @@ const handleClose2 = () => setOpen2(false);
           <button onClick={() => { setRunEffect(true); }} >Add pipe Access </button>
           <button onClick={() => { setRunEffect(true); handleOpen2(); handleClose();}} >Add Sensor</button>
           
-          <button onClick={() => { setRunEffect(true); }} >Add mark</button>
+          <button >Add mark</button>
           <button onClick={() => { setRunEffect(true);}} >Add zone</button>
           <button onClick={() => { setRunEffect(true); }}>Add Map</button>
           <button onClick={() => { handleClose(); }}>Close</button>
-          {/* <Button onClick={() => { handleOpen2(); handleClose();}}>Open modal2</Button> */}
+           <button onClick={handleClickSensor}>Click Me</button>
      
          {/* MODAL 2 */}
       

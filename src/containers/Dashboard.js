@@ -3,9 +3,10 @@ import axios from 'axios';
 import mapboxgl from 'mapbox-gl';
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import * as turf from '@turf/turf'
-import ButtonWithPopup from "../components/AddButtonPopup"
-import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder'; 
-
+import ButtonWithPopup from "../components/popups/addpopup/AddButtonPopup"
+import RightAddSensorPopup from "../components/popups/addsensorpopup/RightAddSensorPopup"
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 
 const Map = (props) => {
   const [sensorsData, setSensorsData] = useState([]);
@@ -45,6 +46,11 @@ const [lng, setLng] = useState(5);
     sensor_Indication: "unknown",
     map: 2,
   });
+
+
+  const handleClickSensor = (data) => {
+    setAddSensor(true);
+  }
 
 
  
@@ -284,7 +290,7 @@ const getPipes = e => {
       mapboxgl.accessToken = accessToken;
       const map = new mapboxgl.Map({
         container: mapContainer.current,
-        style: 'mapbox://styles/mapbox/streets-v12',
+        style: 'mapbox://styles/mapbox/streets-v11',
         center: searchCoordinates.features[0].center || center[0].map_coordinate,
         zoom: 12
       });
@@ -493,6 +499,24 @@ return () => {
 
 
 
+map.addControl(new mapboxgl.NavigationControl({
+  style: 'compact',
+  zoom: map.getZoom(),
+  bearing: map.getBearing(),
+  pitch: map.getPitch(),
+}));
+
+
+
+map.addControl(new MapboxGeocoder({
+  accessToken: mapboxgl.accessToken,
+  mapboxgl: mapboxgl,
+  
+  placeholder: 'Search for location',
+      marker: false,
+      position: 'top-right',
+}));
+
 // map.on('load', () => {
 //   map.on('click', handleClickPipe);
 
@@ -530,64 +554,29 @@ return (
 <div>
   <label>Search:</label>
   <input name="firstName" onChange={handleChange} />
-
-
- 
 </div>
 
 
-      {addSensor && (
-        <div className="form-container">
-          <h3>Add Sensor</h3>
-          <div>
-            <label>Sensor Type:</label>
-            <input
-              type="text"
-              name="sensor_type"
-              value={sensorData.sensor_type}
-              onChange={handleSensorDataChange}
-            />
-          </div>
-          <div>
-            <label>Sensor Title:</label>
-            <input
-              type="text"
-              name="sensor_title"
-              value={sensorData.sensor_title}
-              onChange={handleSensorDataChange}
-              />
-              </div>
-              <div>
-              <label>Sensor Description:</label>
-              <input
-                        type="text"
-                        name="sensor_description"
-                        value={sensorData.sensor_description}
-                        onChange={handleSensorDataChange}
-                      />
-              </div>
-             
-              <button onClick={handleSubmitData}>Submit Sensor</button>
-              </div>
-        )}
+      
 
 
-
+<ButtonWithPopup data={props.data} handleClickSensor={handleClickSensor} setRunEffect={setRunEffect} getSensors={getSensors}/>
+{addSensor && <div>Something showed up!</div>}
 
 
 <div ref={mapContainer} style={{ width: '99vw', height: '80vh' }} />
+
+
   <div className="calculation-box">
     <p>Click the map to draw a polygon.</p>
+
     <button onClick={handlePolygonCreated} >Add Zone</button>
-    <button onClick={() => setRunEffect(true)}>Add Sensor</button>
     
-    <ButtonWithPopup setRunEffect={setRunEffect} getSensors={getSensors}/>
-    
+    {addSensor && (
+    <RightAddSensorPopup/>
+    )}
     <div id="calculated-area"></div>   
   </div>
-
-
-  
 
 
 </div>
