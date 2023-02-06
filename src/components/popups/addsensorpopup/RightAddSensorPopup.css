@@ -1,18 +1,4 @@
 
-.sensorPopup {
-    background-color: #fff;
-    padding: 20px;
-    width: 400px;
-    position: absolute;
-    top: 90%;
-    left: 87%;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 0 5px #ccc;
-    border-radius: 3px;
-    overflow: auto;
-    max-height: 150%;
-  }
-  
   .MuiBox-root{
     background-color: none;
   }

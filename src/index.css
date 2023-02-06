@@ -264,3 +264,31 @@
       background: #5a454500;
       border-radius: 4px;
   }
+  .mapboxgl-ctrl-group:not(:empty){
+    box-shadow: unset !important;
+  }
+  .mapboxgl-ctrl button.mapboxgl-ctrl-zoom-in .mapboxgl-ctrl-icon{
+    background-image: url('./assets/icons/plus.png') !important;
+    background-color: white;
+    width: 40%;
+  }
+  button.mapboxgl-ctrl-zoom-in{
+    width: 40%;
+  }
+  button.mapboxgl-ctrl-zoom-in:hover{
+    background-color: transparent;
+  }
+  .mapboxgl-ctrl button.mapboxgl-ctrl-zoom-out .mapboxgl-ctrl-icon{
+    background-image: url('./assets/icons/minus.png') !important;
+    background-color: white;
+    width: 40%;
+    margin-bottom: 20px;
+  }
+  .mapboxgl-ctrl button.mapboxgl-ctrl-compass .mapboxgl-ctrl-icon{
+    background-image: url('./assets/icons/arrow.png') !important;
+    background-color: white;
+    width: 40%;
+  }
+  .mapboxgl-ctrl-bottom-right .mapboxgl-ctrl.mapboxgl-ctrl-group{
+    margin-right: -50px;
+  }

@@ -20,22 +20,21 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: 400,
   height: 200,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
+  bgcolor: 'rgba(255, 255, 255, 0.75)',
   boxShadow: 24,
   p: 4,
 };
 
 const style2 = {
   position: 'absolute',
-  top: '21%',
-  left: '14%',
+  top: '48%',
+  left: '17%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
-  height: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
+  width: '34%',
+ height: '80%',
+  bgcolor: 'rgba(255, 255, 255, 0.75)',
   boxShadow: 24,
+  overflowY: 'scroll',
   p: 4,
 };
 
@@ -91,6 +90,8 @@ const [addSensorPop, setAddSensorPop] = useState(false)
 
 
     const {setRunEffect} = props;
+    const {setRunEffectPipe} = props;
+    const {setRunEffectZone} = props;
     return (
         <div>
         {/* <button onClick={togglePopup}>
@@ -115,7 +116,7 @@ const [addSensorPop, setAddSensorPop] = useState(false)
           
         </div>
         : null } */}
-        <Button onClick={handleOpen}>Open modal</Button>
+        <Button onClick={handleOpen}>Contributes</Button>
       <Modal
         disableEnforceFocus
         hideBackdrop
@@ -130,16 +131,15 @@ const [addSensorPop, setAddSensorPop] = useState(false)
         
           <div>
             {/* MODAL 2 */}
-            <button  onClick={() => {setRunEffect(true); }} >Add pipe</button>
+            <button  onClick={() => {setRunEffectPipe(true); }} >Add pipe</button>
           <button onClick={() => { setRunEffect(true); }} >Add pipe Access </button>
           <button onClick={() => { setRunEffect(true); handleOpen2(); handleClose();}} >Add Sensor</button>
           
           <button >Add mark</button>
-          <button onClick={() => { setRunEffect(true);}} >Add zone</button>
+          <button onClick={() => { setRunEffectZone(true); handleClose();}} >Add zone</button>
           <button onClick={() => { setRunEffect(true); }}>Add Map</button>
           <button onClick={() => { handleClose(); }}>Close</button>
            <button onClick={handleClickSensor}>Click Me</button>
-     
          {/* MODAL 2 */}
       
           </div>

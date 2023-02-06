@@ -52,7 +52,7 @@ const App = () => (
                     <Route exact path='/reset-password' element={<ResetPassword/>} />
                     <Route exact path='/password/reset/confirm/:uid/:token' element={<ResetPasswordConfirm/>} />
                     <Route exact path='/activate/:uid/:token' element={<Activate/>} />*/}
-                    <Route component={NotFound} />
+                    <Route path="*" element={<NotFound/>} />
                 </Routes>
             </Layout>
         </Router>

@@ -159,11 +159,11 @@ console.log("sensor frequency", sensorData.sensor_frequency)
           value={sensorData.sensor_Indication}
           onChange={e => handleSensorDataChange(e)}
         />
-        <label>Map:</label>
+        <label>Pipe:</label>
         <input
           type="text"
           name="map"
-          value={sensorData.map}
+          value={localStorage.getItem('selectedPipeId') ||  sensorData.pipe}
           onChange={e => handleSensorDataChange(e)}
         />
       </form>

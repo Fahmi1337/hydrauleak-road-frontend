@@ -18,7 +18,7 @@ const navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
             <Link className='navbar__top__auth__link' to='/signup'>Sign Up</Link>
         </Fragment>
     );
-
+console.log("is authenticated?", isAuthenticated)
     return (
         <Fragment>
 
@@ -36,7 +36,7 @@ const navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
         <li><a href="/interventions">Interventions</a></li>
         <li><a href="/reports">Reports</a></li>
                 <div className='navbar__top__auth'>
-                                { !loading && (<Fragment>{ isAuthenticated ? authLinks : guestLinks }</Fragment>) }
+                                { !loading && (<Fragment>{ localStorage.getItem("token") ? authLinks : guestLinks }</Fragment>) }
                 </div>
       </ul>
     </nav>
