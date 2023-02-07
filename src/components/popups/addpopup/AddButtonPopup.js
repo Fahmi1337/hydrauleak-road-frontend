@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./AddButtonPopup.css"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { faSignalStream, faDrawPolygon, faPipeSection, faPipeValve, faLocationXmark, faMapPin } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
 import RightAddSensorPopup from '../addsensorpopup/RightAddSensorPopup';
@@ -16,8 +16,9 @@ import Modal from '@mui/material/Modal';
 
 const style = {
   position: 'absolute',
-  top: '21%',
-  left: '14%',
+  top: '32%',
+  left: '22%',
+  
   transform: 'translate(-50%, -50%)',
   width: 400,
   height: 200,
@@ -28,11 +29,11 @@ const style = {
 
 const style2 = {
   position: 'absolute',
-  top: '48%',
+  top: '54%',
   left: '17%',
   transform: 'translate(-50%, -50%)',
   width: '34%',
- height: '80%',
+ height: '73%',
   bgcolor: 'rgba(255, 255, 255, 0.75)',
   boxShadow: 24,
   overflowY: 'scroll',
@@ -60,6 +61,14 @@ const [open2, setOpen2] = React.useState(false);
 const handleOpen2 = () => setOpen2(true);
 const handleClose2 = () => setOpen2(false);
 //POPUP2
+
+
+// Add Mark
+//POPUP Mark
+const [openMark, setOpenMark] = React.useState(false);
+const handleOpenMark = () => setOpenMark(true);
+const handleCloseMark = () => setOpenMark(false);
+
 
 const [addSensorPop, setAddSensorPop] = useState(false)
 
@@ -107,7 +116,7 @@ const handleShowMarkModal = () => setShowMarkModal(true);
 
     return (
         <>
-      
+      <AddMarkPopup  openMark={openMark}/>
         <Button onClick={handleOpen}>Contributes</Button>
       <Modal
         disableEnforceFocus
@@ -127,9 +136,9 @@ const handleShowMarkModal = () => setShowMarkModal(true);
           <button onClick={() => { setRunEffect(true);  handleClose();}} >Add pipe Access </button>
           <button onClick={() => { setRunEffect(true); handleOpen2(); handleClose();}} >Add Sensor</button>
           
-          <button onClick={() => {handleShowMarkModal();   handleClose();}} >Add mark</button>
+          <button onClick={() => {handleOpenMark();  handleClose();}} >Add mark</button>
 
-          <AddMarkPopup />
+          
 
           <button onClick={() => { setRunEffectZone(true); handleClose();}} >Add zone</button>
           <button onClick={() => { setRunEffect(true);  handleClose();}}>Add Map</button>
@@ -142,19 +151,12 @@ const handleShowMarkModal = () => setShowMarkModal(true);
          {/*MARK  MODAL*/}
        
        
-       <AddMarkPopup  />
-       
-       
-       
-       
-       
-       
-       
-       
+         
          {/* MODAL 2 */}
       
           </div>
         </Box>
+        
       </Modal>
 
       <Modal
