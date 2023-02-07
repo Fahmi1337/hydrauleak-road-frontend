@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PropTypes from 'prop-types';
 import RightAddSensorPopup from '../addsensorpopup/RightAddSensorPopup';
 
+import AddMarkPopup from '../addmarkpopup/AddMarkPopup'
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -38,6 +39,7 @@ const style2 = {
   p: 4,
 };
 
+
     const AddButtonPopup = (props) => {
     const [showPopup, setShowPopup] = useState(false);
     
@@ -52,6 +54,7 @@ const style2 = {
 
 
 
+// Add Sensor
 //POPUP2
 const [open2, setOpen2] = React.useState(false);
 const handleOpen2 = () => setOpen2(true);
@@ -85,37 +88,26 @@ const [addSensorPop, setAddSensorPop] = useState(false)
         props.handleClickSensor(props.data);
       };
 
-   
-
-
 
     const {setRunEffect} = props;
     const {setRunEffectPipe} = props;
     const {setRunEffectZone} = props;
+
+
+
+
+//Add Mark
+const [showMarkModal, setShowMarkModal] = useState(false);
+
+const handleCloseMarkModal = () => setShowMarkModal(false);
+const handleShowMarkModal = () => setShowMarkModal(true);
+
+
+
+
     return (
-        <div>
-        {/* <button onClick={togglePopup}>
-          Click Here
-        </button>
-        {showPopup ? 
-        <div className='addPopup' style={{height: 400, width: 600}}>
-          <div className='icons'>
-         
-          <button  onClick={() => {setRunEffect(true); togglePopup();}} >Add pipe</button>
-          <button onClick={() => { setRunEffect(true); togglePopup();}} >Add pipe Access </button>
-          <button onClick={() => { setRunEffect(true); togglePopup();handleRightPopupOpen();}} >Add Sensor</button>
-          
-          <button onClick={() => { setRunEffect(true); togglePopup();}} >Add mark</button>
-          <button onClick={() => { setRunEffect(true); togglePopup();}} >Add zone</button>
-          <button onClick={() => { setRunEffect(true); handleRightPopupOpen();}}>Add Map</button>
-{isRightPopupOpen ? <RightAddSensorPopup onClose={handleRightPopupClose} /> : null}
-          
-
-
-          </div>
-          
-        </div>
-        : null } */}
+        <>
+      
         <Button onClick={handleOpen}>Contributes</Button>
       <Modal
         disableEnforceFocus
@@ -131,15 +123,34 @@ const [addSensorPop, setAddSensorPop] = useState(false)
         
           <div>
             {/* MODAL 2 */}
-            <button  onClick={() => {setRunEffectPipe(true); }} >Add pipe</button>
-          <button onClick={() => { setRunEffect(true); }} >Add pipe Access </button>
+          <button  onClick={() => {setRunEffectPipe(true);  handleClose();}} >Add pipe</button>
+          <button onClick={() => { setRunEffect(true);  handleClose();}} >Add pipe Access </button>
           <button onClick={() => { setRunEffect(true); handleOpen2(); handleClose();}} >Add Sensor</button>
           
-          <button >Add mark</button>
+          <button onClick={() => {handleShowMarkModal();   handleClose();}} >Add mark</button>
+
+          <AddMarkPopup />
+
           <button onClick={() => { setRunEffectZone(true); handleClose();}} >Add zone</button>
-          <button onClick={() => { setRunEffect(true); }}>Add Map</button>
+          <button onClick={() => { setRunEffect(true);  handleClose();}}>Add Map</button>
           <button onClick={() => { handleClose(); }}>Close</button>
            <button onClick={handleClickSensor}>Click Me</button>
+       
+       
+
+       
+         {/*MARK  MODAL*/}
+       
+       
+       <AddMarkPopup  />
+       
+       
+       
+       
+       
+       
+       
+       
          {/* MODAL 2 */}
       
           </div>
@@ -164,7 +175,23 @@ const [addSensorPop, setAddSensorPop] = useState(false)
           </div>
         </Box>
       </Modal>
-      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </>
   );
 }
 
