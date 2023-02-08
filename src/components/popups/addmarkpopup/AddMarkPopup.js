@@ -11,20 +11,8 @@ import Modal from '@mui/material/Modal';
 
 const AddMarkPopup = (props) => {
 
-const [addSensor, setAddSensor] = useState(false);
+const [addMark, setAddMark] = useState(false);
 
-const style2 = {
-  position: 'absolute',
-  top: '54%',
-  left: '17%',
-  transform: 'translate(-50%, -50%)',
-  width: '34%',
- height: '73%',
-  bgcolor: 'rgba(255, 255, 255, 0.75)',
-  boxShadow: 24,
-  overflowY: 'scroll',
-  p: 4,
-};
 
   const initialState = '';
   const [lat, setLat] = useState(initialState);
@@ -38,7 +26,7 @@ const style2 = {
     
       setLat(lat);
       setLng(lng);
-    setSensorData({sensor_coordinates : [lng, lat]});
+    setMarkData({mark_coordinates : [lng, lat]});
   }
  
 
@@ -58,14 +46,14 @@ const style2 = {
 
 
 
-  const [sensorData, setSensorData] = useState({
+  const [markData, setMarkData] = useState({
   });
 
 
 
-  const handleSensorDataChange = (e) => {
-    setSensorData({
-      ...sensorData,
+  const handleMarkDataChange = (e) => {
+    setMarkData({
+      ...markData,
       [e.target.name]: e.target.value,
       
     });
@@ -75,7 +63,7 @@ const style2 = {
 
 
     axios
-      .post(`${process.env.REACT_APP_API_URL}/api/sensors/`, sensorData,
+      .post(`${process.env.REACT_APP_API_URL}/api/marks/`, markData,
       
       {
             headers: {
@@ -90,23 +78,28 @@ const style2 = {
       .catch((err) => {
         console.error(err);
       });
-    setAddSensor(false);
+    setAddMark(false);
     props.handleClose2();
-    props.getSensors();
+    props.getMarks();
   };
 
 
 
 
 
-    //Modal
-    const [showMarkModal, setShowMarkModal] = useState(false);
+    // //Modal
+    const [showMarkModal, setShowMarkModal] = useState(true);
 
     const handleCloseMarkModal = () => setShowMarkModal(false);
     const handleShowMarkModal = () => setShowMarkModal(true);
+   
 
-const OpenMark = props.openMark;
+    const OpenMark = props.openMark;
+    
 
+    const reloadPage = () => {
+      window.location.reload();
+    };
 
   return (
     <>
@@ -116,74 +109,56 @@ const OpenMark = props.openMark;
       hideBackdrop
       style={{ position: 'initial' }}
       
-        open={OpenMark}
+        open={OpenMark && showMarkModal}
        
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style2}>
+        <Box >
         
-        <div className="sensorPopup">
+        <div className="MarkPopup">
         <form>
-          <label>Sensor coordinates:</label>
+        <label>Mark title:</label>
+          <input
+            type="text"
+            name="mark_title"
+            value={markData.mark_title}
+            onChange={e => handleMarkDataChange(e)}
+          />
+          <label>Mark description:</label>
+          <input
+            type="text"
+            name="mark_description"
+            value={markData.mark_description}
+            onChange={e => handleMarkDataChange(e)}
+          />
+          <label>Mark coordinates:</label>
           <input
             type="text"
             name="reading_coordinates"
-            value={sensorData.sensor_coordinates}
-            onChange={e => handleSensorDataChange(e)}
+            value={markData.mark_coordinates}
+            onChange={e => handleMarkDataChange(e)}
           />
-          <label>Sensor creation date:</label>
+          <label>Mark creation date:</label>
           <input
-            type="date"
-            name="sensor_creationdate"
-            value={sensorData.sensor_creationdate}
-            onChange={e => handleSensorDataChange(e)}
+            type="datetime-local"
+            name="mark_creation_date"
+            value={markData.mark_creation_date}
+            onChange={e => handleMarkDataChange(e)}
           />
-          <label>Sensor type:</label>
-          <input
-            type="text"
-            name="sensor_type"
-            value={sensorData.sensor_type}
-            onChange={e => handleSensorDataChange(e)}
-          />
-          <label>Sensor title:</label>
-          <input
-            type="text"
-            name="sensor_title"
-            value={sensorData.sensor_title}
-            onChange={e => handleSensorDataChange(e)}
-          />
-          <label>Sensor description:</label>
-          <input
-            type="text"
-            name="sensor_description"
-            value={sensorData.sensor_description}
-            onChange={e => handleSensorDataChange(e)}
-          />
-          <label>Sensor frequency:</label>
-          <input
-            type="text"
-            name="sensor_frequency"
-            value={sensorData.sensor_frequency}
-            onChange={e => handleSensorDataChange(e)}
-          />
-          <label>Sensor Indication:</label>
-          <input
-            type="text"
-            name="sensor_Indication"
-            value={sensorData.sensor_Indication}
-            onChange={e => handleSensorDataChange(e)}
-          />
+          
+          
+          
           <label>Pipe:</label>
           <input
             type="text"
-            name="map"
-            value={localStorage.getItem('selectedPipeId') ||  sensorData.pipe}
-            onChange={e => handleSensorDataChange(e)}
+            name="pipe"
+            value={localStorage.getItem('selectedPipeId') ||  markData.pipe}
+            onChange={e => handleMarkDataChange(e)}
           />
         </form>
-        <button onClick={handleSubmitData}>Submit</button>
-        <button onClick={props.handleClose2}>Cancel</button>
+        <button onClick={()=>{handleSubmitData();reloadPage();}}>Submit</button>
+        <button  onClick={()=>{props.handleCloseMark();reloadPage();}}>Cancel</button>
       </div>
         </Box>
       </Modal>

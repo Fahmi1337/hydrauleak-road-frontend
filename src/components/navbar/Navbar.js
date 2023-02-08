@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { logout } from '../actions/auth';
-import Alert from './Alert';
+import { logout } from '../../actions/auth';
+import Alert from '../Alert';
 import PropTypes from 'prop-types';
 import "./Navbar.css"
 
@@ -21,25 +21,22 @@ const navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
 console.log("is authenticated?", isAuthenticated)
     return (
         <Fragment>
-
-
-<nav>
-      <ul>
-                <div className='navbar__top'>
-                    <div className='navbar__top__logo'>
-                        <Link className='navbar__top__logo__link' to='/'>Hydrauleak Road</Link>
-                    </div>
-                    
+            <nav class="left-nav">
+                <ul>
+                <div className='navbar__left'>
+                    <div className='navbar__left__logo'>
+                        <Link className='navbar__left__logo__link' to='/'>Hydrauleak Road</Link>
+                    </div>                   
                 </div>
-        <li><a href="/">Dashboard</a></li>
-        <li><a href="/contracts">Contracts</a></li>
-        <li><a href="/interventions">Interventions</a></li>
-        <li><a href="/reports">Reports</a></li>
-                <div className='navbar__top__auth'>
-                                { !loading && (<Fragment>{ localStorage.getItem("token") ? authLinks : guestLinks }</Fragment>) }
+                    <li><a href="/">Dashboard</a></li>
+                    <li><a href="/contracts">Contracts</a></li>
+                    <li><a href="/interventions">Interventions</a></li>
+                    <li><a href="/reports">Reports</a></li>
+                <div className='navbar__left__auth'>
+                    { !loading && (<Fragment>{ localStorage.getItem("token") ? authLinks : guestLinks }</Fragment>) }
                 </div>
-      </ul>
-    </nav>
+                </ul>
+            </nav>
             
             <Alert />
         </Fragment>

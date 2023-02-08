@@ -27,10 +27,36 @@ const Map = (props) => {
 
 
 
+// add Pipes
+
+
+const [runEffectZone, setRunEffectZone] = useState(false);
+
+
+
+const [runEffectPipe, setRunEffectPipe] = useState(false);
+const [coordinatesPipe, setCoordinatesPipe] = useState([]);
+
+
+
+  const handleClickPipe = (event) => {
+    if (event.lngLat) {
+    setCoordinatesPipe([...coordinatesPipe, [(event.lngLat.lng), (event.lngLat.lat)]]);
+    
+    window.localStorage.setItem("newCoordinates", JSON.stringify(coordinatesPipe));
+    
+    window.dispatchEvent(new Event("storage"));
+  }
+  };
+
+
+
+
+
  // add sensor by clicking on the maps and a add sensor details
 
 
-const [runEffect, setRunEffect] = useState(false);
+const [runEffectSensor, setRunEffectSensor] = useState(false);
   
 const [lng, setLng] = useState(5);
   const [lat, setLat] = useState(34);
@@ -53,7 +79,7 @@ const [lng, setLng] = useState(5);
   }
 
 
- 
+ // Storage Point coordinates
 
   const handleClick = (e) => {
     setLng(e.lngLat.lng);
@@ -116,30 +142,6 @@ const [lng, setLng] = useState(5);
 
 
 
-
-
-// add Pipes
-
-// const [lngPipe, setLngPipe] = useState(5);
-// const [latPipe, setLatPipe] = useState(34);
-
-
-
-const [runEffectZone, setRunEffectZone] = useState(false);
-
-
-
-const [runEffectPipe, setRunEffectPipe] = useState(false);
-const [coordinatesPipe, setCoordinatesPipe] = useState([]);
-
-
-
-  const handleClickPipe = (event) => {
-    if (event.lngLat) {
-    setCoordinatesPipe([...coordinatesPipe, [(event.lngLat.lng), (event.lngLat.lat)]]);
-   
-  }
-  };
 
 
 
@@ -270,6 +272,7 @@ const getPipes = e => {
 // Create polygon function (draw zone)
   const handlePolygonCreated = e => {
     e.preventDefault();
+
     console.log("zone coordinates 2", zoneCoordinates);
   
   //Post Zone Function
@@ -361,13 +364,6 @@ const getPipes = e => {
       });
 
 
-
-
-    
-
-
-
-
     //Add Zones to the map
       zones.forEach(zone => {
         map.addSource(zone.id.toString(), {
@@ -440,12 +436,8 @@ const getPipes = e => {
   map.on('dragend', function (e) {
     const coordinates = e.target.getBounds().getCenter().toArray();
     setZoneCoordinates(coordinates);
-    console.log("new coordinates", coordinates)
+    
   });
-
-
-
-
 
  
   const draw = new MapboxDraw({
@@ -471,111 +463,32 @@ function updateArea(e) {
     const data = draw.getAll();
     const answer = document.getElementById('calculated-area');
     if (data.features.length > 0) {
-
-   
-      
+     
         const area = turf.area(data);
         // Restrict the area to 2 decimal points.
         const rounded_area = Math.round(area * 100) / 100;
         answer.innerHTML = `<p><strong>${rounded_area}</strong></p><p>square meters</p>`;
 
         setZoneCoordinates(data.features[0].geometry.coordinates[0])
-
+       
     } else {
         answer.innerHTML = '';
         if (e.type !== 'draw.delete')
             alert('Click the map to draw a polygon.');
     }
-    // console.log("area", data);
-    // console.log("zone coordinates 1", zoneCoordinates);
+    console.log("area", data);
+    console.log("zone coordinates 1", zoneCoordinates);
+
+    //Add Zone coordinates to the storage
+    // window.localStorage.setItem("newZoneCoordinates", JSON.stringify(zoneCoordinates));
+    
+    // window.dispatchEvent(new Event("storage"));
 }
- 
-
-
-
-
-
 });
-// const addSensorHandler = () => {
-//   map.on("click", handleClick);
-
-//   return () => {
-//     map.off("click", handleClick);
-//   };
-// };
-
-// const addMarkerButton = () => {
-//   map.on("click", handleClick);
-// };
-
-// const removeMarkerButton = () => {
-//   map.off("click", handleClick);
-// };
-
-if (runEffect) {
-  map.on("click", handleClick);
-
-return () => {
-  map.off("click", handleClick);
-};
-
-}
 
 
 
-map.addControl(new mapboxgl.NavigationControl({
-  style: 'compact',
-  zoom: map.getZoom(),
-  bearing: map.getBearing(),
-  pitch: map.getPitch(),
-}),'bottom-right');
-
-
-
-map.addControl(new MapboxGeocoder({
-  accessToken: mapboxgl.accessToken,
-  mapboxgl: mapboxgl,
-  
-  placeholder: 'Search for location',
-      marker: false,
-      position: 'top-right',
-}),'top-left');
-
-// map.on('load', () => {
-//   map.on('click', handleClickPipe);
-
-//   map.addLayer({
-//     id: 'pipe',
-//     type: 'line',
-//     source: {
-//       type: 'geojson',
-//       data: {
-//         type: 'Feature',
-//         properties: {},
-//         geometry: {
-//           type: 'LineString',
-//           coordinatesPipe,
-//         },
-//       },
-//     },
-//     layout: {
-//       'line-join': 'round',
-//       'line-cap': 'round',
-//     },
-//     paint: {
-//       'line-color': '#888',
-//       'line-width': 8,
-//     },
-//   });
-// });
-
-
-
-
-
-
-
- //Add pipes to the map
+//Add pipes to the map
 
   // const coordinates = pipe.pipe_coordinates;
   // create a GeoJSON feature with the pipe coordinates
@@ -591,14 +504,14 @@ map.addControl(new MapboxGeocoder({
       properties: {},
     };
     // add the pipe feature to the map
-    map.addSource('pipe-123', {
+    map.addSource('pipe123', {
       type: 'geojson',
       data: pipeFeatures,
     });
     map.addLayer({
-      id: 'pipe-123',
+      id: 'pipe123',
       type: 'line',
-      source: 'pipe-123' ,
+      source: 'pipe123' ,
       layout: {
         'line-join': 'round',
         'line-cap': 'round',
@@ -610,6 +523,45 @@ map.addControl(new MapboxGeocoder({
     });   
   });   
   }
+
+
+
+//runEffectSensor
+if (runEffectSensor) {
+  map.on("click", handleClick);
+
+return () => {
+  map.off("click", handleClick);
+};
+
+}
+
+
+// Navigation Control
+map.addControl(new mapboxgl.NavigationControl({
+  style: 'compact',
+  zoom: map.getZoom(),
+  bearing: map.getBearing(),
+  pitch: map.getPitch(),
+}),'bottom-right');
+
+
+//Map search Geocoder
+map.addControl(new MapboxGeocoder({
+  accessToken: mapboxgl.accessToken,
+  mapboxgl: mapboxgl,
+  
+  placeholder: 'Search for location',
+      marker: false,
+      position: 'top-right',
+}),'top-left');
+
+
+
+
+
+
+ 
  
 
 
@@ -618,7 +570,7 @@ map.addControl(new MapboxGeocoder({
 
 
 }
-}, [ pipesData, zones, center, marker, lng, lat, searchCoordinates, coordinatesPipe, runEffectPipe, runEffectZone ]);
+}, [ pipesData, zones, center, marker, lng, lat, searchCoordinates, coordinatesPipe, runEffectPipe, runEffectZone,runEffectSensor]);
 
 return (
 <div>
@@ -632,17 +584,17 @@ return (
       
 
 
-<ButtonWithPopup data={props.data} handleClickSensor={handleClickSensor} setRunEffect={setRunEffect} getSensors={getSensors} setRunEffectPipe={setRunEffectPipe} setRunEffectZone={setRunEffectZone}/>
+<ButtonWithPopup handlePolygonCreated={handlePolygonCreated} data={props.data} handleClickSensor={handleClickSensor} setRunEffectSensor={setRunEffectSensor} getSensors={getSensors} setRunEffectPipe={setRunEffectPipe} setRunEffectZone={setRunEffectZone}/>
 {addSensor && <div>Something showed up!</div>}
 
 
-<div ref={mapContainer} style={{ width: '99vw', height: '80vh' }} />
+<div ref={mapContainer} style={{ width: '1400px', height: '686px',left: '121px',top: '-10px' }} />
 
 
   <div className="calculation-box">
-    <p>Click the map to draw a polygon.</p>
+    <p>Click the map to draw.</p>
 
-    <button onClick={handlePolygonCreated} >Add Zone</button>
+    {/* <button onClick={handlePolygonCreated} >Add Zone</button> */}
     
     {addSensor && (
     <RightAddSensorPopup/>

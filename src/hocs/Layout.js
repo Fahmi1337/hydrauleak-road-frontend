@@ -1,11 +1,10 @@
 import React from 'react';
-import Navbar from '../components/Navbar';
-import { Sidebar } from '../containers/sidebar';
+import Navbar from '../components/navbar/Navbar';
+// import { Sidebar } from '../components/navbar/sidebar';
 
 const layout = (props) => (
     <div>
         <Navbar />
-        {/* <Sidebar /> */}
         {props.children}
     </div>
 );

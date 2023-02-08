@@ -1,0 +1,56 @@
+.MarkPopup {
+
+    position: absolute;
+    top: 52%;
+    left: 22.9%;
+    transform: translate(-50%, -50%);
+    width: 30%;
+    height: 96%;
+    background-color: rgba(255, 255, 255, 0.75);
+    box-shadow: 24px;
+    overflow-y: scroll;
+    padding: 4px;
+    }
+form {
+    display: block;
+    margin-top: 3.5em;
+}
+
+.MuiBox-root{
+    background-color: none;
+  }
+  
+.MarkPopup input,
+.MarkPopup label {
+  width: 100%;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.MarkPopup input {
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.MarkPopup label {
+    font-weight: bold;
+    color: #555;
+  } 
+
+.MarkPopup button {
+  padding: 10px;
+  font-size: 14px;
+  background-color: #0087ff;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  width: 100%;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.MarkPopup button:hover {
+  background-color: #0064cc;
+}

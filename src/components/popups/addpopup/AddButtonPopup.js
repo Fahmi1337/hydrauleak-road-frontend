@@ -5,7 +5,11 @@ import "./AddButtonPopup.css"
 import PropTypes from 'prop-types';
 import RightAddSensorPopup from '../addsensorpopup/RightAddSensorPopup';
 
+import AddZonePopup from '../addzonepopup/AddZonePopup'
+import AddPipePopup from '../addpipepopup/AddPipePopup'
+import AddPipeAccessPopup from '../addpipeaccesspopup/AddPipeAccessPopup'
 import AddMarkPopup from '../addmarkpopup/AddMarkPopup'
+import AddMapPopup from '../addmappopup/AddMapPopup'
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -29,11 +33,11 @@ const style = {
 
 const style2 = {
   position: 'absolute',
-  top: '54%',
-  left: '17%',
+  top: '52%',
+  left: '31%',
   transform: 'translate(-50%, -50%)',
   width: '34%',
- height: '73%',
+ height: '96%',
   bgcolor: 'rgba(255, 255, 255, 0.75)',
   boxShadow: 24,
   overflowY: 'scroll',
@@ -53,6 +57,17 @@ const style2 = {
     const handleClose = () => setOpen(false);
 //POPUP1
 
+// Add Zone
+//POPUP Zone
+const [openZone, setOpenZone] = React.useState(false);
+const handleOpenZone = () => setOpenZone(true);
+const handleCloseZone = () => setOpenZone(false);
+
+// Add Pipe
+//POPUP Pipe
+const [openPipe, setOpenPipe] = React.useState(false);
+const handleOpenPipe = () => setOpenPipe(true);
+const handleClosePipe = () => setOpenPipe(false);
 
 
 // Add Sensor
@@ -60,14 +75,25 @@ const style2 = {
 const [open2, setOpen2] = React.useState(false);
 const handleOpen2 = () => setOpen2(true);
 const handleClose2 = () => setOpen2(false);
-//POPUP2
 
+// Add PipeAccess
+//POPUP PipeAccess
+const [openPipeAccess, setOpenPipeAccess] = React.useState(false);
+const handleOpenPipeAccess = () => setOpenPipeAccess(true);
+const handleClosePipeAccess = () => setOpenPipeAccess(false);
 
 // Add Mark
 //POPUP Mark
 const [openMark, setOpenMark] = React.useState(false);
 const handleOpenMark = () => setOpenMark(true);
 const handleCloseMark = () => setOpenMark(false);
+
+
+// Add Map
+//POPUP Map
+const [openMap, setOpenMap] = React.useState(false);
+const handleOpenMap = () => setOpenMap(true);
+const handleCloseMap = () => setOpenMap(false);
 
 
 const [addSensorPop, setAddSensorPop] = useState(false)
@@ -98,26 +124,37 @@ const [addSensorPop, setAddSensorPop] = useState(false)
       };
 
 
-    const {setRunEffect} = props;
+    const {setRunEffectSensor} = props;
     const {setRunEffectPipe} = props;
     const {setRunEffectZone} = props;
 
 
 
 
-//Add Mark
-const [showMarkModal, setShowMarkModal] = useState(false);
+// //Add Mark
+// const [showMarkModal, setShowMarkModal] = useState(false);
 
-const handleCloseMarkModal = () => setShowMarkModal(false);
-const handleShowMarkModal = () => setShowMarkModal(true);
+// const handleCloseMarkModal = () => setShowMarkModal(false);
+// const handleShowMarkModal = () => setShowMarkModal(true);
 
+const handlePolygonCreated= props.handlePolygonCreated
 
 
 
     return (
         <>
-      <AddMarkPopup  openMark={openMark}/>
-        <Button onClick={handleOpen}>Contributes</Button>
+      
+      <AddZonePopup handlePolygonCreated={handlePolygonCreated} handleCloseZone={handleCloseZone} openZone={openZone}/>
+
+      <AddPipePopup  handleClosePipe={handleClosePipe} openPipe={openPipe}/>
+      
+      <AddPipeAccessPopup  handleClosePipeAccess={handleClosePipeAccess} openPipeAccess={openPipeAccess}/>
+      
+      <AddMarkPopup  handleCloseMark={handleCloseMark} openMark={openMark}/>
+      
+      <AddMapPopup  handleCloseMap={handleCloseMap} openMap={openMap}/>
+        
+        <Button onClick={handleOpen}>Contributes +</Button>
       <Modal
         disableEnforceFocus
         hideBackdrop
@@ -132,18 +169,20 @@ const handleShowMarkModal = () => setShowMarkModal(true);
         
           <div>
             {/* MODAL 2 */}
-          <button  onClick={() => {setRunEffectPipe(true);  handleClose();}} >Add pipe</button>
-          <button onClick={() => { setRunEffect(true);  handleClose();}} >Add pipe Access </button>
-          <button onClick={() => { setRunEffect(true); handleOpen2(); handleClose();}} >Add Sensor</button>
-          
-          <button onClick={() => {handleOpenMark();  handleClose();}} >Add mark</button>
 
-          
+          <button onClick={() => {setRunEffectZone(true); handleOpenZone();  handleClose();}} >Add zone</button>
 
-          <button onClick={() => { setRunEffectZone(true); handleClose();}} >Add zone</button>
-          <button onClick={() => { setRunEffect(true);  handleClose();}}>Add Map</button>
+          <button  onClick={() => {setRunEffectPipe(true); handleOpenPipe();  handleClose();}} >Add pipe</button>
+
+          <button onClick={() => {setRunEffectSensor(true); handleOpenPipeAccess();  handleClose();}} >Add pipe Access </button>
+
+          <button onClick={() => { setRunEffectSensor(true); handleOpen2(); handleClose();}} >Add Sensor</button>
+          
+          <button onClick={() => {setRunEffectSensor(true); handleOpenMark();  handleClose();}} >Add mark</button>
+
+          <button onClick={() => {setRunEffectSensor(true); handleOpenMap();  handleClose();}}>Add Map</button>
           <button onClick={() => { handleClose(); }}>Close</button>
-           <button onClick={handleClickSensor}>Click Me</button>
+           
        
        
 
@@ -199,7 +238,7 @@ const handleShowMarkModal = () => setShowMarkModal(true);
 
 
 AddButtonPopup.propTypes = {
-  setRunEffect: PropTypes.func.isRequired,
+  setRunEffectSensor: PropTypes.func.isRequired,
 };
 
 export default AddButtonPopup

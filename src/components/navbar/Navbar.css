@@ -54,3 +54,23 @@ body {
     border-radius: 4px;
     display: inline-block;
   }
+
+  .left-nav {
+    width: 120px;
+    height: 100%;
+    position: fixed;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 0px;
+    padding-top: 50px;
+  }
+  .left-nav ul {
+    display: flex;
+   
+    flex-direction: column;
+    justify-content: space-between;
+    height: 50%;
+  }
