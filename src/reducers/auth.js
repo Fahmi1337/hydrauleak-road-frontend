@@ -18,6 +18,7 @@ export default function foo(state = initialState, action) {
     switch(type) {
         case LOGIN_SUCCESS:
             localStorage.setItem('token', payload.access);
+            window.location.reload();
             return {
                 ...state,
                 isAuthenticated: true,
@@ -25,6 +26,7 @@ export default function foo(state = initialState, action) {
                 token: payload.access
             }
         case SIGNUP_SUCCESS:
+            window.location.reload();
             return {
                 ...state,
                 isAuthenticated: false,
@@ -34,12 +36,14 @@ export default function foo(state = initialState, action) {
         case LOGIN_FAIL:
         case LOGOUT:
             localStorage.removeItem('token');
+            window.location.reload();
             return {
                 ...state,
                 token: null,
                 isAuthenticated: false,
                 loading: false
             }
+            
         default:
             return state
     }

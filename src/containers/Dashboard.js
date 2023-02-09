@@ -20,7 +20,7 @@ const Map = (props) => {
 
 
 
-  const [value, setValue] = React.useState('');
+  // const [value, setValue] = React.useState('');
 
 
 
@@ -69,16 +69,16 @@ const [lng, setLng] = useState(5);
   const [lat, setLat] = useState(34);
   const [marker, setMarker] = useState(null);
   const [addSensor, setAddSensor] = useState(false);
-  const [sensorData, setSensorData] = useState({
-    sensor_coordinates: [lng, lat],
-    sensor_creationdate: new Date().toISOString(),
-    sensor_type: "",
-    sensor_title: "",
-    sensor_description: "",
-    sensor_frequency: [],
-    sensor_Indication: "unknown",
-    map: 2,
-  });
+  // const [sensorData, setSensorData] = useState({
+  //   sensor_coordinates: [lng, lat],
+  //   sensor_creationdate: new Date().toISOString(),
+  //   sensor_type: "",
+  //   sensor_title: "",
+  //   sensor_description: "",
+  //   sensor_frequency: [],
+  //   sensor_Indication: "unknown",
+  //   map: 2,
+  // });
 
 
   const handleClickSensor = (data) => {
@@ -98,42 +98,42 @@ const [lng, setLng] = useState(5);
     window.dispatchEvent(new Event("storage"));
   };
 
-  const handleAddSensor = () => {
-    setSensorData({
-      ...sensorData,
-      sensor_coordinates: [lng, lat],
-    });
-  };
+  // const handleAddSensor = () => {
+  //   setSensorData({
+  //     ...sensorData,
+  //     sensor_coordinates: [lng, lat],
+  //   });
+  // };
 
-  const handleSensorDataChange = (e) => {
-    setSensorData({
-      ...sensorData,
-      [e.target.name]: e.target.value,
-      sensor_coordinates: [lng, lat]
-    });
-  };
+  // const handleSensorDataChange = (e) => {
+  //   setSensorData({
+  //     ...sensorData,
+  //     [e.target.name]: e.target.value,
+  //     sensor_coordinates: [lng, lat]
+  //   });
+  // };
 
-  const handleSubmitData = () => {
+  // const handleSubmitData = () => {
 
 
-    axios
-      .post(`${process.env.REACT_APP_API_URL}/api/sensors/`, sensorData,
+  //   axios
+  //     .post(`${process.env.REACT_APP_API_URL}/api/sensors/`, sensorData,
       
-      {
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' +   localStorage.getItem("token")
-  }}
+  //     {
+  //           headers: {
+  //             'Content-Type': 'application/json',
+  //             'Authorization': 'Bearer ' +   localStorage.getItem("token")
+  // }}
   
-  )    
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-    setAddSensor(false);
-  };
+  // )    
+  //     .then((res) => {
+  //       console.log(res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.error(err);
+  //     });
+  //   setAddSensor(false);
+  // };
 
 
 
@@ -159,11 +159,11 @@ const [lng, setLng] = useState(5);
 
 
 
-function handleChange(event) {
-  // console.log(event.target.value);
-  getSeatchSuggestions(event.target.value);
+// function handleChange(event) {
+//   // console.log(event.target.value);
+//   getSeatchSuggestions(event.target.value);
   
-}
+// }
 const [viewport, setViewport] = useState({
   latitude: 24.8607,
   longitude: 67.0011,
@@ -277,23 +277,23 @@ const getPipes = e => {
 
 
 // Create polygon function (draw zone)
-  const handlePolygonCreated = e => {
-    // e.preventDefault();
+//   const handlePolygonCreated = e => {
+//     // e.preventDefault();
 
-    console.log("zone coordinates 2", zoneCoordinates);
+//     console.log("zone coordinates 2", zoneCoordinates);
   
-  //Post Zone Function
-  axios.post(`${process.env.REACT_APP_API_URL}/api/zones/`, { zone_status: 'notStart', zone_color: 'orange', zone_area: 23.0, zone_coordinates: zoneCoordinates, map: 2}, 
-  {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' +   localStorage.getItem("token")
-}})
-        .then(res => console.log(res))
-        .catch(err => console.error(err));
-        getZones();
-        getZones();
-};
+//   //Post Zone Function
+//   axios.post(`${process.env.REACT_APP_API_URL}/api/zones/`, { zone_status: 'notStart', zone_color: 'orange', zone_area: 23.0, zone_coordinates: zoneCoordinates, map: 2}, 
+//   {
+//           headers: {
+//             'Content-Type': 'application/json',
+//             'Authorization': 'Bearer ' +   localStorage.getItem("token")
+// }})
+//         .then(res => console.log(res))
+//         .catch(err => console.error(err));
+//         getZones();
+//         getZones();
+// };
 
 
  
@@ -587,7 +587,7 @@ return (
       
 
 
-<ButtonWithPopup handlePolygonCreated={handlePolygonCreated} data={props.data} handleClickSensor={handleClickSensor} setRunEffectSensor={setRunEffectSensor} getSensors={getSensors} setRunEffectPipe={setRunEffectPipe} setRunEffectZone={setRunEffectZone}/>
+<ButtonWithPopup  data={props.data} handleClickSensor={handleClickSensor} setRunEffectSensor={setRunEffectSensor} getSensors={getSensors} setRunEffectPipe={setRunEffectPipe} setRunEffectZone={setRunEffectZone}/>
 {addSensor && <div>Something showed up!</div>}
 
 
