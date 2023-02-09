@@ -2,11 +2,24 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
+import  { useState, useEffect } from 'react';
+import axios from 'axios';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './index.css';
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+
+
+
+
+
+
+
+
+
 root.render(
+  
+
   <React.StrictMode>
     <App />
   </React.StrictMode>

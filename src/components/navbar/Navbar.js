@@ -5,7 +5,7 @@ import { logout } from '../../actions/auth';
 import Alert from '../Alert';
 import PropTypes from 'prop-types';
 import "./Navbar.css"
-
+import { Navigate } from "react-router-dom";
 
 const navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
     const authLinks = (
@@ -18,7 +18,12 @@ const navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
             <Link className='navbar__top__auth__link' to='/signup'>Sign Up</Link>
         </Fragment>
     );
-console.log("is authenticated?", isAuthenticated)
+console.log("is authenticated?", isAuthenticated);
+if (!isAuthenticated) {
+
+    console.log("is it:", isAuthenticated)
+    return <Navigate to="/login" />;
+  }
     return (
         <Fragment>
             <nav class="left-nav">

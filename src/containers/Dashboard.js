@@ -50,6 +50,13 @@ const [coordinatesPipe, setCoordinatesPipe] = useState([]);
   };
 
 
+  useEffect(() => {
+     //Add Zone coordinates to the storage
+ window.localStorage.setItem("newZoneCoordinates", JSON.stringify(zoneCoordinates));
+    
+ window.dispatchEvent(new Event("zoneStorage"));
+  }, [zoneCoordinates]);
+
 
 
 
@@ -271,12 +278,11 @@ const getPipes = e => {
 
 // Create polygon function (draw zone)
   const handlePolygonCreated = e => {
-    e.preventDefault();
+    // e.preventDefault();
 
     console.log("zone coordinates 2", zoneCoordinates);
   
   //Post Zone Function
-  const newzone = { zone_date: '2021-01-01T00:00:00Z', zone_status: 'notStart', zone_color: 'Orange', zone_area: 23.0, zone_coordinates: zoneCoordinates, map: 2 };
   axios.post(`${process.env.REACT_APP_API_URL}/api/zones/`, { zone_status: 'notStart', zone_color: 'orange', zone_area: 23.0, zone_coordinates: zoneCoordinates, map: 2}, 
   {
           headers: {
@@ -300,7 +306,7 @@ const getPipes = e => {
       const map = new mapboxgl.Map({
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/streets-v11',
-        center: searchCoordinates.features[0].center || center[0].map_coordinate,
+        center: searchCoordinates.features[0].center || center[0].map_coordinate || searchCoordinates,
         zoom: 12
       });
 
@@ -406,7 +412,7 @@ const getPipes = e => {
       .setLngLat(e.lngLat)
       .setHTML(`
       <h3>ID : ${zone.id}</h3>
-      <p>Map : ${zone.zone_color}</p>
+      <p>Map : ${zone.map}</p>
 `)
       .addTo(map);
     
@@ -479,10 +485,7 @@ function updateArea(e) {
     console.log("area", data);
     console.log("zone coordinates 1", zoneCoordinates);
 
-    //Add Zone coordinates to the storage
-    // window.localStorage.setItem("newZoneCoordinates", JSON.stringify(zoneCoordinates));
-    
-    // window.dispatchEvent(new Event("storage"));
+   
 }
 });
 

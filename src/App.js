@@ -26,12 +26,21 @@ import Layout from './hocs/Layout';
 
 
 
-// import './sass/main.scss';
+
+
 import "./index.css";
+// get sensors function
+
+
+
+
 
 const App = () => (
     
+
+    
     <Provider store={store}>
+    
         <Router>
             <Layout>
                 <Routes>

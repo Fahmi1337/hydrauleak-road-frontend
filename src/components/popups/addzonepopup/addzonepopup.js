@@ -15,30 +15,30 @@ const [addZone, setAddZone] = useState(false);
 
 
 
-// const initialState = '';
-//   const [coordinatesZone, setCoordinatesZone] = useState(initialState);
+const initialState = '';
+  const [coordinatesZone, setCoordinatesZone] = useState(initialState);
   
 
-//   function getLatLng() {
+  function getLatLng() {
 
-//     const zoneCoordinates= localStorage.getItem("newZoneCoordinates");
+    const zoneCoordinates= localStorage.getItem("newZoneCoordinates");
     
-//     setCoordinatesZone(JSON.parse(zoneCoordinates));
+    setCoordinatesZone(JSON.parse(zoneCoordinates));
 
     
       
-//     setAddZone({zone_coordinates : JSON.parse(zoneCoordinates)});
-//   }
+    setZoneData({zone_coordinates : JSON.parse(zoneCoordinates)});
+  }
  
-//   useEffect(() => {
+  useEffect(() => {
     
-//         getLatLng();
+        getLatLng();
         
-//         }, []);
-//         window.addEventListener("storage", () => {
-//             getLatLng();
-//   });
-//   console.log("Zone coordinates", coordinatesZone)
+        }, []);
+        window.addEventListener("zoneStorage", () => {
+            getLatLng();
+  });
+  console.log("Zone coordinates", coordinatesZone)
 
 
 
@@ -61,6 +61,7 @@ const [addZone, setAddZone] = useState(false);
       [e.target.name]: e.target.value,
       
     });
+
   };
 
   const handleSubmitData = () => {
@@ -82,13 +83,20 @@ const [addZone, setAddZone] = useState(false);
       .catch((err) => {
         console.error(err);
       });
-    setAddZone(false);
-    props.handleClose2();
-    props.getZones();
+ 
+ 
+  
   };
 
 
-
+  const handleZoneSubmitButton = (e) => {
+    e.preventDefault();
+    // props.handlePolygonCreated(); 
+    handleSubmitData(); 
+    deleteZone();
+    props.handleCloseZone();
+   
+  }
 
 
     // //Modal
@@ -134,13 +142,13 @@ const [addZone, setAddZone] = useState(false);
             value={zoneData.zone_description}
             onChange={e => handleZoneDataChange(e)}
           />
-          {/* <label>Zone coordinates:</label>
+          <label>Zone coordinates:</label>
           <input
             type="text"
             name="reading_coordinates"
             value={zoneData.zone_coordinates}
             onChange={e => handleZoneDataChange(e)}
-          /> */}
+          />
           <label>Zone creation date:</label>
           <input
             type="datetime-local"
@@ -180,9 +188,9 @@ const [addZone, setAddZone] = useState(false);
           />
         </form>
 
-       
-        {/* <button onClick={() => {props.handlePolygonCreated(); handleSubmitData(); deleteZone();}}>Submit</button> */}
-        <button onClick={props.handlePolygonCreated}>Submit</button> 
+         {/* <button onClick={() => {props.handlePolygonCreated(); handleSubmitData(); deleteZone();}}>Submit</button>*/}
+        {/* <button onClick={() => {props.handlePolygonCreated(); }}>Submit</button>  */}
+        <button onClick={handleZoneSubmitButton}>Submit</button> 
         <button onClick={() => {props.handleCloseZone(); deleteZone();}}>Cancel</button>
       </div>
         </Box>
