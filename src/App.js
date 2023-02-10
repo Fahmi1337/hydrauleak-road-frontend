@@ -1,90 +1,12 @@
-// //needs
-// import { Provider } from 'react-redux';
-// import store from './store';
-// import {React, useEffect} from 'react';
-// import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-// //container
-// import Test from './containers/Test'
-// import Dashboard from './containers/Dashboard';
-// import Login from './containers/Login';
-// import Signup from './containers/Signup';
-// import Contracts from './containers/Contracts'
-// // import ContractDetail from './containers/ContractDetail';
-// import Report from './containers/Report'
-// import Interventions from './containers/Interventions'
-// // import Activate from './containers/Activate';
-// // import ResetPassword from './containers/ResetPassword';
-// // import ResetPasswordConfirm from './containers/ResetPasswordConfirm';
-// // import Facebook from './containers/Facebook';
-// // import Google from './containers/Google';
-
-// //components
-// import NotFound from './components/NotFound';
-
-// import Layout from './hocs/Layout';
-// import { Navigate } from "react-router-dom";
-
-// import { useHistory } from 'react-router-dom';
-
-
-
-// import "./index.css";
-// // get sensors function
-
-
-
-
-// const App = () => (
-
-  
-
-
-    
-//     <Provider store={store}>
-  
-//         <Router>
-//             <Layout>
-//                 <Routes>
-
-//                     <Route exact path='/test' element={<Test/>} />
-
-//                     <Route exact path='/' element={<Dashboard/>} />
-//                     <Route exact path='/login' element={<Login/>} />
-                   
-                   
-  
-//                     <Route exact path='/signup' element={<Signup/>} />
-//                     <Route exact path='/contracts' element={<Contracts/>} />
-//                     {/* <Route exact path='/contract-detail' element={<ContractDetail/>} /> */}
-//                     <Route exact path='/report' element={<Report/>} />
-//                     <Route exact path='/interventions' element={<Interventions/>} />
-                    
-                    
-//                     {/* <Route exact path='/facebook' element={<Facebook/>} />
-//                     <Route exact path='/google' element={<Google/>} /> 
-//                     <Route exact path='/reset-password' element={<ResetPassword/>} />
-//                     <Route exact path='/password/reset/confirm/:uid/:token' element={<ResetPasswordConfirm/>} />
-//                     <Route exact path='/activate/:uid/:token' element={<Activate/>} />*/}
-//                     <Route path="*" element={<NotFound/>} />
-//                 </Routes>
-                
-//             </Layout>
-        
-//         </Router>
-//     </Provider>
-// );
-
-// export default App;
-
 //needs
 import { Provider } from 'react-redux';
 import store from './store';
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import React, {useState, useEffect} from 'react'
+import { BrowserRouter as Router, Route, Routes,Navigate } from 'react-router-dom';
 //container
 import Test from './containers/Test'
 import Dashboard from './containers/Dashboard';
-import Login from './containers/Login';
+import Login from './containers/login/Login';
 import Signup from './containers/Signup';
 import Contracts from './containers/Contracts'
 // import ContractDetail from './containers/ContractDetail';
@@ -101,6 +23,7 @@ import NotFound from './components/NotFound';
 
 import Layout from './hocs/Layout';
 
+// import PrivateRoute from './components/PrivateRoute'
 
 
 
@@ -108,29 +31,43 @@ import Layout from './hocs/Layout';
 // import './sass/main.scss';
 import "./index.css";
 
+const NoLayout = ({children}) => {
+    return (
+      <>
+        {children}
+      </>
+    );
+  }; 
 
 const App = () => {
+    const [isToken, setIsToken]= useState(false)
+    console.log("this is the auth",isToken )
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            setIsToken(true)
+        }
 
-   
+      }, [isToken]);
 
 
         return(
-
     <Provider store={store}>
-       
         <Router>
             <Layout>
                 <Routes>
 
+                    <Route path="/contracts" element={ false ? <Navigate to="/login" /> : <Contracts/> }/>;
+                    <Route path="/" element={ false ? <Navigate to="/login" /> : <Dashboard/> }/>;
                     <Route exact path='/test' element={<Test/>} />
 
-                    <Route exact path='/' element={<Dashboard/>} />
-                    <Route exact path='/login' element={<Login/>} />
-                    <Route exact path='/signup' element={<Signup/>} />
-                    <Route exact path='/contracts' element={<Contracts/>} />
-                    {/* <Route exact path='/contract-detail' element={<ContractDetail/>} /> */}
-                    <Route exact path='/report' element={<Report/>} />
-                    <Route exact path='/interventions' element={<Interventions/>} />           
+                    <Route path="/interventions" element={ false ? <Navigate to="/login" /> : <Interventions/> }/>;
+                    <Route path="/report" element={ false ? <Navigate to="/login" /> : <Report/> }/>;
+                    
+                    <Route exact path='/login' element={<NoLayout><Login /></NoLayout>} />
+                    <Route exact path='/signup' element={<NoLayout><Signup /></NoLayout>} />
+                    
+
                     {/* <Route exact path='/facebook' element={<Facebook/>} />
                     <Route exact path='/google' element={<Google/>} /> 
                     <Route exact path='/reset-password' element={<ResetPassword/>} />
@@ -141,9 +78,6 @@ const App = () => {
             </Layout>
         </Router>
     </Provider>
-
-
-
     )}
 ;
 

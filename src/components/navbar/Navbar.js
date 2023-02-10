@@ -5,7 +5,7 @@ import { logout } from '../../actions/auth';
 import Alert from '../Alert';
 import PropTypes from 'prop-types';
 import "./Navbar.css"
-import Login from "../../containers/Login"
+import Login from "../../containers/login/Login"
 
 const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
 

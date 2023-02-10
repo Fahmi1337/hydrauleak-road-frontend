@@ -3,7 +3,7 @@ import { Link, Navigate  } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { login } from '../actions/auth';
+import { login } from '../../actions/auth';
 
 const Login = ({ login, isAuthenticated }) => {
     const [formData, setFormData] = useState({
@@ -33,8 +33,8 @@ const Login = ({ login, isAuthenticated }) => {
                     content='login page'
                 />
             </Helmet>
-            <h1 className='auth__title'>Sign In</h1>
-            <p className='auth__lead'>Sign into your Account</p>
+            <h1>Get started with <h1>Hydrauleak</h1> </h1>
+            <h3 className='auth__title'>Create your account ! <h3 auth__lead> Sign In </h3></h3>
             <form className='auth__form' onSubmit={e => onSubmit(e)}>
                 <div className='auth__form__group'>
                     <input 
