@@ -13,11 +13,9 @@ const AddPipePopup = (props) => {
 
 const [addPipe, setAddPipe] = useState(false);
 
-
+//get Pipe Coordinates
 const initialState = '';
   const [coordinatesPipe, setCoordinatesPipe] = useState(initialState);
-  
-
 
   function getLatLng() {
 
@@ -35,6 +33,31 @@ const initialState = '';
         window.addEventListener("storage", () => {
             getLatLng();
   });
+//get Pipe Coordinates
+
+//get Pipe Length
+const [LengthPipe, setPipeLength] = useState(initialState);
+
+function getPipeLength() {
+
+  const pipeLength = localStorage.getItem("pipeLength");
+  
+  setPipeLength(pipeLength);
+    
+  setPipeData({pipe_length : pipeLength*1000});
+}
+
+useEffect(() => {
+  
+  getPipeLength();
+      }, [LengthPipe]);
+      window.addEventListener("pipeLengthStorage", () => {
+        getPipeLength();
+});
+
+//get Pipe Length
+
+
 
  const deletePipe = () => {
     window.location.reload();
@@ -45,12 +68,10 @@ const initialState = '';
 
 
 
-
-  const [pipeData, setPipeData] = useState({
-  });
+  const [pipeData, setPipeData] = useState({});
 
 
-
+  console.log("distance?", pipeData.pipe_length);
   const handlePipeDataChange = (e) => {
     setPipeData({
       ...pipeData,
@@ -58,7 +79,7 @@ const initialState = '';
       
     });
   };
-
+console.log("pipedata?", pipeData)
   const handleSubmitData = () => {
 
 
@@ -161,7 +182,7 @@ const initialState = '';
           <input
             type="number"
             name="pipe_length"
-            value={parseFloat(pipeData.pipe_length)}
+            value={pipeData.pipe_length}
             onChange={e => handlePipeDataChange(e)}
           />
           <label>Pipe Diameter:</label>

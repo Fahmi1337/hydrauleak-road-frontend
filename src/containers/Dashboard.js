@@ -69,16 +69,7 @@ const [lng, setLng] = useState(5);
   const [lat, setLat] = useState(34);
   const [marker, setMarker] = useState(null);
   const [addSensor, setAddSensor] = useState(false);
-  // const [sensorData, setSensorData] = useState({
-  //   sensor_coordinates: [lng, lat],
-  //   sensor_creationdate: new Date().toISOString(),
-  //   sensor_type: "",
-  //   sensor_title: "",
-  //   sensor_description: "",
-  //   sensor_frequency: [],
-  //   sensor_Indication: "unknown",
-  //   map: 2,
-  // });
+
 
 
   const handleClickSensor = (data) => {
@@ -98,72 +89,7 @@ const [lng, setLng] = useState(5);
     window.dispatchEvent(new Event("storage"));
   };
 
-  // const handleAddSensor = () => {
-  //   setSensorData({
-  //     ...sensorData,
-  //     sensor_coordinates: [lng, lat],
-  //   });
-  // };
-
-  // const handleSensorDataChange = (e) => {
-  //   setSensorData({
-  //     ...sensorData,
-  //     [e.target.name]: e.target.value,
-  //     sensor_coordinates: [lng, lat]
-  //   });
-  // };
-
-  // const handleSubmitData = () => {
-
-
-  //   axios
-  //     .post(`${process.env.REACT_APP_API_URL}/api/sensors/`, sensorData,
-      
-  //     {
-  //           headers: {
-  //             'Content-Type': 'application/json',
-  //             'Authorization': 'Bearer ' +   localStorage.getItem("token")
-  // }}
-  
-  // )    
-  //     .then((res) => {
-  //       console.log(res.data);
-  //     })
-  //     .catch((err) => {
-  //       console.error(err);
-  //     });
-  //   setAddSensor(false);
-  // };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// function handleChange(event) {
-//   // console.log(event.target.value);
-//   getSeatchSuggestions(event.target.value);
-  
-// }
+ 
 const [viewport, setViewport] = useState({
   latitude: 24.8607,
   longitude: 67.0011,
@@ -274,26 +200,6 @@ const getPipes = e => {
   useEffect(() => {
     getSensors();
   }, []);
-
-
-// Create polygon function (draw zone)
-//   const handlePolygonCreated = e => {
-//     // e.preventDefault();
-
-//     console.log("zone coordinates 2", zoneCoordinates);
-  
-//   //Post Zone Function
-//   axios.post(`${process.env.REACT_APP_API_URL}/api/zones/`, { zone_status: 'notStart', zone_color: 'orange', zone_area: 23.0, zone_coordinates: zoneCoordinates, map: 2}, 
-//   {
-//           headers: {
-//             'Content-Type': 'application/json',
-//             'Authorization': 'Bearer ' +   localStorage.getItem("token")
-// }})
-//         .then(res => console.log(res))
-//         .catch(err => console.error(err));
-//         getZones();
-//         getZones();
-// };
 
 
  
@@ -491,40 +397,131 @@ function updateArea(e) {
 
 
 
-//Add pipes to the map
 
-  // const coordinates = pipe.pipe_coordinates;
-  // create a GeoJSON feature with the pipe coordinates
   if (runEffectPipe){
-    map.on('load', () => {
-      map.on('click', handleClickPipe);
-    const pipeFeatures = {
-      type: 'Feature',
-      geometry: {
-        type: 'LineString',
-        coordinates: coordinatesPipe,
-      },
-      properties: {},
+  
+
+ 
+
+  const geojson = {
+    'type': 'FeatureCollection',
+    'features': []
     };
-    // add the pipe feature to the map
-    map.addSource('pipe123', {
-      type: 'geojson',
-      data: pipeFeatures,
-    });
-    map.addLayer({
-      id: 'pipe123',
+     
+    // Used to draw a line between points
+    const linestring = {
+    'type': 'Feature',
+    'geometry': {
+    'type': 'LineString',
+    'coordinates': []
+    }
+    };
+    map.on('load', () => {
+    map.addSource('geojson', {
+      'type': 'geojson',
+      'data': geojson
+      });
+       
+      // Add styles to the map
+      map.addLayer({
+      id: 'measure-points',
+      type: 'circle',
+      source: 'geojson',
+      paint: {
+      'circle-radius': 5,
+      'circle-color': 'blue'
+      },
+      filter: ['in', '$type', 'Point']
+      });
+      map.addLayer({
+      id: 'measure-lines',
       type: 'line',
-      source: 'pipe123' ,
+      source: 'geojson',
       layout: {
-        'line-join': 'round',
-        'line-cap': 'round',
+      'line-cap': 'round',
+      'line-join': 'round'
       },
       paint: {
-        'line-color': 'red',
-        'line-width': 3,
+      'line-color': 'blue',
+      'line-width': 2.5
       },
-    });   
-  });   
+      filter: ['in', '$type', 'LineString']
+      });
+      window.localStorage.removeItem("newCoordinates");
+      map.on('click', (e) => {
+          
+      const features = map.queryRenderedFeatures(e.point, {
+      layers: ['measure-points']
+      });
+       
+      // Remove the linestring from the group
+      // so we can redraw it based on the points collection.
+      if (geojson.features.length > 1) geojson.features.pop();
+       
+      // Clear the distance container to populate it with a new value.
+   
+       
+      // If a feature was clicked, remove it from the map.
+      if (features.length) {
+      const id = features[0].properties.id;
+      geojson.features = geojson.features.filter(
+      (point) => point.properties.id !== id
+      );
+      } else {
+      const point = {
+      'type': 'Feature',
+      'geometry': {
+      'type': 'Point',
+      'coordinates': [e.lngLat.lng, e.lngLat.lat]
+      },
+      'properties': {
+      'id': String(new Date().getTime())
+      }
+      };
+       
+      geojson.features.push(point);
+      }
+       
+      if (geojson.features.length > -1) {
+      linestring.geometry.coordinates = geojson.features.map(
+      (point) => point.geometry.coordinates
+      );
+       
+      geojson.features.push(linestring);
+       
+      // Populate the distanceContainer with total distance
+      const value = document.createElement('pre');
+      const distance = turf.length(linestring);
+      value.textContent = `Total distance: ${distance.toLocaleString()}km`;
+      console.log("values :", value )
+      // distanceContainer.appendChild(value);
+      window.localStorage.setItem("pipeLength", distance.toLocaleString());
+      
+      window.dispatchEvent(new Event("pipeLengthStorage"));
+      }
+       
+      map.getSource('geojson').setData(geojson);
+
+
+      coordinatesPipe.push([e.lngLat.lng, e.lngLat.lat]);
+      
+    
+      window.localStorage.setItem("newCoordinates", JSON.stringify(linestring.geometry.coordinates));
+      
+      window.dispatchEvent(new Event("storage"));
+      });
+    });
+      map.on('mousemove', (e) => {
+        const features = map.queryRenderedFeatures(e.point, {
+        layers: ['measure-points']
+        });
+        // Change the cursor to a pointer when hovering over a point on the map.
+        // Otherwise cursor is a crosshair.
+        map.getCanvas().style.cursor = features.length
+        ? 'pointer'
+        : 'crosshair';
+        });
+
   }
 
 

@@ -40,16 +40,19 @@ const NoLayout = ({children}) => {
   }; 
 
 const App = () => {
-    const [isToken, setIsToken]= useState(false)
-    console.log("this is the auth",isToken )
+    const [isToken, setIsToken]= useState(true)
+    
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
             setIsToken(true)
         }
+        else{
+            setIsToken(false)
+        }
 
       }, [isToken]);
-
+      console.log("this is the auth",isToken )
 
         return(
     <Provider store={store}>
@@ -57,12 +60,12 @@ const App = () => {
             <Layout>
                 <Routes>
 
-                    <Route path="/contracts" element={ false ? <Navigate to="/login" /> : <Contracts/> }/>;
-                    <Route path="/" element={ false ? <Navigate to="/login" /> : <Dashboard/> }/>;
+                    <Route path="/contracts" element={ !isToken ? <Navigate to="/login" /> : <Contracts/> }/>;
+                    <Route path="/" element={ !isToken ? <Navigate to="/login" /> : <Dashboard/> }/>;
                     <Route exact path='/test' element={<Test/>} />
 
-                    <Route path="/interventions" element={ false ? <Navigate to="/login" /> : <Interventions/> }/>;
-                    <Route path="/report" element={ false ? <Navigate to="/login" /> : <Report/> }/>;
+                    <Route path="/interventions" element={ !isToken ? <Navigate to="/login" /> : <Interventions/> }/>;
+                    <Route path="/report" element={ !isToken ? <Navigate to="/login" /> : <Report/> }/>;
                     
                     <Route exact path='/login' element={<NoLayout><Login /></NoLayout>} />
                     <Route exact path='/signup' element={<NoLayout><Signup /></NoLayout>} />
