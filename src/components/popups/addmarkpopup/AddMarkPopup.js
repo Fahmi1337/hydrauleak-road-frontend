@@ -27,6 +27,8 @@ const [addMark, setAddMark] = useState(false);
       setLat(lat);
       setLng(lng);
     setMarkData({mark_coordinates : [lng, lat]});
+
+    // setMarkData({zone_coordinates : localStorage.getItem('selectedPipeId')});
   }
  
 
@@ -49,7 +51,7 @@ const [addMark, setAddMark] = useState(false);
   const [markData, setMarkData] = useState({
   });
 
-
+  
 
   const handleMarkDataChange = (e) => {
     setMarkData({
@@ -153,7 +155,7 @@ const [addMark, setAddMark] = useState(false);
           <input
             type="text"
             name="pipe"
-            value={localStorage.getItem('selectedPipeId') ||  markData.pipe}
+            value={markData.pipe}
             onChange={e => handleMarkDataChange(e)}
           />
         </form>

@@ -203,7 +203,7 @@
           margin-right: 50px;
         }
 
-        .mapboxgl-marker {
+        /* .mapboxgl-marker {
           background-image: url('https://www.pngall.com/wp-content/uploads/2017/05/Map-Marker-Free-Download-PNG.png');
           background-size: cover;
           width: 50px;
@@ -213,7 +213,7 @@
         }
         .mapboxgl-marker svg{
           display: none;
-        }
+        } */
 
 
 

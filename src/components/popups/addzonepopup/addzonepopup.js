@@ -109,7 +109,7 @@ const initialState = '';
     const OpenZone = props.openZone;
     
 
-
+console.log("zone coordinates", zoneData.zone_coordinates)
 
   return (
     <>
