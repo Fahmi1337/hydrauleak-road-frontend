@@ -39,6 +39,8 @@ const EditUserPopupForm =({ user, onUpdateUser, onCancel, onOpen }) => {
       roles,
     };
     onUpdateUser(updatedUser);
+    onCancel(); // close the modal on successful form submission
+        window.location.reload();
   };
 
 

@@ -30,7 +30,8 @@ const AddUserPopupForm = ({ onCancel, onOpen }) => {
     })
       .then((res) => {
         console.log(res.data);
-        // onCancel(); // close the modal on successful form submission
+        onCancel(); // close the modal on successful form submission
+        window.location.reload();
       })
       .catch((err) => {
         console.error(err);
