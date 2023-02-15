@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Routes,Navigate } from 'react-router-do
 //container
 import Test from './containers/Test'
 import Dashboard from './containers/Dashboard';
+import UserManagement from './containers/userManagement/UserManagement';
 import Login from './containers/login/Login';
 import Signup from './containers/Signup';
 import Contracts from './containers/Contracts'
@@ -59,9 +60,10 @@ const App = () => {
         <Router>
             <Layout>
                 <Routes>
-
-                    <Route path="/contracts" element={ !isToken ? <Navigate to="/login" /> : <Contracts/> }/>;
+                    
                     <Route path="/" element={ !isToken ? <Navigate to="/login" /> : <Dashboard/> }/>;
+                    <Route path="/contracts" element={ !isToken ? <Navigate to="/login" /> : <Contracts/> }/>;
+                    <Route path="/user-management" element={ !isToken ? <Navigate to="/login" /> : <UserManagement/> }/>;
                     <Route exact path='/test' element={<Test/>} />
 
                     <Route path="/interventions" element={ !isToken ? <Navigate to="/login" /> : <Interventions/> }/>;

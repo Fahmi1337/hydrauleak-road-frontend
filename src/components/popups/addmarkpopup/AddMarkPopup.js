@@ -17,7 +17,7 @@ const [addMark, setAddMark] = useState(false);
   const initialState = '';
   const [lat, setLat] = useState(initialState);
   const [lng, setLng] = useState(initialState);
-
+  
 
   function getLatLng() {
     const lat = localStorage.getItem("newSensorLat");
@@ -60,8 +60,6 @@ const [addMark, setAddMark] = useState(false);
   };
 
   const handleSubmitData = () => {
-
-
     axios
       .post(`${process.env.REACT_APP_API_URL}/api/marks/`, markData,
       

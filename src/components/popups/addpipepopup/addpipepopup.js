@@ -65,13 +65,10 @@ useEffect(() => {
   };
 
 
-
-
-
   const [pipeData, setPipeData] = useState({});
 
 
-  console.log("distance?", pipeData.pipe_length);
+  
   const handlePipeDataChange = (e) => {
     setPipeData({
       ...pipeData,
@@ -79,10 +76,10 @@ useEffect(() => {
       
     });
   };
-console.log("pipedata?", pipeData)
+
   const handleSubmitData = () => {
 
-
+    console.log("pipedata?", pipeData)
     axios
       .post(`${process.env.REACT_APP_API_URL}/api/pipes/`, pipeData,
       
@@ -99,6 +96,7 @@ console.log("pipedata?", pipeData)
       .catch((err) => {
         console.error(err);
       });
+      
     setAddPipe(false);
     props.handleClose2();
     props.getPipes();
@@ -210,7 +208,7 @@ console.log("pipedata?", pipeData)
         </form>
 
        
-        <button onClick={handleSubmitData}>Submit</button>
+        <button onClick={() => {props.handleClosePipe(); handleSubmitData(); deletePipe();}}>Submit</button>
         <button onClick={() => {props.handleClosePipe(); deletePipe();}}>Cancel</button>
       </div>
         </Box>

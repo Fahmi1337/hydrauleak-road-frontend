@@ -44,6 +44,7 @@ const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
                 <li><a href="/contracts">Contracts</a></li>
                 <li><a href="/interventions">Interventions</a></li>
                 <li><a href="/reports">Reports</a></li>
+                <li><a href="/user-management">users</a></li>
                 
             <div className='navbar__left__auth'>
                 { !loading && (<Fragment>{ localStorage.getItem("token") ? authLinks : guestLinks }</Fragment>) }
