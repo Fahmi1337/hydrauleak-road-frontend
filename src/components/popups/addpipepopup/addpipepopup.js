@@ -28,7 +28,7 @@ const [pipeData, setPipeData] = useState({
   // map:""
 
 });
-const { pipe_creation_date, pipe_description, pipe_diameter, pipe_length, pipe_type, pipe_title, pipe_material, pipe_status } = pipeData;
+const { pipe_creation_date, pipe_description, pipe_diameter, pipe_length, pipe_type, pipe_title, pipe_material, pipe_status, map } = pipeData;
 const handlePipeDataChange = (e) => {
   setPipeData({
     ...pipeData,
@@ -103,7 +103,7 @@ useEffect(() => {
 const data = {}
    
     axios
-      .post(`${process.env.REACT_APP_API_URL}/api/pipes/`, {pipe_creation_date, pipe_description, pipe_diameter, pipe_length, pipe_type, pipe_title, pipe_material, pipe_status, pipe_coordinates},
+      .post(`${process.env.REACT_APP_API_URL}/api/pipes/`, {pipe_creation_date, pipe_description, pipe_diameter, pipe_length, pipe_type, pipe_title, pipe_material, pipe_status, pipe_coordinates, map},
       
       {
             headers: {
