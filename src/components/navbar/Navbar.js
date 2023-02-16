@@ -33,7 +33,7 @@ const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
     );
     const loggedIn = (
         <Fragment>
-        <nav class="left-nav">
+        <nav className="left-nav">
             <ul>
             <div className='navbar__left'>
                 <div className='navbar__left__logo'>

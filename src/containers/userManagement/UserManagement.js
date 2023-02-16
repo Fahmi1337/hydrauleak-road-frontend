@@ -46,9 +46,7 @@ const handleEditUser = (user) => {
   setSelectedUser(user);
 };
 
-const [reloadTable, setReloadTable] = useState(0);
-
-
+// handle Delete user
 const handleDeleteUser =async (userId) => {
 
   
@@ -73,6 +71,10 @@ const handleDeleteUser =async (userId) => {
 };
 
   
+
+
+// display data table
+
     const displayData = data
     .filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()))
     .filter(item => selectedRole === '' || item.roles === selectedRole)
@@ -110,6 +112,9 @@ const handleDeleteUser =async (userId) => {
   };
 
 
+
+
+// Update User
 const handleUpdateUser = async (user) => {
   const response = await axios.put(`${process.env.REACT_APP_API_URL}/api/user/${user.id}/`, user,
     
@@ -137,6 +142,8 @@ const handleUpdateUser = async (user) => {
   setSelectedUser(null);
 };
 
+
+// handle buttons
 const handleCancelEditUser = () => {
   setSelectedUser(null);
 };
@@ -152,6 +159,8 @@ const handleCloseAddUser = () => {
   setOpenAddUserPopup(false);
 };
     
+
+
 
   return (
     <>

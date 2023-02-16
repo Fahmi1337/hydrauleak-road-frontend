@@ -11,7 +11,7 @@ import Login from './containers/login/Login';
 import Signup from './containers/Signup';
 import Contracts from './containers/Contracts'
 // import ContractDetail from './containers/ContractDetail';
-import Report from './containers/Report'
+import Reports from './containers/reports/Reports'
 import Interventions from './containers/Interventions'
 // import Activate from './containers/Activate';
 // import ResetPassword from './containers/ResetPassword';
@@ -67,7 +67,7 @@ const App = () => {
                     <Route exact path='/test' element={<Test/>} />
 
                     <Route path="/interventions" element={ !isToken ? <Navigate to="/login" /> : <Interventions/> }/>;
-                    <Route path="/report" element={ !isToken ? <Navigate to="/login" /> : <Report/> }/>;
+                    <Route path="/reports" element={ !isToken ? <Navigate to="/login" /> : <Reports/> }/>;
                     
                     <Route exact path='/login' element={<NoLayout><Login /></NoLayout>} />
                     <Route exact path='/signup' element={<NoLayout><Signup /></NoLayout>} />
