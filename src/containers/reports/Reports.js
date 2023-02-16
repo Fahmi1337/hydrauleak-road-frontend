@@ -66,14 +66,14 @@ const handleDeleteUser =async (reportId) => {
 
 // display data table
   const displayData = data
-  .filter(report => report.user.name.toLowerCase().includes(searchTerm.toLowerCase()))
-  .filter(report => selectedRole === '' || report.roles === selectedRole)
+  .filter(report => report.user_name.toLowerCase().includes(searchTerm.toLowerCase()))
+  .filter(report => selectedRole === '' || report.user_role === selectedRole)
   .slice(pagesVisited, pagesVisited + itemsPerPage)
   .map(report => (
     <tr key={report.id}  onClick={() => handleRowClick(report)}>
          <td>{report.id}</td>
-         <td>{report.user.name}</td>
-         <td>{report.user.roles}</td>
+         <td>{report.user_name}</td>
+         <td>{report.user_role}</td>
          <td>{report.report_date}</td>
          <td>{report.subject}</td>
          <td>{report.message}</td>
