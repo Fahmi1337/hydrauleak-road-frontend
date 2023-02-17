@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'
 import ReactPaginate from 'react-paginate';
-
+import './reports.css';
 
 const Reports = () => {
   
@@ -116,7 +116,7 @@ const handleDeleteUser =async (reportId) => {
     );
   };
   return (
-    <>
+    <div className="table_container">
       <div>
         <h1>Reports</h1>
         <div className="table-controls">
@@ -167,7 +167,7 @@ const handleDeleteUser =async (reportId) => {
       disabledClassName={'pagination__link--disabled'}
       activeClassName={'pagination__link--active'}
     />
-    </>
+    </div>
   );
 };
 

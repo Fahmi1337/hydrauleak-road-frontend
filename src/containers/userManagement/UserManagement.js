@@ -163,7 +163,7 @@ const handleCloseAddUser = () => {
 
 
   return (
-    <>
+    <div className="table_container">
 
         <div>
                   {selectedUser && (
@@ -231,7 +231,7 @@ const handleCloseAddUser = () => {
 
 
 
-    </>
+    </div>
   );
 }
 

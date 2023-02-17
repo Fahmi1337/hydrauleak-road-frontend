@@ -10,6 +10,7 @@ import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 
 const Map = (props) => {
   const [sensorsData, setSensorsData] = useState([]);
+  const [markersData, setMarkersData] = useState([]);
   const [pipesData, setPipes] = useState([]);
   
   const [center, setCoordinates] = useState([-71.3583, 50.1686]);
@@ -42,13 +43,16 @@ const [coordinatesPipe, setCoordinatesPipe] = useState([]);
   const handleClickPipe = (event) => {
     if (event.lngLat) {
     setCoordinatesPipe([...coordinatesPipe, [(event.lngLat.lng), (event.lngLat.lat)]]);
-    
-    window.localStorage.setItem("newCoordinates", JSON.stringify(coordinatesPipe));
-    
-    window.dispatchEvent(new Event("storage"));
   }
   };
 
+  useEffect(() => {
+    //Add Pipe coordinates to the storage
+ window.localStorage.setItem("newCoordinates", JSON.stringify(coordinatesPipe));
+    
+    window.dispatchEvent(new Event("storage"));
+
+ }, [coordinatesPipe]);
 
   useEffect(() => {
      //Add Zone coordinates to the storage
@@ -202,6 +206,25 @@ const getPipes = e => {
   }, []);
 
 
+  // get sensors function
+  const getMarkers = e => {
+    axios.get(`${process.env.REACT_APP_API_URL}/api/marks/`, {
+      headers: {
+        'Authorization': 'Bearer ' +  localStorage.getItem("token")
+      }
+    })
+    .then((res) => {
+  setMarkersData(res.data.data);
+})
+.catch((err) => {
+  console.log(err);
+});
+  }
+// sensors use effect 
+  useEffect(() => {
+    getMarkers();
+  }, []);
+
  
 
   const accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
@@ -233,6 +256,26 @@ const getPipes = e => {
           .addTo(map);
         });
         
+
+// Add Markers to the map 
+ markersData.forEach((mark) => {
+  const mymarker = new mapboxgl.Marker({
+    draggable: false,
+    color: "#D80739",
+  })
+    .setLngLat(mark.mark_coordinates)
+    .setPopup(new mapboxgl.Popup({ offset: 25 }).setHTML(`
+        <h3>mark title: ${mark.mark_title}</h3>
+        <p>mark description: ${mark.mark_description}</p>
+        <p>mark type: ${mark.mark_type}</p>
+        <p>mark diameter range: ${mark.mark_diameter_range}</p>
+        <p>mark frequency: ${mark.mark_frequency}</p>
+        <p>mark indication: ${mark.mark_Indication}</p>
+        <p>Pipe: ${mark.pipe}</p>`))
+    .addTo(map);
+  });
+
+
     //Add pipes to the map
       pipesData.forEach((pipe) => {
         const coordinates = pipe.pipe_coordinates;
@@ -482,7 +525,7 @@ function updateArea(e) {
       geojson.features.push(point);
       }
        
-      if (geojson.features.length > -1) {
+      if (geojson.features.length > 0) {
       linestring.geometry.coordinates = geojson.features.map(
       (point) => point.geometry.coordinates
       );

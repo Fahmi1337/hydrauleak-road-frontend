@@ -203,7 +203,7 @@
           margin-right: 50px;
         }
 
-        .mapboxgl-marker {
+        /* .mapboxgl-marker {
           background-image: url('https://www.pngall.com/wp-content/uploads/2017/05/Map-Marker-Free-Download-PNG.png');
           background-size: cover;
           width: 50px;
@@ -213,13 +213,16 @@
         }
         .mapboxgl-marker svg{
           display: none;
-        }
+        } */
 
 
 
-        body { margin: 10%; padding: 0; }
+        body { margin: 0; padding: 0; }
 #map { position: absolute; top: 0; bottom: 0; width: 100%; }
 
+        .table_container{
+          margin:10%;
+        }
     .calculation-box {
         height: 75px;
         width: 150px;

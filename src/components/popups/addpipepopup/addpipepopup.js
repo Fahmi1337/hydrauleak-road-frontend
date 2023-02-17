@@ -12,27 +12,52 @@ import Modal from '@mui/material/Modal';
 const AddPipePopup = (props) => {
 
 const [addPipe, setAddPipe] = useState(false);
-
-//get Pipe Coordinates
 const initialState = '';
-  const [coordinatesPipe, setCoordinatesPipe] = useState(initialState);
+const [pipe_coordinates, setPipeCoordinates] = useState(initialState);
 
-  function getLatLng() {
+const [pipeData, setPipeData] = useState({
+  
+  // pipe_creation_date:"",
+  // pipe_description:"",
+  // pipe_diameter: "",
+  // pipe_length:"",
+  // pipe_type:"",
+  // pipe_title:"",
+  // pipe_material:"",
+  // pipe_status:"",
+  // map:""
 
-    const pipeCoordinates= localStorage.getItem("newCoordinates");
+});
+const { pipe_creation_date, pipe_description, pipe_diameter, pipe_length, pipe_type, pipe_title, pipe_material, pipe_status, map } = pipeData;
+const handlePipeDataChange = (e) => {
+  setPipeData({
+    ...pipeData,
+    [e.target.name]: e.target.value,
     
-    setCoordinatesPipe(JSON.parse(pipeCoordinates));
-      
-    setPipeData({pipe_coordinates : JSON.parse(pipeCoordinates)});
+  });
+};
+   //get Pipe Coordinates
+  function getPipeCoordinates() {
+  
+    const pipeCoordinates = localStorage.getItem("newCoordinates");
+    
+    setPipeCoordinates(JSON.parse(localStorage.getItem("newCoordinates")));
+  
+    setPipeData({pipe_coordinates : JSON.parse(localStorage.getItem("newCoordinates"))});
   }
- 
+
   useEffect(() => {
     
-        getLatLng();
+    getPipeCoordinates();
+
         }, []);
+     
+
         window.addEventListener("storage", () => {
-            getLatLng();
-  });
+          getPipeCoordinates();
+        
+    });
+
 //get Pipe Coordinates
 
 //get Pipe Length
@@ -65,23 +90,20 @@ useEffect(() => {
   };
 
 
-  const [pipeData, setPipeData] = useState({});
 
+
+
+ 
 
   
-  const handlePipeDataChange = (e) => {
-    setPipeData({
-      ...pipeData,
-      [e.target.name]: e.target.value,
-      
-    });
-  };
-
+  // console.log("distance?", pipeData.pipe_length);
+ 
+// console.log("pipedata?", pipeData)
   const handleSubmitData = () => {
-
-    console.log("pipedata?", pipeData)
+const data = {}
+   
     axios
-      .post(`${process.env.REACT_APP_API_URL}/api/pipes/`, pipeData,
+      .post(`${process.env.REACT_APP_API_URL}/api/pipes/`, {pipe_creation_date, pipe_description, pipe_diameter, pipe_length, pipe_type, pipe_title, pipe_material, pipe_status, pipe_coordinates, map},
       
       {
             headers: {
@@ -96,14 +118,15 @@ useEffect(() => {
       .catch((err) => {
         console.error(err);
       });
-      
     setAddPipe(false);
     props.handleClose2();
     props.getPipes();
   };
 
 
-
+  console.log("coordinatesPipe", pipe_coordinates);
+  
+  console.log("pipeData?", pipeData);
 
 
     // //Modal
@@ -149,9 +172,10 @@ useEffect(() => {
           />
           <label>Pipe coordinates:</label>
           <input
+          disabled
             type="text"
-            name="reading_coordinates"
-            value={pipeData.pipe_coordinates}
+            name="pipe_coordinates"
+            value={pipe_coordinates}
             onChange={e => handlePipeDataChange(e)}
           />
           <label>Pipe creation date:</label>
@@ -178,6 +202,7 @@ useEffect(() => {
           />
           <label>Pipe Length:</label>
           <input
+          disabled
             type="number"
             name="pipe_length"
             value={pipeData.pipe_length}
@@ -208,7 +233,7 @@ useEffect(() => {
         </form>
 
        
-        <button onClick={() => {props.handleClosePipe(); handleSubmitData(); deletePipe();}}>Submit</button>
+        <button onClick={handleSubmitData}>Submit</button>
         <button onClick={() => {props.handleClosePipe(); deletePipe();}}>Cancel</button>
       </div>
         </Box>
