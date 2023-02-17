@@ -22,11 +22,11 @@
         margin-right: auto;
         margin-left: auto;
         margin-top: 30px;
-        color: #14877c;
+        color: rgb(90, 90, 255);
       }
       .heading {
         color: #14877c;
-        border-bottom: 1px solid #14877c;
+        border-bottom: 1px solid rgb(90, 90, 255);
         margin-bottom: 30px;
         padding-bottom: 10px;
       }
@@ -34,7 +34,7 @@
         width: 40%;
         min-width: 200px;
         border-radius: 10px;
-        border: 2px solid #14877c;
+        border: 2px solid rgb(90, 90, 255);
         padding: 10px;
         font-size: 14px;
       }
@@ -49,15 +49,15 @@
         font-weight: 600;
         border-radius: 4px;
         color: #ffffff;
-        border: 1px solid #14877c;
-        background-color: #14877c;
+        border: 1px solid rgb(90, 90, 255);
+        background-color: rgb(90, 90, 255);
         cursor: pointer;
         margin: 0px 15px;
         min-width: 100px;
       }
       
       button:hover {
-        background: #14877c;
+        background: rgb(90, 90, 255);
         color: #ffffff;
       }
       
@@ -78,7 +78,7 @@
         text-align: left;
         padding: 8px;
         background-color: 1px solid #ffffff;
-        color: #14877c;
+        color: rgb(90, 90, 255);
       }
       td {
         text-align: left;
@@ -133,7 +133,7 @@
       } */
 
       .pagination a {
-        background-color: #14877c;
+        background-color: rgb(90, 90, 255);
         color: white;
         padding: 8px 24px;
         text-decoration: none;
@@ -220,6 +220,9 @@
         body { margin: 0; padding: 0; }
 #map { position: absolute; top: 0; bottom: 0; width: 100%; }
 
+        .table_container{
+          margin:10%;
+        }
     .calculation-box {
         height: 75px;
         width: 150px;

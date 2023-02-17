@@ -118,7 +118,7 @@ const Contracts = () => {
         );
       }
     return (
-        <main className='home'>
+        <main className='home table_container'>
             <Helmet>
                 <title>Hydrauleak Road - Contracts</title>
                 <meta

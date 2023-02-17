@@ -6,11 +6,13 @@ import { BrowserRouter as Router, Route, Routes,Navigate } from 'react-router-do
 //container
 import Test from './containers/Test'
 import Dashboard from './containers/Dashboard';
+import UserManagement from './containers/userManagement/UserManagement';
 import Login from './containers/login/Login';
 import Signup from './containers/Signup';
 import Contracts from './containers/Contracts'
 // import ContractDetail from './containers/ContractDetail';
-import Report from './containers/Report'
+import Reports from './containers/reports/Reports'
+import PostReport from './containers/reports/PostReport'
 import Interventions from './containers/Interventions'
 // import Activate from './containers/Activate';
 // import ResetPassword from './containers/ResetPassword';
@@ -59,14 +61,17 @@ const App = () => {
         <Router>
             <Layout>
                 <Routes>
-
-                    <Route path="/contracts" element={ !isToken ? <Navigate to="/login" /> : <Contracts/> }/>;
+                    
                     <Route path="/" element={ !isToken ? <Navigate to="/login" /> : <Dashboard/> }/>;
+                    <Route path="/contracts" element={ !isToken ? <Navigate to="/login" /> : <Contracts/> }/>;
+                    <Route path="/user-management" element={ !isToken ? <Navigate to="/login" /> : <UserManagement/> }/>;
                     <Route exact path='/test' element={<Test/>} />
 
                     <Route path="/interventions" element={ !isToken ? <Navigate to="/login" /> : <Interventions/> }/>;
-                    <Route path="/report" element={ !isToken ? <Navigate to="/login" /> : <Report/> }/>;
+                    <Route path="/reports" element={ !isToken ? <Navigate to="/login" /> : <Reports/> }/>;
                     
+                    <Route path="/post-report" element={ !isToken ? <Navigate to="/login" /> : <PostReport/> }/>;
+
                     <Route exact path='/login' element={<NoLayout><Login /></NoLayout>} />
                     <Route exact path='/signup' element={<NoLayout><Signup /></NoLayout>} />
                     
