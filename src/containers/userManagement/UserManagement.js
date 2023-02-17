@@ -37,9 +37,7 @@ const [selectedUser, setSelectedUser] = useState(null); // new state variable
   });
     }
 
-    useEffect(() => {
-      getUsers()
-    }, []);
+
 
 
 const handleEditUser = (user) => {
@@ -68,6 +66,7 @@ const handleDeleteUser =async (userId) => {
   const newData = data.filter(item => item.id !== userId);
   setData(newData);
   setSelectedUser(null);
+  getUsers();
 };
 
   
@@ -111,7 +110,9 @@ const handleDeleteUser =async (userId) => {
     setPageNumber(0);
   };
 
-
+  useEffect(() => {
+    getUsers()
+  }, []);
 
 
 // Update User
@@ -140,6 +141,7 @@ const handleUpdateUser = async (user) => {
   newData[index] = updatedUser;
   setData(newData);
   setSelectedUser(null);
+  getUsers()
 };
 
 
@@ -172,6 +174,7 @@ const handleCloseAddUser = () => {
                       onUpdateUser={handleUpdateUser}
                       onCancel={handleCancelEditUser}
                       onOpen = {openPopup}
+                      getUsers={getUsers}
                     />
                   )}         
           </div>
@@ -211,6 +214,8 @@ const handleCloseAddUser = () => {
             <th>Email</th>
             <th>Phone</th>
             <th>Roles</th>
+            <th>Edit</th>
+            <th>Delete</th>
           </tr>
         </thead>
         <tbody>

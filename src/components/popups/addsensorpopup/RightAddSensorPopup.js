@@ -1,13 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import "./RightAddSensorPopup.css"
 import axios from 'axios';
-
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
 
 const RightAddSensorPopup = (props) => {
   
  
- 
-
+  const style2 = {
+    position: 'absolute',
+    top: '52%',
+    left: '31%',
+    transform: 'translate(-50%, -50%)',
+    width: '34%',
+   height: '96%',
+    bgcolor: 'rgba(255, 255, 255, 0.75)',
+    boxShadow: 24,
+    overflowY: 'scroll',
+    p: 4,
+  };
+  // const [open2, setOpen2] = React.useState(false);
+  // const handleOpen2 = () => setOpen2(true);
+  // const handleClose2 = () => setOpen2(false);
   // const handleChange = (e) => {
   //   setSensorData({
   //     ...sensorData,
@@ -71,7 +87,7 @@ const RightAddSensorPopup = (props) => {
   const [sensorData, setSensorData] = useState({
   });
 
-
+const open2 = props.open2;
 
   const handleSensorDataChange = (e) => {
     setSensorData({
@@ -102,13 +118,30 @@ const RightAddSensorPopup = (props) => {
       });
     setAddSensor(false);
     props.handleClose2();
-    props.getSensors();
+    // props.getSensors();
+    localStorage.removeItem("selectedPipeId");
+    window.location.reload();
   };
 
 console.log("sensor frequency", sensorData.sensor_frequency)
 
   return (
-    <div className="sensorPopup">
+<>
+    <Modal
+    disableEnforceFocus
+    hideBackdrop
+    style={{ position: 'initial' }}
+    
+      open={open2}
+     
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <Box sx={style2}>
+      
+        <div>
+      
+        <div className="sensorPopup">
       <form>
         <label>Sensor coordinates:</label>
         <input
@@ -170,7 +203,13 @@ console.log("sensor frequency", sensorData.sensor_frequency)
       <button onClick={handleSubmitData}>Submit</button>
       <button onClick={props.handleClose2}>Cancel</button>
     </div>
-  );
+        </div>
+      </Box>
+    </Modal>
+
+   
+    </>
+    );
 };
 
 export default RightAddSensorPopup

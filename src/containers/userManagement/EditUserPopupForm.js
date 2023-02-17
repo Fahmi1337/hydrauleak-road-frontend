@@ -5,13 +5,23 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
 
-const EditUserPopupForm =({ user, onUpdateUser, onCancel, onOpen }) => {
+const EditUserPopupForm =({ user, onUpdateUser, onCancel, onOpen, getUsers }) => {
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
   const [phone, setPhone] = useState(user.phone);
   const [roles, setRoles] = useState(user.roles);
 
-
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '60%',
+    
+    transform: 'translate(-50%, -50%)',
+   
+    bgcolor: 'rgba(255, 255, 255, 0.75)',
+    boxShadow: 24,
+    p: 4,
+  };
 
   const handleNameChange = (event) => {
     setName(event.target.value);
@@ -39,8 +49,10 @@ const EditUserPopupForm =({ user, onUpdateUser, onCancel, onOpen }) => {
       roles,
     };
     onUpdateUser(updatedUser);
+    getUsers();
     onCancel(); // close the modal on successful form submission
-        window.location.reload();
+    
+    getUsers();
   };
 
 
@@ -60,7 +72,7 @@ const EditUserPopupForm =({ user, onUpdateUser, onCancel, onOpen }) => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box >
+        <Box sx={style}>
             <div className="popup-form">
             <div className="popup-form-overlay" onClick={onCancel}></div>
             <div className="popup-form-content">

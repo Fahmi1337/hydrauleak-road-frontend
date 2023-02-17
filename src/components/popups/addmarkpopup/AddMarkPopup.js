@@ -81,8 +81,9 @@ const [addMark, setAddMark] = useState(false);
         console.error(err);
       });
     setAddMark(false);
-    props.handleClose2();
-    props.getMarks();
+  
+   
+    
   };
 
 
@@ -155,7 +156,7 @@ const [addMark, setAddMark] = useState(false);
           <input
             type="text"
             name="pipe"
-            value={markData.pipe}
+            value={localStorage.getItem('selectedPipeId') || markData.pipe}
             onChange={e => handleMarkDataChange(e)}
           />
         </form>

@@ -4,7 +4,17 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import axios from 'axios';
-
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '60%',
+  
+  transform: 'translate(-50%, -50%)',
+ 
+  bgcolor: 'rgba(255, 255, 255, 0.75)',
+  boxShadow: 24,
+  p: 4,
+};
 const AddUserPopupForm = ({ onCancel, onOpen }) => {
   const [userData, setUserData] = useState({
     name: '',
@@ -48,7 +58,7 @@ const AddUserPopupForm = ({ onCancel, onOpen }) => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box>
+        <Box sx={style}>
           <div className="popup-form">
             {/* <div className="popup-form-overlay" onClick={onCancel}></div> */}
             <div className="popup-form-content">

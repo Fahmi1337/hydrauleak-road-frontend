@@ -12,6 +12,9 @@ const Map = (props) => {
   const [sensorsData, setSensorsData] = useState([]);
   const [markersData, setMarkersData] = useState([]);
   const [pipesData, setPipes] = useState([]);
+  const [pipesAccessData, setPipeAcess] = useState([]);
+
+
   
   const [center, setCoordinates] = useState([-71.3583, 50.1686]);
   const [searchCoordinates, setSearchCoordinates] = useState([-71.3583, 50.1686]);
@@ -166,6 +169,28 @@ const getPipes = e => {
   }, []);
 
 
+
+  // Get Pipes function 
+  const getPipeAccess = e => {
+      axios.get(`${process.env.REACT_APP_API_URL}/api/pipeacces/`, {
+        headers: {
+          'Authorization': 'Bearer ' +  localStorage.getItem("token")
+        }
+      })
+      .then((res) => {
+    setPipeAcess(res.data.data);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+    }
+  // Pipe use effect
+    useEffect(() => {
+      getPipeAccess();
+    }, []);
+
+
+
 // get zone function
   const getZones = e => {
     axios.get(`${process.env.REACT_APP_API_URL}/api/zones/`, {
@@ -276,7 +301,6 @@ const getPipes = e => {
   });
 
 
-    //Add pipes to the map
       pipesData.forEach((pipe) => {
         const coordinates = pipe.pipe_coordinates;
         // create a GeoJSON feature with the pipe coordinates
@@ -318,6 +342,25 @@ const getPipes = e => {
           });
       });
 
+
+      
+      //Add pipesAccess to the map 
+      pipesAccessData.forEach((pipeaccess) => {
+  const mymarker = new mapboxgl.Marker({
+    draggable: false,
+    color: "#00FF00",
+  })
+    .setLngLat(pipeaccess.pipe_access_coordinates)
+    .setPopup(new mapboxgl.Popup({ offset: 25 }).setHTML(`
+        <h3>pipeaccess title: ${pipeaccess.pipe_access_title}</h3>
+        <p>pipeaccess description: ${pipeaccess.pipe_access_description}</p>
+        <p>pipeaccess type: ${pipeaccess.pipe_access_type}</p>
+        <p>pipeaccess diameter range: ${pipeaccess.mark_diameter_range}</p>
+        <p>pipeaccess frequency: ${pipeaccess.mark_frequency}</p>
+        <p>pipeaccess indication: ${pipeaccess.mark_Indication}</p>
+        <p>Pipe: ${pipeaccess.pipe}</p>`))
+    .addTo(map);
+  });
 
     //Add Zones to the map
       zones.forEach(zone => {
@@ -613,7 +656,7 @@ map.addControl(new MapboxGeocoder({
 
 
 }
-}, [ pipesData, zones, center, marker, lng, lat, searchCoordinates, coordinatesPipe, runEffectPipe, runEffectZone,runEffectSensor]);
+}, [ pipesData, pipesAccessData, zones, center, searchCoordinates, coordinatesPipe, runEffectPipe, runEffectZone, runEffectSensor]);
 
 return (
 <div>

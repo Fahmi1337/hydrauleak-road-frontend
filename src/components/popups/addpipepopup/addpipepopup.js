@@ -119,8 +119,8 @@ const data = {}
         console.error(err);
       });
     setAddPipe(false);
-    props.handleClose2();
-    props.getPipes();
+    props.handleClosePipe();
+    deletePipe();
   };
 
 

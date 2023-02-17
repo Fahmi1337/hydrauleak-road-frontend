@@ -26,7 +26,8 @@ const [addPipeAccess, setAddPipeAccess] = useState(false);
     
       setLat(lat);
       setLng(lng);
-    setPipeAccessData({pipeAccess_coordinates : [lng, lat]});
+    setPipeAccessData({pipe_access_coordinates : [lng, lat], pipe : localStorage.getItem('selectedPipeId')});
+    // setPipeAccessData({pipe : localStorage.getItem('selectedPipeId')});
   }
  
 
@@ -79,8 +80,8 @@ const [addPipeAccess, setAddPipeAccess] = useState(false);
         console.error(err);
       });
     setAddPipeAccess(false);
-    props.handleClose2();
-    props.getPipeAccess();
+ props.handleClosePipeAccess();
+ window.location.reload();
   };
 
 
@@ -154,7 +155,7 @@ const [addPipeAccess, setAddPipeAccess] = useState(false);
             onChange={e => handlePipeAccessDataChange(e)}
           />
         </form>
-        <button onClick={()=>{handleSubmitData();reloadPage();}}>Submit</button>
+        <button onClick={()=>{handleSubmitData();}}>Submit</button>
         <button onClick={()=>{props.handleClosePipeAccess();reloadPage();}}>Cancel</button>
       </div>
         </Box>

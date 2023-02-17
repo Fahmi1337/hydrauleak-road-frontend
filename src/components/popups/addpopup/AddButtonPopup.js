@@ -153,6 +153,8 @@ const handlePolygonCreated= props.handlePolygonCreated
       <AddMarkPopup  handleCloseMark={handleCloseMark} openMark={openMark}/>
       
       <AddMapPopup  handleCloseMap={handleCloseMap} openMap={openMap}/>
+
+      <RightAddSensorPopup handleClose2={handleClose2} handleClose={handleClose} getSensors={props.getSensors} open2={open2}/>
         
         <Button onClick={handleOpen}>Contributes +</Button>
       <Modal
@@ -198,24 +200,7 @@ const handlePolygonCreated= props.handlePolygonCreated
         
       </Modal>
 
-      <Modal
-      disableEnforceFocus
-      hideBackdrop
-      style={{ position: 'initial' }}
-      
-        open={open2}
-       
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style2}>
-        
-          <div>
-          <RightAddSensorPopup handleClose2={handleClose2} handleClose={handleClose} getSensors={props.getSensors}/>
-        
-          </div>
-        </Box>
-      </Modal>
+     
 
 
 
