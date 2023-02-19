@@ -81,7 +81,7 @@ const [addPipeAccess, setAddPipeAccess] = useState(false);
       });
     setAddPipeAccess(false);
  props.handleClosePipeAccess();
- window.location.reload();
+ 
   };
 
 
@@ -155,7 +155,7 @@ const [addPipeAccess, setAddPipeAccess] = useState(false);
             onChange={e => handlePipeAccessDataChange(e)}
           />
         </form>
-        <button onClick={()=>{handleSubmitData();}}>Submit</button>
+        <button onClick={()=>{handleSubmitData(); reloadPage();}}>Submit</button>
         <button onClick={()=>{props.handleClosePipeAccess();reloadPage();}}>Cancel</button>
       </div>
         </Box>

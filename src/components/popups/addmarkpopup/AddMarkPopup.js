@@ -28,7 +28,7 @@ const [addMark, setAddMark] = useState(false);
       setLng(lng);
     setMarkData({mark_coordinates : [lng, lat]});
 
-    // setMarkData({zone_coordinates : localStorage.getItem('selectedPipeId')});
+    //  setMarkData({zone_coordinates : localStorage.getItem('selectedPipeId')});
   }
  
 
@@ -50,7 +50,7 @@ const [addMark, setAddMark] = useState(false);
 
   const [markData, setMarkData] = useState({
   });
-
+  const { mark_coordinates, mark_creation_date, mark_description, mark_title } = markData;
   
 
   const handleMarkDataChange = (e) => {
@@ -63,9 +63,10 @@ const [addMark, setAddMark] = useState(false);
 
   const handleSubmitData = () => {
 
+    const pipe = localStorage.getItem('selectedPipeId');
 
     axios
-      .post(`${process.env.REACT_APP_API_URL}/api/marks/`, markData,
+      .post(`${process.env.REACT_APP_API_URL}/api/marks/`, { mark_coordinates, mark_creation_date, mark_description, mark_title, pipe},
       
       {
             headers: {
@@ -156,7 +157,7 @@ const [addMark, setAddMark] = useState(false);
           <input
             type="text"
             name="pipe"
-            value={localStorage.getItem('selectedPipeId') || markData.pipe}
+            value={localStorage.getItem('selectedPipeId')}
             onChange={e => handleMarkDataChange(e)}
           />
         </form>

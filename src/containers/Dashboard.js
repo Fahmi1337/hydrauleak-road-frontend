@@ -327,7 +327,7 @@ const getPipes = e => {
           },
           paint: {
             'line-color': '#3284ff',
-            'line-width': 20,
+            'line-width': 5,
           },
         });   
         map.on('click', 'pipe-' + pipe.id, (e) => {
