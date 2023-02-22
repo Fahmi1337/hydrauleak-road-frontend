@@ -288,20 +288,21 @@ const getPipes = e => {
 
 // Add Sensors to the map 
 sensorsData.forEach((sensor) => {
+  const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
+    <h3>Sensor title: ${sensor.sensor_title}</h3>
+    <h3>Sensor ID: ${sensor.id}</h3>
+    <p>Sensor description: ${sensor.sensor_description}</p>
+    <p>Sensor type: ${sensor.sensor_type}</p>
+    <p>Sensor diameter range: ${sensor.sensor_diameter_range}</p>             
+    <p>Sensor indication: ${sensor.sensor_Indication}</p>
+    <p>Pipe: ${sensor.pipe}</p>
+    <button id="deleteSensor" data-sensor-id="${sensor.id}">Delete</button>
+    <button id="updateSensor" data-sensor-id="${sensor.id}">Update</button>
+    <button id="viewSensor" data-sensor-id="${sensor.id}">View</button>
+  `);
   const marker = new mapboxgl.Marker()
     .setLngLat(sensor.sensor_coordinates)
-    .setPopup(new mapboxgl.Popup({ offset: 25 }).setHTML(`
-      <h3>Sensor title: ${sensor.sensor_title}</h3>
-      <h3>ID: ${sensor.id}</h3>
-      <p>Sensor description: ${sensor.sensor_description}</p>
-      <p>Sensor type: ${sensor.sensor_type}</p>
-      <p>Sensor diameter range: ${sensor.sensor_diameter_range}</p>             
-      <p>Sensor indication: ${sensor.sensor_Indication}</p>
-      <p>Pipe: ${sensor.pipe}</p>
-      <button id="deleteSensor" data-sensor-id="${sensor.id}">Delete</button>
-      <button id="updateSensor">Update</button>
-      <button id="viewSensor">View Details</button>
-    `))
+    .setPopup(popup)
     .addTo(map);
 
   // Delete Sensor
@@ -323,30 +324,40 @@ sensorsData.forEach((sensor) => {
       console.error('Error deleting Sensor', error);
     });
   });
+  // Update Sensor
+  const updateButton = marker._popup._content.querySelector('#updateSensor');
+  updateButton.addEventListener('click', () => {
+    // code to open update popup
+    console.log('Update button clicked');
+  });
+  // View Sensor
+  const ViewButton = marker._popup._content.querySelector('#viewSensor');
+  ViewButton.addEventListener('click', () => {
+    // code to open View popup
+    console.log('View button clicked');
+  });
+
 });
 
         
 
 // Add Markers to the map
 markersData.forEach((mark) => {
+  const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
+  <h3>mark title: ${mark.mark_title}</h3>
+  <h3>ID: ${mark.id}</h3>
+  <p>mark description: ${mark.mark_description}</p>
+  <p>Pipe: ${mark.pipe}</p>
+  <button id="deleteMark" data-mark-id="${mark.id}">Delete</button>
+  <button id="updateMark" data-mark-id="${mark.id}>Update</button>
+  <button id="viewMark" data-mark-id="${mark.id}>View Details</button>
+`);
   const mymarker = new mapboxgl.Marker({
     draggable: false,
     color: "#D80739",
   })
     .setLngLat(mark.mark_coordinates)
-    .setPopup(new mapboxgl.Popup({ offset: 25 }).setHTML(`
-        <h3>mark title: ${mark.mark_title}</h3>
-        <h3>ID: ${mark.id}</h3>
-        <p>mark description: ${mark.mark_description}</p>
-        <p>mark type: ${mark.mark_type}</p>
-        <p>mark diameter range: ${mark.mark_diameter_range}</p>
-        <p>mark frequency: ${mark.mark_frequency}</p>
-        <p>mark indication: ${mark.mark_Indication}</p>
-        <p>Pipe: ${mark.pipe}</p>
-        <button id="deleteMark" data-mark-id="${mark.id}">Delete</button>
-        <button id="updateMark">Update</button>
-        <button id="viewMark">View Details</button>
-      `))
+    .setPopup(popup)
     .addTo(map);
 
   // Delete Mark
@@ -368,12 +379,39 @@ markersData.forEach((mark) => {
         console.error('Error deleting Mark', error);
       });
   });
+
+    // // Update Mark
+    // const updateButton = mymarker._popup._content.querySelector('#updateMark');
+    // updateButton.addEventListener('click', () => {
+    //   // code to open update popup
+    //   console.log('Update button clicked');
+    // });
+    // // View Mark
+    // const ViewButton = mymarker._popup._content.querySelector('#viewMark');
+    // ViewButton.addEventListener('click', () => {
+    //   // code to open View popup
+    //   console.log('View button clicked');
+    // });
 });
 
 
 
   //a Add pipe to the map
   pipesData.forEach((pipe) => {
+    const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
+    <h3>Pipe title: ${pipe.pipe_title}</h3>
+    <h3>ID : ${pipe.id}</h3>
+    
+    <p>Pipe description: ${pipe.pipe_description}</p>
+    <p>Pipe type: ${pipe.pipe_type}</p>
+    <p>Pipe status: ${pipe.pipe_status}</p>       
+    <p>Pipe length: ${pipe.pipe_length}</p>
+    
+
+    <button id="deletePipe" data-pipe-id="${pipe.id}">Delete</button>
+    <button id="updatePipe">Update</button>
+    <button id="updatePipe">View Details</button>
+    `);
     const coordinates = pipe.pipe_coordinates;
     // create a GeoJSON feature with the pipe coordinates
     const pipeFeature = {

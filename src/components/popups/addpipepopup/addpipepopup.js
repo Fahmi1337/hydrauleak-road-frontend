@@ -166,7 +166,7 @@ const data = {}
           />
 
           <label>Pipe description:</label>
-            <textarea value={pipeData.pipe_description} onChange={e => handlePipeDataChange(e)} />
+            <textarea type="text" name="pipe_description" value={pipeData.pipe_description} onChange={e => handlePipeDataChange(e)} />
 
           <label>Pipe coordinates:</label>
           <input
