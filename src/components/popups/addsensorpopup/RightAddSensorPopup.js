@@ -142,8 +142,20 @@ console.log("sensor frequency", sensorData.sensor_frequency)
         <div>
       
         <div className="sensorPopup">
+          <h3>Add Sensor</h3>
       <form>
-        <label>Sensor coordinates:</label>
+        <label>Sensor title:</label>
+        <input
+          type="text"
+          name="sensor_title"
+          value={sensorData.sensor_title}
+          onChange={e => handleSensorDataChange(e)}
+        />
+    
+        <label>Sensor description:</label>
+            <textarea value={sensorData.sensor_description} onChange={e => handleSensorDataChange(e)} />
+            <label>Sensor coordinates:</label>
+        
         <input
           type="text"
           name="reading_coordinates"
@@ -164,20 +176,6 @@ console.log("sensor frequency", sensorData.sensor_frequency)
           value={sensorData.sensor_type}
           onChange={e => handleSensorDataChange(e)}
         />
-        <label>Sensor title:</label>
-        <input
-          type="text"
-          name="sensor_title"
-          value={sensorData.sensor_title}
-          onChange={e => handleSensorDataChange(e)}
-        />
-        <label>Sensor description:</label>
-        <input
-          type="text"
-          name="sensor_description"
-          value={sensorData.sensor_description}
-          onChange={e => handleSensorDataChange(e)}
-        />
         <label>Sensor frequency:</label>
         <input
           type="text"
@@ -185,13 +183,16 @@ console.log("sensor frequency", sensorData.sensor_frequency)
           value={sensorData.sensor_frequency}
           onChange={e => handleSensorDataChange(e)}
         />
+
         <label>Sensor Indication:</label>
-        <input
-          type="text"
-          name="sensor_Indication"
-          value={sensorData.sensor_Indication}
-          onChange={e => handleSensorDataChange(e)}
-        />
+              <select type="text" name="sensor_Indication" value={sensorData.sensor_Indication} onChange={e => handleSensorDataChange(e)}>
+              <option value="good">Good</option>
+              <option value="notable">Notable</option>  
+              <option value="critical">Critical</option>
+              <option value="unknown">Unknown</option>
+              </select>
+
+
         <label>Pipe:</label>
         <input
           type="text"

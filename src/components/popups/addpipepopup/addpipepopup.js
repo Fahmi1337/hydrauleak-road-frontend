@@ -119,8 +119,8 @@ const data = {}
         console.error(err);
       });
     setAddPipe(false);
-    props.handleClosePipe();
-    deletePipe();
+    // props.handleClosePipe();
+    // deletePipe();
   };
 
 
@@ -155,6 +155,7 @@ const data = {}
         <Box >
         
         <div className="PipePopup">
+          <h3>Add Pipe</h3>
         <form>
         <label>Pipe title:</label>
           <input
@@ -163,13 +164,10 @@ const data = {}
             value={pipeData.pipe_title}
             onChange={e => handlePipeDataChange(e)}
           />
+
           <label>Pipe description:</label>
-          <input
-            type="text"
-            name="pipe_description"
-            value={pipeData.pipe_description}
-            onChange={e => handlePipeDataChange(e)}
-          />
+            <textarea value={pipeData.pipe_description} onChange={e => handlePipeDataChange(e)} />
+
           <label>Pipe coordinates:</label>
           <input
           disabled
@@ -185,14 +183,15 @@ const data = {}
             value={pipeData.pipe_creation_date}
             onChange={e => handlePipeDataChange(e)}
           />
-           <label>Pipe Status:</label>
-          <input
-            type="text"
-            name="pipe_status"
-            value={pipeData.pipe_status}
-            onChange={e => handlePipeDataChange(e)}
-          />
 
+          <label>Pipe Status:</label>
+                    <select type="text" name="pipe_status" value={pipeData.pipe_status} onChange={e => handlePipeDataChange(e)}>
+                    <option value="good">Good</option>
+                    <option value="unknown">Unknown</option>
+                    <option value="critical">Critical</option>
+                    </select>
+
+          
           <label>Pipe Type:</label>
           <input
             type="text"
@@ -227,7 +226,7 @@ const data = {}
           <input
             type="number"
             name="map"
-            value={ pipeData.map}
+            value={pipeData.map}
             onChange={e => handlePipeDataChange(e)}
           />
         </form>

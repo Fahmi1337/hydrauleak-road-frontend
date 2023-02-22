@@ -13,7 +13,7 @@ import Contracts from './containers/Contracts'
 // import ContractDetail from './containers/ContractDetail';
 import Reports from './containers/reports/Reports'
 import PostReport from './containers/reports/PostReport'
-import Interventions from './containers/Interventions'
+import Interventions from './containers/interventions/Interventions'
 // import Activate from './containers/Activate';
 // import ResetPassword from './containers/ResetPassword';
 // import ResetPasswordConfirm from './containers/ResetPasswordConfirm';

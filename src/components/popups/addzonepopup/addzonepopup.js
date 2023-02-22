@@ -127,6 +127,7 @@ console.log("zone coordinates", zoneData.zone_coordinates)
         <Box >
         
         <div className="ZonePopup">
+          <h3>Add Zone</h3>
         <form>
         <label>Zone title:</label>
           <input
@@ -135,13 +136,10 @@ console.log("zone coordinates", zoneData.zone_coordinates)
             value={zoneData.zone_title}
             onChange={e => handleZoneDataChange(e)}
           />
+
           <label>Zone description:</label>
-          <input
-            type="text"
-            name="zone_description"
-            value={zoneData.zone_description}
-            onChange={e => handleZoneDataChange(e)}
-          />
+            <textarea value={zoneData.zone_description} onChange={e => handleZoneDataChange(e)} />
+
           <label>Zone coordinates:</label>
           <input
             type="text"
@@ -156,21 +154,26 @@ console.log("zone coordinates", zoneData.zone_coordinates)
             value={zoneData.zone_creation_date}
             onChange={e => handleZoneDataChange(e)}
           />
-           <label>Zone Status:</label>
-          <input
-            type="text"
-            name="zone_status"
-            value={zoneData.zone_status}
-            onChange={e => handleZoneDataChange(e)}
-          />
+           
+          <label>Zone Status:</label>
+              <select type="text" name="zone_status"
+                value={zoneData.zone_status}
+                onChange={e => handleZoneDataChange(e)}>
+              <option value="notStart">Not Started</option>
+              <option value="Pending">Pending</option>
+              <option value="Completed">Completed</option>
+              </select>
 
           <label>Zone Color:</label>
-          <input
-            type="text"
-            name="zone_color"
-            value={zoneData.zone_color}
-            onChange={e => handleZoneDataChange(e)}
-          />
+              <select type="text" name="zone_color"
+                value={zoneData.zone_color}
+                onChange={e => handleZoneDataChange(e)}>
+              <option value="green">Green</option>
+              <option value="orange">Orange</option>
+              <option value="red">Red</option>
+              </select>
+
+          
           <label>Zone area:</label>
           <input
             type="number"

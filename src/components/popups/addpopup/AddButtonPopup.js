@@ -7,7 +7,7 @@ import RightAddSensorPopup from '../addsensorpopup/RightAddSensorPopup';
 
 import AddZonePopup from '../addzonepopup/AddZonePopup'
 import AddPipePopup from '../addpipepopup/AddPipePopup'
-import AddPipeAccessPopup from '../addpipeaccesspopup/addpipeaccesspopup'
+import AddPipeAccessPopup from '../addpipeaccesspopup/AddPipeAccessPopup'
 import AddMarkPopup from '../addmarkpopup/AddMarkPopup'
 import AddMapPopup from '../addmappopup/AddMapPopup'
 
