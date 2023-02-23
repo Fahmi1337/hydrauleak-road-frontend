@@ -37,6 +37,14 @@ const [selectedClient, setSelectedClient] = useState(null); // new state variabl
   });
     }
 
+    const handleOpenReportPopup = () => {
+      setOpenPopup(true);
+    };
+    const handleRowClick = (item) => {
+      setSelectedClient(item);
+      handleOpenReportPopup();
+    };
+   
 
 
 
@@ -85,6 +93,7 @@ const handleDeleteClient =async (clientId) => {
         <td>{item.user.phone}</td>
         <td>{item.description}</td>
         <td>{item.inscription_date}</td>
+        <td ><button onClick={() => handleRowClick(item)}>Details</button></td>
          <td>
            <button onClick={() =>  {handleEditClient(item); handleOpenEditClient();}}>Edit</button>
          </td>
@@ -216,6 +225,7 @@ const handleCloseAddClient = () => {
             <th>Phone</th>
             <th>Description</th>
             <th>Inscription Date</th>
+            <th>Details</th>
             <th>Edit</th>
             <th>Delete</th>
           </tr>

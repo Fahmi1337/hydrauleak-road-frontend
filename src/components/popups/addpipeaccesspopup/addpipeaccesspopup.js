@@ -119,6 +119,25 @@ const [addPipeAccess, setAddPipeAccess] = useState(false);
         <div className="PipeAccessPopup">
           <h3>Add Pipe Access</h3>
         <form>
+                            
+        <label>Pipe:</label>
+          <input
+          disabled
+            type="text"
+            name="pipe"
+            value={localStorage.getItem('selectedPipeId') ||  pipeAccessData.pipe}
+            onChange={e => handlePipeAccessDataChange(e)}
+          />
+                 
+        <label>Pipe Access coordinates:</label>
+          <input
+          disabled
+            type="text"
+            name="reading_coordinates"
+            value={pipeAccessData.pipe_access_coordinates}
+            onChange={e => handlePipeAccessDataChange(e)}
+          />
+
         <label>Pipe Access title:</label>
           <input
             type="text"
@@ -130,14 +149,7 @@ const [addPipeAccess, setAddPipeAccess] = useState(false);
           <label>Pipe Access description:</label>
             <textarea value={pipeAccessData.pipe_access_description} onChange={e => handlePipeAccessDataChange(e)} />
           
-       
-          <label>Pipe Access coordinates:</label>
-          <input
-            type="text"
-            name="reading_coordinates"
-            value={pipeAccessData.pipe_access_coordinates}
-            onChange={e => handlePipeAccessDataChange(e)}
-          />
+
 
           <label>Pipe Access Type:</label>
                     <select type="text" value={pipeAccessData.pipe_access_type} onChange={e => handlePipeAccessDataChange(e)}>
@@ -147,14 +159,7 @@ const [addPipeAccess, setAddPipeAccess] = useState(false);
                     <option value="Other">Other</option>
                     </select>
 
-                  
-          <label>Pipe:</label>
-          <input
-            type="text"
-            name="pipe"
-            value={localStorage.getItem('selectedPipeId') ||  pipeAccessData.pipe}
-            onChange={e => handlePipeAccessDataChange(e)}
-          />
+
         </form>
         <button onClick={()=>{handleSubmitData(); reloadPage();}}>Submit</button>
         <button onClick={()=>{props.handleClosePipeAccess();reloadPage();}}>Cancel</button>

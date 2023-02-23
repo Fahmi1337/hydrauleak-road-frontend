@@ -72,8 +72,6 @@ const AddClientPopupForm = ({ onCancel, onOpen }) => {
                     <option value="is_admin">dev Pending</option>                  
                   </select>
                 </label>
-
-                
                 <label> Description:</label>
                   <textarea type="text" name="name" value={clientData.description} onChange={handleClientDataChange} />
                 

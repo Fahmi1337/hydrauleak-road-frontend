@@ -123,6 +123,26 @@ const [addMark, setAddMark] = useState(false);
         <div className="MarkPopup">
           <h3>Add Mark</h3>
         <form>
+
+       
+          <label>Mark coordinates:</label>
+          <input
+          disabled
+            type="text"
+            name="reading_coordinates"
+            value={markData.mark_coordinates}
+            onChange={e => handleMarkDataChange(e)}
+          />
+
+        <label>Pipe:</label>
+          <input
+          disabled
+            type="text"
+            name="pipe"
+            value={localStorage.getItem('selectedPipeId')}
+            onChange={e => handleMarkDataChange(e)}
+          />
+
         <label>Mark title:</label>
           <input
             type="text"
@@ -131,16 +151,8 @@ const [addMark, setAddMark] = useState(false);
             onChange={e => handleMarkDataChange(e)}
           />
 
-          <label>Mark description:</label>
+        <label>Mark description:</label>
             <textarea value={markData.mark_description} onChange={e => handleMarkDataChange(e)} />
-
-          <label>Mark coordinates:</label>
-          <input
-            type="text"
-            name="reading_coordinates"
-            value={markData.mark_coordinates}
-            onChange={e => handleMarkDataChange(e)}
-          />
 
           <label>Mark creation date:</label>
           <input
@@ -155,13 +167,7 @@ const [addMark, setAddMark] = useState(false);
           <input type="file"  />
           
           
-          <label>Pipe:</label>
-          <input
-            type="text"
-            name="pipe"
-            value={localStorage.getItem('selectedPipeId')}
-            onChange={e => handleMarkDataChange(e)}
-          />
+          
         </form>
         <button onClick={()=>{handleSubmitData();reloadPage();}}>Submit</button>
         <button  onClick={()=>{props.handleCloseMark();reloadPage();}}>Cancel</button>

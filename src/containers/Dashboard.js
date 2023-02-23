@@ -495,6 +495,9 @@ markersData.forEach((mark) => {
           <button id="updatePipe">View Details</button>
         `)
         .addTo(map);
+
+        localStorage.setItem("selectedPipeId",pipe.id);
+        
       const deleteButton = document.getElementById('deletePipe');
       deleteButton.addEventListener('click', () => {
         const pipeId = deleteButton.getAttribute('data-pipe-id');
@@ -701,6 +704,8 @@ function updateArea(e) {
     if (data.features.length > 0) {
      
         const area = turf.area(data);
+        window.localStorage.setItem("zoneArea", area.toLocaleString());
+ 
         // Restrict the area to 2 decimal points.
         const rounded_area = Math.round(area * 100) / 100;
         answer.innerHTML = `<p><strong>${rounded_area}</strong></p><p>square meters</p>`;
@@ -712,9 +717,6 @@ function updateArea(e) {
         if (e.type !== 'draw.delete')
             alert('Click the map to draw a polygon.');
     }
-    console.log("area", data);
-    console.log("zone coordinates 1", zoneCoordinates);
-
    
 }
 });

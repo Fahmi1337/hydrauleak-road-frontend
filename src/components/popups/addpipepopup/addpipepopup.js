@@ -60,7 +60,7 @@ const handlePipeDataChange = (e) => {
 
 //get Pipe Coordinates
 
-//get Pipe Length
+//get Pipe Length start
 const [LengthPipe, setPipeLength] = useState(initialState);
 
 function getPipeLength() {
@@ -80,7 +80,7 @@ useEffect(() => {
         getPipeLength();
 });
 
-//get Pipe Length
+//get Pipe Length end
 
 
 
@@ -88,14 +88,7 @@ useEffect(() => {
     window.location.reload();
     localStorage.removeItem("newCoordinates");
   };
-
-
-
-
-
  
-
-  
   // console.log("distance?", pipeData.pipe_length);
  
 // console.log("pipedata?", pipeData)
@@ -139,6 +132,35 @@ const data = {}
     const OpenPipe = props.openPipe;
     
 
+    const [maps, setMaps] = useState([]);
+
+    const getMaps = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/api/maps/`,
+          {
+            method: "GET",
+    
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => setMaps(data));
+    return response;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    useEffect(() => {   
+      getMaps();  
+          }, []);
+
+console.log("maps details", maps)
+
   return (
     <>
  
@@ -157,6 +179,26 @@ const data = {}
         <div className="PipePopup">
           <h3>Add Pipe</h3>
         <form>
+
+        <div className='listinform__section'>
+            <label >Map:</label>         
+            <select  type="text"
+                  name="map" onChange={e => handlePipeDataChange(e)} value={pipeData.map}>
+                  {maps.data?.map(map => (
+                  <option key={map.id} value={map.id}>{map.map_title}</option>          
+                  ))} 
+            </select>
+        </div>
+
+          <label>Pipe coordinates:</label>
+          <input
+          disabled
+            type="text"
+            name="pipe_coordinates"
+            value={pipe_coordinates}
+            onChange={e => handlePipeDataChange(e)}
+          />
+
         <label>Pipe title:</label>
           <input
             type="text"
@@ -168,14 +210,6 @@ const data = {}
           <label>Pipe description:</label>
             <textarea type="text" name="pipe_description" value={pipeData.pipe_description} onChange={e => handlePipeDataChange(e)} />
 
-          <label>Pipe coordinates:</label>
-          <input
-          disabled
-            type="text"
-            name="pipe_coordinates"
-            value={pipe_coordinates}
-            onChange={e => handlePipeDataChange(e)}
-          />
           <label>Pipe creation date:</label>
           <input
             type="datetime-local"
@@ -222,13 +256,7 @@ const data = {}
             onChange={e => handlePipeDataChange(e)}
           />
         
-          <label>Map:</label>
-          <input
-            type="number"
-            name="map"
-            value={pipeData.map}
-            onChange={e => handlePipeDataChange(e)}
-          />
+
         </form>
 
        

@@ -169,28 +169,18 @@ const handleDeleteUser =async (reportId) => {
 
         
       </div>
-      {/* <ReactPaginate
-      previousLabel={'previous'}
-      nextLabel={'next'}
-      pageCount={pageCount}
-      onPageChange={changePage}
-      containerClassName={'pagination'}
-      previousLinkClassName={'pagination__link'}
-      nextLinkClassName={'pagination__link'}
-      disabledClassName={'pagination__link--disabled'}
-      activeClassName={'pagination__link--active'}
-    /> */}
+  
     <ReactPaginate
-  previousLabel={'previous'}
-  nextLabel={'next'}
-  pageCount={pageCount}
-  onPageChange={changePage}
-  containerClassName={'pagination'}
-  previousLinkClassName={'paginationlink'}
-  nextLinkClassName={'paginationlink'}
-  disabledClassName={'paginationlink--disabled'}
-  activeClassName={'paginationlink--active'}
-/>
+        previousLabel={'previous'}
+        nextLabel={'next'}
+        pageCount={pageCount}
+        onPageChange={changePage}
+        containerClassName={'pagination'}
+        previousLinkClassName={'paginationlink'}
+        nextLinkClassName={'paginationlink'}
+        disabledClassName={'paginationlink--disabled'}
+        activeClassName={'paginationlink--active'}
+      />
     </div>
   );
 };

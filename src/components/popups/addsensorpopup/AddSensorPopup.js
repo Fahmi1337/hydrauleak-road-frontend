@@ -104,6 +104,23 @@ console.log("sensor frequency", sensorData.sensor_frequency)
         <div className="SensorPopup">
           <h3>Add Sensor</h3>
       <form>
+      <label>Pipe:</label>
+        <input
+        disabled
+          type="text"
+          name="map"
+          value={localStorage.getItem('selectedPipeId') ||  sensorData.pipe}
+          onChange={e => handleSensorDataChange(e)}
+        />
+        <label>Sensor coordinates:</label>
+        
+        <input
+          type="text"
+          name="reading_coordinates"
+          value={sensorData.sensor_coordinates}
+          onChange={e => handleSensorDataChange(e)}
+        />
+        
         <label>Sensor title:</label>
         <input
           type="text"
@@ -114,14 +131,7 @@ console.log("sensor frequency", sensorData.sensor_frequency)
     
         <label>Sensor description:</label>
             <textarea value={sensorData.sensor_description} onChange={e => handleSensorDataChange(e)} />
-            <label>Sensor coordinates:</label>
         
-        <input
-          type="text"
-          name="reading_coordinates"
-          value={sensorData.sensor_coordinates}
-          onChange={e => handleSensorDataChange(e)}
-        />
         <label>Sensor creation date:</label>
         <input
           type="date"
@@ -153,13 +163,7 @@ console.log("sensor frequency", sensorData.sensor_frequency)
               </select>
 
 
-        <label>Pipe:</label>
-        <input
-          type="text"
-          name="map"
-          value={localStorage.getItem('selectedPipeId') ||  sensorData.pipe}
-          onChange={e => handleSensorDataChange(e)}
-        />
+
       </form>
       <button onClick={handleSubmitData}>Submit</button>
       <button onClick={props.handleClose2}>Cancel</button>

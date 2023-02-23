@@ -6,10 +6,10 @@ import Modal from '@mui/material/Modal';
 
 
 const EditClientPopupForm =({ client, onUpdateClient, onCancel, onOpen, getClients }) => {
-  const [name, setName] = useState(client.user.name);
-  const [email, setEmail] = useState(client.email);
-  const [phone, setPhone] = useState(client.phone);
-  const [roles, setRoles] = useState(client.roles);
+  const [description, setDescription] = useState(client.description);
+  const [address, setAddress] = useState(client.address);
+  const [inscriptionDate, setInscriptionDate] = useState(client.inscription_date);
+  const [clientFiles, setClientFiles] = useState(client.client_files);
 
   const style = {
     position: 'absolute',
@@ -23,30 +23,30 @@ const EditClientPopupForm =({ client, onUpdateClient, onCancel, onOpen, getClien
     p: 4,
   };
 
-  const handleNameChange = (event) => {
-    setName(event.target.value);
+  const handleDescriptionChange = (event) => {
+    setDescription(event.target.value);
   };
 
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
+  const handleAddressChange = (event) => {
+    setAddress(event.target.value);
   };
 
-  const handlePhoneChange = (event) => {
-    setPhone(event.target.value);
+  const handleInscriptionDateChange = (event) => {
+    setInscriptionDate(event.target.value);
   };
 
-  const handleRolesChange = (event) => {
-    setRoles(event.target.value);
+  const handleClientFilesChange = (event) => {
+    setClientFiles(event.target.value);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const updatedClient = {
       ...client,
-      name,
-      email,
-      phone,
-      roles,
+      description,
+      address,
+      inscriptionDate,
+      clientFiles
     };
     onUpdateClient(updatedClient);
     getClients();
@@ -78,32 +78,39 @@ const EditClientPopupForm =({ client, onUpdateClient, onCancel, onOpen, getClien
             <div className="popup-form-content">
                 <h2>Edit Client</h2>
                 <form onSubmit={handleSubmit}>
+
+
                 <label>
-                    Name:
-                    <input type="text" value={name} onChange={handleNameChange} />
+                  Client User:
+                  <input name="name" 
+                //   value={} 
+                //   onChange={handleDescriptionChange}
+                  />
+                    
                 </label>
+                <label> Description:</label>
+                  <textarea type="text" name="name" value={description} onChange={handleDescriptionChange} />
+                
                 <label>
-                    Email:
-                    <input type="email" value={email} onChange={handleEmailChange} />
+                  Address:
+                  <input type="email" name="email" value={address} onChange={handleAddressChange} />
                 </label>
+
                 <label>
-                    Phone:
-                    <input type="text" value={phone} onChange={handlePhoneChange} />
+                Client data creation date:
+                    <input type="date" value={inscriptionDate} onChange={handleInscriptionDateChange} />
                 </label>
-                <label>
-                    Roles:
-                    <select value={roles} onChange={handleRolesChange}>
-                    <option value="is_admin">Admin</option>
-                    <option value="is_client">Client</option>
-                    <option value="is_leaker">Leaker</option>
-                    </select>
-                </label>
+
+                <label>File:</label>
+                    <input type="file"    /> 
+
                 <div className="popup-form-buttons">
                     <button type="submit">Update</button>
                     <button type="button" onClick={onCancel}>
                     Cancel
                     </button>
                 </div>
+
                 </form>
             </div>
             </div>
