@@ -5,11 +5,11 @@ import "./AddButtonPopup.css"
 import PropTypes from 'prop-types';
 import RightAddSensorPopup from '../addsensorpopup/AddSensorPopup';
 
-import AddZonePopup from '../addzonepopup/AddZonePopup'
-import AddPipePopup from '../addpipepopup/AddPipePopup'
-import AddPipeAccessPopup from '../addpipeaccesspopup/AddPipeAccessPopup'
+import AddZonePopup from '../addzonepopup/addzonepopup'
+import AddPipePopup from '../addpipepopup/addpipepopup'
+import AddPipeAccessPopup from '../addpipeaccesspopup/addpipeaccesspopup'
 import AddMarkPopup from '../addmarkpopup/AddMarkPopup'
-import AddMapPopup from '../addmappopup/AddMapPopup'
+import AddMapPopup from '../addmappopup/addmappopup'
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';

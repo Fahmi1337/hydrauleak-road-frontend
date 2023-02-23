@@ -24,7 +24,7 @@ const RightAddSensorPopup = (props) => {
     
       setLat(lat);
       setLng(lng);
-    setSensorData({sensor_coordinates : [lng, lat]});
+    setSensorData({...sensorData, sensor_coordinates : [lng, lat]});
   }
  
 

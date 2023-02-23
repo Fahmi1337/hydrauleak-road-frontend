@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./addPipeAccessPopup.css";
+import "./addpipeaccesspopup.css";
 import axios from 'axios';
 
 
@@ -26,7 +26,7 @@ const [addPipeAccess, setAddPipeAccess] = useState(false);
     
       setLat(lat);
       setLng(lng);
-    setPipeAccessData({pipe_access_coordinates : [lng, lat], pipe : localStorage.getItem('selectedPipeId')});
+    setPipeAccessData({...pipeAccessData, pipe_access_coordinates : [lng, lat], pipe : localStorage.getItem('selectedPipeId')});
     // setPipeAccessData({pipe : localStorage.getItem('selectedPipeId')});
   }
  

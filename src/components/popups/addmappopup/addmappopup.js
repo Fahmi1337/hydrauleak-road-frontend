@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./addMapPopup.css"
+import "./addmappopup.css"
 import axios from 'axios';
 
 
@@ -26,7 +26,7 @@ const [addMap, setAddMap] = useState(false);
     
       setLat(lat);
       setLng(lng);
-    setMapData({map_coordinate : [lng, lat]});
+    setMapData({...mapData, map_coordinate : [lng, lat]});
   }
  
 

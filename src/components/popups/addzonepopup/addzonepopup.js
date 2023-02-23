@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./addZonePopup.css"
+import "./addzonepopup.css"
 import axios from 'axios';
 
 
@@ -14,8 +14,17 @@ const AddZonePopup = (props) => {
 
 const initialState = '';
 const [addZone, setAddZone] = useState(false);
-
-const { zone_title, zone_description, zone_num, zone_date, zone_status, zone_color, zone_coordinates, map } = zoneData;
+const [zoneData, setZoneData] = useState({
+  zone_title: '',
+  zone_description: '',
+zone_area: parseFloat(localStorage.getItem("zoneArea")),
+  zone_date: '',
+  zone_status: 'notStart',
+  zone_color: 'orange',
+  zone_coordinates: '',
+  map: 1
+});
+const { zone_title, zone_description, zone_num, zone_date, zone_status, zone_color, map } = zoneData;
 
 
 //get Zone Area Start
@@ -27,9 +36,9 @@ function getZoneArea() {
   
   setZoneArea(zoneArea);
     
-  setZoneData({zone_area : zoneArea});
-  console.log("zone data ", zoneData.zone_area)
-  console.log("zone zoneArea ", zoneArea)
+  setZoneData({...zoneData, zone_area : zoneArea});
+  console.log("zoneData zone_area ", zoneData.zone_area)
+  console.log(" zoneArea ", zoneArea)
 
 }
 
@@ -37,6 +46,8 @@ useEffect(() => {
   
   getZoneArea();
       }, [AreaZone]);
+
+
       window.addEventListener("zoneAreaStorage", () => {
         getZoneArea();
 });
@@ -48,7 +59,7 @@ useEffect(() => {
 
 
 
-  const [coordinatesZone, setCoordinatesZone] = useState(initialState);
+  const [zone_coordinates, setCoordinatesZone] = useState(initialState);
   
 
   function getLatLng() {
@@ -59,7 +70,7 @@ useEffect(() => {
 
     
       
-    setZoneData({zone_coordinates : JSON.parse(zoneCoordinates)});
+    setZoneData({...zoneData, zone_coordinates : JSON.parse(zoneCoordinates)});
   }
  
   useEffect(() => {
@@ -70,20 +81,19 @@ useEffect(() => {
         window.addEventListener("zoneStorage", () => {
             getLatLng();
   });
-  console.log("Zone coordinates", coordinatesZone)
+ 
 
 
 
 
  const deleteZone = () => {
     window.location.reload();
-    // localStorage.removeItem("newZoneCoordinates");
+    localStorage.removeItem("newZoneCoordinates");
   };
 
 
 
-  const [zoneData, setZoneData] = useState({
-  });
+  
 
 
 
@@ -100,7 +110,7 @@ useEffect(() => {
 
 
     axios
-      .post(`${process.env.REACT_APP_API_URL}/api/zones/`,  AreaZone, zone_title, zone_description, zone_num, zone_date, zone_status, zone_color, zone_coordinates, map ,
+      .post(`${process.env.REACT_APP_API_URL}/api/zones/`,  { zone_title, zone_description, zone_num, zone_date, zone_status, zone_color, map, AreaZone, zone_coordinates },
       
       {
             headers: {
@@ -125,7 +135,7 @@ useEffect(() => {
     e.preventDefault();
     // props.handlePolygonCreated(); 
     handleSubmitData(); 
-    deleteZone();
+    // deleteZone();
     props.handleCloseZone();
    
   }
@@ -170,7 +180,7 @@ useEffect(() => {
   getMaps();  
       }, []);
 
-
+console.log("zonedata?", zoneData)
 
   return (
     <>
@@ -189,27 +199,23 @@ useEffect(() => {
         
         <div className="ZonePopup">
           <h3>Add Zone</h3>
+       
         <form>
 
         <div className='listinform__section'>
-            <label >Map:</label>         
-            <select  type="text"
-                  name="map" onChange={e => handleZoneDataChange(e)} value={zoneData.map}>
+            <label >Map:</label>        
+             
+            <select  type="text"  
+                  name="map" onChange={e => handleZoneDataChange(e)} value={zoneData.map || 1} > <option disabled selected value> -- select an option -- </option>
                   {maps.data?.map(map => (
+                    
                   <option key={map.id} value={map.id}>{map.map_title}</option>          
                   ))} 
             </select>
+            
         </div>
 
-        <label>Map:</label>
-          <input
-          // disabled
-            type="number"
-            name="map"
-            value={ zoneData.map}
-            onChange={e => handleZoneDataChange(e)}
-          />
-
+    
         <label>Zone coordinates:</label>
           <input
           disabled
@@ -219,7 +225,7 @@ useEffect(() => {
             onChange={e => handleZoneDataChange(e)}
           />
 
-          <label>Zone area:</label>
+<label>Zone area in km2:</label>
           <input
           disabled
             type="text"
@@ -227,7 +233,6 @@ useEffect(() => {
             value={parseFloat(AreaZone)}
             onChange={e => handleZoneDataChange(e)}
           />
-
         <label>Zone title:</label>
           <input
             type="text"
@@ -237,14 +242,14 @@ useEffect(() => {
           />
 
           <label>Zone description:</label>
-            <textarea value={zoneData.zone_description} onChange={e => handleZoneDataChange(e)} />
+            <textarea type="text" name="zone_description" value={zoneData.zone_description} onChange={e => handleZoneDataChange(e)} />
 
 
           <label>Zone creation date:</label>
           <input
             type="datetime-local"
-            name="zone_creation_date"
-            value={zoneData.zone_creation_date}
+            name="zone_date"
+            value={zoneData.zone_date}
             onChange={e => handleZoneDataChange(e)}
           />
            
@@ -261,8 +266,9 @@ useEffect(() => {
               <select type="text" name="zone_color"
                 value={zoneData.zone_color}
                 onChange={e => handleZoneDataChange(e)}>
+                  <option value="orange">Orange</option>
               <option value="green">Green</option>
-              <option value="orange">Orange</option>
+              
               <option value="red">Red</option>
               </select>
 

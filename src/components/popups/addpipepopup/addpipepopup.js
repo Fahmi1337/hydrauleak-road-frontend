@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./addPipePopup.css"
+import "./addpipepopup.css"
 import axios from 'axios';
 
 
@@ -43,7 +43,7 @@ const handlePipeDataChange = (e) => {
     
     setPipeCoordinates(JSON.parse(localStorage.getItem("newCoordinates")));
   
-    setPipeData({pipe_coordinates : JSON.parse(localStorage.getItem("newCoordinates"))});
+    setPipeData({...pipeData, pipe_coordinates : JSON.parse(localStorage.getItem("newCoordinates"))});
   }
 
   useEffect(() => {
@@ -69,7 +69,7 @@ function getPipeLength() {
   
   setPipeLength(pipeLength);
     
-  setPipeData({pipe_length : pipeLength*1000});
+  setPipeData({...pipeData, pipe_length : pipeLength*1000});
 }
 
 useEffect(() => {
