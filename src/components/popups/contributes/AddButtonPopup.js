@@ -3,11 +3,11 @@ import "./AddButtonPopup.css"
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { faSignalStream, faDrawPolygon, faPipeSection, faPipeValve, faLocationXmark, faMapPin } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
-import RightAddSensorPopup from '../addsensorpopup/RightAddSensorPopup';
+import RightAddSensorPopup from '../addsensorpopup/AddSensorPopup';
 
 import AddZonePopup from '../addzonepopup/AddZonePopup'
 import AddPipePopup from '../addpipepopup/AddPipePopup'
-import AddPipeAccessPopup from '../addpipeaccesspopup/addpipeaccesspopup'
+import AddPipeAccessPopup from '../addpipeaccesspopup/AddPipeAccessPopup'
 import AddMarkPopup from '../addmarkpopup/AddMarkPopup'
 import AddMapPopup from '../addmappopup/AddMapPopup'
 

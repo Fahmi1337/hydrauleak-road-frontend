@@ -4,18 +4,50 @@ import axios from 'axios';
 
 
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+// import Button from '@mui/material/Button';
+// import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
 
 const AddZonePopup = (props) => {
 
-const [addZone, setAddZone] = useState(false);
-
-
 
 const initialState = '';
+const [addZone, setAddZone] = useState(false);
+
+const { zone_title, zone_description, zone_num, zone_date, zone_status, zone_color, zone_coordinates, map } = zoneData;
+
+
+//get Zone Area Start
+const [AreaZone, setZoneArea] = useState(initialState);
+
+function getZoneArea() {
+
+  const zoneArea = localStorage.getItem("zoneArea");
+  
+  setZoneArea(zoneArea);
+    
+  setZoneData({zone_area : zoneArea});
+  console.log("zone data ", zoneData.zone_area)
+  console.log("zone zoneArea ", zoneArea)
+
+}
+
+useEffect(() => {
+  
+  getZoneArea();
+      }, [AreaZone]);
+      window.addEventListener("zoneAreaStorage", () => {
+        getZoneArea();
+});
+
+//get Zone Area end
+
+
+
+
+
+
   const [coordinatesZone, setCoordinatesZone] = useState(initialState);
   
 
@@ -68,7 +100,7 @@ const initialState = '';
 
 
     axios
-      .post(`${process.env.REACT_APP_API_URL}/api/zones/`, zoneData,
+      .post(`${process.env.REACT_APP_API_URL}/api/zones/`,  AreaZone, zone_title, zone_description, zone_num, zone_date, zone_status, zone_color, zone_coordinates, map ,
       
       {
             headers: {
@@ -111,6 +143,35 @@ const initialState = '';
 
 console.log("zone coordinates", zoneData.zone_coordinates)
 
+const [maps, setMaps] = useState([]);
+
+const getMaps = async () => {
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/maps/`,
+      {
+        method: "GET",
+
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => setMaps(data));
+return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+useEffect(() => {   
+  getMaps();  
+      }, []);
+
+
+
   return (
     <>
  
@@ -127,7 +188,46 @@ console.log("zone coordinates", zoneData.zone_coordinates)
         <Box >
         
         <div className="ZonePopup">
+          <h3>Add Zone</h3>
         <form>
+
+        <div className='listinform__section'>
+            <label >Map:</label>         
+            <select  type="text"
+                  name="map" onChange={e => handleZoneDataChange(e)} value={zoneData.map}>
+                  {maps.data?.map(map => (
+                  <option key={map.id} value={map.id}>{map.map_title}</option>          
+                  ))} 
+            </select>
+        </div>
+
+        <label>Map:</label>
+          <input
+          // disabled
+            type="number"
+            name="map"
+            value={ zoneData.map}
+            onChange={e => handleZoneDataChange(e)}
+          />
+
+        <label>Zone coordinates:</label>
+          <input
+          disabled
+            type="text"
+            name="reading_coordinates"
+            value={zoneData.zone_coordinates}
+            onChange={e => handleZoneDataChange(e)}
+          />
+
+          <label>Zone area:</label>
+          <input
+          disabled
+            type="text"
+            name="zone_area"
+            value={parseFloat(AreaZone)}
+            onChange={e => handleZoneDataChange(e)}
+          />
+
         <label>Zone title:</label>
           <input
             type="text"
@@ -135,20 +235,11 @@ console.log("zone coordinates", zoneData.zone_coordinates)
             value={zoneData.zone_title}
             onChange={e => handleZoneDataChange(e)}
           />
+
           <label>Zone description:</label>
-          <input
-            type="text"
-            name="zone_description"
-            value={zoneData.zone_description}
-            onChange={e => handleZoneDataChange(e)}
-          />
-          <label>Zone coordinates:</label>
-          <input
-            type="text"
-            name="reading_coordinates"
-            value={zoneData.zone_coordinates}
-            onChange={e => handleZoneDataChange(e)}
-          />
+            <textarea value={zoneData.zone_description} onChange={e => handleZoneDataChange(e)} />
+
+
           <label>Zone creation date:</label>
           <input
             type="datetime-local"
@@ -156,36 +247,29 @@ console.log("zone coordinates", zoneData.zone_coordinates)
             value={zoneData.zone_creation_date}
             onChange={e => handleZoneDataChange(e)}
           />
-           <label>Zone Status:</label>
-          <input
-            type="text"
-            name="zone_status"
-            value={zoneData.zone_status}
-            onChange={e => handleZoneDataChange(e)}
-          />
+           
+          <label>Zone Status:</label>
+              <select type="text" name="zone_status"
+                value={zoneData.zone_status}
+                onChange={e => handleZoneDataChange(e)}>
+              <option value="notStart">Not Started</option>
+              <option value="Pending">Pending</option>
+              <option value="Completed">Completed</option>
+              </select>
 
           <label>Zone Color:</label>
-          <input
-            type="text"
-            name="zone_color"
-            value={zoneData.zone_color}
-            onChange={e => handleZoneDataChange(e)}
-          />
-          <label>Zone area:</label>
-          <input
-            type="number"
-            name="zone_area"
-            value={parseFloat(zoneData.zone_area)}
-            onChange={e => handleZoneDataChange(e)}
-          />
+              <select type="text" name="zone_color"
+                value={zoneData.zone_color}
+                onChange={e => handleZoneDataChange(e)}>
+              <option value="green">Green</option>
+              <option value="orange">Orange</option>
+              <option value="red">Red</option>
+              </select>
+
+          
+
         
-          <label>Map:</label>
-          <input
-            type="number"
-            name="map"
-            value={ zoneData.map}
-            onChange={e => handleZoneDataChange(e)}
-          />
+
         </form>
 
          {/* <button onClick={() => {props.handlePolygonCreated(); handleSubmitData(); deleteZone();}}>Submit</button>*/}
