@@ -14,6 +14,8 @@ import Contracts from './containers/Contracts'
 import Reports from './containers/reports/Reports'
 import PostReport from './containers/reports/PostReport'
 import Interventions from './containers/interventions/Interventions'
+import ClientManagement from './containers/clientManagement/ClientManagment';
+
 // import Activate from './containers/Activate';
 // import ResetPassword from './containers/ResetPassword';
 // import ResetPasswordConfirm from './containers/ResetPasswordConfirm';
@@ -65,6 +67,7 @@ const App = () => {
                     <Route path="/" element={ !isToken ? <Navigate to="/login" /> : <Dashboard/> }/>;
                     <Route path="/contracts" element={ !isToken ? <Navigate to="/login" /> : <Contracts/> }/>;
                     <Route path="/user-management" element={ !isToken ? <Navigate to="/login" /> : <UserManagement/> }/>;
+                    <Route path="/client-management" element={ !isToken ? <Navigate to="/login" /> : <ClientManagement/> }/>;
                     <Route exact path='/test' element={<Test/>} />
 
                     <Route path="/interventions" element={ !isToken ? <Navigate to="/login" /> : <Interventions/> }/>;

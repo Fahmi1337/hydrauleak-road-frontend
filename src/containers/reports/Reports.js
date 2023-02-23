@@ -122,7 +122,7 @@ const handleDeleteUser =async (reportId) => {
           onOpen = {openPopup}
         />
       )}         
-</div>
+      </div>
      
     );
   };

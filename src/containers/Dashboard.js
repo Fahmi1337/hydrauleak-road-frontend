@@ -3,10 +3,16 @@ import axios from 'axios';
 import mapboxgl from 'mapbox-gl';
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import * as turf from '@turf/turf'
-import ButtonWithPopup from "../components/popups/addpopup/AddButtonPopup"
-import RightAddSensorPopup from "../components/popups/addsensorpopup/RightAddSensorPopup"
+import ButtonWithPopup from "../components/popups/contributes/AddButtonPopup"
+import RightAddSensorPopup from "../components/popups/addsensorpopup/AddSensorPopup"
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
+
+import ReactDOM from 'react-dom';
+
+
+import SensorViewPopup from '../components/popups/addsensorpopup/SensorViewPopup';
+
 
 const Map = (props) => {
   const [sensorsData, setSensorsData] = useState([]);
@@ -252,12 +258,18 @@ const getPipes = e => {
 
  
 
+  
+  const [selectedSensor, setSelectedSensor] = useState();
+  const [openSensorPopup, setOpenSensorPopup] = useState(false);
+  
+  const handleOpenSensorDetailsPopup = () => {
+    setOpenSensorPopup(true);
+  };
 
 
-
-
-
-
+  const handleCancelSensorPopup = () => {
+    setOpenSensorPopup(false);
+  };
 
 
 
@@ -286,16 +298,29 @@ const getPipes = e => {
 
       map.on('load', () => {
 
+
+
+
+
+
+
+
+
+
+
+
+
 // Add Sensors to the map 
 sensorsData.forEach((sensor) => {
   const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
+    <h3>ID: ${sensor.id}</h3>  
     <h3>Sensor title: ${sensor.sensor_title}</h3>
-    <h3>Sensor ID: ${sensor.id}</h3>
+   
     <p>Sensor description: ${sensor.sensor_description}</p>
     <p>Sensor type: ${sensor.sensor_type}</p>
     <p>Sensor diameter range: ${sensor.sensor_diameter_range}</p>             
     <p>Sensor indication: ${sensor.sensor_Indication}</p>
-    <p>Pipe: ${sensor.pipe}</p>
+
     <button id="deleteSensor" data-sensor-id="${sensor.id}">Delete</button>
     <button id="updateSensor" data-sensor-id="${sensor.id}">Update</button>
     <button id="viewSensor" data-sensor-id="${sensor.id}">View</button>
@@ -331,15 +356,22 @@ sensorsData.forEach((sensor) => {
     console.log('Update button clicked');
   });
   // View Sensor
+  
   const ViewButton = marker._popup._content.querySelector('#viewSensor');
   ViewButton.addEventListener('click', () => {
-    // code to open View popup
-    console.log('View button clicked');
+    setSelectedSensor(sensor);
+    setOpenSensorPopup(true);
   });
-
 });
 
-        
+
+
+
+
+
+
+
+
 
 // Add Markers to the map
 markersData.forEach((mark) => {
@@ -393,6 +425,11 @@ markersData.forEach((mark) => {
     //   console.log('View button clicked');
     // });
 });
+
+
+
+
+
 
 
 
@@ -482,6 +519,12 @@ markersData.forEach((mark) => {
   
 
 
+
+
+
+
+
+
 //Add pipesAccess to the map 
 pipesAccessData.forEach((pipeaccess) => {
   const popupHTML = `
@@ -524,6 +567,13 @@ pipesAccessData.forEach((pipeaccess) => {
     }
   });
 });
+
+
+
+
+
+
+
 
 
  // Add Zones to the map
@@ -597,11 +647,7 @@ zones.forEach(zone => {
         });
     });
   });
-
-
-       
-
-      
+    
       // Change the cursor to a pointer when
       // the mouse is over the states layer.
       map.on('mouseenter', 'states-layer', () => {
@@ -867,6 +913,23 @@ return (
 
 
 <div ref={mapContainer} style={{ width: '1400px', height: '686px',left: '121px',top: '-10px' }} />
+
+
+
+
+<div>
+  <div id="popup-container"></div>
+  {openSensorPopup && selectedSensor && (
+    <SensorViewPopup
+      sensor={selectedSensor}
+      onOpen={openSensorPopup}
+      onCancel={() => setOpenSensorPopup(false)}
+    />
+  )}
+</div>
+
+
+
 
 
   <div className="calculation-box">

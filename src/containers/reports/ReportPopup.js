@@ -20,12 +20,6 @@ const ReportPopup =({ onCancel, onOpen, selectedReport }) => {
     p: 4,
   };
 
- 
-
-
-
-
-  
 
   return (
 
