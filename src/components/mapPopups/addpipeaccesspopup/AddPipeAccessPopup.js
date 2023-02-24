@@ -66,7 +66,7 @@ const AddPipeAccessPopup = (props) => {
   const handleSubmitData = () => {
     if (!pipeAccessData.pipe_access_title || !pipeAccessData.pipe_access_description || !pipeAccessData.pipe_access_coordinates || !pipeAccessData.pipe) {
       alert("Please fill in all required fields.");
-      
+      return;
     }
 
   const data = {
