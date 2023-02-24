@@ -915,7 +915,7 @@ return (
 {addSensor && <div>Something showed up!</div>}
 
 
-<div ref={mapContainer} style={{ width: '1400px', height: '686px',left: '121px',top: '-10px' }} />
+<div ref={mapContainer} style={{ width: '80rem', height: '40rem',left: '121px',top: '-10px' }} />
 
 
 

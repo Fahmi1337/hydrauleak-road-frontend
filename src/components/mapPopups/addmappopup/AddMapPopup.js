@@ -4,8 +4,6 @@ import axios from 'axios';
 
 
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
 
@@ -95,16 +93,9 @@ const [addMap, setAddMap] = useState(false);
       reloadPage();
   };
 
-
-
-
-
     // //Modal
 
-   
-
-    const OpenMap = props.openMap;
-    
+    const OpenMap = props.openMap; 
 
   return (
     <>
@@ -132,9 +123,9 @@ const [addMap, setAddMap] = useState(false);
             onChange={e => handleMapDataChange(e)}
           />
 
-          
           <label>Map description:</label>
-            <textarea value={mapData.map_description} onChange={e => handleMapDataChange(e)} />
+            <textarea type="text"
+            name="map_description" value={mapData.map_description} onChange={e => handleMapDataChange(e)} />
           
 
           <label>Map coordinates:</label>
