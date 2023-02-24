@@ -119,7 +119,6 @@ const handleSubmitData = () => {
       .catch((err) => {
         console.error(err);
       });
-    // setAddPipe(false);
    
     deletePipe();
     
