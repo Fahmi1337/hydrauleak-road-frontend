@@ -1,0 +1,58 @@
+.ZonePopup {
+
+    position: absolute;
+    top: 52%;
+    left: 22.9%;
+    transform: translate(-50%, -50%);
+    width: 30%;
+    height: 96%;
+    background-color: rgba(255, 255, 255, 0.75);
+    box-shadow: 24px;
+    
+    padding-top: 5%;
+    }
+form {
+    height: 80%;
+    display: block;
+    overflow-y: scroll;
+    
+}
+
+.MuiBox-root{
+    background-color: none;
+  }
+  
+.ZonePopup input,
+.ZonePopup label {
+  width: 100%;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.ZonePopup input {
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.ZonePopup label {
+    font-weight: bold;
+    color: #555;
+  } 
+
+.ZonePopup button {
+  padding: 10px;
+  font-size: 14px;
+  background-color: #0087ff;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  width: 100%;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.ZonePopup button:hover {
+  background-color: #0064cc;
+}
