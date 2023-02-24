@@ -3,7 +3,7 @@ import "./AddButtonPopup.css"
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { faSignalStream, faDrawPolygon, faPipeSection, faPipeValve, faLocationXmark, faMapPin } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
-import RightAddSensorPopup from '../addsensorpopup/RightAddSensorPopup';
+import RightAddSensorPopup from '../addsensorpopup/AddSensorPopup';
 
 import AddZonePopup from '../addzonepopup/AddZonePopup'
 import AddPipePopup from '../addpipepopup/AddPipePopup'
@@ -153,6 +153,8 @@ const handlePolygonCreated= props.handlePolygonCreated
       <AddMarkPopup  handleCloseMark={handleCloseMark} openMark={openMark}/>
       
       <AddMapPopup  handleCloseMap={handleCloseMap} openMap={openMap}/>
+
+      <RightAddSensorPopup handleClose2={handleClose2} handleClose={handleClose} getSensors={props.getSensors} open2={open2}/>
         
         <Button onClick={handleOpen}>Contributes +</Button>
       <Modal
@@ -198,24 +200,7 @@ const handlePolygonCreated= props.handlePolygonCreated
         
       </Modal>
 
-      <Modal
-      disableEnforceFocus
-      hideBackdrop
-      style={{ position: 'initial' }}
-      
-        open={open2}
-       
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style2}>
-        
-          <div>
-          <RightAddSensorPopup handleClose2={handleClose2} handleClose={handleClose} getSensors={props.getSensors}/>
-        
-          </div>
-        </Box>
-      </Modal>
+     
 
 
 

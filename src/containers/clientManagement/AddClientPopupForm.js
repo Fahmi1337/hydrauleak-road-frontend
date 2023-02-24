@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+// import Button from '@mui/material/Button';
+// import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import axios from 'axios';
 const style = {
@@ -15,24 +15,26 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-const AddUserPopupForm = ({ onCancel, onOpen }) => {
-  const [userData, setUserData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    roles: ''
+const AddClientPopupForm = ({ onCancel, onOpen }) => {
+  const [clientData, setClientData] = useState({
+    // photo: '',
+    description: '',
+    address: '',
+    roles: '',
+    inscription_date: '',
+    client_files: []
   });
 
-  const handleUserDataChange = (e) => {
-    setUserData({
-      ...userData,
+  const handleClientDataChange = (e) => {
+    setClientData({
+      ...clientData,
       [e.target.name]: e.target.value,
     });
   };
 
   const handleSubmitData = (e) => {
     e.preventDefault(); // prevent the default form submission
-    axios.post(`${process.env.REACT_APP_API_URL}/api/user/`, userData, {
+    axios.post(`${process.env.REACT_APP_API_URL}/api/clients/`, clientData, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -62,30 +64,31 @@ const AddUserPopupForm = ({ onCancel, onOpen }) => {
           <div className="popup-form">
             {/* <div className="popup-form-overlay" onClick={onCancel}></div> */}
             <div className="popup-form-content">
-              <h2>Add User</h2>
+              <h2>Add Client Details</h2>
               <form onSubmit={handleSubmitData}>
-                <label>
-                  Name:
-                  <input type="text" name="name" value={userData.name} onChange={handleUserDataChange} />
-                </label>
-                <label>
-                  Email:
-                  <input type="email" name="email" value={userData.email} onChange={handleUserDataChange} />
-                </label>
-                <label>
-                  Phone:
-                  <input type="text" name="phone" value={userData.phone} onChange={handleUserDataChange} />
-                </label>
-                <label>
-                  Roles:
-                  <select name="roles" value={userData.roles} onChange={handleUserDataChange}>
-                    <option value="is_admin">Admin</option>
-                    <option value="is_client">Client</option>
-                    <option value="is_leaker">Leaker</option>
+              <label>
+                  Client User:
+                  <select name="roles" value={clientData.roles} onChange={handleClientDataChange}>
+                    <option value="is_admin">dev Pending</option>                  
                   </select>
                 </label>
+                <label> Description:</label>
+                  <textarea type="text" name="name" value={clientData.description} onChange={handleClientDataChange} />
+                
+                <label>
+                  Address:
+                  <input type="email" name="email" value={clientData.address} onChange={handleClientDataChange} />
+                </label>
+
+                <label>
+                Client data creation date:
+                    <input type="date" value={clientData.inscription_date} onChange={handleClientDataChange} />
+                </label>
+
+                <label>File:</label>
+                    <input type="file"    />              
                 <div className="popup-form-buttons">
-                  <button type="submit">Add User</button>
+                  <button type="submit">Add Client Data</button>
                   <button type="button" onClick={onCancel}>
                     Cancel
                   </button>
@@ -99,4 +102,4 @@ const AddUserPopupForm = ({ onCancel, onOpen }) => {
   );
 };
 
-export default AddUserPopupForm;
+export default AddClientPopupForm;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./addPipeAccessPopup.css"
+import "./addPipeAccessPopup.css";
 import axios from 'axios';
 
 
@@ -26,7 +26,8 @@ const [addPipeAccess, setAddPipeAccess] = useState(false);
     
       setLat(lat);
       setLng(lng);
-    setPipeAccessData({pipeAccess_coordinates : [lng, lat]});
+    setPipeAccessData({...pipeAccessData, pipe_access_coordinates : [lng, lat], pipe : localStorage.getItem('selectedPipeId')});
+    // setPipeAccessData({pipe : localStorage.getItem('selectedPipeId')});
   }
  
 
@@ -79,8 +80,8 @@ const [addPipeAccess, setAddPipeAccess] = useState(false);
         console.error(err);
       });
     setAddPipeAccess(false);
-    props.handleClose2();
-    props.getPipeAccess();
+ props.handleClosePipeAccess();
+ 
   };
 
 
@@ -116,45 +117,51 @@ const [addPipeAccess, setAddPipeAccess] = useState(false);
         <Box >
         
         <div className="PipeAccessPopup">
+          <h3>Add Pipe Access</h3>
         <form>
-        <label>PipeAccess title:</label>
+                            
+        <label>Pipe:</label>
+          <input
+          disabled
+            type="text"
+            name="pipe"
+            value={localStorage.getItem('selectedPipeId') ||  pipeAccessData.pipe}
+            onChange={e => handlePipeAccessDataChange(e)}
+          />
+                 
+        <label>Pipe Access coordinates:</label>
+          <input
+          disabled
+            type="text"
+            name="reading_coordinates"
+            value={pipeAccessData.pipe_access_coordinates}
+            onChange={e => handlePipeAccessDataChange(e)}
+          />
+
+        <label>Pipe Access title:</label>
           <input
             type="text"
             name="pipe_access_title"
             value={pipeAccessData.pipe_access_title}
             onChange={e => handlePipeAccessDataChange(e)}
           />
-          <label>PipeAccess description:</label>
-          <input
-            type="text"
-            name="pipe_access_description"
-            value={pipeAccessData.pipe_access_description}
-            onChange={e => handlePipeAccessDataChange(e)}
-          />
-          <label>PipeAccess coordinates:</label>
-          <input
-            type="text"
-            name="reading_coordinates"
-            value={pipeAccessData.pipe_access_coordinates}
-            onChange={e => handlePipeAccessDataChange(e)}
-          />
+
+          <label>Pipe Access description:</label>
+            <textarea value={pipeAccessData.pipe_access_description} onChange={e => handlePipeAccessDataChange(e)} />
+          
+
+
           <label>Pipe Access Type:</label>
-          <input
-            type="text"
-            name="pipe_access_type"
-            value={pipeAccessData.pipe_access_type}
-            onChange={e => handlePipeAccessDataChange(e)}
-          />
-                  
-          <label>Pipe:</label>
-          <input
-            type="text"
-            name="pipe"
-            value={localStorage.getItem('selectedPipeId') ||  pipeAccessData.pipe}
-            onChange={e => handlePipeAccessDataChange(e)}
-          />
+                    <select type="text" value={pipeAccessData.pipe_access_type} onChange={e => handlePipeAccessDataChange(e)}>
+                    <option value="HouseValve">House Valve</option>
+                    <option value="FirePole">Fire Pole</option>
+                    <option value="FireHydrantValve">Fire Hydrant Valve</option>
+                    <option value="Other">Other</option>
+                    </select>
+
+
         </form>
-        <button onClick={()=>{handleSubmitData();reloadPage();}}>Submit</button>
+        <button onClick={()=>{handleSubmitData(); reloadPage();}}>Submit</button>
         <button onClick={()=>{props.handleClosePipeAccess();reloadPage();}}>Cancel</button>
       </div>
         </Box>

@@ -3,15 +3,24 @@ import axios from 'axios';
 import mapboxgl from 'mapbox-gl';
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import * as turf from '@turf/turf'
-import ButtonWithPopup from "../components/popups/addpopup/AddButtonPopup"
-import RightAddSensorPopup from "../components/popups/addsensorpopup/RightAddSensorPopup"
+import ButtonWithPopup from "../components/mapPopups/contributes/AddButtonPopup"
+import RightAddSensorPopup from "../components/mapPopups/addsensorpopup/AddSensorPopup"
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
+
+import ReactDOM from 'react-dom';
+
+
+import SensorViewPopup from '../components/mapPopups/addsensorpopup/SensorViewPopup';
+
 
 const Map = (props) => {
   const [sensorsData, setSensorsData] = useState([]);
   const [markersData, setMarkersData] = useState([]);
   const [pipesData, setPipes] = useState([]);
+  const [pipesAccessData, setPipeAcess] = useState([]);
+
+
   
   const [center, setCoordinates] = useState([-71.3583, 50.1686]);
   const [searchCoordinates, setSearchCoordinates] = useState([-71.3583, 50.1686]);
@@ -166,6 +175,28 @@ const getPipes = e => {
   }, []);
 
 
+
+  // Get Pipes function 
+  const getPipeAccess = e => {
+      axios.get(`${process.env.REACT_APP_API_URL}/api/pipeacces/`, {
+        headers: {
+          'Authorization': 'Bearer ' +  localStorage.getItem("token")
+        }
+      })
+      .then((res) => {
+    setPipeAcess(res.data.data);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+    }
+  // Pipe use effect
+    useEffect(() => {
+      getPipeAccess();
+    }, []);
+
+
+
 // get zone function
   const getZones = e => {
     axios.get(`${process.env.REACT_APP_API_URL}/api/zones/`, {
@@ -227,146 +258,399 @@ const getPipes = e => {
 
  
 
+  
+  const [selectedSensor, setSelectedSensor] = useState();
+  const [openSensorPopup, setOpenSensorPopup] = useState(false);
+  
+  const handleOpenSensorDetailsPopup = () => {
+    setOpenSensorPopup(true);
+  };
+
+
+  const handleCancelSensorPopup = () => {
+    setOpenSensorPopup(false);
+  };
+
+
+
+
+
+
+
+
+
+
+
   const accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
   const mapContainer = React.useRef(null);
   useEffect(() => {
+
+ 
+
     if (sensorsData.length > 0) {
       mapboxgl.accessToken = accessToken;
       const map = new mapboxgl.Map({
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/streets-v11',
-        center: searchCoordinates.features[0].center || center[0].map_coordinate || searchCoordinates,
+        center: searchCoordinates?.features[0]?.center || center[0]?.map_coordinate || searchCoordinates,
         zoom: 12
       });
 
       map.on('load', () => {
 
-    // Add Sensors to the map 
-      sensorsData.forEach((sensor) => {
-        const marker = new mapboxgl.Marker()
-          .setLngLat(sensor.sensor_coordinates)
-          .setPopup(new mapboxgl.Popup({ offset: 25 }).setHTML(`
-              <h3>Sensor title: ${sensor.sensor_title}</h3>
-              <p>Sensor description: ${sensor.sensor_description}</p>
-              <p>Sensor type: ${sensor.sensor_type}</p>
-              <p>Sensor diameter range: ${sensor.sensor_diameter_range}</p>
-              <p>Sensor frequency: ${sensor.sensor_frequency}</p>
-              <p>Sensor indication: ${sensor.sensor_Indication}</p>
-              <p>Pipe: ${sensor.pipe}</p>`))
-          .addTo(map);
-        });
-        
 
-// Add Markers to the map 
- markersData.forEach((mark) => {
+
+
+
+
+
+
+
+
+
+
+
+// Add Sensors to the map 
+sensorsData.forEach((sensor) => {
+  const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
+    <h3>ID: ${sensor.id}</h3>  
+    <h3>Sensor title: ${sensor.sensor_title}</h3>
+   
+    <p>Sensor description: ${sensor.sensor_description}</p>
+    <p>Sensor type: ${sensor.sensor_type}</p>
+    <p>Sensor diameter range: ${sensor.sensor_diameter_range}</p>             
+    <p>Sensor indication: ${sensor.sensor_Indication}</p>
+
+    <button id="deleteSensor" data-sensor-id="${sensor.id}">Delete</button>
+    <button id="updateSensor" data-sensor-id="${sensor.id}">Update</button>
+    <button id="viewSensor" data-sensor-id="${sensor.id}">View</button>
+  `);
+  const marker = new mapboxgl.Marker()
+    .setLngLat(sensor.sensor_coordinates)
+    .setPopup(popup)
+    .addTo(map);
+
+  // Delete Sensor
+  const deleteButton = marker._popup._content.querySelector('#deleteSensor');
+  deleteButton.addEventListener('click', () => {
+    const sensorId = deleteButton.getAttribute('data-sensor-id');
+    // Send DELETE request to API endpoint using Sensor id
+    axios.delete(`${process.env.REACT_APP_API_URL}/api/sensors/${sensorId}/`, {
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      }
+    })
+    .then(response => {
+      console.log('Sensor deleted', response.data);
+      // Remove the Sensor from the map
+      marker.remove();
+    })
+    .catch(error => {
+      console.error('Error deleting Sensor', error);
+    });
+  });
+  // Update Sensor
+  const updateButton = marker._popup._content.querySelector('#updateSensor');
+  updateButton.addEventListener('click', () => {
+    // code to open update popup
+    console.log('Update button clicked');
+  });
+  // View Sensor
+  
+  const ViewButton = marker._popup._content.querySelector('#viewSensor');
+  ViewButton.addEventListener('click', () => {
+    setSelectedSensor(sensor);
+    setOpenSensorPopup(true);
+  });
+});
+
+
+
+
+
+
+
+
+
+
+// Add Markers to the map
+markersData.forEach((mark) => {
+  const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
+  <h3>mark title: ${mark.mark_title}</h3>
+  <h3>ID: ${mark.id}</h3>
+  <p>mark description: ${mark.mark_description}</p>
+  <p>Pipe: ${mark.pipe}</p>
+  <button id="deleteMark" data-mark-id="${mark.id}">Delete</button>
+  <button id="updateMark" data-mark-id="${mark.id}>Update</button>
+  <button id="viewMark" data-mark-id="${mark.id}>View Details</button>
+`);
   const mymarker = new mapboxgl.Marker({
     draggable: false,
     color: "#D80739",
   })
     .setLngLat(mark.mark_coordinates)
-    .setPopup(new mapboxgl.Popup({ offset: 25 }).setHTML(`
-        <h3>mark title: ${mark.mark_title}</h3>
-        <p>mark description: ${mark.mark_description}</p>
-        <p>mark type: ${mark.mark_type}</p>
-        <p>mark diameter range: ${mark.mark_diameter_range}</p>
-        <p>mark frequency: ${mark.mark_frequency}</p>
-        <p>mark indication: ${mark.mark_Indication}</p>
-        <p>Pipe: ${mark.pipe}</p>`))
+    .setPopup(popup)
     .addTo(map);
+
+  // Delete Mark
+  const deleteButton = mymarker._popup._content.querySelector('#deleteMark');
+  deleteButton.addEventListener('click', () => {
+    const markId = deleteButton.getAttribute('data-mark-id');
+    // Send DELETE request to API endpoint using Mark id
+    axios.delete(`${process.env.REACT_APP_API_URL}/api/marks/${markId}/`, {
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem("token")
+      }
+    })
+      .then(response => {
+        console.log('Mark deleted', response.data);
+        // Remove the Mark from the map
+        mymarker.remove();
+      })
+      .catch(error => {
+        console.error('Error deleting Mark', error);
+      });
   });
 
-
-    //Add pipes to the map
-      pipesData.forEach((pipe) => {
-        const coordinates = pipe.pipe_coordinates;
-        // create a GeoJSON feature with the pipe coordinates
-        const pipeFeature = {
-          type: 'Feature',
-          geometry: {
-            type: 'LineString',
-            coordinates: coordinates,
-          },
-          properties: {},
-        };
-        // add the pipe feature to the map
-        map.addSource('pipe-' + pipe.id, {
-          type: 'geojson',
-          data: pipeFeature,
-        });
-        map.addLayer({
-          id: 'pipe-' + pipe.id,
-          type: 'line',
-          source: 'pipe-' + pipe.id,
-          layout: {
-            'line-join': 'round',
-            'line-cap': 'round',
-          },
-          paint: {
-            'line-color': '#3284ff',
-            'line-width': 20,
-          },
-        });   
-        map.on('click', 'pipe-' + pipe.id, (e) => {
-          new mapboxgl.Popup()
-          .setLngLat(e.lngLat)
-          .setHTML(`
-          <h3>ID : ${pipe.id}</h3>
-        
-    `)
-          .addTo(map);
-       localStorage.setItem("selectedPipeId",pipe.id);
-          });
-      });
+    // // Update Mark
+    // const updateButton = mymarker._popup._content.querySelector('#updateMark');
+    // updateButton.addEventListener('click', () => {
+    //   // code to open update popup
+    //   console.log('Update button clicked');
+    // });
+    // // View Mark
+    // const ViewButton = mymarker._popup._content.querySelector('#viewMark');
+    // ViewButton.addEventListener('click', () => {
+    //   // code to open View popup
+    //   console.log('View button clicked');
+    // });
+});
 
 
-    //Add Zones to the map
-      zones.forEach(zone => {
-        map.addSource(zone.id.toString(), {
-          type: 'geojson',
-          data: {
-            type: 'Feature',
-            geometry: {
-              type: 'Polygon',
-              coordinates: [zone.zone_coordinates]
-            }
-          }
-        });
-
-        map.addLayer({
-          id: zone.id.toString(),
-          type: 'fill',
-          source: zone.id.toString(),
-          layout: {},
-          paint: {
-            'fill-color': zone.zone_color,
-            'fill-opacity': 0.5
-          }
-        });
-   
-        map.addLayer({
-          id: zone.id.toString() + 'outline',
-          type: 'line',
-          source: zone.id.toString(),
-          layout: {},
-          paint: {
-            'line-color': "black",
-            'line-width': 3
-          }
-        });
 
 
-  //Add a popup to the zone that fetch the id and the coordinates
-    map.on('click', zone.id.toString(), (e) => {
+
+
+
+
+  //a Add pipe to the map
+  pipesData.forEach((pipe) => {
+    const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
+    <h3>Pipe title: ${pipe.pipe_title}</h3>
+    <h3>ID : ${pipe.id}</h3>
+    
+    <p>Pipe description: ${pipe.pipe_description}</p>
+    <p>Pipe type: ${pipe.pipe_type}</p>
+    <p>Pipe status: ${pipe.pipe_status}</p>       
+    <p>Pipe length: ${pipe.pipe_length}</p>
+    
+
+    <button id="deletePipe" data-pipe-id="${pipe.id}">Delete</button>
+    <button id="updatePipe">Update</button>
+    <button id="updatePipe">View Details</button>
+    `);
+    const coordinates = pipe.pipe_coordinates;
+    // create a GeoJSON feature with the pipe coordinates
+    const pipeFeature = {
+      type: 'Feature',
+      geometry: {
+        type: 'LineString',
+        coordinates: coordinates,
+      },
+      properties: {},
+    };
+    // add the pipe feature to the map
+    map.addSource('pipe-' + pipe.id, {
+      type: 'geojson',
+      data: pipeFeature,
+    });
+    map.addLayer({
+      id: 'pipe-' + pipe.id,
+      type: 'line',
+      source: 'pipe-' + pipe.id,
+      layout: {
+        'line-join': 'round',
+        'line-cap': 'round',
+      },
+      paint: {
+        'line-color': '#3284ff',
+        'line-width': 5,
+      },
+    });   
+    map.on('click', 'pipe-' + pipe.id, (e) => {
       new mapboxgl.Popup()
+        .setLngLat(e.lngLat)
+        .setHTML(`
+          <h3>Pipe title: ${pipe.pipe_title}</h3>
+          <h3>ID : ${pipe.id}</h3>
+          
+          <p>Pipe description: ${pipe.pipe_description}</p>
+          <p>Pipe type: ${pipe.pipe_type}</p>
+          <p>Pipe status: ${pipe.pipe_status}</p>       
+          <p>Pipe length: ${pipe.pipe_length}</p>
+          
+
+          <button id="deletePipe" data-pipe-id="${pipe.id}">Delete</button>
+          <button id="updatePipe">Update</button>
+          <button id="updatePipe">View Details</button>
+        `)
+        .addTo(map);
+
+        localStorage.setItem("selectedPipeId",pipe.id);
+        
+      const deleteButton = document.getElementById('deletePipe');
+      deleteButton.addEventListener('click', () => {
+        const pipeId = deleteButton.getAttribute('data-pipe-id');
+        // Send DELETE request to API endpoint using Pipe id
+        axios.delete(`${process.env.REACT_APP_API_URL}/api/pipes/${pipeId}/`, {
+          headers: {
+            'Authorization': 'Bearer ' +  localStorage.getItem("token")
+          }
+        })
+        .then(response => {
+          console.log('Pipe deleted', response.data);
+          // Remove the Pipe from the map
+          map.removeLayer('pipe-' + pipe.id);
+          map.removeSource('pipe-' + pipe.id);
+        })
+        .catch(error => {
+          console.error('Error deleting Pipe', error);
+        });
+      });
+    });
+  });
+  
+
+
+
+
+
+
+
+
+//Add pipesAccess to the map 
+pipesAccessData.forEach((pipeaccess) => {
+  const popupHTML = `
+    <h3>Pipe access title: ${pipeaccess.pipe_access_title}</h3>
+    <h3>ID: ${pipeaccess.id}</h3>
+    <p>Pipe access description: ${pipeaccess.pipe_access_description}</p>
+    <p>Pipe access type: ${pipeaccess.pipe_access_type}</p>
+    <p>Pipe: ${pipeaccess.pipe}</p>
+    <button class="deletePipeaccess" data-pipeaccess-id="${pipeaccess.id}" > Delete </button>
+    <button class="updatePipeaccess"  > Update </button>
+    <button id="viewPipeaccess">View Details</button>
+  `;
+  
+  const mymarker = new mapboxgl.Marker({
+    draggable: false,
+    color: "#00FF00",
+  })
+    .setLngLat(pipeaccess.pipe_access_coordinates)
+    .setPopup(new mapboxgl.Popup({ offset: 25 }).setHTML(popupHTML))
+    .addTo(map);
+
+  // delete Pipeaccess
+  mymarker._popup._content.addEventListener('click', (event) => {
+    if (event.target.classList.contains('deletePipeaccess')) {
+      const pipeaccessId = event.target.getAttribute('data-pipeaccess-id');
+      // Send DELETE request to API endpoint using Pipeaccess id
+      axios.delete(`${process.env.REACT_APP_API_URL}/api/pipeacces/${pipeaccessId}/`, {
+          headers: {
+            'Authorization': 'Bearer ' +  localStorage.getItem("token")
+          }
+        })
+        .then(response => {
+          console.log('Pipeaccess deleted', response.data);
+          // Remove the Pipeaccess from the map
+          mymarker.remove();
+        })
+        .catch(error => {
+          console.error('Error deleting Pipeaccess', error);
+        });
+    }
+  });
+});
+
+
+
+
+
+
+
+
+
+ // Add Zones to the map
+zones.forEach(zone => {
+  map.addSource(zone.id.toString(), {
+    type: 'geojson',
+    data: {
+      type: 'Feature',
+      geometry: {
+        type: 'Polygon',
+        coordinates: [zone.zone_coordinates]
+      }
+    }
+  });
+
+  map.addLayer({
+    id: zone.id.toString(),
+    type: 'fill',
+    source: zone.id.toString(),
+    layout: {},
+    paint: {
+      'fill-color': zone.zone_color,
+      'fill-opacity': 0.5
+    }
+  });
+
+  map.addLayer({
+    id: zone.id.toString() + 'outline',
+    type: 'line',
+    source: zone.id.toString(),
+    layout: {},
+    paint: {
+      'line-color': "black",
+      'line-width': 3
+    }
+  });
+
+  // Add a popup to the zone that fetches the id and the coordinates
+  map.on('click', zone.id.toString(), (e) => {
+    new mapboxgl.Popup()
       .setLngLat(e.lngLat)
       .setHTML(`
-      <h3>ID : ${zone.id}</h3>
-      <p>Map : ${zone.map}</p>
-`)
+        <h3>Title : ${zone.zone_title}</h3>
+        <h3>ID : ${zone.id}</h3>
+        <P>Color : ${zone.zone_color}</P>
+        <p>Map : ${zone.map}</p>
+        <button id="deleteZone" data-zone-id="${zone.id}">Delete</button>
+        <button id="updateZone">Update</button>
+      `)
       .addTo(map);
+
+    // Delete Zone
+    const deleteButton = document.getElementById('deleteZone');
+    deleteButton.addEventListener('click', () => {
+      const zoneId = deleteButton.getAttribute('data-zone-id');
+      // Send DELETE request to API endpoint using zoneId
+      axios.delete(`${process.env.REACT_APP_API_URL}/api/zones/${zoneId}/`, {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem("token")
+        }
+      })
+        .then(response => {
+          console.log('Zone deleted', response.data);
+          // Remove the Zone from the map
+          map.removeLayer(zoneId.toString()); // Remove the fill layer
+          map.removeLayer(zoneId.toString() + 'outline'); // Remove the outline layer
+          map.removeSource(zoneId.toString()); // Remove the source
+        })
+        .catch(error => {
+          console.error('Error deleting Zone', error);
+        });
+    });
+  });
     
-      });
-       
       // Change the cursor to a pointer when
       // the mouse is over the states layer.
       map.on('mouseenter', 'states-layer', () => {
@@ -420,20 +704,20 @@ function updateArea(e) {
     if (data.features.length > 0) {
      
         const area = turf.area(data);
+        
+ 
         // Restrict the area to 2 decimal points.
-        const rounded_area = Math.round(area * 100) / 100;
+        const rounded_area = Math.round(area * 100) / 100000;
         answer.innerHTML = `<p><strong>${rounded_area}</strong></p><p>square meters</p>`;
 
         setZoneCoordinates(data.features[0].geometry.coordinates[0])
-       
+        window.localStorage.setItem("zoneArea", rounded_area.toLocaleString());
+        window.dispatchEvent(new Event("zoneAreaStorage"));
     } else {
         answer.innerHTML = '';
         if (e.type !== 'draw.delete')
             alert('Click the map to draw a polygon.');
     }
-    console.log("area", data);
-    console.log("zone coordinates 1", zoneCoordinates);
-
    
 }
 });
@@ -613,7 +897,7 @@ map.addControl(new MapboxGeocoder({
 
 
 }
-}, [ pipesData, zones, center, marker, lng, lat, searchCoordinates, coordinatesPipe, runEffectPipe, runEffectZone,runEffectSensor]);
+}, [ pipesData, pipesAccessData, zones, center, searchCoordinates, coordinatesPipe, runEffectPipe, runEffectZone, runEffectSensor]);
 
 return (
 <div>
@@ -632,6 +916,23 @@ return (
 
 
 <div ref={mapContainer} style={{ width: '1400px', height: '686px',left: '121px',top: '-10px' }} />
+
+
+
+
+<div>
+  <div id="popup-container"></div>
+  {openSensorPopup && selectedSensor && (
+    <SensorViewPopup
+      sensor={selectedSensor}
+      onOpen={openSensorPopup}
+      onCancel={() => setOpenSensorPopup(false)}
+    />
+  )}
+</div>
+
+
+
 
 
   <div className="calculation-box">

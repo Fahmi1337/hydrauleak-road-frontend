@@ -276,7 +276,7 @@ getContracts();
                         <label className='listingform__label' htmlFor='client'>Client</label>
                      
                         <select className='listingform__select' name='client' onChange={e => onChange(e)} value={formData.client || ContractById.client}>
-                        {clients.results?.map(client => (
+                        {clients?.map(client => (
               <option key={client.id} value={client.id}>{client.user.name}</option>
             ))}
                             

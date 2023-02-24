@@ -1,4 +1,4 @@
-.ZonePopup {
+.PipePopup {
 
     position: absolute;
     top: 52%;
@@ -8,38 +8,39 @@
     height: 96%;
     background-color: rgba(255, 255, 255, 0.75);
     box-shadow: 24px;
-    overflow-y: scroll;
-    padding: 4px;
+    
+    padding-top: 5%;
     }
 form {
     display: block;
     margin-top: 5em;
+    overflow-y: scroll;
 }
 
 .MuiBox-root{
     background-color: none;
   }
   
-.ZonePopup input,
-.ZonePopup label {
+.PipePopup input,
+.PipePopup label {
   width: 100%;
   display: block;
   margin-bottom: 10px;
 }
 
-.ZonePopup input {
+.PipePopup input {
   padding: 10px;
   font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 3px;
 }
 
-.ZonePopup label {
+.PipePopup label {
     font-weight: bold;
     color: #555;
   } 
 
-.ZonePopup button {
+.PipePopup button {
   padding: 10px;
   font-size: 14px;
   background-color: #0087ff;
@@ -51,6 +52,6 @@ form {
   cursor: pointer;
 }
 
-.ZonePopup button:hover {
+.PipePopup button:hover {
   background-color: #0064cc;
 }

@@ -1,4 +1,4 @@
-.MapPopup {
+.ZonePopup {
 
     position: absolute;
     top: 52%;
@@ -8,38 +8,40 @@
     height: 96%;
     background-color: rgba(255, 255, 255, 0.75);
     box-shadow: 24px;
-    overflow-y: scroll;
-    padding: 4px;
+    
+    padding-top: 5%;
     }
 form {
+    height: 80%;
     display: block;
-    margin-top: 3.5em;
+    overflow-y: scroll;
+    
 }
 
 .MuiBox-root{
     background-color: none;
   }
   
-.MapPopup input,
-.MapPopup label {
+.ZonePopup input,
+.ZonePopup label {
   width: 100%;
   display: block;
   margin-bottom: 10px;
 }
 
-.MapPopup input {
+.ZonePopup input {
   padding: 10px;
   font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 3px;
 }
 
-.MapPopup label {
+.ZonePopup label {
     font-weight: bold;
     color: #555;
   } 
 
-.MapPopup button {
+.ZonePopup button {
   padding: 10px;
   font-size: 14px;
   background-color: #0087ff;
@@ -51,6 +53,6 @@ form {
   cursor: pointer;
 }
 
-.MapPopup button:hover {
+.ZonePopup button:hover {
   background-color: #0064cc;
 }

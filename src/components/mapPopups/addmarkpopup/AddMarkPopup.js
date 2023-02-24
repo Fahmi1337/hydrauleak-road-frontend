@@ -26,9 +26,9 @@ const [addMark, setAddMark] = useState(false);
     
       setLat(lat);
       setLng(lng);
-    setMarkData({mark_coordinates : [lng, lat]});
+    setMarkData({...markData, mark_coordinates : [lng, lat]});
 
-    // setMarkData({zone_coordinates : localStorage.getItem('selectedPipeId')});
+    //  setMarkData({zone_coordinates : localStorage.getItem('selectedPipeId')});
   }
  
 
@@ -50,7 +50,7 @@ const [addMark, setAddMark] = useState(false);
 
   const [markData, setMarkData] = useState({
   });
-
+  const { mark_coordinates, mark_creation_date, mark_description, mark_title } = markData;
   
 
   const handleMarkDataChange = (e) => {
@@ -63,9 +63,10 @@ const [addMark, setAddMark] = useState(false);
 
   const handleSubmitData = () => {
 
+    const pipe = localStorage.getItem('selectedPipeId');
 
     axios
-      .post(`${process.env.REACT_APP_API_URL}/api/marks/`, markData,
+      .post(`${process.env.REACT_APP_API_URL}/api/marks/`, { mark_coordinates, mark_creation_date, mark_description, mark_title, pipe},
       
       {
             headers: {
@@ -80,9 +81,11 @@ const [addMark, setAddMark] = useState(false);
       .catch((err) => {
         console.error(err);
       });
+
     setAddMark(false);
-    props.handleClose2();
-    props.getMarks();
+  
+    // reloadPage();
+    
   };
 
 
@@ -119,7 +122,30 @@ const [addMark, setAddMark] = useState(false);
         <Box >
         
         <div className="MarkPopup">
+          <h3>Add Mark</h3>
         <form>
+
+       
+          <label>Mark coordinates:</label>
+          <input
+          disabled
+          required
+            type="text"
+            name="reading_coordinates"
+            value={markData.mark_coordinates}
+            onChange={e => handleMarkDataChange(e)}
+          />
+
+        <label>Pipe:</label>
+          <input
+          disabled
+          required
+            type="text"
+            name="pipe"
+            value={localStorage.getItem('selectedPipeId')}
+            onChange={e => handleMarkDataChange(e)}
+          />
+
         <label>Mark title:</label>
           <input
             type="text"
@@ -127,39 +153,27 @@ const [addMark, setAddMark] = useState(false);
             value={markData.mark_title}
             onChange={e => handleMarkDataChange(e)}
           />
-          <label>Mark description:</label>
-          <input
-            type="text"
-            name="mark_description"
-            value={markData.mark_description}
-            onChange={e => handleMarkDataChange(e)}
-          />
-          <label>Mark coordinates:</label>
-          <input
-            type="text"
-            name="reading_coordinates"
-            value={markData.mark_coordinates}
-            onChange={e => handleMarkDataChange(e)}
-          />
+
+        <label>Mark description:</label>
+            <textarea value={markData.mark_description} onChange={e => handleMarkDataChange(e)} />
+
           <label>Mark creation date:</label>
           <input
+          required
             type="datetime-local"
             name="mark_creation_date"
             value={markData.mark_creation_date}
             onChange={e => handleMarkDataChange(e)}
           />
           
+                    
+          <label>Image:</label>
+          <input type="file"  />
           
           
-          <label>Pipe:</label>
-          <input
-            type="text"
-            name="pipe"
-            value={markData.pipe}
-            onChange={e => handleMarkDataChange(e)}
-          />
+          
         </form>
-        <button onClick={()=>{handleSubmitData();reloadPage();}}>Submit</button>
+        <button onClick={()=>{handleSubmitData();}}>Submit</button>
         <button  onClick={()=>{props.handleCloseMark();reloadPage();}}>Cancel</button>
       </div>
         </Box>

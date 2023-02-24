@@ -26,7 +26,7 @@ const [addMap, setAddMap] = useState(false);
     
       setLat(lat);
       setLng(lng);
-    setMapData({map_coordinate : [lng, lat]});
+    setMapData({...mapData, map_coordinate : [lng, lat]});
   }
  
 
@@ -81,8 +81,7 @@ const [addMap, setAddMap] = useState(false);
         console.error(err);
       });
     setAddMap(false);
-    props.handleClose2();
-    props.getMaps();
+    
   };
 
 
@@ -115,6 +114,7 @@ const [addMap, setAddMap] = useState(false);
         <Box >
         
         <div className="MapPopup">
+          <h3>Add Map</h3>
         <form>
         <label>Map title:</label>
           <input
@@ -123,13 +123,12 @@ const [addMap, setAddMap] = useState(false);
             value={mapData.map_title}
             onChange={e => handleMapDataChange(e)}
           />
+
+          
           <label>Map description:</label>
-          <input
-            type="text"
-            name="map_description"
-            value={mapData.map_description}
-            onChange={e => handleMapDataChange(e)}
-          />
+            <textarea value={mapData.map_description} onChange={e => handleMapDataChange(e)} />
+          
+
           <label>Map coordinates:</label>
           <input
             type="text"
