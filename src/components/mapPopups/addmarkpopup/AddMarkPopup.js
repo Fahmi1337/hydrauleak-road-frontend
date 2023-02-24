@@ -11,7 +11,7 @@ import Modal from '@mui/material/Modal';
 
 const AddMarkPopup = (props) => {
 
-const [addMark, setAddMark] = useState(false);
+
 
 
   const initialState = '';
@@ -102,9 +102,9 @@ console.log("mark data?", markData)
         console.error(err);
       });
 
-    setAddMark(false);
+    
   
-    // reloadPage();
+    reloadPage();
     
   };
 
@@ -113,16 +113,17 @@ console.log("mark data?", markData)
 
 
     // //Modal
-    const [showMarkModal, setShowMarkModal] = useState(true);
-
-    const handleCloseMarkModal = () => setShowMarkModal(false);
-    const handleShowMarkModal = () => setShowMarkModal(true);
+  
    
 
     const OpenMark = props.openMark;
     
 
     const reloadPage = () => {
+      
+      localStorage.removeItem("selectedPipeId");
+      localStorage.removeItem("newSensorLng");
+      localStorage.removeItem("newSensorLat");
       window.location.reload();
     };
 
@@ -134,7 +135,7 @@ console.log("mark data?", markData)
       hideBackdrop
       style={{ position: 'initial' }}
       
-        open={OpenMark && showMarkModal}
+        open={OpenMark}
        
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -175,7 +176,8 @@ console.log("mark data?", markData)
           />
 
         <label>Mark description:</label>
-            <textarea value={markData.mark_description} onChange={e => handleMarkDataChange(e)} />
+            <textarea   type="text"
+            name="mark_description" value={markData.mark_description} onChange={e => handleMarkDataChange(e)} />
 
           <label>Mark creation date:</label>
           <input

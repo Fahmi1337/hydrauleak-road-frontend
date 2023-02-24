@@ -90,7 +90,7 @@ const [addMap, setAddMap] = useState(false);
       .catch((err) => {
         console.error(err);
       });
-    setAddMap(false);
+    
     
   };
 
@@ -99,10 +99,7 @@ const [addMap, setAddMap] = useState(false);
 
 
     // //Modal
-    const [showMapModal, setShowMapModal] = useState(true);
 
-    const handleCloseMapModal = () => setShowMapModal(false);
-    const handleShowMapModal = () => setShowMapModal(true);
    
 
     const OpenMap = props.openMap;
@@ -116,7 +113,7 @@ const [addMap, setAddMap] = useState(false);
       hideBackdrop
       style={{ position: 'initial' }}
       
-        open={OpenMap && showMapModal}
+        open={OpenMap}
        
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"

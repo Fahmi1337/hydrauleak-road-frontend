@@ -98,6 +98,8 @@ const { sensor_coordinates, sensor_description, sensor_Indication, sensor_type, 
     props.handleClose2();
     // props.getSensors();
     localStorage.removeItem("selectedPipeId");
+    localStorage.removeItem("newSensorLng");
+    localStorage.removeItem("newSensorLat");
     window.location.reload();
   };
 

@@ -103,7 +103,10 @@ const AddPipeAccessPopup = (props) => {
     const OpenPipeAccess = props.openPipeAccess;
     
     const reloadPage = () => {
-        window.location.reload();
+      localStorage.removeItem("selectedPipeId");
+      localStorage.removeItem("newSensorLng");
+      localStorage.removeItem("newSensorLat");
+      window.location.reload();
       };
 
   return (
