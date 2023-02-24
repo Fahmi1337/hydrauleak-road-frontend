@@ -68,29 +68,31 @@ const AddPipeAccessPopup = (props) => {
       alert("Please fill in all required fields.");
       return;
     }
+else{
+  const data = {
+    pipe_access_description, pipe_access_title, pipe_access_type, pipe_access_coordinates, pipe
+  };
 
-    const data = {
-      pipe_access_description, pipe_access_title, pipe_access_type, pipe_access_coordinates, pipe
-    };
+  axios
+    .post(`${process.env.REACT_APP_API_URL}/api/pipeacces/`, data,
+    
+    {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' +   localStorage.getItem("token")
+}}
 
-    axios
-      .post(`${process.env.REACT_APP_API_URL}/api/pipeacces/`, data,
-      
-      {
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' +   localStorage.getItem("token")
-  }}
-  
-  )    
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  
- props.handleClosePipeAccess();
+)    
+    .then((res) => {
+      console.log(res.data);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+
+props.handleClosePipeAccess();
+}
+   
  
   };
 
