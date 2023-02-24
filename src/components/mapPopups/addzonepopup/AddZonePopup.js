@@ -86,8 +86,9 @@ const { zone_title, zone_description, zone_num, zone_date, zone_status, zone_col
 
 
 
- const deleteZone = () => {
-    window.location.reload();
+ const deleteZone = (e) => {
+  e.preventDefault();
+    window.location.reload(e);
     localStorage.removeItem("newZoneCoordinates");
     localStorage.removeItem("zoneArea");
   };

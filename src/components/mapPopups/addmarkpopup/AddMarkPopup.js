@@ -119,12 +119,12 @@ console.log("mark data?", markData)
     const OpenMark = props.openMark;
     
 
-    const reloadPage = () => {
-      
+    const reloadPage = (e) => {
+      e.preventDefault();
       localStorage.removeItem("selectedPipeId");
       localStorage.removeItem("newSensorLng");
       localStorage.removeItem("newSensorLat");
-      window.location.reload();
+      window.location.reload(e);
     };
 
   return (
