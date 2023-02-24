@@ -4,28 +4,24 @@ import axios from 'axios';
 
 
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+// import Button from '@mui/material/Button';
+// import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
 
 const AddPipePopup = (props) => {
 
-const [addPipe, setAddPipe] = useState(false);
+// const [addPipe, setAddPipe] = useState(false);
 const initialState = '';
 const [pipe_coordinates, setPipeCoordinates] = useState(initialState);
 
 const [pipeData, setPipeData] = useState({
   
-  // pipe_creation_date:"",
-  // pipe_description:"",
-  // pipe_diameter: "",
-  // pipe_length:"",
-  // pipe_type:"",
-  // pipe_title:"",
-  // pipe_material:"",
-  // pipe_status:"",
-  // map:""
+  pipe_diameter:0,
+  pipe_material:"undefined",
+  pipe_status:"unknown",
+  pipe_type:"undefined",
+  map:1
 
 });
 const { pipe_creation_date, pipe_description, pipe_diameter, pipe_length, pipe_type, pipe_title, pipe_material, pipe_status, map } = pipeData;
@@ -38,8 +34,6 @@ const handlePipeDataChange = (e) => {
 };
    //get Pipe Coordinates
   function getPipeCoordinates() {
-  
-    const pipeCoordinates = localStorage.getItem("newCoordinates");
     
     setPipeCoordinates(JSON.parse(localStorage.getItem("newCoordinates")));
   
@@ -84,19 +78,33 @@ useEffect(() => {
 
 
 
- const deletePipe = () => {
-    window.location.reload();
-    localStorage.removeItem("newCoordinates");
-  };
  
-  // console.log("distance?", pipeData.pipe_length);
- 
+// console.log("distance?", pipeData.pipe_length);
 // console.log("pipedata?", pipeData)
-  const handleSubmitData = () => {
-const data = {}
+
+const handleSubmitData = () => {
+  // Check if the required fields are not empty
+  if (!pipeData.pipe_title || !pipeData.pipe_description|| !pipeData.pipe_length|| !pipeData.pipe_coordinates|| !pipeData.map) {
+    alert("Please fill in all required fields.");
+    return;
+  }
+
+  // Send the data to the server
+  const data = {
+    pipe_creation_date,
+    pipe_description,
+    pipe_diameter,
+    pipe_length,
+    pipe_type,
+    pipe_title,
+    pipe_material,
+    pipe_status,
+    pipe_coordinates,
+    map,
+  };
    
     axios
-      .post(`${process.env.REACT_APP_API_URL}/api/pipes/`, {pipe_creation_date, pipe_description, pipe_diameter, pipe_length, pipe_type, pipe_title, pipe_material, pipe_status, pipe_coordinates, map},
+      .post(`${process.env.REACT_APP_API_URL}/api/pipes/`, data,
       
       {
             headers: {
@@ -111,22 +119,23 @@ const data = {}
       .catch((err) => {
         console.error(err);
       });
-    setAddPipe(false);
-    // props.handleClosePipe();
-    // deletePipe();
+    // setAddPipe(false);
+   
+    deletePipe();
+    
   };
 
+  const deletePipe = () => {
+    window.location.reload();
+    localStorage.removeItem("newCoordinates");
+    localStorage.removeItem("pipeLength");
+    props.handleClosePipe();
+    
+  };
 
-  console.log("coordinatesPipe", pipe_coordinates);
+  // console.log("coordinatesPipe", pipe_coordinates);
   
-  console.log("pipeData?", pipeData);
-
-
-    // //Modal
-    const [showPipeModal, setShowPipeModal] = useState(true);
-
-    const handleClosePipeModal = () => setShowPipeModal(false);
-    const handleShowPipeModal = () => setShowPipeModal(true);
+  // console.log("pipeData?", pipeData);
    
 
     const OpenPipe = props.openPipe;
@@ -169,7 +178,7 @@ console.log("maps details", maps)
       hideBackdrop
       style={{ position: 'initial' }}
       
-        open={OpenPipe && showPipeModal}
+        open={OpenPipe }
        
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -193,22 +202,36 @@ console.log("maps details", maps)
           <label>Pipe coordinates:</label>
           <input
           disabled
+          
             type="text"
             name="pipe_coordinates"
             value={pipe_coordinates}
             onChange={e => handlePipeDataChange(e)}
           />
+          
+          <label>Pipe Length:</label>
+          <input
+          disabled
+          
+            type="number"
+            name="pipe_length"
+            value={pipeData.pipe_length}
+            onChange={e => handlePipeDataChange(e)}
+            
+          />
 
         <label>Pipe title:</label>
           <input
+          
             type="text"
             name="pipe_title"
             value={pipeData.pipe_title}
             onChange={e => handlePipeDataChange(e)}
+            required
           />
 
           <label>Pipe description:</label>
-            <textarea type="text" name="pipe_description" value={pipeData.pipe_description} onChange={e => handlePipeDataChange(e)} />
+            <textarea type="text" name="pipe_description" value={pipeData.pipe_description} onChange={e => handlePipeDataChange(e)} required/>
 
           <label>Pipe creation date:</label>
           <input
@@ -219,7 +242,7 @@ console.log("maps details", maps)
           />
 
           <label>Pipe Status:</label>
-                    <select type="text" name="pipe_status" value={pipeData.pipe_status} onChange={e => handlePipeDataChange(e)}>
+                    <select type="text" name="pipe_status" value={pipeData.pipe_status} onChange={e => handlePipeDataChange(e)} >
                     <option value="good">Good</option>
                     <option value="unknown">Unknown</option>
                     <option value="critical">Critical</option>
@@ -232,21 +255,16 @@ console.log("maps details", maps)
             name="pipe_type"
             value={pipeData.pipe_type}
             onChange={e => handlePipeDataChange(e)}
+            required
           />
-          <label>Pipe Length:</label>
-          <input
-          disabled
-            type="number"
-            name="pipe_length"
-            value={pipeData.pipe_length}
-            onChange={e => handlePipeDataChange(e)}
-          />
+
           <label>Pipe Diameter:</label>
           <input
             type="number"
             name="pipe_diameter"
             value={parseFloat(pipeData.pipe_diameter)}
             onChange={e => handlePipeDataChange(e)}
+            required
           />
           <label>Pipe Material:</label>
           <input
@@ -254,6 +272,7 @@ console.log("maps details", maps)
             name="pipe_material"
             value={pipeData.pipe_material}
             onChange={e => handlePipeDataChange(e)}
+            required
           />
         
 

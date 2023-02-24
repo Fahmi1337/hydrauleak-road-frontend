@@ -81,9 +81,10 @@ const [addMark, setAddMark] = useState(false);
       .catch((err) => {
         console.error(err);
       });
+
     setAddMark(false);
   
-   
+    // reloadPage();
     
   };
 
@@ -128,6 +129,7 @@ const [addMark, setAddMark] = useState(false);
           <label>Mark coordinates:</label>
           <input
           disabled
+          required
             type="text"
             name="reading_coordinates"
             value={markData.mark_coordinates}
@@ -137,6 +139,7 @@ const [addMark, setAddMark] = useState(false);
         <label>Pipe:</label>
           <input
           disabled
+          required
             type="text"
             name="pipe"
             value={localStorage.getItem('selectedPipeId')}
@@ -156,6 +159,7 @@ const [addMark, setAddMark] = useState(false);
 
           <label>Mark creation date:</label>
           <input
+          required
             type="datetime-local"
             name="mark_creation_date"
             value={markData.mark_creation_date}
@@ -169,7 +173,7 @@ const [addMark, setAddMark] = useState(false);
           
           
         </form>
-        <button onClick={()=>{handleSubmitData();reloadPage();}}>Submit</button>
+        <button onClick={()=>{handleSubmitData();}}>Submit</button>
         <button  onClick={()=>{props.handleCloseMark();reloadPage();}}>Cancel</button>
       </div>
         </Box>
