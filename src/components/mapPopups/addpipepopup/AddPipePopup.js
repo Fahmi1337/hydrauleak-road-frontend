@@ -124,8 +124,9 @@ const handleSubmitData = () => {
     
   };
 
-  const deletePipe = () => {
-    window.location.reload();
+  const deletePipe = (e) => {
+    e.preventDefault();
+    window.location.reload(e);
     localStorage.removeItem("newCoordinates");
     localStorage.removeItem("pipeLength");
     props.handleClosePipe();

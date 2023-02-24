@@ -97,11 +97,18 @@ const { sensor_coordinates, sensor_description, sensor_Indication, sensor_type, 
     setAddSensor(false);
     props.handleClose2();
     // props.getSensors();
+    reloadPage();
+  };
+
+
+
+  const reloadPage = (e) => {
+    e.preventDefault();
     localStorage.removeItem("selectedPipeId");
     localStorage.removeItem("newSensorLng");
     localStorage.removeItem("newSensorLat");
-    window.location.reload();
-  };
+    window.location.reload(e);
+    };
 
 console.log("sensor frequency", sensorData.sensor_frequency)
 

@@ -174,7 +174,7 @@ props.handleClosePipeAccess();
 
         </form>
         <button onClick={()=>{handleSubmitData(); reloadPage();}}>Submit</button>
-        <button onClick={()=>{props.handleClosePipeAccess();}}>Cancel</button>
+        <button onClick={()=>{props.handleClosePipeAccess(); reloadPage();}}>Cancel</button>
       </div>
         </Box>
       </Modal>

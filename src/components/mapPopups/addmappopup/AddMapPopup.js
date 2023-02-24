@@ -30,8 +30,9 @@ const [addMap, setAddMap] = useState(false);
   }
  
 
-  const reloadPage = () => {
-    window.location.reload();
+  const reloadPage = (e) => {
+    e.preventDefault();
+    window.location.reload(e);
   };
 
   useEffect(() => {
