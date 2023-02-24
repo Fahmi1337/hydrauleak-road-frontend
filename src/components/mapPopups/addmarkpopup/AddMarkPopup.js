@@ -196,7 +196,7 @@ console.log("mark data?", markData)
           
         </form>
         <button onClick={()=>{handleSubmitData();}}>Submit</button>
-        <button  onClick={()=>{props.handleCloseMark();reloadPage();}}>Cancel</button>
+        <button onClick={()=>{props.handleCloseMark();reloadPage();}}>Cancel</button>
       </div>
         </Box>
       </Modal>

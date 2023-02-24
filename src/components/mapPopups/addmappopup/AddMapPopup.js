@@ -30,9 +30,9 @@ const [addMap, setAddMap] = useState(false);
   }
  
 
-  const reloadPage = (e) => {
-    e.preventDefault();
-    window.location.reload(e);
+  const reloadPage = () => {
+  
+    window.location.reload();
   };
 
   useEffect(() => {
@@ -92,7 +92,7 @@ const [addMap, setAddMap] = useState(false);
         console.error(err);
       });
     
-    
+      reloadPage();
   };
 
 
@@ -154,7 +154,7 @@ const [addMap, setAddMap] = useState(false);
           />
         </form>
         
-        <button onClick={()=>{handleSubmitData();reloadPage();}}>Submit</button>
+        <button onClick={()=>{handleSubmitData();}}>Submit</button>
         <button onClick={()=>{props.handleCloseMap();reloadPage();}}>Cancel</button>
       </div>
         </Box>

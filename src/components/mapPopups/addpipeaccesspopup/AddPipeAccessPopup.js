@@ -66,9 +66,9 @@ const AddPipeAccessPopup = (props) => {
   const handleSubmitData = () => {
     if (!pipeAccessData.pipe_access_title || !pipeAccessData.pipe_access_description || !pipeAccessData.pipe_access_coordinates || !pipeAccessData.pipe) {
       alert("Please fill in all required fields.");
-      
+      return;
     }
-else{
+
   const data = {
     pipe_access_description, pipe_access_title, pipe_access_type, pipe_access_coordinates, pipe
   };
@@ -90,10 +90,8 @@ else{
       console.error(err);
     });
 
-props.handleClosePipeAccess();
-}
-   
- 
+reloadPage();
+
   };
 
 
@@ -104,12 +102,13 @@ props.handleClosePipeAccess();
    
     const OpenPipeAccess = props.openPipeAccess;
     
-    const reloadPage = (e) => {
-      e.preventDefault();
+    const reloadPage = () => {
+    
+      window.location.reload();
       localStorage.removeItem("selectedPipeId");
       localStorage.removeItem("newSensorLng");
       localStorage.removeItem("newSensorLat");
-      window.location.reload(e);
+      props.handleClosePipeAccess();
       };
 
   return (
@@ -164,7 +163,7 @@ props.handleClosePipeAccess();
 
 
           <label>Pipe Access Type:</label>
-                    <select type="text" value={pipeAccessData.pipe_access_type} onChange={e => handlePipeAccessDataChange(e)}>
+                    <select type="text" name="pipe_access_type" value={pipeAccessData.pipe_access_type} onChange={e => handlePipeAccessDataChange(e)}>
                     <option value="HouseValve">House Valve</option>
                     <option value="FirePole">Fire Pole</option>
                     <option value="FireHydrantValve">Fire Hydrant Valve</option>
@@ -173,7 +172,7 @@ props.handleClosePipeAccess();
 
 
         </form>
-        <button onClick={()=>{handleSubmitData(); reloadPage();}}>Submit</button>
+        <button onClick={()=>{handleSubmitData();}}>Submit</button>
         <button onClick={()=>{props.handleClosePipeAccess(); reloadPage();}}>Cancel</button>
       </div>
         </Box>
