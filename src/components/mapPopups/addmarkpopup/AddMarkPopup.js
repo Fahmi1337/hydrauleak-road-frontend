@@ -26,9 +26,9 @@ const [addMark, setAddMark] = useState(false);
     
       setLat(lat);
       setLng(lng);
-    setMarkData({...markData, mark_coordinates : [lng, lat]});
+    setMarkData({...markData, mark_coordinates : [lng, lat], pipe : localStorage.getItem('selectedPipeId')});
 
-    //  setMarkData({zone_coordinates : localStorage.getItem('selectedPipeId')});
+   
   }
  
 
@@ -49,8 +49,13 @@ const [addMark, setAddMark] = useState(false);
 
 
   const [markData, setMarkData] = useState({
+    
+
+    mark_description: '', 
+    mark_title : '', 
+   
   });
-  const { mark_coordinates, mark_creation_date, mark_description, mark_title } = markData;
+  const { mark_coordinates, mark_creation_date, mark_description, mark_title, pipe } = markData;
   
 
   const handleMarkDataChange = (e) => {
@@ -61,12 +66,27 @@ const [addMark, setAddMark] = useState(false);
     });
   };
 
+
+
+
+console.log("mark data?", markData)
   const handleSubmitData = () => {
 
-    const pipe = localStorage.getItem('selectedPipeId');
+    
+
+    if (!markData.mark_title || !markData.mark_description || !markData.mark_coordinates || !markData.pipe) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
+    const data = {
+      mark_coordinates, mark_creation_date, mark_description, mark_title, pipe
+    };
+
+  
 
     axios
-      .post(`${process.env.REACT_APP_API_URL}/api/marks/`, { mark_coordinates, mark_creation_date, mark_description, mark_title, pipe},
+      .post(`${process.env.REACT_APP_API_URL}/api/marks/`, data,
       
       {
             headers: {
@@ -142,7 +162,7 @@ const [addMark, setAddMark] = useState(false);
           required
             type="text"
             name="pipe"
-            value={localStorage.getItem('selectedPipeId')}
+            value={localStorage.getItem('selectedPipeId') || markData.pipe}
             onChange={e => handleMarkDataChange(e)}
           />
 
