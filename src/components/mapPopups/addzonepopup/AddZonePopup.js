@@ -86,9 +86,9 @@ const { zone_title, zone_description, zone_num, zone_date, zone_status, zone_col
 
 
 
- const deleteZone = (e) => {
-  e.preventDefault();
-    window.location.reload(e);
+ const deleteZone = () => {
+
+    window.location.reload();
     localStorage.removeItem("newZoneCoordinates");
     localStorage.removeItem("zoneArea");
   };
@@ -142,20 +142,15 @@ const { zone_title, zone_description, zone_num, zone_date, zone_status, zone_col
 
   const handleZoneSubmitButton = (e) => {
     e.preventDefault();
-    // props.handlePolygonCreated(); 
+
     handleSubmitData(); 
-    // deleteZone();
+    deleteZone();
     props.handleCloseZone();
    
   }
 
 
     // //Modal
-    const [showZoneModal, setShowZoneModal] = useState(true);
-
-    const handleCloseZoneModal = () => setShowZoneModal(false);
-    const handleShowZoneModal = () => setShowZoneModal(true);
-   
 
     const OpenZone = props.openZone;
 
@@ -196,7 +191,7 @@ console.log("zonedata?", zoneData)
       hideBackdrop
       style={{ position: 'initial' }}
       
-        open={OpenZone && showZoneModal}
+        open={OpenZone}
        
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"

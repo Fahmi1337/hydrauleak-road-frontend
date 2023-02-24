@@ -7,10 +7,6 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 
 const RightAddSensorPopup = (props) => {
-  
-  const [addSensor, setAddSensor] = useState(false);
-
-
 
   const initialState = '';
   const [lat, setLat] = useState(initialState);
@@ -94,20 +90,19 @@ const { sensor_coordinates, sensor_description, sensor_Indication, sensor_type, 
       .catch((err) => {
         console.error(err);
       });
-    setAddSensor(false);
-    props.handleClose2();
-    // props.getSensors();
+  
+   
     reloadPage();
   };
 
 
 
-  const reloadPage = (e) => {
-    e.preventDefault();
+  const reloadPage = () => {
+    window.location.reload();
     localStorage.removeItem("selectedPipeId");
     localStorage.removeItem("newSensorLng");
     localStorage.removeItem("newSensorLat");
-    window.location.reload(e);
+ 
     };
 
 console.log("sensor frequency", sensorData.sensor_frequency)
