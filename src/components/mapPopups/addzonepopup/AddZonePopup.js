@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./addzonepopup.css"
+import "./addZonePopup.css"
 import axios from 'axios';
 
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./addmappopup.css"
+import "./addMapPopup.css"
 import axios from 'axios';
 
 

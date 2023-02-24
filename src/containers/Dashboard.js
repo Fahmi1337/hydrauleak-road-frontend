@@ -3,15 +3,15 @@ import axios from 'axios';
 import mapboxgl from 'mapbox-gl';
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import * as turf from '@turf/turf'
-import ButtonWithPopup from "../components/popups/contributes/AddButtonPopup"
-import RightAddSensorPopup from "../components/popups/addsensorpopup/AddSensorPopup"
+import ButtonWithPopup from "../components/mapPopups/contributes/AddButtonPopup"
+import RightAddSensorPopup from "../components/mapPopups/addsensorpopup/AddSensorPopup"
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 
 import ReactDOM from 'react-dom';
 
 
-import SensorViewPopup from '../components/popups/addsensorpopup/SensorViewPopup';
+import SensorViewPopup from '../components/mapPopups/addsensorpopup/SensorViewPopup';
 
 
 const Map = (props) => {
