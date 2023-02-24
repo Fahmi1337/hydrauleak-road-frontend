@@ -11,7 +11,7 @@ import Modal from '@mui/material/Modal';
 
 const AddPipeAccessPopup = (props) => {
 
-const [addPipeAccess, setAddPipeAccess] = useState(false);
+
 
 
   const initialState = '';
@@ -27,7 +27,7 @@ const [addPipeAccess, setAddPipeAccess] = useState(false);
       setLat(lat);
       setLng(lng);
     setPipeAccessData({...pipeAccessData, pipe_access_coordinates : [lng, lat], pipe : localStorage.getItem('selectedPipeId')});
-    // setPipeAccessData({pipe : localStorage.getItem('selectedPipeId')});
+
   }
  
 
@@ -48,9 +48,12 @@ const [addPipeAccess, setAddPipeAccess] = useState(false);
 
 
   const [pipeAccessData, setPipeAccessData] = useState({
+    pipe_access_description:'',
+    pipe_access_title:'',
+    pipe_access_type:'HouseValve'
   });
 
-
+  const { pipe_access_description, pipe_access_title, pipe_access_type, pipe_access_coordinates, pipe } = pipeAccessData;
 
   const handlePipeAccessDataChange = (e) => {
     setPipeAccessData({
@@ -61,10 +64,17 @@ const [addPipeAccess, setAddPipeAccess] = useState(false);
   };
 
   const handleSubmitData = () => {
+    if (!pipeAccessData.pipe_access_title || !pipeAccessData.pipe_access_description || !pipeAccessData.pipe_access_coordinates || !pipeAccessData.pipe) {
+      alert("Please fill in all required fields.");
+      return;
+    }
 
+    const data = {
+      pipe_access_description, pipe_access_title, pipe_access_type, pipe_access_coordinates, pipe
+    };
 
     axios
-      .post(`${process.env.REACT_APP_API_URL}/api/pipeacces/`, pipeAccessData,
+      .post(`${process.env.REACT_APP_API_URL}/api/pipeacces/`, data,
       
       {
             headers: {
@@ -79,7 +89,7 @@ const [addPipeAccess, setAddPipeAccess] = useState(false);
       .catch((err) => {
         console.error(err);
       });
-    setAddPipeAccess(false);
+  
  props.handleClosePipeAccess();
  
   };
@@ -89,16 +99,14 @@ const [addPipeAccess, setAddPipeAccess] = useState(false);
 
 
     // //Modal
-    const [showPipeAccessModal, setShowPipeAccessModal] = useState(true);
-
-    const handleClosePipeAccessModal = () => setShowPipeAccessModal(false);
-    const handleShowPipeAccessModal = () => setShowPipeAccessModal(true);
    
-
     const OpenPipeAccess = props.openPipeAccess;
     
     const reloadPage = () => {
-        window.location.reload();
+      localStorage.removeItem("selectedPipeId");
+      localStorage.removeItem("newSensorLng");
+      localStorage.removeItem("newSensorLat");
+      window.location.reload();
       };
 
   return (
@@ -109,7 +117,7 @@ const [addPipeAccess, setAddPipeAccess] = useState(false);
       hideBackdrop
       style={{ position: 'initial' }}
       
-        open={OpenPipeAccess && showPipeAccessModal}
+        open={OpenPipeAccess}
        
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -133,7 +141,7 @@ const [addPipeAccess, setAddPipeAccess] = useState(false);
           <input
           disabled
             type="text"
-            name="reading_coordinates"
+            name="pipe_access_coordinates"
             value={pipeAccessData.pipe_access_coordinates}
             onChange={e => handlePipeAccessDataChange(e)}
           />
@@ -147,7 +155,8 @@ const [addPipeAccess, setAddPipeAccess] = useState(false);
           />
 
           <label>Pipe Access description:</label>
-            <textarea value={pipeAccessData.pipe_access_description} onChange={e => handlePipeAccessDataChange(e)} />
+            <textarea  type="text"
+            name="pipe_access_description" value={pipeAccessData.pipe_access_description} onChange={e => handlePipeAccessDataChange(e)} />
           
 
 
@@ -162,7 +171,7 @@ const [addPipeAccess, setAddPipeAccess] = useState(false);
 
         </form>
         <button onClick={()=>{handleSubmitData(); reloadPage();}}>Submit</button>
-        <button onClick={()=>{props.handleClosePipeAccess();reloadPage();}}>Cancel</button>
+        <button onClick={()=>{props.handleClosePipeAccess();}}>Cancel</button>
       </div>
         </Box>
       </Modal>

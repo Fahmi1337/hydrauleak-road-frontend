@@ -79,8 +79,7 @@ useEffect(() => {
 
 
  
-// console.log("distance?", pipeData.pipe_length);
-// console.log("pipedata?", pipeData)
+
 
 const handleSubmitData = () => {
   // Check if the required fields are not empty

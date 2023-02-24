@@ -49,6 +49,8 @@ const [addMap, setAddMap] = useState(false);
 
 
   const [mapData, setMapData] = useState({
+    map_title:'',
+    map_description: '',
   });
 
 
@@ -60,12 +62,20 @@ const [addMap, setAddMap] = useState(false);
       
     });
   };
-
+  const { map_title, map_description, map_creation_date, map_coordinate } = mapData;
   const handleSubmitData = () => {
 
+    if (!mapData.map_title || !mapData.map_description || !mapData.map_coordinate ) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
+    const data = {
+      map_coordinate, map_creation_date, map_description, map_title
+    };
 
     axios
-      .post(`${process.env.REACT_APP_API_URL}/api/maps/`, mapData,
+      .post(`${process.env.REACT_APP_API_URL}/api/maps/`, data,
       
       {
             headers: {
@@ -80,7 +90,7 @@ const [addMap, setAddMap] = useState(false);
       .catch((err) => {
         console.error(err);
       });
-    setAddMap(false);
+    
     
   };
 
@@ -89,10 +99,7 @@ const [addMap, setAddMap] = useState(false);
 
 
     // //Modal
-    const [showMapModal, setShowMapModal] = useState(true);
 
-    const handleCloseMapModal = () => setShowMapModal(false);
-    const handleShowMapModal = () => setShowMapModal(true);
    
 
     const OpenMap = props.openMap;
@@ -106,7 +113,7 @@ const [addMap, setAddMap] = useState(false);
       hideBackdrop
       style={{ position: 'initial' }}
       
-        open={OpenMap && showMapModal}
+        open={OpenMap}
        
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -131,8 +138,9 @@ const [addMap, setAddMap] = useState(false);
 
           <label>Map coordinates:</label>
           <input
+          disabled
             type="text"
-            name="reading_coordinates"
+            name="map_coordinate"
             value={mapData.map_coordinate}
             onChange={e => handleMapDataChange(e)}
           />

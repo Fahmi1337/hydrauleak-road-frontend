@@ -16,7 +16,12 @@ const RightAddSensorPopup = (props) => {
   const [lat, setLat] = useState(initialState);
   const [lng, setLng] = useState(initialState);
 
-
+  const [sensorData, setSensorData] = useState({
+    sensor_Indication:'good',
+    sensor_description:'',
+    sensor_title:'',
+    sensor_type:'unknown',
+  });
   function getLatLng() {
     const lat = localStorage.getItem("newSensorLat");
     const lng = localStorage.getItem("newSensorLng");
@@ -44,8 +49,7 @@ const RightAddSensorPopup = (props) => {
 
 
 
-  const [sensorData, setSensorData] = useState({
-  });
+
 
 const open2 = props.open2;
 
@@ -56,12 +60,26 @@ const open2 = props.open2;
       
     });
   };
+console.log("sensorData?", sensorData)
 
+const { sensor_coordinates, sensor_description, sensor_Indication, sensor_type, sensor_creationdate, sensor_frequency, sensor_title } = sensorData;
   const handleSubmitData = () => {
 
 
+
+    if (!sensorData.mark_title || !sensorData.mark_description || !sensorData.mark_coordinates || !sensorData.pipe) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
+    const data = {
+      sensor_coordinates, sensor_description, sensor_Indication, sensor_type, sensor_creationdate, sensor_frequency, sensor_title
+    };
+
+
+
     axios
-      .post(`${process.env.REACT_APP_API_URL}/api/sensors/`, sensorData,
+      .post(`${process.env.REACT_APP_API_URL}/api/sensors/`, data,
       
       {
             headers: {
@@ -80,6 +98,8 @@ const open2 = props.open2;
     props.handleClose2();
     // props.getSensors();
     localStorage.removeItem("selectedPipeId");
+    localStorage.removeItem("newSensorLng");
+    localStorage.removeItem("newSensorLat");
     window.location.reload();
   };
 
@@ -115,8 +135,9 @@ console.log("sensor frequency", sensorData.sensor_frequency)
         <label>Sensor coordinates:</label>
         
         <input
+        disabled
           type="text"
-          name="reading_coordinates"
+          name="sensor_coordinates"
           value={sensorData.sensor_coordinates}
           onChange={e => handleSensorDataChange(e)}
         />
@@ -130,7 +151,8 @@ console.log("sensor frequency", sensorData.sensor_frequency)
         />
     
         <label>Sensor description:</label>
-            <textarea value={sensorData.sensor_description} onChange={e => handleSensorDataChange(e)} />
+            <textarea    type="text"
+          name="sensor_description" value={sensorData.sensor_description} onChange={e => handleSensorDataChange(e)} />
         
         <label>Sensor creation date:</label>
         <input
