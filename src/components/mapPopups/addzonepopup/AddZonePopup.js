@@ -24,33 +24,33 @@ zone_area: parseFloat(localStorage.getItem("zoneArea")),
   zone_coordinates: '',
   map: 1
 });
-const { zone_title, zone_description, zone_num, zone_date, zone_status, zone_color, map } = zoneData;
+const { zone_title, zone_description, zone_num, zone_date, zone_status, zone_color, map, AreaZone, zone_coordinates } = zoneData;
 
 
 //get Zone Area Start
-const [AreaZone, setZoneArea] = useState(initialState);
+// const [zoneArea, setZoneArea] = useState(initialState);
 
-function getZoneArea() {
+// function getZoneArea() {
 
-  const zoneArea = localStorage.getItem("zoneArea");
+//   const zoneArea = localStorage.getItem("zoneArea");
   
-  setZoneArea(zoneArea);
+//   setZoneArea(zoneArea);
     
-  setZoneData({...zoneData, zone_area : zoneArea});
-  console.log("zoneData zone_area ", zoneData.zone_area)
-  console.log(" zoneArea ", zoneArea)
+//   setZoneData({...zoneData, zone_area : zoneArea});
+//   console.log("zoneData zone_area ", zoneData.zone_area)
+//   console.log(" zoneArea ", zoneArea)
 
-}
+// }
 
-useEffect(() => {
+// useEffect(() => {
   
-  getZoneArea();
-      }, [AreaZone]);
+//   getZoneArea();
+//       }, [AreaZone]);
 
 
-      window.addEventListener("zoneAreaStorage", () => {
-        getZoneArea();
-});
+//       window.addEventListener("zoneAreaStorage", () => {
+//         getZoneArea();
+// });
 
 //get Zone Area end
 
@@ -59,7 +59,7 @@ useEffect(() => {
 
 
 
-  const [zone_coordinates, setCoordinatesZone] = useState(initialState);
+  const [coordinatesZone, setCoordinatesZone] = useState(initialState);
   
 
   function getLatLng() {
@@ -70,7 +70,7 @@ useEffect(() => {
 
     
       
-    setZoneData({...zoneData, zone_coordinates : JSON.parse(zoneCoordinates)});
+    setZoneData({...zoneData, zone_coordinates : JSON.parse(zoneCoordinates), zone_area: localStorage.getItem("zoneArea")});
   }
  
   useEffect(() => {
@@ -89,6 +89,7 @@ useEffect(() => {
  const deleteZone = () => {
     window.location.reload();
     localStorage.removeItem("newZoneCoordinates");
+    localStorage.removeItem("zoneArea");
   };
 
 
@@ -107,10 +108,17 @@ useEffect(() => {
   };
 
   const handleSubmitData = () => {
+    if (!zoneData.zone_title || !zoneData.zone_description || !zoneData.zone_coordinates) {
+      alert("Please fill in all required fields.");
+      return;
+    }
 
+    const data = {
+      zone_title, zone_description, zone_num, zone_date, zone_status, zone_color, map, AreaZone, zone_coordinates
+    };
 
     axios
-      .post(`${process.env.REACT_APP_API_URL}/api/zones/`,  { zone_title, zone_description, zone_num, zone_date, zone_status, zone_color, map, AreaZone, zone_coordinates },
+      .post(`${process.env.REACT_APP_API_URL}/api/zones/`,  data,
       
       {
             headers: {
@@ -149,9 +157,6 @@ useEffect(() => {
    
 
     const OpenZone = props.openZone;
-    
-
-console.log("zone coordinates", zoneData.zone_coordinates)
 
 const [maps, setMaps] = useState([]);
 
@@ -230,7 +235,7 @@ console.log("zonedata?", zoneData)
           disabled
             type="text"
             name="zone_area"
-            value={parseFloat(AreaZone)}
+            value={parseFloat(localStorage.getItem("zoneArea")) || parseFloat(zoneData.zone_area)}
             onChange={e => handleZoneDataChange(e)}
           />
         <label>Zone title:</label>
@@ -278,8 +283,7 @@ console.log("zonedata?", zoneData)
 
         </form>
 
-         {/* <button onClick={() => {props.handlePolygonCreated(); handleSubmitData(); deleteZone();}}>Submit</button>*/}
-        {/* <button onClick={() => {props.handlePolygonCreated(); }}>Submit</button>  */}
+
         <button onClick={handleZoneSubmitButton}>Submit</button> 
         <button onClick={() => {props.handleCloseZone(); deleteZone();}}>Cancel</button>
       </div>
