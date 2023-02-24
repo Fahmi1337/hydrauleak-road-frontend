@@ -66,7 +66,7 @@ const AddPipeAccessPopup = (props) => {
   const handleSubmitData = () => {
     if (!pipeAccessData.pipe_access_title || !pipeAccessData.pipe_access_description || !pipeAccessData.pipe_access_coordinates || !pipeAccessData.pipe) {
       alert("Please fill in all required fields.");
-      return;
+      
     }
 else{
   const data = {
@@ -104,11 +104,12 @@ props.handleClosePipeAccess();
    
     const OpenPipeAccess = props.openPipeAccess;
     
-    const reloadPage = () => {
+    const reloadPage = (e) => {
+      e.preventDefault();
       localStorage.removeItem("selectedPipeId");
       localStorage.removeItem("newSensorLng");
       localStorage.removeItem("newSensorLat");
-      window.location.reload();
+      window.location.reload(e);
       };
 
   return (
