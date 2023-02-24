@@ -45,7 +45,38 @@ const NoLayout = ({children}) => {
 
 const App = () => {
     const [isToken, setIsToken]= useState(true)
+    const [me, setMe] = useState([]);
+
+
+
+
+    useEffect(() => {
+        getMe() 
+      }, []);
     
+    
+       const getMe = async () => {
+          try {
+            const response = await fetch(
+              `${process.env.REACT_APP_API_URL}/api/user/me`,
+              {
+                method: "GET",
+        
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: "Bearer " + localStorage.getItem("token"),
+                },
+              }
+            )
+              .then((response) => response.json())
+              .then((data) => setMe(data));
+        return response;
+          } catch (error) {
+            console.log(error);
+          }
+        };
+
+
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
