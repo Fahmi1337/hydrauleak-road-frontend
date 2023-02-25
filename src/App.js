@@ -1,4 +1,3 @@
-//needs
 import { Provider } from 'react-redux';
 import store from './store';
 import React, {useState, useEffect} from 'react'
@@ -45,7 +44,9 @@ const NoLayout = ({children}) => {
 
 const App = () => {
     const [isToken, setIsToken]= useState(true)
-    
+   
+
+
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
