@@ -21,7 +21,37 @@ const ClientManagement = () => {
 
 
 const [selectedClient, setSelectedClient] = useState(null); // new state variable
-  
+const [me, setMe] = useState([]);
+
+
+
+
+useEffect(() => {
+    getMe() 
+  }, []);
+
+
+   const getMe = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/api/user/me`,
+          {
+            method: "GET",
+    
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => setMe(data));
+    return response;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
 
     const getClients = e => {
       axios.get(`${process.env.REACT_APP_API_URL}/api/clients/`, {
@@ -93,13 +123,31 @@ const handleDeleteClient =async (clientId) => {
         <td>{item.user.phone}</td>
         <td>{item.description}</td>
         <td>{item.inscription_date}</td>
-        <td ><button onClick={() => handleRowClick(item)}>Details</button></td>
+
+
+
+        {me.roles==="is_admin" && (
+    <td ><button onClick={() => handleRowClick(item)}>Details</button></td>
+    )} 
+       {me.roles==="is_admin" && (
+    <td>
+    <button onClick={() =>  {handleEditClient(item); handleOpenEditClient();}}>Edit</button>
+  </td>
+    )} 
+       {me.roles==="is_admin" && (
+   <td>
+   <button onClick={() => handleDeleteClient(item.id)}>Delete</button>
+ </td>
+    )} 
+
+
+        {/* <td ><button onClick={() => handleRowClick(item)}>Details</button></td>
          <td>
            <button onClick={() =>  {handleEditClient(item); handleOpenEditClient();}}>Edit</button>
          </td>
          <td>
            <button onClick={() => handleDeleteClient(item.id)}>Delete</button>
-         </td>
+         </td> */}
       </tr>
     ));
 
@@ -199,8 +247,11 @@ const handleCloseAddClient = () => {
           <h3>Client Management</h3>
           <br/>
       <div className="table-controls">
-        <div className="search-input">       
-        <button onClick={() => handleOpenAddClient()}>Add Client Data</button>
+        <div className="search-input">  
+        {me.roles==="is_admin" && (
+   <button onClick={() => handleOpenAddClient()}>Add Client Data</button>
+    )}     
+        {/* <button onClick={() => handleOpenAddClient()}>Add Client Data</button> */}
           <label htmlFor="search">Search:</label>
           <input type="text" id="search" value={searchTerm} onChange={handleSearchChange} />
         </div>
@@ -225,9 +276,18 @@ const handleCloseAddClient = () => {
             <th>Phone</th>
             <th>Description</th>
             <th>Inscription Date</th>
-            <th>Details</th>
+            {me.roles==="is_admin" && (
+   <th>Details</th>
+    )}
+      {me.roles==="is_admin" && (
+  <th>Edit</th>
+    )}
+      {me.roles==="is_admin" && (
+  <th>Delete</th>
+    )}
+            {/* <th>Details</th>
             <th>Edit</th>
-            <th>Delete</th>
+            <th>Delete</th> */}
           </tr>
         </thead>
         <tbody>
@@ -253,5 +313,3 @@ const handleCloseAddClient = () => {
 }
 
 export default ClientManagement
-
-

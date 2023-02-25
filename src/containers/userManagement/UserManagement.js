@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ReactPaginate from 'react-paginate';
-import EditClientPopupForm from './EditClientPopupForm';
-import AddClientPopupForm from './AddClientPopupForm';
+import EditUserPopupForm from './EditUserPopupForm';
+import AddUserPopupForm from './AddUserPopupForm';
 
 
 
 
-const ClientManagement = () => {
+const UserManagement = () => {
 
   const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -17,44 +17,14 @@ const ClientManagement = () => {
   const pagesVisited = pageNumber * itemsPerPage;
 
   const [openPopup, setOpenPopup] = useState(false);
-  const [openAddClientPopup, setOpenAddClientPopup] = useState(false);
+  const [openAddUserPopup, setOpenAddUserPopup] = useState(false);
 
 
-const [selectedClient, setSelectedClient] = useState(null); // new state variable
-const [me, setMe] = useState([]);
+const [selectedUser, setSelectedUser] = useState(null); // new state variable
+  
 
-
-
-
-useEffect(() => {
-    getMe() 
-  }, []);
-
-
-   const getMe = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.REACT_APP_API_URL}/api/user/me`,
-          {
-            method: "GET",
-    
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + localStorage.getItem("token"),
-            },
-          }
-        )
-          .then((response) => response.json())
-          .then((data) => setMe(data));
-    return response;
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-
-    const getClients = e => {
-      axios.get(`${process.env.REACT_APP_API_URL}/api/clients/`, {
+    const getUsers = e => {
+      axios.get(`${process.env.REACT_APP_API_URL}/api/user/`, {
         headers: {
           'Authorization': 'Bearer ' +  localStorage.getItem("token")
         }
@@ -67,26 +37,18 @@ useEffect(() => {
   });
     }
 
-    const handleOpenReportPopup = () => {
-      setOpenPopup(true);
-    };
-    const handleRowClick = (item) => {
-      setSelectedClient(item);
-      handleOpenReportPopup();
-    };
-   
 
 
 
-const handleEditClient = (client) => {
-  setSelectedClient(client);
+const handleEditUser = (user) => {
+  setSelectedUser(user);
 };
 
-// handle Delete client
-const handleDeleteClient =async (clientId) => {
+// handle Delete user
+const handleDeleteUser =async (userId) => {
 
   
-  await axios.delete(`${process.env.REACT_APP_API_URL}/api/clients/${clientId}/`,
+  await axios.delete(`${process.env.REACT_APP_API_URL}/api/user/${userId}/`,
     
   {
         headers: {
@@ -101,10 +63,10 @@ const handleDeleteClient =async (clientId) => {
     console.error(err);
   });
 
-  const newData = data.filter(item => item.id !== clientId);
+  const newData = data.filter(item => item.id !== userId);
   setData(newData);
-  setSelectedClient(null);
-  getClients();
+  setSelectedUser(null);
+  getUsers();
 };
 
   
@@ -113,41 +75,22 @@ const handleDeleteClient =async (clientId) => {
 // display data table
 
     const displayData = data
-    .filter(item => item.user.name.toLowerCase().includes(searchTerm.toLowerCase()))
+    .filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()))
     .filter(item => selectedRole === '' || item.roles === selectedRole)
     .slice(pagesVisited, pagesVisited + itemsPerPage)
     .map(item => (
       <tr key={item.id}>
         <td>{item.id}</td>
-        <td>{item.user.name}</td>        
-        <td>{item.user.phone}</td>
-        <td>{item.description}</td>
-        <td>{item.inscription_date}</td>
-
-
-
-        {me.roles==="is_admin" && (
-    <td ><button onClick={() => handleRowClick(item)}>Details</button></td>
-    )} 
-       {me.roles==="is_admin" && (
-    <td>
-    <button onClick={() =>  {handleEditClient(item); handleOpenEditClient();}}>Edit</button>
-  </td>
-    )} 
-       {me.roles==="is_admin" && (
-   <td>
-   <button onClick={() => handleDeleteClient(item.id)}>Delete</button>
- </td>
-    )} 
-
-
-        {/* <td ><button onClick={() => handleRowClick(item)}>Details</button></td>
+        <td>{item.name}</td>
+        <td>{item.email}</td>
+        <td>{item.phone}</td>
+        <td>{item.roles}</td>
          <td>
-           <button onClick={() =>  {handleEditClient(item); handleOpenEditClient();}}>Edit</button>
+           <button onClick={() =>  {handleEditUser(item); handleOpenEditUser();}}>Edit</button>
          </td>
          <td>
-           <button onClick={() => handleDeleteClient(item.id)}>Delete</button>
-         </td> */}
+           <button onClick={() => handleDeleteUser(item.id)}>Delete</button>
+         </td>
       </tr>
     ));
 
@@ -168,13 +111,13 @@ const handleDeleteClient =async (clientId) => {
   };
 
   useEffect(() => {
-    getClients()
+    getUsers()
   }, []);
 
 
-// Update Client
-const handleUpdateClient = async (client) => {
-  const response = await axios.put(`${process.env.REACT_APP_API_URL}/api/client/${client.id}/`, client,
+// Update User
+const handleUpdateUser = async (user) => {
+  const response = await axios.put(`${process.env.REACT_APP_API_URL}/api/user/${user.id}/`, user,
     
   {
         headers: {
@@ -192,30 +135,30 @@ const handleUpdateClient = async (client) => {
 
 
 
-  const updatedClient = response.data;
-  const index = data.findIndex((u) => u.id === updatedClient.id);
+  const updatedUser = response.data;
+  const index = data.findIndex((u) => u.id === updatedUser.id);
   const newData = [...data];
-  newData[index] = updatedClient;
+  newData[index] = updatedUser;
   setData(newData);
-  setSelectedClient(null);
-  getClients()
+  setSelectedUser(null);
+  getUsers()
 };
 
 
 // handle buttons
-const handleCancelEditClient = () => {
-  setSelectedClient(null);
+const handleCancelEditUser = () => {
+  setSelectedUser(null);
 };
 
-const handleOpenEditClient = () => {
+const handleOpenEditUser = () => {
   setOpenPopup(true);
 };
 
-const handleOpenAddClient = () => {
-  setOpenAddClientPopup(true);
+const handleOpenAddUser = () => {
+  setOpenAddUserPopup(true);
 };
-const handleCloseAddClient = () => {
-  setOpenAddClientPopup(false);
+const handleCloseAddUser = () => {
+  setOpenAddUserPopup(false);
 };
     
 
@@ -225,33 +168,28 @@ const handleCloseAddClient = () => {
     <div className="table_container">
 
         <div>
-                  {selectedClient && (
-                    <EditClientPopupForm
-                      client={selectedClient}
-                      onUpdateClient={handleUpdateClient}
-                      onCancel={handleCancelEditClient}
+                  {selectedUser && (
+                    <EditUserPopupForm
+                      user={selectedUser}
+                      onUpdateUser={handleUpdateUser}
+                      onCancel={handleCancelEditUser}
                       onOpen = {openPopup}
-                      getClients={getClients}
+                      getUsers={getUsers}
                     />
                   )}         
           </div>
           <div>
-                  {openAddClientPopup && (
-                    <AddClientPopupForm                    
-                      onCancel={handleCloseAddClient}
-                      onOpen = {openAddClientPopup}
+                  {openAddUserPopup && (
+                    <AddUserPopupForm                    
+                      onCancel={handleCloseAddUser}
+                      onOpen = {openAddUserPopup}
                     />
                   )}         
           </div>
 
-          <h3>Client Management</h3>
-          <br/>
       <div className="table-controls">
-        <div className="search-input">  
-        {me.roles==="is_admin" && (
-   <button onClick={() => handleOpenAddClient()}>Add Client Data</button>
-    )}     
-        {/* <button onClick={() => handleOpenAddClient()}>Add Client Data</button> */}
+        <div className="search-input">
+        <button onClick={() => handleOpenAddUser()}>Add User</button>
           <label htmlFor="search">Search:</label>
           <input type="text" id="search" value={searchTerm} onChange={handleSearchChange} />
         </div>
@@ -273,21 +211,11 @@ const handleCloseAddClient = () => {
           <tr>
             <th>ID</th>
             <th>Name</th>
+            <th>Email</th>
             <th>Phone</th>
-            <th>Description</th>
-            <th>Inscription Date</th>
-            {me.roles==="is_admin" && (
-   <th>Details</th>
-    )}
-      {me.roles==="is_admin" && (
-  <th>Edit</th>
-    )}
-      {me.roles==="is_admin" && (
-  <th>Delete</th>
-    )}
-            {/* <th>Details</th>
+            <th>Roles</th>
             <th>Edit</th>
-            <th>Delete</th> */}
+            <th>Delete</th>
           </tr>
         </thead>
         <tbody>
@@ -312,4 +240,6 @@ const handleCloseAddClient = () => {
   );
 }
 
-export default ClientManagement
+export default UserManagement
+
+
