@@ -1,17 +1,81 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Link, NavLink, Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../../actions/auth';
 import Alert from '../Alert';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import "./Navbar.css"
 import Login from "../../containers/login/Login"
 
 const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
 
 
+    const [me, setMe] = useState([]);
 
+
+
+
+    useEffect(() => {
+        getMe() 
+      }, []);
+    
+    
+       const getMe = async () => {
+          try {
+            const response = await fetch(
+              `${process.env.REACT_APP_API_URL}/api/user/me`,
+              {
+                method: "GET",
+        
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: "Bearer " + localStorage.getItem("token"),
+                },
+              }
+            )
+              .then((response) => response.json())
+              .then((data) => setMe(data));
+        return response;
+          } catch (error) {
+            console.log(error);
+          }
+        };
   
+
+console.log("me?", me.roles)
+
+
+    
+
+const getUserRoutes = () => { 
+    if(me.roles==="is_admin"){
+        return(
+            <>
+              <li><a href="/">Dashboard</a></li>
+                <li><a href="/contracts">Contracts</a></li>
+                <li><a href="/interventions">Interventions</a></li>
+                <li><a href="/reports">Reports</a></li>
+                <li><a href="/client-management">Clients</a></li>
+                <li><a href="/user-management">users</a></li>
+                </>
+        )
+    }
+    else{
+        return(
+            <>
+            <li><a href="/">Dashboard</a></li>
+                         <li><a href="/contracts">Contracts</a></li>
+                         <li><a href="/interventions">Interventions</a></li>
+                         <li><a href="/reports">Reports</a></li>
+                         </>
+        )
+      
+                     
+    }
+ };
+
+
 
     const authLinks = (
         <a className='navbar__top__auth__link' onClick={logout} href='/login'>Logout</a>
@@ -40,12 +104,13 @@ const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
                     <Link className='navbar__left__logo__link' to='/'>Hydrauleak Road</Link>
                 </div>                   
             </div>
-                <li><a href="/">Dashboard</a></li>
+                {/* <li><a href="/">Dashboard</a></li>
                 <li><a href="/contracts">Contracts</a></li>
                 <li><a href="/interventions">Interventions</a></li>
                 <li><a href="/reports">Reports</a></li>
                 <li><a href="/client-management">Clients</a></li>
-                <li><a href="/user-management">users</a></li>
+                <li><a href="/user-management">users</a></li> */}
+               { getUserRoutes()}
                 
             <div className='navbar__left__auth'>
                 { !loading && (<Fragment>{ localStorage.getItem("token") ? authLinks : guestLinks }</Fragment>) }
@@ -57,6 +122,8 @@ const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
     </Fragment>
     );
  
+
+   
 console.log("is authenticated?", isAuthenticated);
 
 
@@ -66,8 +133,12 @@ console.log("is authenticated?", isAuthenticated);
 
     return (
        <div>
-        {/* { !loading && (<Fragment>{ localStorage.getItem("token") ? loggedIn : guestLinks }</Fragment>) } */}
+       
         { !loading && (<Fragment>{ localStorage.getItem("token") ? loggedIn : loggedOut }</Fragment>) }
+
+        
+        
+      
     
        </div>
           

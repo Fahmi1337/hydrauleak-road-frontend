@@ -26,32 +26,37 @@ const style = {
 };
 const Contracts = () => {
   const [contracts, setcontracts] = useState([]);
-    // const [currentPage, setCurrentPage] = useState(1);
-    // const [contractsPerPage, setContractsPerPage] = useState(3);
-    // const [active, setActive] = useState(1);
+  const [me, setMe] = useState([]);
 
-    // const indexOfLastListing = currentPage * contractsPerPage;
-    // const indexOfFirstListing = indexOfLastListing - contractsPerPage;
-    // const currentcontracts = contracts.slice(indexOfFirstListing, indexOfLastListing);
 
-    // const visitPage = (page) => {
-    //     setCurrentPage(page);
-    //     setActive(page);
-    // };
 
-    // const previous_number = () => {
-    //     if (currentPage !== 1) {
-    //         setCurrentPage(currentPage-1);
-    //         setActive(currentPage-1);
-    //     }
-    // };
 
-    // const next_number = () => {
-    //     if (currentPage !== Math.ceil(contracts.length/3)) {
-    //         setCurrentPage(currentPage+1);
-    //         setActive(currentPage+1);
-    //     }
-    // };
+  useEffect(() => {
+      getMe() 
+    }, []);
+  
+  
+     const getMe = async () => {
+        try {
+          const response = await fetch(
+            `${process.env.REACT_APP_API_URL}/api/user/me`,
+            {
+              method: "GET",
+      
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + localStorage.getItem("token"),
+              },
+            }
+          )
+            .then((response) => response.json())
+            .then((data) => setMe(data));
+      return response;
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => {
@@ -129,9 +134,18 @@ const Contracts = () => {
             <section className='home__form'>
            
                
-                <Button className="addContractBtn" variant="contained" color="success" onClick={() => {
+                {/* <Button className="addContractBtn" variant="contained" color="success" onClick={() => {
                  handleOpen();  localStorage.setItem("currentContract",""); localStorage.setItem("ShowUpdateButton", false);;
-             }}>Add Contract +</Button>
+             }}>Add Contract +</Button> */}
+
+
+{me.roles==="is_admin" && (
+     <Button className="addContractBtn" variant="contained" color="success" onClick={() => {
+      handleOpen();  localStorage.setItem("currentContract",""); localStorage.setItem("ShowUpdateButton", false);;
+  }}>Add Contract +</Button>
+    )}
+
+
       <Modal
         open={open}
         onClose={handleClose}

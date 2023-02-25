@@ -16,6 +16,36 @@ export default function Table () {
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(10);
+  const [me, setMe] = useState([]);
+
+
+
+
+  useEffect(() => {
+      getMe() 
+    }, []);
+  
+  
+     const getMe = async () => {
+        try {
+          const response = await fetch(
+            `${process.env.REACT_APP_API_URL}/api/user/me`,
+            {
+              method: "GET",
+      
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + localStorage.getItem("token"),
+              },
+            }
+          )
+            .then((response) => response.json())
+            .then((data) => setMe(data));
+      return response;
+        } catch (error) {
+          console.log(error);
+        }
+      };
 
   const style = {
     position: 'absolute',
@@ -199,8 +229,14 @@ return (
               <th>Zipcode</th>
               <th>Published</th>
               <th>Client</th>
-              <th>Update</th>
-              <th>Delete</th>
+              {me.roles==="is_admin" && (
+    <th>Update</th>
+    )}
+     {me.roles==="is_admin" && (
+  <th>Delete</th>
+    )}
+              {/* <th>Update</th>
+              <th>Delete</th> */}
           </tr>
         </thead>
         <tbody>
@@ -223,13 +259,28 @@ return (
                   <td>{data.zipcode}</td>
                   <td>{data.is_published}</td>
                   <td>{data?.client?.user?.name}</td>
-                  <td>  <button  onClick={() => {
+
+
+                  {me.roles==="is_admin" && (
+   <td>  <button  onClick={() => {
+    localStorage.setItem("currentContract", data.id); localStorage.setItem("ShowUpdateButton", true);  handleOpen();
+  }}>Update</button></td>
+    )}
+
+{me.roles==="is_admin" && (
+     <td><button  onClick={() => {
+               
+      DeleteContract(data.id);
+    }}>Delete</button></td>
+    )}
+
+                  {/* <td>  <button  onClick={() => {
               localStorage.setItem("currentContract", data.id); localStorage.setItem("ShowUpdateButton", true);  handleOpen();
             }}>Update</button></td>
                   <td><button  onClick={() => {
                
                DeleteContract(data.id);
-             }}>Delete</button></td>
+             }}>Delete</button></td> */}
           
                 </tr>
               ))}
