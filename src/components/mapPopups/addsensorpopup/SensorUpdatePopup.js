@@ -6,49 +6,45 @@ import Box from '@mui/material/Box';
 // import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
-const RightAddSensorPopup = (props) => {
-  
-  const [addSensor, setAddSensor] = useState(false);
+const RightAddSensorPopup = ({onOpen,onCancel,sensor}) => {
 
+  // const initialState = '';
+  // const [lat, setLat] = useState(initialState);
+  // const [lng, setLng] = useState(initialState);
 
-
-  const initialState = '';
-  const [lat, setLat] = useState(initialState);
-  const [lng, setLng] = useState(initialState);
-
-
-  function getLatLng() {
-    const lat = localStorage.getItem("newSensorLat");
-    const lng = localStorage.getItem("newSensorLng");
+ 
+  // function getLatLng() {
+  //   const lat = localStorage.getItem("newSensorLat");
+  //   const lng = localStorage.getItem("newSensorLng");
    
     
-      setLat(lat);
-      setLng(lng);
-    setSensorData({...sensorData, sensor_coordinates : [lng, lat]});
-  }
+  //     setLat(lat);
+  //     setLng(lng);
+  //   setSensorData({...sensorData, sensor_coordinates : [lng, lat], pipe: localStorage.getItem('selectedPipeId')});
+  // }
  
 
  
 
-  useEffect(() => {
-    getLatLng();
-  }, []);
-  window.addEventListener("storage", () => {
-    getLatLng();
-  });
-  useEffect(() => {
-    if (lat !== initialState) {
-      localStorage.setItem("newSensorLat", lat);
-    }
-  }, [lng, lat]);
+  // useEffect(() => {
+  //   getLatLng();
+  // }, []);
+  // window.addEventListener("storage", () => {
+  //   getLatLng();
+  // });
+  // useEffect(() => {
+  //   if (lat !== initialState) {
+  //     localStorage.setItem("newSensorLat", lat);
+  //   }
+  // }, [lng, lat]);
 
 
 
-  const [sensorData, setSensorData] = useState({
-  });
 
-const open2 = props.open2;
-
+  const [sensorData, setSensorData] = useState(sensor);
+ 
+  console.log("Update sensor data", sensorData)
+  
   const handleSensorDataChange = (e) => {
     setSensorData({
       ...sensorData,
@@ -56,12 +52,26 @@ const open2 = props.open2;
       
     });
   };
+console.log("sensorData?", sensorData)
 
+const { sensor_coordinates, sensor_description, sensor_Indication, sensor_type, sensor_creation_date, sensor_frequency, sensor_title, pipe } = sensorData;
   const handleSubmitData = () => {
 
 
+
+    if (!sensorData.sensor_title || !sensorData.sensor_description || !sensorData.sensor_coordinates ) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
+    const data = {
+      sensor_coordinates, sensor_description, sensor_Indication, sensor_type, sensor_creation_date, sensor_frequency, sensor_title, pipe
+    };
+
+
+
     axios
-      .post(`${process.env.REACT_APP_API_URL}/api/sensors/`, sensorData,
+      .put(`${process.env.REACT_APP_API_URL}/api/sensors/${sensorData.id}/`, data,
       
       {
             headers: {
@@ -76,12 +86,13 @@ const open2 = props.open2;
       .catch((err) => {
         console.error(err);
       });
-    setAddSensor(false);
-    props.handleClose2();
-    // props.getSensors();
-    localStorage.removeItem("selectedPipeId");
-    window.location.reload();
+  
+   
+    onCancel();
   };
+
+
+
 
 console.log("sensor frequency", sensorData.sensor_frequency)
 
@@ -92,7 +103,7 @@ console.log("sensor frequency", sensorData.sensor_frequency)
     hideBackdrop
     style={{ position: 'initial' }}
     
-      open={open2}
+      open={onOpen}
      
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
@@ -102,21 +113,22 @@ console.log("sensor frequency", sensorData.sensor_frequency)
         <div>
       
         <div className="SensorPopup">
-          <h3>Add Sensor</h3>
+          <h3>Update Sensor</h3>
       <form>
-      <label>Pipe:</label>
+      {/* <label>Select Pipe:</label>
         <input
         disabled
           type="text"
-          name="map"
+          name="pipe"
           value={localStorage.getItem('selectedPipeId') ||  sensorData.pipe}
           onChange={e => handleSensorDataChange(e)}
-        />
+        /> */}
         <label>Sensor coordinates:</label>
         
         <input
+        disabled
           type="text"
-          name="reading_coordinates"
+          name="sensor_coordinates"
           value={sensorData.sensor_coordinates}
           onChange={e => handleSensorDataChange(e)}
         />
@@ -130,13 +142,14 @@ console.log("sensor frequency", sensorData.sensor_frequency)
         />
     
         <label>Sensor description:</label>
-            <textarea value={sensorData.sensor_description} onChange={e => handleSensorDataChange(e)} />
+            <textarea    type="text"
+          name="sensor_description" value={sensorData.sensor_description} onChange={e => handleSensorDataChange(e)} />
         
         <label>Sensor creation date:</label>
         <input
-          type="date"
-          name="sensor_creationdate"
-          value={sensorData.sensor_creationdate}
+          type="datetime-local"
+          name="sensor_creation_date"
+          value={sensorData.sensor_creation_date}
           onChange={e => handleSensorDataChange(e)}
         />
         <label>Sensor type:</label>
@@ -156,17 +169,18 @@ console.log("sensor frequency", sensorData.sensor_frequency)
 
         <label>Sensor Indication:</label>
               <select type="text" name="sensor_Indication" value={sensorData.sensor_Indication} onChange={e => handleSensorDataChange(e)}>
+              <option value="unknown">Unknown</option>
               <option value="good">Good</option>
               <option value="notable">Notable</option>  
               <option value="critical">Critical</option>
-              <option value="unknown">Unknown</option>
+              
               </select>
 
 
 
       </form>
       <button onClick={handleSubmitData}>Submit</button>
-      <button onClick={props.handleClose2}>Cancel</button>
+      <button onClick={onCancel}>Cancel</button>
     </div>
         </div>
       </Box>

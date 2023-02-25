@@ -102,7 +102,7 @@ const { sensor_coordinates, sensor_description, sensor_Indication, sensor_type, 
     localStorage.removeItem("selectedPipeId");
     localStorage.removeItem("newSensorLng");
     localStorage.removeItem("newSensorLat");
- 
+    props.handleClose2();
     };
 
 console.log("sensor frequency", sensorData.sensor_frequency)
@@ -191,7 +191,7 @@ console.log("sensor frequency", sensorData.sensor_frequency)
 
       </form>
       <button onClick={handleSubmitData}>Submit</button>
-      <button onClick={props.handleClose2}>Cancel</button>
+      <button onClick={reloadPage}>Cancel</button>
     </div>
         </div>
       </Box>

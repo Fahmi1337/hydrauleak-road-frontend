@@ -12,6 +12,7 @@ import ReactDOM from 'react-dom';
 
 
 import SensorViewPopup from '../components/mapPopups/addsensorpopup/SensorViewPopup';
+import SensorUpdatePopup from '../components/mapPopups/addsensorpopup/SensorUpdatePopup';
 
 
 const Map = (props) => {
@@ -237,7 +238,7 @@ const getPipes = e => {
   }, []);
 
 
-  // get sensors function
+  // get marks function
   const getMarkers = e => {
     axios.get(`${process.env.REACT_APP_API_URL}/api/marks/`, {
       headers: {
@@ -251,34 +252,43 @@ const getPipes = e => {
   console.log(err);
 });
   }
-// sensors use effect 
+// marks use effect 
   useEffect(() => {
     getMarkers();
   }, []);
 
  
 
-  
+  //sensor const select delete update 
   const [selectedSensor, setSelectedSensor] = useState();
-  const [openSensorPopup, setOpenSensorPopup] = useState(false);
+  const [openViewSensorPopup, setOpenViewSensorPopup] = useState(false);
+  const [openUpdateSensorPopup, setOpenUpdateSensorPopup] = useState(false);
+
+  // //sensor const select delete update 
+  // const [selectedSensor, setSelectedSensor] = useState();
+  // const [openViewSensorPopup, setOpenViewSensorPopup] = useState(false);
+  // const [openUpdateSensorPopup, setOpenUpdateSensorPopup] = useState(false);
+
+  // //sensor const select delete update 
+  // const [selectedSensor, setSelectedSensor] = useState();
+  // const [openViewSensorPopup, setOpenViewSensorPopup] = useState(false);
+  // const [openUpdateSensorPopup, setOpenUpdateSensorPopup] = useState(false);
+
+  // //sensor const select delete update 
+  // const [selectedSensor, setSelectedSensor] = useState();
+  // const [openViewSensorPopup, setOpenViewSensorPopup] = useState(false);
+  // const [openUpdateSensorPopup, setOpenUpdateSensorPopup] = useState(false);
+
+  // //sensor const select delete update 
+  // const [selectedSensor, setSelectedSensor] = useState();
+  // const [openViewSensorPopup, setOpenViewSensorPopup] = useState(false);
+  // const [openUpdateSensorPopup, setOpenUpdateSensorPopup] = useState(false);
+
+  // //sensor const select delete update 
+  // const [selectedSensor, setSelectedSensor] = useState();
+  // const [openViewSensorPopup, setOpenViewSensorPopup] = useState(false);
+  // const [openUpdateSensorPopup, setOpenUpdateSensorPopup] = useState(false);
   
-  const handleOpenSensorDetailsPopup = () => {
-    setOpenSensorPopup(true);
-  };
-
-
-  const handleCancelSensorPopup = () => {
-    setOpenSensorPopup(false);
-  };
-
-
-
-
-
-
-
-
-
 
 
   const accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
@@ -297,12 +307,6 @@ const getPipes = e => {
       });
 
       map.on('load', () => {
-
-
-
-
-
-
 
 
 
@@ -353,6 +357,8 @@ sensorsData.forEach((sensor) => {
   const updateButton = marker._popup._content.querySelector('#updateSensor');
   updateButton.addEventListener('click', () => {
     // code to open update popup
+    setSelectedSensor(sensor);
+    setOpenUpdateSensorPopup(true);
     console.log('Update button clicked');
   });
   // View Sensor
@@ -360,7 +366,7 @@ sensorsData.forEach((sensor) => {
   const ViewButton = marker._popup._content.querySelector('#viewSensor');
   ViewButton.addEventListener('click', () => {
     setSelectedSensor(sensor);
-    setOpenSensorPopup(true);
+    setOpenViewSensorPopup(true);
   });
 });
 
@@ -918,15 +924,24 @@ return (
 <div ref={mapContainer} style={{ width: '80rem', height: '40rem',left: '121px',top: '-10px' }} />
 
 
-
-
+{/* sensor Popups */}
 <div>
   <div id="popup-container"></div>
-  {openSensorPopup && selectedSensor && (
+  {openViewSensorPopup && selectedSensor && (
     <SensorViewPopup
       sensor={selectedSensor}
-      onOpen={openSensorPopup}
-      onCancel={() => setOpenSensorPopup(false)}
+      onOpen={openViewSensorPopup}
+      onCancel={() => setOpenViewSensorPopup(false)}
+    />
+  )}
+</div>
+<div>
+  <div id="popup-container"></div>
+  {openUpdateSensorPopup && selectedSensor && (
+    <SensorUpdatePopup
+      sensor={selectedSensor}
+      onOpen={openUpdateSensorPopup}
+      onCancel={() => setOpenUpdateSensorPopup(false)}
     />
   )}
 </div>
