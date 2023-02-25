@@ -2,48 +2,11 @@ import React, { useState, useEffect } from 'react';
 import "./addSensorPopup.css"
 import axios from 'axios';
 import Box from '@mui/material/Box';
-// import Button from '@mui/material/Button';
-// import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
 const RightAddSensorPopup = ({onOpen,onCancel,sensor}) => {
 
-  // const initialState = '';
-  // const [lat, setLat] = useState(initialState);
-  // const [lng, setLng] = useState(initialState);
-
- 
-  // function getLatLng() {
-  //   const lat = localStorage.getItem("newSensorLat");
-  //   const lng = localStorage.getItem("newSensorLng");
-   
-    
-  //     setLat(lat);
-  //     setLng(lng);
-  //   setSensorData({...sensorData, sensor_coordinates : [lng, lat], pipe: localStorage.getItem('selectedPipeId')});
-  // }
- 
-
- 
-
-  // useEffect(() => {
-  //   getLatLng();
-  // }, []);
-  // window.addEventListener("storage", () => {
-  //   getLatLng();
-  // });
-  // useEffect(() => {
-  //   if (lat !== initialState) {
-  //     localStorage.setItem("newSensorLat", lat);
-  //   }
-  // }, [lng, lat]);
-
-
-
-
   const [sensorData, setSensorData] = useState(sensor);
- 
-  console.log("Update sensor data", sensorData)
   
   const handleSensorDataChange = (e) => {
     setSensorData({
@@ -52,7 +15,6 @@ const RightAddSensorPopup = ({onOpen,onCancel,sensor}) => {
       
     });
   };
-console.log("sensorData?", sensorData)
 
 const { sensor_coordinates, sensor_description, sensor_Indication, sensor_type, sensor_creation_date, sensor_frequency, sensor_title, pipe } = sensorData;
   const handleSubmitData = () => {
@@ -115,14 +77,14 @@ console.log("sensor frequency", sensorData.sensor_frequency)
         <div className="SensorPopup">
           <h3>Update Sensor</h3>
       <form>
-      {/* <label>Select Pipe:</label>
+      <label>Pipe:</label>
         <input
         disabled
           type="text"
           name="pipe"
           value={localStorage.getItem('selectedPipeId') ||  sensorData.pipe}
           onChange={e => handleSensorDataChange(e)}
-        /> */}
+        />
         <label>Sensor coordinates:</label>
         
         <input
