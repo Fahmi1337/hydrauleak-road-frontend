@@ -63,7 +63,7 @@ const { sensor_coordinates, sensor_description, sensor_Indication, sensor_type, 
 
 
 
-    if (!sensorData.sensor_title || !sensorData.sensor_description || !sensorData.sensor_creationdate || !sensorData.pipe) {
+    if (!sensorData.sensor_title || !sensorData.sensor_description || !sensorData.sensor_coordinates || !sensorData.pipe) {
       alert("Please fill in all required fields.");
       return;
     }
