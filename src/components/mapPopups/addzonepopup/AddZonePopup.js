@@ -18,13 +18,13 @@ const [zoneData, setZoneData] = useState({
   zone_title: '',
   zone_description: '',
 zone_area: parseFloat(localStorage.getItem("zoneArea")),
-  zone_date: '',
+  
   zone_status: 'notStart',
   zone_color: 'orange',
   zone_coordinates: '',
   map: 1
 });
-const { zone_title, zone_description, zone_num, zone_date, zone_status, zone_color, map, AreaZone, zone_coordinates } = zoneData;
+const { zone_title, zone_description, zone_num, zone_status, zone_color, map, AreaZone, zone_coordinates } = zoneData;
 
 
 //get Zone Area Start
@@ -115,7 +115,7 @@ const { zone_title, zone_description, zone_num, zone_date, zone_status, zone_col
     }
 
     const data = {
-      zone_title, zone_description, zone_num, zone_date, zone_status, zone_color, map, AreaZone, zone_coordinates
+      zone_title, zone_description, zone_num, zone_status, zone_color, map, AreaZone, zone_coordinates
     };
 
     axios
@@ -135,19 +135,17 @@ const { zone_title, zone_description, zone_num, zone_date, zone_status, zone_col
         console.error(err);
       });
  
- 
-  
+      deleteZone();
+      props.handleCloseZone();
   };
 
 
-  const handleZoneSubmitButton = (e) => {
-    e.preventDefault();
-
-    handleSubmitData(); 
-    deleteZone();
-    props.handleCloseZone();
+  // const handleZoneSubmitButton = () => {  
+  //   handleSubmitData(); 
+    
+  //   props.handleCloseZone();
    
-  }
+  // }
 
 
     // //Modal
@@ -246,13 +244,13 @@ console.log("zonedata?", zoneData)
             <textarea type="text" name="zone_description" value={zoneData.zone_description} onChange={e => handleZoneDataChange(e)} />
 
 
-          <label>Zone creation date:</label>
+          {/* <label>Zone creation date:</label>
           <input
             type="datetime-local"
             name="zone_date"
             value={zoneData.zone_date}
             onChange={e => handleZoneDataChange(e)}
-          />
+          /> */}
            
           <label>Zone Status:</label>
               <select type="text" name="zone_status"
@@ -280,7 +278,7 @@ console.log("zonedata?", zoneData)
         </form>
 
 
-        <button onClick={handleZoneSubmitButton}>Submit</button> 
+        <button onClick={handleSubmitData}>Submit</button> 
         <button onClick={() => {props.handleCloseZone(); deleteZone();}}>Cancel</button>
       </div>
         </Box>
