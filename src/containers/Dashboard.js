@@ -12,7 +12,22 @@ import ReactDOM from 'react-dom';
 
 
 import SensorViewPopup from '../components/mapPopups/addsensorpopup/SensorViewPopup';
+import SensorUpdatePopup from '../components/mapPopups/addsensorpopup/SensorUpdatePopup';
 
+import MarkViewPopup from '../components/mapPopups/addmarkpopup/MarkViewPopup';
+import MarkUpdatePopup from '../components/mapPopups/addmarkpopup/MarkUpdatePopup';
+
+import PipeAccessViewPopup from '../components/mapPopups/addpipeaccesspopup/PipeAccessViewPopup';
+import PipeAccessUpdatePopup from '../components/mapPopups/addpipeaccesspopup/PipeAccessUpdatePopup';
+
+import PipeViewPopup from '../components/mapPopups/addpipepopup/PipeViewPopup';
+import PipeUpdatePopup from '../components/mapPopups/addpipepopup/PipeUpdatePopup';
+
+import ZoneViewPopup from '../components/mapPopups/addzonepopup/ZoneViewPopup';
+import ZoneUpdatePopup from '../components/mapPopups/addzonepopup/ZoneUpdatePopup';
+
+import MapViewPopup from '../components/mapPopups/addmappopup/MapViewPopup';
+import MapUpdatePopup from '../components/mapPopups/addmappopup/MapUpdatePopup';
 
 const Map = (props) => {
   const [sensorsData, setSensorsData] = useState([]);
@@ -237,7 +252,7 @@ const getPipes = e => {
   }, []);
 
 
-  // get sensors function
+  // get marks function
   const getMarkers = e => {
     axios.get(`${process.env.REACT_APP_API_URL}/api/marks/`, {
       headers: {
@@ -251,33 +266,42 @@ const getPipes = e => {
   console.log(err);
 });
   }
-// sensors use effect 
+// marks use effect 
   useEffect(() => {
     getMarkers();
   }, []);
 
  
 
-  
+  //sensor const select delete update 
   const [selectedSensor, setSelectedSensor] = useState();
-  const [openSensorPopup, setOpenSensorPopup] = useState(false);
-  
-  const handleOpenSensorDetailsPopup = () => {
-    setOpenSensorPopup(true);
-  };
+  const [openViewSensorPopup, setOpenViewSensorPopup] = useState(false);
+  const [openUpdateSensorPopup, setOpenUpdateSensorPopup] = useState(false);
 
+// mark const select delete update
+const [selectedMark, setSelectedMark] = useState();
+const [openViewMarkPopup, setOpenViewMarkPopup] = useState(false);
+const [openUpdateMarkPopup, setOpenUpdateMarkPopup] = useState(false);
 
-  const handleCancelSensorPopup = () => {
-    setOpenSensorPopup(false);
-  };
+// pipe const select delete update
+const [selectedPipe, setSelectedPipe] = useState();
+const [openViewPipePopup, setOpenViewPipePopup] = useState(false);
+const [openUpdatePipePopup, setOpenUpdatePipePopup] = useState(false);
 
+// pipeaccess const select delete update
+const [selectedPipeaccess, setSelectedPipeaccess] = useState();
+const [openViewPipeaccessPopup, setOpenViewPipeaccessPopup] = useState(false);
+const [openUpdatePipeaccessPopup, setOpenUpdatePipeaccessPopup] = useState(false);
 
+// map const select delete update
+const [selectedMap, setSelectedMap] = useState();
+const [openViewMapPopup, setOpenViewMapPopup] = useState(false);
+const [openUpdateMapPopup, setOpenUpdateMapPopup] = useState(false);
 
-
-
-
-
-
+// zone const select delete update
+const [selectedZone, setSelectedZone] = useState();
+const [openViewZonePopup, setOpenViewZonePopup] = useState(false);
+const [openUpdateZonePopup, setOpenUpdateZonePopup] = useState(false);
 
 
 
@@ -297,12 +321,6 @@ const getPipes = e => {
       });
 
       map.on('load', () => {
-
-
-
-
-
-
 
 
 
@@ -353,6 +371,8 @@ sensorsData.forEach((sensor) => {
   const updateButton = marker._popup._content.querySelector('#updateSensor');
   updateButton.addEventListener('click', () => {
     // code to open update popup
+    setSelectedSensor(sensor);
+    setOpenUpdateSensorPopup(true);
     console.log('Update button clicked');
   });
   // View Sensor
@@ -360,16 +380,9 @@ sensorsData.forEach((sensor) => {
   const ViewButton = marker._popup._content.querySelector('#viewSensor');
   ViewButton.addEventListener('click', () => {
     setSelectedSensor(sensor);
-    setOpenSensorPopup(true);
+    setOpenViewSensorPopup(true);
   });
 });
-
-
-
-
-
-
-
 
 
 
@@ -381,8 +394,8 @@ markersData.forEach((mark) => {
   <p>mark description: ${mark.mark_description}</p>
   <p>Pipe: ${mark.pipe}</p>
   <button id="deleteMark" data-mark-id="${mark.id}">Delete</button>
-  <button id="updateMark" data-mark-id="${mark.id}>Update</button>
-  <button id="viewMark" data-mark-id="${mark.id}>View Details</button>
+  <button id="updateMark" data-mark-id="${mark.id}">Update</button>
+  <button id="viewMark" data-mark-id="${mark.id}">View Details</button>
 `);
   const mymarker = new mapboxgl.Marker({
     draggable: false,
@@ -399,258 +412,286 @@ markersData.forEach((mark) => {
     // Send DELETE request to API endpoint using Mark id
     axios.delete(`${process.env.REACT_APP_API_URL}/api/marks/${markId}/`, {
       headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      }
+    })
+    .then(response => {
+      console.log('Mark deleted', response.data);
+      // Remove the Mark from the map
+      mymarker.remove();
+    })
+    .catch(error => {
+      console.error('Error deleting Mark', error);
+    });
+  });
+
+  // Update Mark
+  const updateButton = mymarker._popup._content.querySelector('#updateMark');
+  updateButton.addEventListener('click', () => {
+    // code to open update popup
+    setSelectedMark(mark);
+    setOpenUpdateMarkPopup(true);
+    console.log('Update button clicked');
+  });
+
+  // View Mark
+  const viewButton = mymarker._popup._content.querySelector('#viewMark');
+  viewButton.addEventListener('click', () => {
+    setSelectedMark(mark);
+    setOpenViewMarkPopup(true);
+  });
+});
+
+
+
+
+
+//pipe access code
+
+// Add Pipe access to the map
+pipesAccessData.forEach((pipeaccess) => {
+  const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
+  <h3>ID: ${pipeaccess.id}</h3>
+  <h3>Pipe access title: ${pipeaccess.pipe_access_title}</h3>
+  <p>Pipe access description: ${pipeaccess.pipe_access_description}</p>
+  <p>Pipe access type: ${pipeaccess.pipe_access_type}</p>
+  <p>Pipe: ${pipeaccess.pipe}</p>             
+  <button id="deletePipeaccess" data-pipeaccess-id="${pipeaccess.id}">Delete</button>
+  <button id="updatePipeaccess" data-pipeaccess-id="${pipeaccess.id}">Update</button>
+  <button id="viewPipeaccess" data-pipeaccess-id="${pipeaccess.id}">View</button>
+`);
+const marker = new mapboxgl.Marker({
+draggable: false,
+color: "#00FF00",
+})
+.setLngLat(pipeaccess.pipe_access_coordinates)
+.setPopup(popup)
+.addTo(map);
+
+// Delete Pipe access
+const deleteButton = marker._popup._content.querySelector('#deletePipeaccess');
+deleteButton.addEventListener('click', () => {
+const pipeaccessId = deleteButton.getAttribute('data-pipeaccess-id');
+// Send DELETE request to API endpoint using Pipe access id
+axios.delete(`${process.env.REACT_APP_API_URL}/api/pipeacces/${pipeaccessId}/`, {
+headers: {
+'Authorization': 'Bearer ' + localStorage.getItem('token')
+}
+})
+.then(response => {
+console.log('Pipe access deleted', response.data);
+// Remove the Pipe access from the map
+marker.remove();
+})
+.catch(error => {
+console.error('Error deleting Pipe access', error);
+});
+});
+
+// Update Pipe access
+const updateButton = marker._popup._content.querySelector('#updatePipeaccess');
+updateButton.addEventListener('click', () => {
+// code to open update popup
+setSelectedPipeaccess(pipeaccess);
+setOpenUpdatePipeaccessPopup(true);
+console.log('Update button clicked');
+});
+
+// View Pipe access
+const viewButton = marker._popup._content.querySelector('#viewPipeaccess');
+viewButton.addEventListener('click', () => {
+setSelectedPipeaccess(pipeaccess);
+setOpenViewPipeaccessPopup(true);
+});
+});
+
+
+
+
+// Add pipe to the map
+pipesData.forEach((pipe) => {
+  const coordinates = pipe.pipe_coordinates;
+  // create a GeoJSON feature with the pipe coordinates
+  const pipeFeature = {
+  type: 'Feature',
+  geometry: {
+  type: 'LineString',
+  coordinates: coordinates,
+  },
+  properties: {},
+  };
+  // add the pipe feature to the map
+  map.addSource('pipe-' + pipe.id, {
+  type: 'geojson',
+  data: pipeFeature,
+  });
+  map.addLayer({
+  id: 'pipe-' + pipe.id,
+  type: 'line',
+  source: 'pipe-' + pipe.id,
+  layout: {
+  'line-join': 'round',
+  'line-cap': 'round',
+  },
+  paint: {
+  'line-color': '#3284ff',
+  'line-width': 5,
+  },
+  });
+  map.on('click', 'pipe-' + pipe.id, (e) => {
+  const popupContent = document.createElement('div');
+  popupContent.innerHTML = `<h3>Pipe title: ${pipe.pipe_title}</h3> 
+  <h3>ID : ${pipe.id}</h3> 
+  <p>Pipe description: ${pipe.pipe_description}</p> 
+  <p>Pipe type: ${pipe.pipe_type}</p> 
+  
+  <p>Pipe status: ${pipe.pipe_status}</p> 
+  <p>Pipe length: ${pipe.pipe_length}</p> 
+  <button id="deletePipe" data-pipe-id="${pipe.id}">Delete</button> 
+  <button id="updatePipe" data-pipe-id="${pipe.id}">Update</button> 
+  <button id="viewPipe" data-pipe-id="${pipe.id}">View Details</button>` ;
+  new mapboxgl.Popup()
+  .setLngLat(e.lngLat)
+  .setDOMContent(popupContent)
+  .addTo(map);
+  localStorage.setItem("selectedPipeId",pipe.id);
+
+  //delete pipe
+  const deleteButton = document.getElementById('deletePipe');
+  deleteButton.addEventListener('click', () => {
+    const pipeId = deleteButton.getAttribute('data-pipe-id');
+    // Send DELETE request to API endpoint using Pipe id
+    axios.delete(`${process.env.REACT_APP_API_URL}/api/pipes/${pipeId}/`, {
+      headers: {
         'Authorization': 'Bearer ' + localStorage.getItem("token")
       }
     })
-      .then(response => {
-        console.log('Mark deleted', response.data);
-        // Remove the Mark from the map
-        mymarker.remove();
-      })
-      .catch(error => {
-        console.error('Error deleting Mark', error);
-      });
+    .then(response => {
+      console.log('Pipe deleted', response.data);
+      // Remove the Pipe from the map
+      map.removeLayer('pipe-' + pipe.id);
+      map.removeSource('pipe-' + pipe.id);
+    })
+    .catch(error => {
+      console.error('Error deleting Pipe', error);
+    });
   });
-
-    // // Update Mark
-    // const updateButton = mymarker._popup._content.querySelector('#updateMark');
-    // updateButton.addEventListener('click', () => {
-    //   // code to open update popup
-    //   console.log('Update button clicked');
-    // });
-    // // View Mark
-    // const ViewButton = mymarker._popup._content.querySelector('#viewMark');
-    // ViewButton.addEventListener('click', () => {
-    //   // code to open View popup
-    //   console.log('View button clicked');
-    // });
+  
+  // Set up event listener for update button
+  const updateButton = document.getElementById('updatePipe');
+  updateButton.addEventListener('click', () => {
+    // code to open update popup
+    setSelectedPipe(pipe);
+    setOpenUpdatePipePopup(true);
+    console.log('Update button clicked');
+  });
+  
+  // Set up event listener for view button
+  const viewButton = document.getElementById('viewPipe');
+  viewButton.addEventListener('click', () => {     
+    setSelectedPipe(pipe);
+    setOpenViewPipePopup(true);
+  });      
+});
 });
 
 
 
 
 
-
-
-
-  //a Add pipe to the map
-  pipesData.forEach((pipe) => {
-    const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
-    <h3>Pipe title: ${pipe.pipe_title}</h3>
-    <h3>ID : ${pipe.id}</h3>
-    
-    <p>Pipe description: ${pipe.pipe_description}</p>
-    <p>Pipe type: ${pipe.pipe_type}</p>
-    <p>Pipe status: ${pipe.pipe_status}</p>       
-    <p>Pipe length: ${pipe.pipe_length}</p>
-    
-
-    <button id="deletePipe" data-pipe-id="${pipe.id}">Delete</button>
-    <button id="updatePipe">Update</button>
-    <button id="updatePipe">View Details</button>
-    `);
-    const coordinates = pipe.pipe_coordinates;
-    // create a GeoJSON feature with the pipe coordinates
-    const pipeFeature = {
-      type: 'Feature',
-      geometry: {
-        type: 'LineString',
-        coordinates: coordinates,
-      },
-      properties: {},
-    };
-    // add the pipe feature to the map
-    map.addSource('pipe-' + pipe.id, {
-      type: 'geojson',
-      data: pipeFeature,
-    });
-    map.addLayer({
-      id: 'pipe-' + pipe.id,
-      type: 'line',
-      source: 'pipe-' + pipe.id,
-      layout: {
-        'line-join': 'round',
-        'line-cap': 'round',
-      },
-      paint: {
-        'line-color': '#3284ff',
-        'line-width': 5,
-      },
-    });   
-    map.on('click', 'pipe-' + pipe.id, (e) => {
-      new mapboxgl.Popup()
-        .setLngLat(e.lngLat)
-        .setHTML(`
-          <h3>Pipe title: ${pipe.pipe_title}</h3>
-          <h3>ID : ${pipe.id}</h3>
-          
-          <p>Pipe description: ${pipe.pipe_description}</p>
-          <p>Pipe type: ${pipe.pipe_type}</p>
-          <p>Pipe status: ${pipe.pipe_status}</p>       
-          <p>Pipe length: ${pipe.pipe_length}</p>
-          
-
-          <button id="deletePipe" data-pipe-id="${pipe.id}">Delete</button>
-          <button id="updatePipe">Update</button>
-          <button id="updatePipe">View Details</button>
-        `)
-        .addTo(map);
-
-        localStorage.setItem("selectedPipeId",pipe.id);
-        
-      const deleteButton = document.getElementById('deletePipe');
-      deleteButton.addEventListener('click', () => {
-        const pipeId = deleteButton.getAttribute('data-pipe-id');
-        // Send DELETE request to API endpoint using Pipe id
-        axios.delete(`${process.env.REACT_APP_API_URL}/api/pipes/${pipeId}/`, {
-          headers: {
-            'Authorization': 'Bearer ' +  localStorage.getItem("token")
-          }
-        })
-        .then(response => {
-          console.log('Pipe deleted', response.data);
-          // Remove the Pipe from the map
-          map.removeLayer('pipe-' + pipe.id);
-          map.removeSource('pipe-' + pipe.id);
-        })
-        .catch(error => {
-          console.error('Error deleting Pipe', error);
-        });
-      });
-    });
-  });
-  
-
-
-
-
-
-
-
-
-//Add pipesAccess to the map 
-pipesAccessData.forEach((pipeaccess) => {
-  const popupHTML = `
-    <h3>Pipe access title: ${pipeaccess.pipe_access_title}</h3>
-    <h3>ID: ${pipeaccess.id}</h3>
-    <p>Pipe access description: ${pipeaccess.pipe_access_description}</p>
-    <p>Pipe access type: ${pipeaccess.pipe_access_type}</p>
-    <p>Pipe: ${pipeaccess.pipe}</p>
-    <button class="deletePipeaccess" data-pipeaccess-id="${pipeaccess.id}" > Delete </button>
-    <button class="updatePipeaccess"  > Update </button>
-    <button id="viewPipeaccess">View Details</button>
-  `;
-  
-  const mymarker = new mapboxgl.Marker({
-    draggable: false,
-    color: "#00FF00",
-  })
-    .setLngLat(pipeaccess.pipe_access_coordinates)
-    .setPopup(new mapboxgl.Popup({ offset: 25 }).setHTML(popupHTML))
-    .addTo(map);
-
-  // delete Pipeaccess
-  mymarker._popup._content.addEventListener('click', (event) => {
-    if (event.target.classList.contains('deletePipeaccess')) {
-      const pipeaccessId = event.target.getAttribute('data-pipeaccess-id');
-      // Send DELETE request to API endpoint using Pipeaccess id
-      axios.delete(`${process.env.REACT_APP_API_URL}/api/pipeacces/${pipeaccessId}/`, {
-          headers: {
-            'Authorization': 'Bearer ' +  localStorage.getItem("token")
-          }
-        })
-        .then(response => {
-          console.log('Pipeaccess deleted', response.data);
-          // Remove the Pipeaccess from the map
-          mymarker.remove();
-        })
-        .catch(error => {
-          console.error('Error deleting Pipeaccess', error);
-        });
-    }
-  });
-});
-
-
-
-
-
-
-
-
-
- // Add Zones to the map
+// Add Zones to the map
 zones.forEach(zone => {
   map.addSource(zone.id.toString(), {
-    type: 'geojson',
-    data: {
-      type: 'Feature',
-      geometry: {
-        type: 'Polygon',
-        coordinates: [zone.zone_coordinates]
-      }
-    }
+  type: 'geojson',
+  data: {
+  type: 'Feature',
+  geometry: {
+  type: 'Polygon',
+  coordinates: [zone.zone_coordinates]
+  }
+  }
   });
-
+  
   map.addLayer({
-    id: zone.id.toString(),
-    type: 'fill',
-    source: zone.id.toString(),
-    layout: {},
-    paint: {
-      'fill-color': zone.zone_color,
-      'fill-opacity': 0.5
-    }
+  id: zone.id.toString(),
+  type: 'fill',
+  source: zone.id.toString(),
+  layout: {},
+  paint: {
+  'fill-color': zone.zone_color,
+  'fill-opacity': 0.5
+  }
   });
-
+  
   map.addLayer({
-    id: zone.id.toString() + 'outline',
-    type: 'line',
-    source: zone.id.toString(),
-    layout: {},
-    paint: {
-      'line-color': "black",
-      'line-width': 3
-    }
+  id: zone.id.toString() + 'outline',
+  type: 'line',
+  source: zone.id.toString(),
+  layout: {},
+  paint: {
+  'line-color': "black",
+  'line-width': 3
+  }
   });
-
+  
   // Add a popup to the zone that fetches the id and the coordinates
   map.on('click', zone.id.toString(), (e) => {
-    new mapboxgl.Popup()
-      .setLngLat(e.lngLat)
-      .setHTML(`
-        <h3>Title : ${zone.zone_title}</h3>
-        <h3>ID : ${zone.id}</h3>
-        <P>Color : ${zone.zone_color}</P>
-        <p>Map : ${zone.map}</p>
-        <button id="deleteZone" data-zone-id="${zone.id}">Delete</button>
-        <button id="updateZone">Update</button>
-      `)
-      .addTo(map);
-
-    // Delete Zone
-    const deleteButton = document.getElementById('deleteZone');
-    deleteButton.addEventListener('click', () => {
-      const zoneId = deleteButton.getAttribute('data-zone-id');
-      // Send DELETE request to API endpoint using zoneId
-      axios.delete(`${process.env.REACT_APP_API_URL}/api/zones/${zoneId}/`, {
-        headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem("token")
-        }
-      })
-        .then(response => {
-          console.log('Zone deleted', response.data);
-          // Remove the Zone from the map
-          map.removeLayer(zoneId.toString()); // Remove the fill layer
-          map.removeLayer(zoneId.toString() + 'outline'); // Remove the outline layer
-          map.removeSource(zoneId.toString()); // Remove the source
-        })
-        .catch(error => {
-          console.error('Error deleting Zone', error);
-        });
-    });
+  const popupContent = document.createElement('div');
+  popupContent.innerHTML = `<h3>Title : ${zone.zone_title}</h3> 
+  <h3>ID : ${zone.id}</h3> 
+  <P>Color : ${zone.zone_color}</P> 
+  <p>Map : ${zone.map}</p> 
+  <button id="deleteZone" data-zone-id="${zone.id}">Delete</button> 
+  <button id="updateZone">Update</button> <button id="viewZone">View</button>` ;
+  new mapboxgl.Popup()
+  .setLngLat(e.lngLat)
+  .setDOMContent(popupContent)
+  .addTo(map);
+// delete Zone
+const deleteButton = popupContent.querySelector('#deleteZone');
+deleteButton.addEventListener('click', () => {
+  const zoneId = deleteButton.getAttribute('data-zone-id');
+  // Send DELETE request to API endpoint using Zone id
+  axios.delete(`${process.env.REACT_APP_API_URL}/api/zones/${zoneId}/`, {
+    headers: {
+      'Authorization': 'Bearer ' + localStorage.getItem('token')
+    }
+  })
+  .then(response => {
+    console.log('Zone deleted', response.data);
+    // Remove the Zone from the map
+    map.removeLayer(zoneId.toString()); // Remove the fill layer
+    map.removeLayer(zoneId.toString() + 'outline'); // Remove the outline layer
+    map.removeSource(zoneId.toString()); // Remove the source
+  })
+  .catch(error => {
+    console.error('Error deleting Zone', error);
   });
-    
+});
+
+const updateButton = popupContent.querySelector('#updateZone');
+updateButton.addEventListener('click', () => {
+  // code to open update popup
+  setSelectedZone(zone);
+  setOpenUpdateZonePopup(true);
+  console.log('Update button clicked');
+});
+
+const viewButton = popupContent.querySelector('#viewZone');
+viewButton.addEventListener('click', () => {
+  setSelectedZone(zone);
+  setOpenViewZonePopup(true);
+});
+});
+
+
+
+
+
+
+
+
+
       // Change the cursor to a pointer when
       // the mouse is over the states layer.
       map.on('mouseenter', 'states-layer', () => {
@@ -915,21 +956,152 @@ return (
 {addSensor && <div>Something showed up!</div>}
 
 
-<div ref={mapContainer} style={{ width: '1400px', height: '686px',left: '121px',top: '-10px' }} />
+<div ref={mapContainer} style={{ width: '80rem', height: '40rem',left: '121px',top: '-10px' }} />
 
 
-
-
+{/* sensor Popups */}
 <div>
   <div id="popup-container"></div>
-  {openSensorPopup && selectedSensor && (
+  {openViewSensorPopup && selectedSensor && (
     <SensorViewPopup
       sensor={selectedSensor}
-      onOpen={openSensorPopup}
-      onCancel={() => setOpenSensorPopup(false)}
+      onOpen={openViewSensorPopup}
+      onCancel={() => setOpenViewSensorPopup(false)}
     />
   )}
 </div>
+<div>
+  <div id="popup-container"></div>
+  {openUpdateSensorPopup && selectedSensor && (
+    <SensorUpdatePopup
+      sensor={selectedSensor}
+      onOpen={openUpdateSensorPopup}
+      onCancel={() => setOpenUpdateSensorPopup(false)}
+    />
+  )}
+</div>
+{/* sensor Popups */}
+
+{/* mark Popups */}
+<div>
+  <div id="popup-container"></div>
+  {openViewMarkPopup && selectedMark && (
+    <MarkViewPopup
+    mark={selectedMark}
+      onOpen={openViewMarkPopup}
+      onCancel={() => setOpenViewMarkPopup(false)}
+    />
+  )}
+</div>
+<div>
+  <div id="popup-container"></div>
+  {openUpdateMarkPopup && selectedMark && (
+    <MarkUpdatePopup
+    mark={selectedMark}
+      onOpen={openUpdateMarkPopup}
+      onCancel={() => setOpenUpdateMarkPopup(false)}
+    />
+  )}
+</div>
+{/* mark Popups */}
+
+
+{/* pipe Popups */}
+<div>
+  <div id="popup-container"></div>
+  {openViewPipePopup && selectedPipe && (
+    <PipeViewPopup
+    pipe={selectedPipe}
+      onOpen={openViewPipePopup}
+      onCancel={() => setOpenViewPipePopup(false)}
+    />
+  )}
+</div>
+<div>
+  <div id="popup-container"></div>
+  {openUpdatePipePopup && selectedPipe && (
+    <PipeUpdatePopup
+    pipe={selectedPipe}
+      onOpen={openUpdatePipePopup}
+      onCancel={() => setOpenUpdatePipePopup(false)}
+    />
+  )}
+</div>
+{/* pipe Popups */}
+
+{/* pipeaccess Popups */}
+
+<div>
+  <div id="popup-container"></div>
+  {openViewPipeaccessPopup && selectedPipeaccess && (
+    <PipeAccessViewPopup
+      pipeAccess={selectedPipeaccess}
+      onOpen={openViewPipeaccessPopup}
+      onCancel={() => setOpenViewPipeaccessPopup(false)}
+    />
+  )}
+</div>
+<div>
+  <div id="popup-container"></div>
+  {openUpdatePipeaccessPopup && selectedPipeaccess && (
+    <PipeAccessUpdatePopup
+      pipeAccess={selectedPipeaccess}
+      onOpen={openUpdatePipeaccessPopup}
+      onCancel={() => setOpenUpdatePipeaccessPopup(false)}
+    />
+  )}
+</div>
+{/* pipeaccess Popups */}
+
+{/* map Popups */}
+
+<div>
+  <div id="popup-container"></div>
+  {openViewMapPopup && selectedMap && (
+    <MapViewPopup
+      map={selectedMap}
+      onOpen={openViewMapPopup}
+      onCancel={() => setOpenViewMapPopup(false)}
+    />
+  )}
+</div>
+<div>
+  <div id="popup-container"></div>
+  {openUpdateMapPopup && selectedMap && (
+    <MapUpdatePopup
+      map={selectedMap}
+      onOpen={openUpdateMapPopup}
+      onCancel={() => setOpenUpdateMapPopup(false)}
+    />
+  )}
+</div>
+{/* map Popups */}
+
+{/* zone Popups */}
+
+<div>
+  <div id="popup-container"></div>
+  {openViewZonePopup && selectedZone && (
+    <ZoneViewPopup
+      zone={selectedZone}
+      onOpen={openViewZonePopup}
+      onCancel={() => setOpenViewZonePopup(false)}
+    />
+  )}
+</div>
+<div>
+  <div id="popup-container"></div>
+  {openUpdateZonePopup && selectedZone && (
+    <ZoneUpdatePopup
+      zone={selectedZone}
+      onOpen={openUpdateZonePopup}
+      onCancel={() => setOpenUpdateZonePopup(false)}
+    />
+  )}
+</div>
+{/* zone Popups */}
+
+
 
 
 

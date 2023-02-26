@@ -25,7 +25,7 @@ const RightAddSensorPopup = (props) => {
     
       setLat(lat);
       setLng(lng);
-    setSensorData({...sensorData, sensor_coordinates : [lng, lat]});
+    setSensorData({...sensorData, sensor_coordinates : [lng, lat], pipe: localStorage.getItem('selectedPipeId')});
   }
  
 
@@ -58,7 +58,7 @@ const open2 = props.open2;
   };
 console.log("sensorData?", sensorData)
 
-const { sensor_coordinates, sensor_description, sensor_Indication, sensor_type, sensor_creationdate, sensor_frequency, sensor_title } = sensorData;
+const { sensor_coordinates, sensor_description, sensor_Indication, sensor_type, sensor_creation_date, sensor_frequency, sensor_title, pipe } = sensorData;
   const handleSubmitData = () => {
 
 
@@ -69,7 +69,7 @@ const { sensor_coordinates, sensor_description, sensor_Indication, sensor_type, 
     }
 
     const data = {
-      sensor_coordinates, sensor_description, sensor_Indication, sensor_type, sensor_creationdate, sensor_frequency, sensor_title
+      sensor_coordinates, sensor_description, sensor_Indication, sensor_type, sensor_creation_date, sensor_frequency, sensor_title, pipe
     };
 
 
@@ -102,7 +102,7 @@ const { sensor_coordinates, sensor_description, sensor_Indication, sensor_type, 
     localStorage.removeItem("selectedPipeId");
     localStorage.removeItem("newSensorLng");
     localStorage.removeItem("newSensorLat");
- 
+    props.handleClose2();
     };
 
 console.log("sensor frequency", sensorData.sensor_frequency)
@@ -126,11 +126,11 @@ console.log("sensor frequency", sensorData.sensor_frequency)
         <div className="SensorPopup">
           <h3>Add Sensor</h3>
       <form>
-      <label>Pipe:</label>
+      <label>Select Pipe:</label>
         <input
         disabled
           type="text"
-          name="map"
+          name="pipe"
           value={localStorage.getItem('selectedPipeId') ||  sensorData.pipe}
           onChange={e => handleSensorDataChange(e)}
         />
@@ -158,9 +158,9 @@ console.log("sensor frequency", sensorData.sensor_frequency)
         
         <label>Sensor creation date:</label>
         <input
-          type="date"
-          name="sensor_creationdate"
-          value={sensorData.sensor_creationdate}
+          type="datetime-local"
+          name="sensor_creation_date"
+          value={sensorData.sensor_creation_date}
           onChange={e => handleSensorDataChange(e)}
         />
         <label>Sensor type:</label>
@@ -180,17 +180,18 @@ console.log("sensor frequency", sensorData.sensor_frequency)
 
         <label>Sensor Indication:</label>
               <select type="text" name="sensor_Indication" value={sensorData.sensor_Indication} onChange={e => handleSensorDataChange(e)}>
+              <option value="unknown">Unknown</option>
               <option value="good">Good</option>
               <option value="notable">Notable</option>  
               <option value="critical">Critical</option>
-              <option value="unknown">Unknown</option>
+              
               </select>
 
 
 
       </form>
       <button onClick={handleSubmitData}>Submit</button>
-      <button onClick={props.handleClose2}>Cancel</button>
+      <button onClick={reloadPage}>Cancel</button>
     </div>
         </div>
       </Box>

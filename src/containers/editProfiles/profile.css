@@ -1,0 +1,62 @@
+/* Profile page container */
+.profile-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  /* Profile page heading */
+  .profile-heading {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  /* Profile form */
+  .profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  /* Form label */
+  .profile-form label {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  /* Form input */
+  .profile-form input {
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
+  }
+  
+  /* Form button */
+  .profile-form button {
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  /* Form button hover */
+  .profile-form button:hover {
+    background-color: #0069d9;
+  }
+  
+  /* Error message */
+  .error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  
