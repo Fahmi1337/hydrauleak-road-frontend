@@ -15,7 +15,12 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+
+
+
 const AddClientPopupForm = ({ onCancel, onOpen }) => {
+  
+
   const [clientData, setClientData] = useState({
     // photo: '',
     description: '',
@@ -24,8 +29,9 @@ const AddClientPopupForm = ({ onCancel, onOpen }) => {
     inscription_date: '',
     client_files: []
   });
-
+  const [error, setError] = useState(null);
   const handleClientDataChange = (e) => {
+    
     setClientData({
       ...clientData,
       [e.target.name]: e.target.value,
@@ -33,7 +39,6 @@ const AddClientPopupForm = ({ onCancel, onOpen }) => {
   };
 
   const handleSubmitData = (e) => {
-
     e.preventDefault(); // prevent the default form submission
   
     // Convert clientData.user to an integer
@@ -55,8 +60,10 @@ const AddClientPopupForm = ({ onCancel, onOpen }) => {
       })
       .catch((err) => {
         console.error(err);
+        setError(err.message || err.response.statusText);
       });
   };
+  
 
 
 
@@ -64,31 +71,33 @@ const AddClientPopupForm = ({ onCancel, onOpen }) => {
   const [clients, setClients] = useState([]);
 
 
-  console.log("the client data : ", clients)
-const getClients = async () => {
-  try {
-    const response = await fetch(
-      `${process.env.REACT_APP_API_URL}/api/clients/`,
-      {
-        method: "GET",
+  console.log("the client error : ", error)
+  const getClients = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/user/`,
+        {
+          method: "GET",
+  
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      );
+      const data = await response.json();
+      setClients(data);
+    } catch (error) {
+      console.log(error);
+     
+    }
 
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => setClients(data));
-return response;
-  } catch (error) {
-    console.log(error);
-  }
-};
 
-useEffect(() => {   
-  getClients();  
-      }, []);
+  };
+  
+  useEffect(() => {
+    getClients();
+  }, []);
 
 
 
@@ -104,20 +113,23 @@ useEffect(() => {
       >
         <Box sx={style}>
           <div className="popup-form">
-            {/* <div className="popup-form-overlay" onClick={onCancel}></div> */}
+          
             <div className="popup-form-content">
               <h2>Add Client Details</h2>
+              <p>{error}</p>
               <form onSubmit={handleSubmitData}>
               <label >Client profile:</label>        
              
               <select name="user" value={parseInt(clientData.user)} onChange={(e) => handleClientDataChange(e)}>
                 <option disabled value=""> -- select an option -- </option>
-                {clients.map((client) => (
-                  <option key={client.user.id} value={client.user.id}>
-                    {client.user.name}
+                {clients.filter((client) => client.roles.includes("is_client")).map((client) => (
+                  <option key={client.id} value={client.id}>
+                    {client.name}
                   </option>
                 ))}
               </select>
+
+
               
                 <label> Description:</label>
                   <textarea type="text" name="description" value={clientData.description} onChange={handleClientDataChange} />
