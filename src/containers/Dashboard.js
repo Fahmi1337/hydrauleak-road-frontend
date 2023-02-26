@@ -683,15 +683,6 @@ viewButton.addEventListener('click', () => {
   setOpenViewZonePopup(true);
 });
 });
-
-
-
-
-
-
-
-
-
       // Change the cursor to a pointer when
       // the mouse is over the states layer.
       map.on('mouseenter', 'states-layer', () => {

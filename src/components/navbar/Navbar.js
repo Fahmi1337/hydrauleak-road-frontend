@@ -62,17 +62,30 @@ const getUserRoutes = () => {
                 </>
         )
     }
-    else{
+    else if(me.roles==="is_leaker"){
         return(
             <>
             <li><a href="/">Dashboard</a></li>
                          <li><a href="/contracts">Contracts</a></li>
                          <li><a href="/interventions">Interventions</a></li>
-                         <li><a href="/reports">Reports</a></li>
+                         <li><a href="/client-management">Clients</a></li>
+                         <li><a href="/post-report">Send Reports</a></li>
+                         <li><a href="/leaker-profile">Profile</a></li>
                          </>
         )
       
                      
+    }
+    else{
+        return(
+            <>
+            <li><a href="/">Dashboard</a></li>
+                         <li><a href="/contracts">Contracts</a></li>
+                         
+                         <li><a href="/post-report">Send Reports</a></li>
+                         <li><a href="/client-profile">Profile</a></li>
+                         </>
+        )
     }
  };
 

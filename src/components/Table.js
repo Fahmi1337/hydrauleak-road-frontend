@@ -240,7 +240,7 @@ return (
           </tr>
         </thead>
         <tbody>
-        {currentData
+        {/* {currentData
               .filter(data =>
                 data.contract_title.toLowerCase().includes(search.toLowerCase())
               )
@@ -251,7 +251,6 @@ return (
                   <td>{data.contract_description}</td>
                   <td>{data.contract_type}</td>
                   <td>{data.contract_status}</td>
-                  
                   <td>{data.contract_date}</td>
                   <td>{data.address}</td>
                   <td>{data.city}</td>
@@ -259,32 +258,94 @@ return (
                   <td>{data.zipcode}</td>
                   <td>{data.is_published}</td>
                   <td>{data?.client?.user?.name}</td>
-
-
                   {me.roles==="is_admin" && (
    <td>  <button  onClick={() => {
     localStorage.setItem("currentContract", data.id); localStorage.setItem("ShowUpdateButton", true);  handleOpen();
   }}>Update</button></td>
     )}
-
 {me.roles==="is_admin" && (
      <td><button  onClick={() => {
                
       DeleteContract(data.id);
     }}>Delete</button></td>
-    )}
+    )} </tr>
+              ))} */}
 
-                  {/* <td>  <button  onClick={() => {
-              localStorage.setItem("currentContract", data.id); localStorage.setItem("ShowUpdateButton", true);  handleOpen();
-            }}>Update</button></td>
-                  <td><button  onClick={() => {
-               
-               DeleteContract(data.id);
-             }}>Delete</button></td> */}
-          
-                </tr>
-              ))}
+{(me.roles==="is_admin" || me.roles==="is_leaker") && (
+     currentData
+     .filter(data =>
+       data.contract_title.toLowerCase().includes(search.toLowerCase())
+     )
+     .map(data => (
+       <tr key={data.id}>
+          <td>{data.id}</td>
+         <td >{data.contract_title}</td>
+         <td>{data.contract_description}</td>
+         <td>{data.contract_type}</td>
+         <td>{data.contract_status}</td>
+         <td>{data.contract_date}</td>
+         <td>{data.address}</td>
+         <td>{data.city}</td>
+         <td>{data.state}</td>
+         <td>{data.zipcode}</td>
+         <td>{data.is_published}</td>
+         <td>{data?.client?.user?.name}</td>
+         {me.roles==="is_admin" && (
+<td>  <button  onClick={() => {
+localStorage.setItem("currentContract", data.id); localStorage.setItem("ShowUpdateButton", true);  handleOpen();
+}}>Update</button></td>
+)}
+{me.roles==="is_admin" && (
+<td><button  onClick={() => {
+      
+DeleteContract(data.id);
+}}>Delete</button></td>
+)} </tr>
+     )))}
+     
+
+
+
+
+
+     {me.roles==="is_client" && (
+     currentData.filter(data =>
+      data.client?.user?.name.toLowerCase().includes(me.name.toLowerCase())
+    )
+     .filter(data =>
+       data.contract_title.toLowerCase().includes(search.toLowerCase())
+     )
+     .map(data => (
+       <tr key={data.id}>
+          <td>{data.id}</td>
+         <td >{data.contract_title}</td>
+         <td>{data.contract_description}</td>
+         <td>{data.contract_type}</td>
+         <td>{data.contract_status}</td>
+         <td>{data.contract_date}</td>
+         <td>{data.address}</td>
+         <td>{data.city}</td>
+         <td>{data.state}</td>
+         <td>{data.zipcode}</td>
+         <td>{data.is_published}</td>
+         <td>{data?.client?.user?.name}</td>
+         {me.roles==="is_admin" && (
+<td>  <button  onClick={() => {
+localStorage.setItem("currentContract", data.id); localStorage.setItem("ShowUpdateButton", true);  handleOpen();
+}}>Update</button></td>
+)}
+{me.roles==="is_admin" && (
+<td><button  onClick={() => {
+      
+DeleteContract(data.id);
+}}>Delete</button></td>
+)} </tr>
+     )))}
+
+
+
         </tbody>
+
       </table>
     
     <div>

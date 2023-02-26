@@ -277,9 +277,7 @@ const handleCloseAddClient = () => {
       {me.roles==="is_admin" && (
   <th>Delete</th>
     )}
-            {/* <th>Details</th>
-            <th>Edit</th>
-            <th>Delete</th> */}
+          
           </tr>
         </thead>
         <tbody>
