@@ -58,6 +58,7 @@ const getUserRoutes = () => {
                 <li><a href="/reports">Reports</a></li>
                 <li><a href="/client-management">Clients</a></li>
                 <li><a href="/user-management">users</a></li>
+                <li><a href="/admin-profile">Profile</a></li>
                 </>
         )
     }
