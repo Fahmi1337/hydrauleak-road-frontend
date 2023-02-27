@@ -70,10 +70,10 @@ function ClientProfile() {
     <input type="email" id="email" value={email} onChange={handleEmailChange} />
     <label htmlFor="phone">Phone:</label>
     <input type="text" id="phone" value={phone} onChange={handlePhoneChange} />
-
-    <ChangePassword/>
+  
     <button type="button" onClick={handleSaveChanges}>Save Changes</button>
   </form>
+  <ChangePassword/>
 </div>
 );
 }
