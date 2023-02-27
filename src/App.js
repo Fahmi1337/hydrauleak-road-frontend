@@ -16,7 +16,8 @@ import Interventions from './containers/interventions/Interventions'
 import ClientManagement from './containers/clientManagement/ClientManagment';
 
 import AdminProfile from './containers/editProfiles/AdminProfile';
-
+import LeakerProfile from './containers/editProfiles/LeakerProfile';
+import ClientProfile from './containers/editProfiles/ClientProfile';
 // import Activate from './containers/Activate';
 // import ResetPassword from './containers/ResetPassword';
 // import ResetPasswordConfirm from './containers/ResetPasswordConfirm';
@@ -73,7 +74,8 @@ const App = () => {
                     <Route path="/client-management" element={ !isToken ? <Navigate to="/login" /> : <ClientManagement/> }/>;
 
                     <Route path="/admin-profile" element={ !isToken ? <Navigate to="/login" /> : <AdminProfile/> }/>;
-
+                    <Route path="/leaker-profile" element={ !isToken ? <Navigate to="/login" /> : <LeakerProfile/> }/>;
+                    <Route path="/client-profile" element={ !isToken ? <Navigate to="/login" /> : <ClientProfile/> }/>;
 
                     <Route exact path='/test' element={<Test/>} />
 

@@ -683,15 +683,6 @@ viewButton.addEventListener('click', () => {
   setOpenViewZonePopup(true);
 });
 });
-
-
-
-
-
-
-
-
-
       // Change the cursor to a pointer when
       // the mouse is over the states layer.
       map.on('mouseenter', 'states-layer', () => {
@@ -956,7 +947,7 @@ return (
 {addSensor && <div>Something showed up!</div>}
 
 
-<div ref={mapContainer} style={{ width: '80rem', height: '40rem',left: '121px',top: '-10px' }} />
+<div ref={mapContainer} style={{ width: '142rem', height: '73rem',left: '121px',top: '-10px' }} />
 
 
 {/* sensor Popups */}
