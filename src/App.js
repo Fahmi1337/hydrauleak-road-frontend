@@ -13,11 +13,13 @@ import Contracts from './containers/Contracts'
 import Reports from './containers/reports/Reports'
 import PostReport from './containers/reports/PostReport'
 import Interventions from './containers/interventions/Interventions'
+import AddZoneIntervention from './containers/interventions/AddZoneIntervention'
 import ClientManagement from './containers/clientManagement/ClientManagment';
 
 import AdminProfile from './containers/editProfiles/AdminProfile';
 import LeakerProfile from './containers/editProfiles/LeakerProfile';
 import ClientProfile from './containers/editProfiles/ClientProfile';
+
 // import Activate from './containers/Activate';
 // import ResetPassword from './containers/ResetPassword';
 // import ResetPasswordConfirm from './containers/ResetPasswordConfirm';
@@ -80,6 +82,8 @@ const App = () => {
                     <Route exact path='/test' element={<Test/>} />
 
                     <Route path="/interventions" element={ !isToken ? <Navigate to="/login" /> : <Interventions/> }/>;
+                    <Route path="/add-zone-intervention" element={ !isToken ? <Navigate to="/login" /> : <AddZoneIntervention/> }/>;
+                   
                     <Route path="/reports" element={ !isToken ? <Navigate to="/login" /> : <Reports/> }/>;
                     
                     <Route path="/post-report" element={ !isToken ? <Navigate to="/login" /> : <PostReport/> }/>;

@@ -9,7 +9,7 @@ const EditInterventionPopupForm =({ intervention, onUpdateIntervention, onCancel
   const [contract, setContract] = useState(intervention.contract);
   const [leaker, setLeaker] = useState(intervention.leaker);
   const [zone, setZone] = useState(intervention.zone);
-  const [title, setTitle] = useState(intervention.intervention_title);
+  const [intervention_title, setTitle] = useState(intervention.intervention_title);
   const [description, setDescription] = useState(intervention.intervention_description);
   const [address, setAddress] = useState(intervention.address);
   const [city, setCity] = useState(intervention.city);
@@ -111,7 +111,7 @@ const EditInterventionPopupForm =({ intervention, onUpdateIntervention, onCancel
       contract, 
       leaker, 
       zone, 
-      title,
+      intervention_title,
       description,
       type, 
       size, 
@@ -169,7 +169,7 @@ const EditInterventionPopupForm =({ intervention, onUpdateIntervention, onCancel
                 </label>
                 <label>
                 title:
-                    <input type="text" value={title} onChange={handleTitleChange} />
+                    <input type="text" value={intervention_title} onChange={handleTitleChange} />
                 </label>
                 <label>
                 description:
