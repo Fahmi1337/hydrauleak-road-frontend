@@ -317,13 +317,14 @@ const [openUpdateZonePopup, setOpenUpdateZonePopup] = useState(false);
       const map = new mapboxgl.Map({
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/streets-v11',
-        center: searchCoordinates?.features[0]?.center ||  mapsData[0]?.map_coordinate || searchCoordinates,
+        center:mapsData[2]?.map_coordinate || searchCoordinates,
         zoom: 12
       });
 
       map.on('load', () => {
 
-           
+           console.log('centre', searchCoordinates?.features[0]?.center )
+           console.log('centre map',  mapsData[0]?.map_coordinate  )
 
 // Add Maps to the map 
 mapsData.forEach((maps) => {
