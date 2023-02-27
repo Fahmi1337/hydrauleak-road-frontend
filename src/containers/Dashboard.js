@@ -37,7 +37,7 @@ const Map = (props) => {
 
 
   
-  const [center, setCoordinates] = useState([-71.3583, 50.1686]);
+  const [mapsData, setMapsData] = useState([]);
   const [searchCoordinates, setSearchCoordinates] = useState([-71.3583, 50.1686]);
   const [zones, setZones] = useState([]);
 
@@ -156,19 +156,20 @@ const getMaps = e => {
     }
   })
   .then((res) => {
-    setCoordinates(res.data.data);
+    setMapsData(res.data.data);
 })
 .catch((err) => {
 console.log(err);
 });
 }
 
-
 // Get Maps while opening the dashboard
 useEffect(() => {
-    getMaps();
+    getMaps(); 
   }, []);
 
+
+  console.log("maps data:" ,mapsData )
 
 // Get Pipes function 
 const getPipes = e => {
@@ -189,7 +190,7 @@ const getPipes = e => {
     getPipes();
   }, []);
 
-
+  console.log("pipe data:" ,pipesData )
 
   // Get Pipes function 
   const getPipeAccess = e => {
@@ -273,10 +274,15 @@ const getPipes = e => {
 
  
 
-  //sensor const select delete update 
-  const [selectedSensor, setSelectedSensor] = useState();
-  const [openViewSensorPopup, setOpenViewSensorPopup] = useState(false);
-  const [openUpdateSensorPopup, setOpenUpdateSensorPopup] = useState(false);
+// map const select delete update
+const [selectedMap, setSelectedMap] = useState();
+const [openViewMapPopup, setOpenViewMapPopup] = useState(false);
+const [openUpdateMapPopup, setOpenUpdateMapPopup] = useState(false);
+
+//sensor const select delete update 
+const [selectedSensor, setSelectedSensor] = useState();
+const [openViewSensorPopup, setOpenViewSensorPopup] = useState(false);
+const [openUpdateSensorPopup, setOpenUpdateSensorPopup] = useState(false);
 
 // mark const select delete update
 const [selectedMark, setSelectedMark] = useState();
@@ -293,11 +299,6 @@ const [selectedPipeaccess, setSelectedPipeaccess] = useState();
 const [openViewPipeaccessPopup, setOpenViewPipeaccessPopup] = useState(false);
 const [openUpdatePipeaccessPopup, setOpenUpdatePipeaccessPopup] = useState(false);
 
-// map const select delete update
-const [selectedMap, setSelectedMap] = useState();
-const [openViewMapPopup, setOpenViewMapPopup] = useState(false);
-const [openUpdateMapPopup, setOpenUpdateMapPopup] = useState(false);
-
 // zone const select delete update
 const [selectedZone, setSelectedZone] = useState();
 const [openViewZonePopup, setOpenViewZonePopup] = useState(false);
@@ -309,21 +310,77 @@ const [openUpdateZonePopup, setOpenUpdateZonePopup] = useState(false);
   const mapContainer = React.useRef(null);
   useEffect(() => {
 
- 
+  
 
-    if (sensorsData.length > 0) {
+    if (mapsData.length > 0) {
       mapboxgl.accessToken = accessToken;
       const map = new mapboxgl.Map({
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/streets-v11',
-        center: searchCoordinates?.features[0]?.center || center[0]?.map_coordinate || searchCoordinates,
+        center: searchCoordinates?.features[0]?.center ||  mapsData[0]?.map_coordinate || searchCoordinates,
         zoom: 12
       });
 
       map.on('load', () => {
 
+           
 
+// Add Maps to the map 
+mapsData.forEach((maps) => {
+  console.log("map data 1 :", maps)
+  const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
+    <h3>ID: ${maps.id}</h3>  
+    <h3>Map title: ${maps.map_title}</h3>
+   
+    <p>Map description: ${maps.map_description}</p>
 
+    <button id="deleteMap" data-map-id="${maps.id}">Delete</button>
+    <button id="updateMap" data-map-id="${maps.id}">Update</button>
+    <button id="viewMap" data-map-id="${maps.id}">View</button>
+  `);
+  const marker = new mapboxgl.Marker({
+    draggable: false,
+    color: "#f6ff00",
+  })
+    .setLngLat(maps.map_coordinate)
+    .setPopup(popup)
+    .addTo(map);
+
+  // Delete Map
+  const deleteButton = marker._popup._content.querySelector('#deleteMap');
+  deleteButton.addEventListener('click', () => {
+    const mapId = deleteButton.getAttribute('data-map-id');
+    // Send DELETE request to API endpoint using Map id
+    axios.delete(`${process.env.REACT_APP_API_URL}/api/maps/${mapId}/`, {
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      }
+    })
+    .then(response => {
+      // console.log('Map deleted', response.data);
+      // Remove the Map from the map
+      marker.remove();
+    })
+    .catch(error => {
+      console.error('Error deleting Map', error);
+    });
+  });
+  // Update Map
+  const updateButton = marker._popup._content.querySelector('#updateMap');
+  updateButton.addEventListener('click', () => {
+    // code to open update popup
+    setSelectedMap(maps);
+    setOpenUpdateMapPopup(true);
+    // console.log('Update button clicked');
+  });
+  // View Map
+  
+  const ViewButton = marker._popup._content.querySelector('#viewMap');
+  ViewButton.addEventListener('click', () => {
+    setSelectedMap(maps);
+    setOpenViewMapPopup(true);
+  });
+});
 
 
 
@@ -359,7 +416,7 @@ sensorsData.forEach((sensor) => {
       }
     })
     .then(response => {
-      console.log('Sensor deleted', response.data);
+      // console.log('Sensor deleted', response.data);
       // Remove the Sensor from the map
       marker.remove();
     })
@@ -373,7 +430,7 @@ sensorsData.forEach((sensor) => {
     // code to open update popup
     setSelectedSensor(sensor);
     setOpenUpdateSensorPopup(true);
-    console.log('Update button clicked');
+    // console.log('Update button clicked');
   });
   // View Sensor
   
@@ -416,7 +473,7 @@ markersData.forEach((mark) => {
       }
     })
     .then(response => {
-      console.log('Mark deleted', response.data);
+      // console.log('Mark deleted', response.data);
       // Remove the Mark from the map
       mymarker.remove();
     })
@@ -431,7 +488,7 @@ markersData.forEach((mark) => {
     // code to open update popup
     setSelectedMark(mark);
     setOpenUpdateMarkPopup(true);
-    console.log('Update button clicked');
+    // console.log('Update button clicked');
   });
 
   // View Mark
@@ -462,7 +519,7 @@ pipesAccessData.forEach((pipeaccess) => {
 `);
 const marker = new mapboxgl.Marker({
 draggable: false,
-color: "#00FF00",
+color: "#48c450",
 })
 .setLngLat(pipeaccess.pipe_access_coordinates)
 .setPopup(popup)
@@ -479,7 +536,7 @@ headers: {
 }
 })
 .then(response => {
-console.log('Pipe access deleted', response.data);
+// console.log('Pipe access deleted', response.data);
 // Remove the Pipe access from the map
 marker.remove();
 })
@@ -494,7 +551,7 @@ updateButton.addEventListener('click', () => {
 // code to open update popup
 setSelectedPipeaccess(pipeaccess);
 setOpenUpdatePipeaccessPopup(true);
-console.log('Update button clicked');
+// console.log('Update button clicked');
 });
 
 // View Pipe access
@@ -567,7 +624,7 @@ pipesData.forEach((pipe) => {
       }
     })
     .then(response => {
-      console.log('Pipe deleted', response.data);
+      // console.log('Pipe deleted', response.data);
       // Remove the Pipe from the map
       map.removeLayer('pipe-' + pipe.id);
       map.removeSource('pipe-' + pipe.id);
@@ -583,7 +640,7 @@ pipesData.forEach((pipe) => {
     // code to open update popup
     setSelectedPipe(pipe);
     setOpenUpdatePipePopup(true);
-    console.log('Update button clicked');
+    // console.log('Update button clicked');
   });
   
   // Set up event listener for view button
@@ -658,7 +715,7 @@ deleteButton.addEventListener('click', () => {
     }
   })
   .then(response => {
-    console.log('Zone deleted', response.data);
+    // console.log('Zone deleted', response.data);
     // Remove the Zone from the map
     map.removeLayer(zoneId.toString()); // Remove the fill layer
     map.removeLayer(zoneId.toString() + 'outline'); // Remove the outline layer
@@ -674,7 +731,7 @@ updateButton.addEventListener('click', () => {
   // code to open update popup
   setSelectedZone(zone);
   setOpenUpdateZonePopup(true);
-  console.log('Update button clicked');
+  // console.log('Update button clicked');
 });
 
 const viewButton = popupContent.querySelector('#viewZone');
@@ -852,7 +909,7 @@ function updateArea(e) {
       const value = document.createElement('pre');
       const distance = turf.length(linestring);
       value.textContent = `Total distance: ${distance.toLocaleString()}km`;
-      console.log("values :", value )
+      // console.log("values :", value )
       // distanceContainer.appendChild(value);
       window.localStorage.setItem("pipeLength", distance.toLocaleString());
       
@@ -929,7 +986,7 @@ map.addControl(new MapboxGeocoder({
 
 
 }
-}, [ pipesData, pipesAccessData, zones, center, searchCoordinates, coordinatesPipe, runEffectPipe, runEffectZone, runEffectSensor]);
+}, [ pipesData, pipesAccessData, zones, mapsData, searchCoordinates, coordinatesPipe, runEffectPipe, runEffectZone, runEffectSensor]);
 
 return (
 <div>
@@ -948,6 +1005,30 @@ return (
 
 
 <div ref={mapContainer} style={{ width: '142rem', height: '73rem',left: '121px',top: '-10px' }} />
+
+{/* map Popups */}
+
+<div>
+  <div id="popup-container"></div>
+  {openViewMapPopup && selectedMap && (
+    <MapViewPopup
+      map={selectedMap}
+      onOpen={openViewMapPopup}
+      onCancel={() => setOpenViewMapPopup(false)}
+    />
+  )}
+</div>
+<div>
+  <div id="popup-container"></div>
+  {openUpdateMapPopup && selectedMap && (
+    <MapUpdatePopup
+      map={selectedMap}
+      onOpen={openUpdateMapPopup}
+      onCancel={() => setOpenUpdateMapPopup(false)}
+    />
+  )}
+</div>
+{/* map Popups */}
 
 
 {/* sensor Popups */}
@@ -1043,30 +1124,6 @@ return (
   )}
 </div>
 {/* pipeaccess Popups */}
-
-{/* map Popups */}
-
-<div>
-  <div id="popup-container"></div>
-  {openViewMapPopup && selectedMap && (
-    <MapViewPopup
-      map={selectedMap}
-      onOpen={openViewMapPopup}
-      onCancel={() => setOpenViewMapPopup(false)}
-    />
-  )}
-</div>
-<div>
-  <div id="popup-container"></div>
-  {openUpdateMapPopup && selectedMap && (
-    <MapUpdatePopup
-      map={selectedMap}
-      onOpen={openUpdateMapPopup}
-      onCancel={() => setOpenUpdateMapPopup(false)}
-    />
-  )}
-</div>
-{/* map Popups */}
 
 {/* zone Popups */}
 
