@@ -3,7 +3,7 @@ import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 import EditClientPopupForm from './EditClientPopupForm';
 import AddClientPopupForm from './AddClientPopupForm';
-
+import ViewClientPopupForm from './ViewClientPopupForm';
 
 
 
@@ -18,7 +18,7 @@ const ClientManagement = () => {
 
   const [openPopup, setOpenPopup] = useState(false);
   const [openAddClientPopup, setOpenAddClientPopup] = useState(false);
-
+  const [openViewClientPopup, setOpenViewClientPopup] = useState(false);
 
 const [selectedClient, setSelectedClient] = useState(null); // new state variable
 const [me, setMe] = useState([]);
@@ -67,12 +67,12 @@ useEffect(() => {
   });
     }
 
-    const handleOpenReportPopup = () => {
-      setOpenPopup(true);
+    const handleOpenClientViewPopup = () => {
+      setOpenViewClientPopup(true);
     };
     const handleRowClick = (item) => {
       setSelectedClient(item);
-      handleOpenReportPopup();
+      handleOpenClientViewPopup();
     };
    
 
@@ -217,6 +217,11 @@ const handleOpenAddClient = () => {
 const handleCloseAddClient = () => {
   setOpenAddClientPopup(false);
 };
+
+const handleCloseViewClient = () => {
+  setOpenViewClientPopup(false);
+};
+    
     
 
 
@@ -225,6 +230,18 @@ const handleCloseAddClient = () => {
     <div className="table_container">
 
         <div>
+
+            <div>
+                      {openViewClientPopup && (
+                        <ViewClientPopupForm                    
+                          onClose={handleCloseViewClient}
+                          onOpen = {openViewClientPopup}
+                          clientId={selectedClient.id}
+                        />
+                      )}         
+              </div>
+
+
                   {selectedClient && (
                     <EditClientPopupForm
                       client={selectedClient}
@@ -240,6 +257,7 @@ const handleCloseAddClient = () => {
                     <AddClientPopupForm                    
                       onCancel={handleCloseAddClient}
                       onOpen = {openAddClientPopup}
+                      
                     />
                   )}         
           </div>
