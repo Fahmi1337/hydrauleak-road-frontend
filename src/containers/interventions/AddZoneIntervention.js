@@ -11,7 +11,6 @@ import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 
 
 import AddZonePopup from '../../components/mapPopups/addzonepopup/AddZonePopup'
-
 import ZoneViewPopup from '../../components/mapPopups/addzonepopup/ZoneViewPopup';
 import ZoneUpdatePopup from '../../components/mapPopups/addzonepopup/ZoneUpdatePopup';
 import './interventions.css'
@@ -61,12 +60,6 @@ const getSeatchSuggestions = e => {
 useEffect(() => {
   getSeatchSuggestions();
 }, []);
-
-
-
-
-
-
 
 
 // Get the maps coordinates center and details  
@@ -305,25 +298,11 @@ function updateArea(e) {
 });
 
 
-
-
- 
-
-
-
 }
 }, [ zones, mapsData, searchCoordinates]);
 
 return (
 <div>
-
-
-
-
-  
-
-
-
 
 
 
@@ -335,13 +314,6 @@ return (
 <div id="addZoneInterventionPopup">
       <AddZonePopup openZone={true}  selectedIntervention={props.selectedIntervention}/>
       </div>
-
-
- 
-
-
-
-
 
 
 {/* zone Popups */}
@@ -367,12 +339,6 @@ return (
   )}
 </div>
 {/* zone Popups */}
-
-
-
-
-
-
 
   <div className="calculation-box">
     <p>Click the map to draw.</p>

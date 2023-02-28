@@ -3,14 +3,14 @@ import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 import EditInterventionPopupForm from './EditInterventionPopupForm';
 import AddInterventionPopupForm from './AddInterventionPopupForm';
+import ViewInterventionPopup from './ViewInterventionPopup'
 import AddZoneIntervention from './AddZoneIntervention'
 import Box from '@mui/material/Box';
-
-import Typography from '@mui/material/Typography';
+// import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
 
-const Intervention = () => {
+const Intervention = (props) => {
 
   const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -21,6 +21,7 @@ const Intervention = () => {
 
   const [openPopup, setOpenPopup] = useState(false);
   const [openAddInterventionPopup, setOpenAddInterventionPopup] = useState(false);
+  const [openViewInterventionPopup, setOpenViewInterventionPopup] = useState(false);
   const [openAddZoneInterventionPopup, setOpenAddZoneInterventionPopup] = useState(false);
 
 const [selectedIntervention, setSelectedIntervention] = useState(null); // new state variable
@@ -101,6 +102,9 @@ const handleDeleteIntervention =async (interventionId) => {
            <button onClick={() => {handleOpen(); setSelectedIntervention(item);}}>Add Zone</button>
          </td>
          <td>
+           <button onClick={() => {handleEditIntervention(item);handleOpenViewIntervention();}}>Details</button>
+         </td>
+         <td>
            <button onClick={() =>  {handleEditIntervention(item); handleOpenEditIntervention();}}>Edit</button>
          </td>
          <td>
@@ -172,6 +176,13 @@ const handleOpenAddIntervention = () => {
 const handleCloseAddIntervention = () => {
   setOpenAddInterventionPopup(false);
 };
+
+const handleOpenViewIntervention = () => {
+  setOpenViewInterventionPopup(true);
+};
+const handleCloseViewIntervention = () => {
+  setOpenViewInterventionPopup(false);
+};
     
 const handleOpenAddZoneIntervention = () => {
   setOpenAddZoneInterventionPopup(true);
@@ -188,9 +199,10 @@ console.log("selectedIntervention",selectedIntervention )
                     />
                   )}         
           </div> */}
-          <Modal
+        <Modal
         open={open}
-        onClose={handleClose}
+        // onClick={handleClose}
+        onClose={props.onCloseAddZone}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -215,6 +227,17 @@ console.log("selectedIntervention",selectedIntervention )
                     <AddInterventionPopupForm                    
                       onCancel={handleCloseAddIntervention}
                       onOpen = {openAddInterventionPopup}
+                    />
+                  )}         
+          </div>
+
+          <div>
+                  {openViewInterventionPopup && (
+                    <ViewInterventionPopup 
+                    selectedIntervention={selectedIntervention}
+                    interventionId={selectedIntervention.id}                 
+                      onCancel={handleCloseViewIntervention}
+                      onOpen = {openViewInterventionPopup}
                     />
                   )}         
           </div>
@@ -247,6 +270,10 @@ console.log("selectedIntervention",selectedIntervention )
             <th>Type</th>
             <th>Status</th>
             <th>published</th>
+            <th>Add Zone</th>
+            <th>Details</th>
+            <th>Edit</th>
+            <th>Delete</th>
           </tr>
         </thead>
         <tbody>
