@@ -11,7 +11,8 @@ import Modal from '@mui/material/Modal';
 
 const AddZonePopup = (props) => {
 
-
+const [onCloseAddZone, setOnCloseAddZone] = useState(true);
+const [selectedIntervention, setSelectedIntervention] = useState({"id" : 1})
 const initialState = '';
 const [addZone, setAddZone] = useState(false);
 const [zoneData, setZoneData] = useState({
@@ -97,12 +98,6 @@ const { zone_title, zone_description, zone_num, zone_status, zone_color, map, Ar
     localStorage.removeItem("zoneArea");
   };
 
-
-
-  
-
-
-
   const handleZoneDataChange = (e) => {
     setZoneData({
       ...zoneData,
@@ -113,7 +108,7 @@ const { zone_title, zone_description, zone_num, zone_status, zone_color, map, Ar
   };
 
   const handleSubmitData = () => {
-    if (!zoneData.zone_title || !zoneData.zone_description || !zoneData.zone_coordinates) {
+    if (!zoneData.zone_title || !zoneData.zone_description || !zoneData.zone_coordinates|| !zoneData.AreaZone) {
       alert("Please fill in all required fields.");
       return;
     }
@@ -140,6 +135,7 @@ const { zone_title, zone_description, zone_num, zone_status, zone_color, map, Ar
       });
  
       deleteZone();
+      
       props.handleCloseZone();
   };
 
@@ -210,10 +206,14 @@ return response;
 };
 
 useEffect(() => {   
-  getInterventions();  
+  getInterventions();
+    if (props.selectedIntervention){
+      setSelectedIntervention(props.selectedIntervention) ;
+    } 
       }, []);
+
    
-console.log("props.interventionId", props.selectedIntervention)
+console.log("props.interventionId", selectedIntervention)
   return (
     <>
  
@@ -241,7 +241,7 @@ console.log("props.interventionId", props.selectedIntervention)
             <label >Intervention :</label>        
              
             <select  type="text"  
-                  name="intervention" onChange={e => handleZoneDataChange(e)} value={zoneData.intervention || props.selectedIntervention.id} > <option disabled selected value> -- select an option -- </option>
+                  name="intervention" onChange={e => handleZoneDataChange(e)} value={zoneData.intervention || selectedIntervention.id} > <option disabled selected value> -- select an option -- </option>
                   {interventions?.map(intervention => (
                     
                   <option key={intervention.id} value={intervention.id}>{intervention.intervention_title}</option>          
@@ -331,7 +331,7 @@ console.log("props.interventionId", props.selectedIntervention)
 
 
         <button onClick={handleSubmitData}>Submit</button> 
-        <button onClick={() => {props.handleCloseZone(); deleteZone();}}>Cancel</button>
+        <button onClick={() => {deleteZone();}}>Cancel</button>
       </div>
         </Box>
       </Modal>

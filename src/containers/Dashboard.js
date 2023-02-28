@@ -317,8 +317,8 @@ const [openUpdateZonePopup, setOpenUpdateZonePopup] = useState(false);
       const map = new mapboxgl.Map({
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/streets-v11',
-        center:mapsData[2]?.map_coordinate || searchCoordinates,
-        zoom: 12
+        center:mapsData[4]?.map_coordinate || searchCoordinates,
+        zoom: 15
       });
 
       map.on('load', () => {

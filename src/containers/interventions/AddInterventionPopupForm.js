@@ -18,28 +18,27 @@ const style = {
 const AddInterventionPopupForm = ({ onCancel, onOpen }) => {
   const [interventionData, setInterventionData] = useState({
    
-    contract: '', 
-      leaker: '', 
-      zone: '', 
-      title: '',
-      description: '',
-      type: '', 
-      size: '', 
-      status: '', 
-      date: '', 
+    contract: 1, 
+      
+    intervention_title: '',
+    intervention_description: '',
+    intervention_type: 'Simple', 
+     
+      intervention_status: 'NotStart', 
+      // intervention_date: '', 
       address: '', 
       city: '', 
       state: '', 
-      zipCode: '', 
-      estimateTime: '', 
-      leakTool: '', 
-      published: ''
+      zipcode: '', 
+      // intervention_estimate_time: '', 
+      intervention_leak_tool: '', 
+      is_published: 'Not Published'
   });
 
   const handleInterventionDataChange = (e) => {
     setInterventionData({
       ...interventionData,
-      [e.target.title]: e.target.value,
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -77,89 +76,91 @@ const AddInterventionPopupForm = ({ onCancel, onOpen }) => {
             <div className="popup-form-content">
               <h2>Add Intervention</h2>
               <form onSubmit={handleSubmitData}>
-                <label>
+                 <label>
                 contract:
-                    <input type="text" value={interventionData.contract} onChange={handleInterventionDataChange} />
+                    <input type="number" name='contract' value={interventionData.contract} onChange={handleInterventionDataChange} />
                 </label>
+                {/*
                 <label>
                 leaker:
-                    <input type="email" value={interventionData.leaker} onChange={handleInterventionDataChange} />
+                    <input type="email" name='leaker' value={interventionData.leaker} onChange={handleInterventionDataChange} />
                 </label>
                 <label>
                 zone:
-                    <input type="text" value={interventionData.zone} onChange={handleInterventionDataChange} />
-                </label>
+                    <input type="text" name='zone' value={interventionData.zone} onChange={handleInterventionDataChange} />
+                </label> */}
                 <label>
                 title:
-                    <input type="text" value={interventionData.title} onChange={handleInterventionDataChange} />
+                    <input type="text" name='intervention_title' value={interventionData.intervention_title} onChange={handleInterventionDataChange} />
                 </label>
                 <label>
                 description:
-                    <input type="email" value={interventionData.description} onChange={handleInterventionDataChange} />
+                    <textarea type="text" name='intervention_description' value={interventionData.intervention_description} onChange={handleInterventionDataChange} />
+                </label>
+                <label>
+                Leak Tools:
+                    <input type="text" name='intervention_leak_tool' value={interventionData.intervention_leak_tool} onChange={handleInterventionDataChange} />
                 </label>
                 <label>
                 address:
-                    <input type="text" value={interventionData.address} onChange={handleInterventionDataChange} />
+                    <input type="text" name='address' value={interventionData.address} onChange={handleInterventionDataChange} />
                 </label>
                 <label>
                 city:
-                    <input type="text" value={interventionData.city} onChange={handleInterventionDataChange} />
+                    <input type="text" name='city' value={interventionData.city} onChange={handleInterventionDataChange} />
                 </label>
                 <label>
                 state:
-                    <input type="text" value={interventionData.state} onChange={handleInterventionDataChange} />
+                    <input type="text" name='state' value={interventionData.state} onChange={handleInterventionDataChange} />
                 </label>
                 <label>
                 zipCode:
-                    <input type="text" value={interventionData.zipCode} onChange={handleInterventionDataChange} />
-                </label>
-                <label>
-                Leak Tool:
-                    <input type="text" value={interventionData.leakTool} onChange={handleInterventionDataChange} />
+                    <input type="text" name='zipcode' value={interventionData.zipcode} onChange={handleInterventionDataChange} />
                 </label>
                 <label>
                 date:
-                    <input type="date" value={interventionData.date} onChange={handleInterventionDataChange} />
+                    <input type="date" name='intervention_date' value={interventionData.intervention_date} onChange={handleInterventionDataChange} />
                 </label>
                 <label>
                 estimate Time:
-                    <input type="date" value={interventionData.estimateTime} onChange={handleInterventionDataChange} />
+                    <input type="date" name='intervention_estimate_time' value={interventionData.intervention_estimate_time} onChange={handleInterventionDataChange} />
                 </label>
                 <label>
                 Intervention type:
-                    <select value={interventionData.type} onChange={handleInterventionDataChange}>
+                    <select  type="text" name='intervention_type' value={interventionData.intervention_type} onChange={handleInterventionDataChange}>                   
+                    <option value="Simple">Medium</option>
+                    <option value="PipeSearch">Low</option>
                     <option value="Hight">Hight</option>
-                    <option value="Medium">Medium</option>
-                    <option value="Low">Low</option>
                     </select>
                 </label>
-                <label>
+                {/* <label>
                 City size:
                     <select value={interventionData.size} onChange={handleInterventionDataChange}>
                     <option value="BigCity">BigCity</option>
                     <option value="MediumCity">MediumCity</option>
                     <option value="LittleCity">LittleCity</option>
                     </select>
-                </label>
+                </label> */}
                 <label>
                 Intervention status:
-                    <select value={interventionData.status} onChange={handleInterventionDataChange}>
-                    <option value="notStart">Not Started</option>
-                    <option value="In Progress">In Progress</option>
+                    <select type="text" name='intervention_status'  value={interventionData.intervention_status} onChange={handleInterventionDataChange}>
+                    <option value="NotStart">Not Started</option>
+                    <option value="Pending">Pending</option>
                     <option value="Completed">Completed</option>
                     </select>
                 </label>
                 <label>
                 published:
-                    <select value={interventionData.published} onChange={handleInterventionDataChange}>
-                    <option value="Published">Published</option>
+                    <select  type="text" name='is_published' value={interventionData.is_published} onChange={handleInterventionDataChange}>
                     <option value="Not Published">Not Published</option>
+                    <option value="Published">Published</option>
+                    
                    
                     </select>
                 </label>
                 
                 <div className="popup-form-buttons">
-                    <button type="submit">Update</button>
+                    <button type="submit">Submit</button>
                     <button type="button" onClick={onCancel}>
                     Cancel
                     </button>
