@@ -24,6 +24,10 @@ zone_area: parseFloat(localStorage.getItem("zoneArea")),
   zone_coordinates: '',
   map: 1
 });
+const style = {
+
+  zIndex: 999999999999
+};
 const { zone_title, zone_description, zone_num, zone_status, zone_color, map, AreaZone, zone_coordinates } = zoneData;
 
 
@@ -179,8 +183,37 @@ useEffect(() => {
   getMaps();  
       }, []);
 
-console.log("zonedata?", zoneData)
 
+
+
+      const [interventions, setInterventions] = useState([]);
+
+const getInterventions = async () => {
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/interventions/`,
+      {
+        method: "GET",
+
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => setInterventions(data));
+return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+useEffect(() => {   
+  getInterventions();  
+      }, []);
+   
+console.log("props.interventionId", props.selectedIntervention)
   return (
     <>
  
@@ -194,12 +227,30 @@ console.log("zonedata?", zoneData)
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box >
+        <Box sx={style}>
         
         <div className="ZonePopup">
           <h3>Add Zone</h3>
        
         <form>
+
+
+
+
+        <div className='listinform__section'>
+            <label >Intervention :</label>        
+             
+            <select  type="text"  
+                  name="intervention" onChange={e => handleZoneDataChange(e)} value={zoneData.intervention || props.selectedIntervention.id} > <option disabled selected value> -- select an option -- </option>
+                  {interventions?.map(intervention => (
+                    
+                  <option key={intervention.id} value={intervention.id}>{intervention.intervention_title}</option>          
+                  ))} 
+            </select>
+            
+        </div>
+
+
 
         <div className='listinform__section'>
             <label >Map:</label>        
@@ -213,6 +264,7 @@ console.log("zonedata?", zoneData)
             </select>
             
         </div>
+
 
     
         <label>Zone coordinates:</label>

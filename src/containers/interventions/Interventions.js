@@ -3,8 +3,11 @@ import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 import EditInterventionPopupForm from './EditInterventionPopupForm';
 import AddInterventionPopupForm from './AddInterventionPopupForm';
+import AddZoneIntervention from './AddZoneIntervention'
+import Box from '@mui/material/Box';
 
-
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
 
 
 const Intervention = () => {
@@ -18,10 +21,17 @@ const Intervention = () => {
 
   const [openPopup, setOpenPopup] = useState(false);
   const [openAddInterventionPopup, setOpenAddInterventionPopup] = useState(false);
-
+  const [openAddZoneInterventionPopup, setOpenAddZoneInterventionPopup] = useState(false);
 
 const [selectedIntervention, setSelectedIntervention] = useState(null); // new state variable
-  
+const [open, setOpen] = React.useState(false);
+const handleOpen = () => setOpen(true);
+const handleClose = () => setOpen(false);
+
+const style = {
+
+  zIndex: 999,
+};
 
     const getInterventions = e => {
       axios.get(`${process.env.REACT_APP_API_URL}/api/interventions/`, {
@@ -87,6 +97,9 @@ const handleDeleteIntervention =async (interventionId) => {
         <td>{item.intervention_type}</td>
         <td>{item.intervention_status}</td>
         <td>{item.is_published}</td>
+        <td>
+           <button onClick={() => {handleOpen(); setSelectedIntervention(item);}}>Add Zone</button>
+         </td>
          <td>
            <button onClick={() =>  {handleEditIntervention(item); handleOpenEditIntervention();}}>Edit</button>
          </td>
@@ -160,12 +173,33 @@ const handleCloseAddIntervention = () => {
   setOpenAddInterventionPopup(false);
 };
     
+const handleOpenAddZoneIntervention = () => {
+  setOpenAddZoneInterventionPopup(true);
+};
 
-
-
+console.log("selectedIntervention",selectedIntervention )
   return (
     <div className="table_container">
 
+{/* <div>
+                  {openAddZoneInterventionPopup && (
+                    <AddZoneIntervention
+                      interventionId={selectedIntervention}
+                    />
+                  )}         
+          </div> */}
+          <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+        <AddZoneIntervention
+                      selectedIntervention={selectedIntervention}
+                    />
+        </Box>
+      </Modal>
         <div>
                   {selectedIntervention && (
                     <EditInterventionPopupForm
