@@ -22,11 +22,11 @@
         margin-right: auto;
         margin-left: auto;
         margin-top: 30px;
-        color: rgb(90, 90, 255);
+        color: #4196F0
       }
       .heading {
         color: #14877c;
-        border-bottom: 1px solid rgb(90, 90, 255);
+        border-bottom: 1px solid #4196F0;
         margin-bottom: 30px;
         padding-bottom: 10px;
       }
@@ -34,7 +34,7 @@
         width: 40%;
         min-width: 200px;
         border-radius: 10px;
-        border: 2px solid rgb(90, 90, 255);
+        border: 2px solid #4196F0;
         padding: 10px;
         font-size: 14px;
       }
@@ -49,15 +49,15 @@
         font-weight: 600;
         border-radius: 4px;
         color: #ffffff;
-        border: 1px solid rgb(90, 90, 255);
-        background-color: rgb(90, 90, 255);
+        border: 1px solid #4196F0;
+        background-color: #4196F0;
         cursor: pointer;
         margin: 0px 15px;
         min-width: 100px;
       }
       
       button:hover {
-        background: rgb(90, 90, 255);
+        background: #4196F0;
         color: #ffffff;
       }
       
@@ -78,7 +78,7 @@
         text-align: left;
         padding: 8px;
         background-color: 1px solid #ffffff;
-        color: rgb(90, 90, 255);
+        color: #4196F0;
       }
       td {
         text-align: left;
@@ -133,23 +133,25 @@
       } */
 
       .pagination a {
-        background-color: rgb(90, 90, 255);
-        color: white;
-        padding: 8px 24px;
+        background-color: #4196F0;
+        color: white !important;
+        padding: 13px 27px;
         text-decoration: none;
         border-radius: 5px;
         margin: 0 10px;
         transition: all 0.2s ease-in-out;
+        font-size: 20px;
+        font-weight: 600;
       }
       
       .pagination a:hover {
-        background-color: #08413b;
-        color: white;
-        font-size: 1.2em;
+        background-color: #4282c5;
+        color: white !important;
+        font-size: 1.1em;
       }
       
       .pagination li.active a {
-        background-color: #333;
+        /* background-color: #333; */
         color: white;
       }
       .pagination-container {
@@ -221,7 +223,7 @@
 #map { position: absolute; top: 0; bottom: 0; width: 100%; }
 
         .table_container{
-          margin:10%;
+          margin:13em;
         }
     .calculation-box {
         height: 75px;
