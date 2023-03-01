@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 // import Button from '@mui/material/Button';
 // import Typography from '@mui/material/Typography';
@@ -20,8 +20,8 @@ const AddInterventionPopupForm = ({ onCancel, onOpen }) => {
    
     contract: 1, 
       
-    intervention_title: '',
-    intervention_description: '',
+    // intervention_title: '',
+    // intervention_description: '',
     intervention_type: 'Simple', 
      
       intervention_status: 'NotStart', 
@@ -60,6 +60,35 @@ const AddInterventionPopupForm = ({ onCancel, onOpen }) => {
       });
   };
 
+  const [contracts, setContracts] = useState([]);
+
+const getContracts = async () => {
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/contracts/`,
+      {
+        method: "GET",
+
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => setContracts(data));
+return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+useEffect(() => {   
+  getContracts();  
+      }, []);
+
+
+
   return (
     <>
       <Modal
@@ -77,9 +106,15 @@ const AddInterventionPopupForm = ({ onCancel, onOpen }) => {
               <h2>Add Intervention</h2>
               <form onSubmit={handleSubmitData}>
                  <label>
-                contract:
-                    <input type="number" name='contract' value={interventionData.contract} onChange={handleInterventionDataChange} />
+                Contract:
                 </label>
+                <select  type="text"  
+                  name="contract" onChange={handleInterventionDataChange} value={interventionData.contract || 1} > <option disabled selected value> -- select an option -- </option>
+                  {contracts?.map(contract => (
+                    
+                  <option key={contract.id} value={contract.id}>{contract.contract_title}</option>          
+                  ))} 
+            </select>
                 {/*
                 <label>
                 leaker:
@@ -90,44 +125,44 @@ const AddInterventionPopupForm = ({ onCancel, onOpen }) => {
                     <input type="text" name='zone' value={interventionData.zone} onChange={handleInterventionDataChange} />
                 </label> */}
                 <label>
-                title:
-                    <input type="text" name='intervention_title' value={interventionData.intervention_title} onChange={handleInterventionDataChange} />
+                Title:
+                    <input type="text" name='intervention_title' value={interventionData.intervention_title} onChange={handleInterventionDataChange}  required />
                 </label>
                 <label>
-                description:
-                    <textarea type="text" name='intervention_description' value={interventionData.intervention_description} onChange={handleInterventionDataChange} />
+                Description:
+                    <textarea type="text" name='intervention_description' value={interventionData.intervention_description} onChange={handleInterventionDataChange} required />
                 </label>
                 <label>
                 Leak Tools:
                     <input type="text" name='intervention_leak_tool' value={interventionData.intervention_leak_tool} onChange={handleInterventionDataChange} />
                 </label>
                 <label>
-                address:
+                Address:
                     <input type="text" name='address' value={interventionData.address} onChange={handleInterventionDataChange} />
                 </label>
                 <label>
-                city:
+                City:
                     <input type="text" name='city' value={interventionData.city} onChange={handleInterventionDataChange} />
                 </label>
                 <label>
-                state:
+                State:
                     <input type="text" name='state' value={interventionData.state} onChange={handleInterventionDataChange} />
                 </label>
                 <label>
-                zipCode:
+                ZipCode:
                     <input type="text" name='zipcode' value={interventionData.zipcode} onChange={handleInterventionDataChange} />
                 </label>
                 <label>
-                date:
-                    <input type="date" name='intervention_date' value={interventionData.intervention_date} onChange={handleInterventionDataChange} />
+                Start Date:
+                    <input type="date" name='intervention_date' value={interventionData.intervention_date} onChange={handleInterventionDataChange} required/>
                 </label>
                 <label>
-                estimate Time:
-                    <input type="date" name='intervention_estimate_time' value={interventionData.intervention_estimate_time} onChange={handleInterventionDataChange} />
+                Estimate Time:
+                    <input type="date" name='intervention_estimate_time' value={interventionData.intervention_estimate_time} onChange={handleInterventionDataChange} required/>
                 </label>
                 <label>
                 Intervention type:
-                    <select  type="text" name='intervention_type' value={interventionData.intervention_type} onChange={handleInterventionDataChange}>                   
+                    <select  type="text" name='intervention_type' value={interventionData.intervention_type} onChange={handleInterventionDataChange} required>                   
                     <option value="Simple">Medium</option>
                     <option value="PipeSearch">Low</option>
                     <option value="Hight">Hight</option>
@@ -143,15 +178,15 @@ const AddInterventionPopupForm = ({ onCancel, onOpen }) => {
                 </label> */}
                 <label>
                 Intervention status:
-                    <select type="text" name='intervention_status'  value={interventionData.intervention_status} onChange={handleInterventionDataChange}>
+                    <select type="text" name='intervention_status'  value={interventionData.intervention_status} onChange={handleInterventionDataChange} required>
                     <option value="NotStart">Not Started</option>
                     <option value="Pending">Pending</option>
                     <option value="Completed">Completed</option>
                     </select>
                 </label>
                 <label>
-                published:
-                    <select  type="text" name='is_published' value={interventionData.is_published} onChange={handleInterventionDataChange}>
+                Published:
+                    <select  type="text" name='is_published' value={interventionData.is_published} onChange={handleInterventionDataChange} required>
                     <option value="Not Published">Not Published</option>
                     <option value="Published">Published</option>
                     

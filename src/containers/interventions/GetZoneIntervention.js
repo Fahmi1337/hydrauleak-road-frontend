@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const GetZoneIntervention = (interventionId) => {
   
-  
+
   const [zones, setZones] = useState([]);
 
   useEffect(() => {
@@ -20,7 +20,7 @@ const GetZoneIntervention = (interventionId) => {
     })
   }, []);
 
-  const interventionZones = zones.filter(zone => zone.intervention === interventionId);
+  const interventionZones = zones.filter(zone => zone.intervention === interventionId.interventionId);
 
   return (
     <div>
@@ -29,8 +29,10 @@ const GetZoneIntervention = (interventionId) => {
         <div>
           {interventionZones.map(zone => (
             <div key={zone.id}>
+              
               <h3>{zone.zone_title}</h3>
-              <p>{zone.zone_description}</p>
+              <h3>ID: {zone.id}</h3>
+              <p>Description: {zone.zone_description}</p>
               <p>Zone Number: {zone.zone_num}</p>
               <p>Zone Date: {zone.zone_date}</p>
               <p>Zone Status: {zone.zone_status}</p>
