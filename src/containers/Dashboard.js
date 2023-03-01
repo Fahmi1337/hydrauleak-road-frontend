@@ -29,6 +29,8 @@ import ZoneUpdatePopup from '../components/mapPopups/addzonepopup/ZoneUpdatePopu
 import MapViewPopup from '../components/mapPopups/addmappopup/MapViewPopup';
 import MapUpdatePopup from '../components/mapPopups/addmappopup/MapUpdatePopup';
 
+import Loader from 'rsuite/Loader';
+
 const Map = (props) => {
   const [sensorsData, setSensorsData] = useState([]);
   const [markersData, setMarkersData] = useState([]);
@@ -308,6 +310,7 @@ const [openUpdateZonePopup, setOpenUpdateZonePopup] = useState(false);
 
   const accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
   const mapContainer = React.useRef(null);
+  
   useEffect(() => {
 
   
