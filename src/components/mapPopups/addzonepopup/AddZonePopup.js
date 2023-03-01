@@ -108,7 +108,7 @@ const { zone_title, zone_description, zone_num, zone_status, zone_color, map, Ar
   };
 
   const handleSubmitData = () => {
-    if (!zoneData.zone_title || !zoneData.zone_description || !zoneData.zone_coordinates|| !zoneData.AreaZone) {
+    if (!zoneData.zone_title || !zoneData.zone_description || !zoneData.zone_coordinates) {
       alert("Please fill in all required fields.");
       return;
     }

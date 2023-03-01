@@ -163,6 +163,7 @@ const handleUpdateIntervention = async (intervention) => {
 
 // handle buttons
 const handleCancelEditIntervention = () => {
+  setOpenPopup(false);
   setSelectedIntervention(null);
 };
 
@@ -213,12 +214,13 @@ console.log("selectedIntervention",selectedIntervention )
         </Box>
       </Modal>
         <div>
-                  {selectedIntervention && (
+                  {openPopup && (
                     <EditInterventionPopupForm
                       intervention={selectedIntervention}
                       onUpdateIntervention={handleUpdateIntervention}
                       onCancel={handleCancelEditIntervention}
                       onOpen = {openPopup}
+                      getInterventions = {getInterventions}
                     />
                   )}         
           </div>

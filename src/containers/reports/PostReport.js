@@ -47,15 +47,15 @@ function PostReport() {
         <h1> Report </h1>
       <label>
         Subject:
-        <input type="text" value={subject} onChange={(e) => setSubject(e.target.value)} />
+        <input type="text" value={subject} onChange={(e) => setSubject(e.target.value)}  required/>
       </label>
       <label>
         Message:
-        <textarea value={message} onChange={(e) => setMessage(e.target.value)} />
+        <textarea value={message} onChange={(e) => setMessage(e.target.value)}  required/>
       </label>
       <label>
         Add Sensor Coordinates:
-        <input type="text" value={addSensorCoordinates} onChange={(e) => setAddSensorCoordinates(e.target.value)} />
+        <input type="text" value={addSensorCoordinates} onChange={(e) => setAddSensorCoordinates(e.target.value)}  />
       </label>
       <label>
         Add Mark Coordinates:

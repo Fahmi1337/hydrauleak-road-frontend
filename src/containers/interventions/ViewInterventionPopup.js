@@ -45,7 +45,7 @@ const ViewInterventionPopup = ({ onCancel, onOpen, selectedIntervention, interve
             <p>Published: {selectedIntervention.is_published}</p>
             <p>Contract: {selectedIntervention.contract}</p>
 
-            <GetZoneIntervention interventionId= {interventionId} />
+            <GetZoneIntervention interventionId= {selectedIntervention.id} />
             <button type="button" onClick={onCancel}>
               Cancel
             </button>
