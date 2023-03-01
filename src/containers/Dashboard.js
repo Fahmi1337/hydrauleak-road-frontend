@@ -312,18 +312,18 @@ const [openUpdateZonePopup, setOpenUpdateZonePopup] = useState(false);
 
   
 
-    if (mapsData.length > 0) {
+    
       mapboxgl.accessToken = accessToken;
       const map = new mapboxgl.Map({
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/streets-v11',
-        center:mapsData[4]?.map_coordinate || searchCoordinates,
+        center:mapsData[2]?.map_coordinate || searchCoordinates,
         zoom: 15
       });
 
       map.on('load', () => {
 
-           console.log('centre', searchCoordinates?.features[0]?.center )
+          //  console.log('centre', searchCoordinates?.features[0]?.center )
            console.log('centre map',  mapsData[0]?.map_coordinate  )
 
 // Add Maps to the map 
@@ -987,7 +987,7 @@ map.addControl(new MapboxGeocoder({
 
 
 }
-}, [ pipesData, pipesAccessData, zones, mapsData, searchCoordinates, coordinatesPipe, runEffectPipe, runEffectZone, runEffectSensor]);
+, [ pipesData, pipesAccessData, zones, mapsData, searchCoordinates, coordinatesPipe, runEffectPipe, runEffectZone, runEffectSensor]);
 
 return (
 <div>
