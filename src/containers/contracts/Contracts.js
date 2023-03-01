@@ -1,157 +1,304 @@
-import React, {useState, useEffect} from 'react';
-import  { Helmet}  from "react-helmet";
-import ContractForm from '../../components/ContractForm';
-import ContractsList from '../../components/ContractsList';
-// import Pagination from '../components/Pagination';
-import Table from '../../components/Table';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import ReactPaginate from 'react-paginate';
+import EditContractPopupForm from './EditContractPopupForm';
+import AddContractPopupForm from './AddContractPopupForm';
+import ViewContractPopup from './ViewContractPopup'
+import AddMapContract from './AddMapContract'
 import Box from '@mui/material/Box';
+// import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import Button from '@mui/material/Button';
-import Pagination from 'react-paginate';
+
+
+const Contract = (props) => {
+
+  const [data, setData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedStatus, setSelectedStatus] = useState('');
+  const [pageNumber, setPageNumber] = useState(0);
+  const itemsPerPage = 10;
+  const pagesVisited = pageNumber * itemsPerPage;
+
+  const [openPopup, setOpenPopup] = useState(false);
+  const [openAddContractPopup, setOpenAddContractPopup] = useState(false);
+  const [openViewContractPopup, setOpenViewContractPopup] = useState(false);
+  const [openAddMapContractPopup, setOpenAddMapContractPopup] = useState(false);
+
+const [selectedContract, setSelectedContract] = useState(null); // new state variable
+const [open, setOpen] = React.useState(false);
+const handleOpen = () => setOpen(true);
+const handleClose = () => setOpen(false);
 
 const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: '90%',
-  height: '80%',
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  pt: 2,
-  px: 4,
-  pb: 3,
+
+  zIndex: 999,
 };
-const Contracts = () => {
-  const [contracts, setcontracts] = useState([]);
-    // const [currentPage, setCurrentPage] = useState(1);
-    // const [contractsPerPage, setContractsPerPage] = useState(3);
-    // const [active, setActive] = useState(1);
 
-    // const indexOfLastListing = currentPage * contractsPerPage;
-    // const indexOfFirstListing = indexOfLastListing - contractsPerPage;
-    // const currentcontracts = contracts.slice(indexOfFirstListing, indexOfLastListing);
+    const getContracts = e => {
+      axios.get(`${process.env.REACT_APP_API_URL}/api/contracts/`, {
+        headers: {
+          'Authorization': 'Bearer ' +  localStorage.getItem("token")
+        }
+      })
+      .then((res) => {
+        setData(res.data);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+    }
 
-    // const visitPage = (page) => {
-    //     setCurrentPage(page);
-    //     setActive(page);
-    // };
-
-    // const previous_number = () => {
-    //     if (currentPage !== 1) {
-    //         setCurrentPage(currentPage-1);
-    //         setActive(currentPage-1);
-    //     }
-    // };
-
-    // const next_number = () => {
-    //     if (currentPage !== Math.ceil(contracts.length/3)) {
-    //         setCurrentPage(currentPage+1);
-    //         setActive(currentPage+1);
-    //     }
-    // };
-
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => {
-      setOpen(true);
-    };
-    const handleClose = () => {
-      setOpen(false);
-    };
-
-   
     useEffect(() => {
-      getContracts() 
+      getContracts()
     }, []);
 
 
-     const getContracts = async () => {
-        try {
-          const response = await fetch(
-            `${process.env.REACT_APP_API_URL}/api/contracts/`,
-            {
-              method: "GET",
-      
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + localStorage.getItem("token"),
-              },
-            }
-          )
-            .then((response) => response.json())
-            .then((data) => setcontracts(data));
-      return response;
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      function ChildModal() {
-        const [open, setOpen] = React.useState(false);
-        const handleOpen = () => {
-          setOpen(true);
-        };
-        const handleClose = () => {
-          setOpen(false);
-        };
-      
-        return (
-          <React.Fragment>
-            <Button onClick={handleOpen}>Open Child Modal</Button>
-            <Modal
-              hideBackdrop
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="child-modal-title"
-              aria-describedby="child-modal-description"
-            >
-              <Box sx={{ ...style, width: 200 }}>
-                <h2 id="child-modal-title">Text in a child modal</h2>
-                <p id="child-modal-description">
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                </p>
-                <Button onClick={handleClose}>Close Child Modal</Button>
-              </Box>
-            </Modal>
-          </React.Fragment>
-        );
-      }
-    return (
-        <main className='home table_container'>
-            <Helmet>
-                <title>Hydrauleak Road - Contracts</title>
-                <meta
-                    name='description'
-                    content='hydrauleak Road Dashboard'
-                />
-            </Helmet>
-            <section className='home__form'>
-           
-               
-                <Button className="addContractBtn" variant="contained" color="success" onClick={() => {
-                 handleOpen();  localStorage.setItem("currentContract",""); localStorage.setItem("ShowUpdateButton", false);;
-             }}>Add Contract +</Button>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="parent-modal-title"
-        aria-describedby="parent-modal-description"
-      >
-        <Box sx={{ ...style, width: '80%' }}>
-        <ContractForm getContracts={getContracts} />
-          <ChildModal />
-        </Box>
-      </Modal>
-            </section>
-            <section className='home__listings'>
-            <div>
-              <Table/>
-      </div>
-            </section>
-            
-        </main>
-    );
+const handleEditContract = (contract) => {
+  setSelectedContract(contract);
 };
 
-export default Contracts
+// handle Delete contract
+const handleDeleteContract =async (contractId) => {
+
+  
+  await axios.delete(`${process.env.REACT_APP_API_URL}/api/contract/${contractId}/`,
+    
+  {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' +   localStorage.getItem("token")
+}}
+)    
+  .then((res) => {
+    console.log(res.data);
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+
+  const newData = data.filter(item => item.id !== contractId);
+  setData(newData);
+  setSelectedContract(null);
+};
+
+  
+
+
+// display data table
+
+    const displayData = data
+    .filter(item => item.contract_title.toLowerCase().includes(searchTerm.toLowerCase()))
+    .filter(item => selectedStatus === '' || item.contract_status === selectedStatus)
+    .slice(pagesVisited, pagesVisited + itemsPerPage)
+    .map(item => (
+      <tr key={item.id}>
+        <td>{item.id}</td>
+        <td>{item.contract_title}</td>
+        <td>{item.contract_date}</td>
+        <td>{item.contract_type}</td>
+        <td>{item.contract_status}</td>
+        <td>{item.is_published}</td>
+        <td>
+           <button onClick={() => {handleOpen(); setSelectedContract(item);}}>Add Map</button>
+         </td>
+         <td>
+           <button onClick={() => {handleEditContract(item);handleOpenViewContract();}}>Details</button>
+         </td>
+         <td>
+           <button onClick={() =>  {handleEditContract(item); handleOpenEditContract();}}>Edit</button>
+         </td>
+         <td>
+           <button onClick={() => handleDeleteContract(item.id)}>Delete</button>
+         </td>
+      </tr>
+    ));
+
+  const pageCount = Math.ceil(data.length / itemsPerPage);
+
+  const changePage = ({ selected }) => {
+    setPageNumber(selected);
+  };
+
+  const handleSearchChange = event => {
+    setSearchTerm(event.target.value);
+    setPageNumber(0);
+  };
+
+  const handleStatusFilterChange = event => {
+    setSelectedStatus(event.target.value);
+    setPageNumber(0);
+  };
+
+
+
+
+// Update Contract
+const handleUpdateContract = async (contract) => {
+  const response = await axios.put(`${process.env.REACT_APP_API_URL}/api/contracts/${contract.id}/`, contract,
+    
+  {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' +   localStorage.getItem("token")
+}}
+
+)    
+  .then((res) => {
+    console.log(res.data);
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+
+
+
+  const updatedContract = response.data;
+  const index = data.findIndex((u) => u.id === updatedContract.id);
+  const newData = [...data];
+  newData[index] = updatedContract;
+  setData(newData);
+  setSelectedContract(null);
+};
+
+
+// handle buttons
+const handleCancelEditContract = () => {
+  setOpenPopup(false);
+  setSelectedContract(null);
+};
+
+const handleOpenEditContract = () => {
+  setOpenPopup(true);
+};
+
+const handleOpenAddContract = () => {
+  setOpenAddContractPopup(true);
+};
+const handleCloseAddContract = () => {
+  setOpenAddContractPopup(false);
+};
+
+const handleOpenViewContract = () => {
+  setOpenViewContractPopup(true);
+};
+const handleCloseViewContract = () => {
+  setOpenViewContractPopup(false);
+};
+    
+const handleOpenAddMapContract = () => {
+  setOpenAddMapContractPopup(true);
+};
+
+console.log("selectedContract",selectedContract )
+  return (
+    <div className="table_container">
+
+{/* <div>
+                  {openAddMapContractPopup && (
+                    <AddMapContract
+                      contractId={selectedContract}
+                    />
+                  )}         
+          </div> */}
+        <Modal
+        open={open}
+        // onClick={handleClose}
+        onClose={props.onCloseAddMap}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+        <AddMapContract
+                      selectedContract={selectedContract}
+                    />
+        </Box>
+      </Modal>
+        <div>
+                  {openPopup && (
+                    <EditContractPopupForm
+                      contract={selectedContract}
+                      onUpdateContract={handleUpdateContract}
+                      onCancel={handleCancelEditContract}
+                      onOpen = {openPopup}
+                      getContracts = {getContracts}
+                    />
+                  )}         
+          </div>
+          <div>
+                  {openAddContractPopup && (
+                    <AddContractPopupForm                    
+                      onCancel={handleCloseAddContract}
+                      onOpen = {openAddContractPopup}
+                    />
+                  )}         
+          </div>
+
+          <div>
+                  {openViewContractPopup && (
+                    <ViewContractPopup 
+                    selectedContract={selectedContract}
+                    contractId={selectedContract.id}                 
+                      onCancel={handleCloseViewContract}
+                      onOpen = {openViewContractPopup}
+                    />
+                  )}         
+          </div>
+
+      <div className="table-controls">
+        <div className="search-input">
+        <button onClick={() => handleOpenAddContract()}>Add Contract</button>
+          <label htmlFor="search">Search:</label>
+          <input type="text" id="search" value={searchTerm} onChange={handleSearchChange} />
+        </div>
+        <div className="status-filter">
+          <label htmlFor="status-filter">Filter by status:</label>
+          <select id="status-filter" value={selectedStatus} onChange={handleStatusFilterChange}>
+            <option value="">All</option>
+            <option value="NotStart">not Started</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+          </select>
+        </div>
+      </div>
+
+
+
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>date</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>published</th>
+            <th>Add Map</th>
+            <th>Details</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          {displayData}
+        </tbody>
+      </table>
+      <ReactPaginate
+        previousLabel={'previous'}
+        nextLabel={'next'}
+        pageCount={pageCount}
+        onPageChange={changePage}
+        containerClassName={'pagination'}
+        previousLinkClassName={'pagination__link'}
+        nextLinkClassName={'pagination__link'}
+        disabledClassName={'pagination__link--disabled'}
+        activeClassName={'pagination__link--active'}
+      />
+
+
+
+    </div>
+  );
+}
+
+export default Contract
+

@@ -8,7 +8,9 @@ import Dashboard from './containers/Dashboard';
 import UserManagement from './containers/userManagement/UserManagement';
 import Login from './containers/login/Login';
 import Signup from './containers/Signup';
-import Contracts from './containers/Contracts'
+
+// import Contracts from './containers/Contracts'
+import Contracts from './containers/contracts/Contracts'
 // import ContractDetail from './containers/ContractDetail';
 import Reports from './containers/reports/Reports'
 import PostReport from './containers/reports/PostReport'
