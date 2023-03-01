@@ -311,6 +311,10 @@ const [openUpdateZonePopup, setOpenUpdateZonePopup] = useState(false);
   const accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
   const mapContainer = React.useRef(null);
   
+
+
+
+  
   useEffect(() => {
 
   
@@ -320,7 +324,7 @@ const [openUpdateZonePopup, setOpenUpdateZonePopup] = useState(false);
       const map = new mapboxgl.Map({
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/streets-v11',
-        center:mapsData[2]?.map_coordinate || searchCoordinates || [-90.96, -0.47],
+        center: [-90.96, -0.47] || mapsData[2]?.map_coordinate || searchCoordinates,
         zoom: 15
       });
 
@@ -990,7 +994,7 @@ map.addControl(new MapboxGeocoder({
 
 
 }
-, [ pipesData, pipesAccessData, zones, mapsData, searchCoordinates, coordinatesPipe, runEffectPipe, runEffectZone, runEffectSensor]);
+, [ pipesData, pipesAccessData, zones, mapsData, searchCoordinates, coordinatesPipe, runEffectPipe, runEffectZone, runEffectSensor, mapsData]);
 
 return (
 <div>
@@ -1005,7 +1009,7 @@ return (
 
 
 <ButtonWithPopup  data={props.data} handleClickSensor={handleClickSensor} setRunEffectSensor={setRunEffectSensor} getSensors={getSensors} setRunEffectPipe={setRunEffectPipe} setRunEffectZone={setRunEffectZone}/>
-{addSensor && <div>Something showed up!</div>}
+{/* {addSensor && <div>Something showed up!</div>} */}
 
 
 <div ref={mapContainer} style={{ width: '215em', height: '115em',left: '20em',top: '-10px' }} />
