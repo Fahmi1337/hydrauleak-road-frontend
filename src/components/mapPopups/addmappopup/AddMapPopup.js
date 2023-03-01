@@ -90,7 +90,7 @@ const [addMap, setAddMap] = useState(false);
         console.error(err);
       });
     
-      reloadPage();
+      // reloadPage();
   };
 
     // //Modal

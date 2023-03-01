@@ -17,10 +17,7 @@ const style = {
 };
 const AddUserPopupForm = ({ onCancel, onOpen }) => {
   const [userData, setUserData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    roles: ''
+    roles : 'is_client'
   });
 
   const handleUserDataChange = (e) => {
@@ -66,21 +63,21 @@ const AddUserPopupForm = ({ onCancel, onOpen }) => {
               <form onSubmit={handleSubmitData}>
                 <label>
                   Name:
-                  <input type="text" name="name" value={userData.name} onChange={handleUserDataChange} />
+                  <input type="text" name="name" value={userData.name} onChange={handleUserDataChange} required  />
                 </label>
                 <label>
                   Email:
-                  <input type="email" name="email" value={userData.email} onChange={handleUserDataChange} />
+                  <input type="email" name="email" value={userData.email} onChange={handleUserDataChange} required  />
                 </label>
                 <label>
                   Phone:
-                  <input type="text" name="phone" value={userData.phone} onChange={handleUserDataChange} />
+                  <input type="text" name="phone" value={userData.phone} onChange={handleUserDataChange} required  />
                 </label>
                 <label>
                   Roles:
-                  <select name="roles" value={userData.roles} onChange={handleUserDataChange}>
+                  <select name="roles" value={userData.roles} onChange={handleUserDataChange} required >
+                  <option value="is_client">Client</option>
                     <option value="is_admin">Admin</option>
-                    <option value="is_client">Client</option>
                     <option value="is_leaker">Leaker</option>
                   </select>
                 </label>
