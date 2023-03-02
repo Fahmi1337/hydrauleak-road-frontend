@@ -70,8 +70,6 @@ const AddClientPopupForm = ({ onCancel, onOpen }) => {
   
   const [clients, setClients] = useState([]);
 
-
-  console.log("the client error : ", error)
   const getClients = async () => {
     try {
       const response = await fetch(
