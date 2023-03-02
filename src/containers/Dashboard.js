@@ -29,6 +29,8 @@ import ZoneUpdatePopup from '../components/mapPopups/addzonepopup/ZoneUpdatePopu
 import MapViewPopup from '../components/mapPopups/addmappopup/MapViewPopup';
 import MapUpdatePopup from '../components/mapPopups/addmappopup/MapUpdatePopup';
 
+import Loader from 'rsuite/Loader';
+
 const Map = (props) => {
   const [sensorsData, setSensorsData] = useState([]);
   const [markersData, setMarkersData] = useState([]);
@@ -308,6 +310,11 @@ const [openUpdateZonePopup, setOpenUpdateZonePopup] = useState(false);
 
   const accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
   const mapContainer = React.useRef(null);
+  
+
+
+
+  
   useEffect(() => {
 
   
@@ -317,14 +324,14 @@ const [openUpdateZonePopup, setOpenUpdateZonePopup] = useState(false);
       const map = new mapboxgl.Map({
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/streets-v11',
-        center:mapsData[2]?.map_coordinate || searchCoordinates,
+        center: [-90.96, -0.47] || mapsData[2]?.map_coordinate || searchCoordinates,
         zoom: 15
       });
 
       map.on('load', () => {
 
           //  console.log('centre', searchCoordinates?.features[0]?.center )
-           console.log('centre map',  mapsData[0]?.map_coordinate  )
+           console.log('centre map',  mapsData[2]?.map_coordinate  )
 
 // Add Maps to the map 
 mapsData.forEach((maps) => {
@@ -1002,10 +1009,10 @@ return (
 
 
 <ButtonWithPopup  data={props.data} handleClickSensor={handleClickSensor} setRunEffectSensor={setRunEffectSensor} getSensors={getSensors} setRunEffectPipe={setRunEffectPipe} setRunEffectZone={setRunEffectZone}/>
-{addSensor && <div>Something showed up!</div>}
+{/* {addSensor && <div>Something showed up!</div>} */}
 
 
-<div ref={mapContainer} style={{ width: '142rem', height: '73rem',left: '121px',top: '-10px' }} />
+<div ref={mapContainer} style={{ width: '215em', height: '115em',left: '20em',top: '-10px' }} />
 
 {/* map Popups */}
 
