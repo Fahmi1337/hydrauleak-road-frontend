@@ -334,15 +334,39 @@ const [openUpdateZonePopup, setOpenUpdateZonePopup] = useState(false);
 
     
       mapboxgl.accessToken = accessToken;
+      
       const map = new mapboxgl.Map({
+        
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/streets-v11',
-        center:  mapsData[2]?.map_coordinate || [lng, lat] || searchCoordinates || [0, 0],
-     
+        // center:  mapsData[2]?.map_coordinate || [lng, lat] || searchCoordinates || [0, 0],
+        center:  [0, 0] || searchCoordinates,
         zoom: 15
       });
-
+     
       map.on('load', () => {
+
+
+        if (mapsData[2]?.map_coordinate){
+          map.easeTo({
+            center: mapsData[2]?.map_coordinate,
+            speed: 0.05,
+            curve: 0.1,
+            zoom : map.getZoom(),
+          });
+        }
+
+        if (lat){
+          map.easeTo({
+            center: [lng, lat],
+            speed: 0.05,
+            curve: 0.1,
+            zoom : map.getZoom(),
+          });
+          
+        }
+     
+
 
           //  console.log('centre', searchCoordinates?.features[0]?.center )
            console.log('centre map',  mapsData[2]?.map_coordinate  )
