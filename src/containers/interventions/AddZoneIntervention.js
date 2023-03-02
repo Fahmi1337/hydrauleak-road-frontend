@@ -296,6 +296,24 @@ function updateArea(e) {
    
 }
 });
+// Navigation Control
+map.addControl(new mapboxgl.NavigationControl({
+  style: 'compact',
+  zoom: map.getZoom(),
+  bearing: map.getBearing(),
+  pitch: map.getPitch(),
+  }),'bottom-right');
+
+
+//Map search Geocoder
+map.addControl(new MapboxGeocoder({
+  accessToken: mapboxgl.accessToken,
+  mapboxgl: mapboxgl,
+  
+  placeholder: 'Search for location',
+      marker: false,
+      position: 'top-right',
+  }),'top-left');
 
 
 }
@@ -312,7 +330,7 @@ return (
     top: "4rem", }} />
 
 <div id="addZoneInterventionPopup">
-      <AddZonePopup openZone={true}  selectedIntervention={props.selectedIntervention}/>
+      <AddZonePopup openZone={true}  selectedIntervention={props.selectedIntervention} handleCancelAddZoneIntervention={props.handleCancelAddZoneIntervention}/>
       </div>
 
 

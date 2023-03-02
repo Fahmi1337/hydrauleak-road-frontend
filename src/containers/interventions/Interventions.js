@@ -8,7 +8,7 @@ import AddZoneIntervention from './AddZoneIntervention'
 import Box from '@mui/material/Box';
 // import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-
+import './interventions.css'
 
 const Intervention = (props) => {
 
@@ -22,12 +22,18 @@ const Intervention = (props) => {
   const [openPopup, setOpenPopup] = useState(false);
   const [openAddInterventionPopup, setOpenAddInterventionPopup] = useState(false);
   const [openViewInterventionPopup, setOpenViewInterventionPopup] = useState(false);
-  const [openAddZoneInterventionPopup, setOpenAddZoneInterventionPopup] = useState(false);
+ 
 
 const [selectedIntervention, setSelectedIntervention] = useState(null); // new state variable
 const [open, setOpen] = React.useState(false);
 const handleOpen = () => setOpen(true);
 const handleClose = () => setOpen(false);
+
+
+
+
+const [openAddZoneInterventionPopup, setOpenAddZoneInterventionPopup] = useState(false);
+
 
 const style = {
 
@@ -99,7 +105,7 @@ const handleDeleteIntervention =async (interventionId) => {
         <td>{item.intervention_status}</td>
         <td>{item.is_published}</td>
         <td>
-           <button onClick={() => {handleOpen(); setSelectedIntervention(item);}}>Add Zone</button>
+           <button onClick={() => {handleOpenAddZoneIntervention(); setSelectedIntervention(item);}}>Add Zone</button>
          </td>
          <td>
            <button onClick={() => {handleEditIntervention(item);handleOpenViewIntervention();}}>Details</button>
@@ -185,6 +191,10 @@ const handleCloseViewIntervention = () => {
   setOpenViewInterventionPopup(false);
 };
     
+const handleCancelAddZoneIntervention = () => {
+  setOpenAddZoneInterventionPopup(false);
+  setSelectedIntervention(null);
+};
 const handleOpenAddZoneIntervention = () => {
   setOpenAddZoneInterventionPopup(true);
 };
@@ -201,16 +211,20 @@ console.log("selectedIntervention",selectedIntervention )
                   )}         
           </div> */}
         <Modal
-        open={open}
+        open={openAddZoneInterventionPopup}
         // onClick={handleClose}
         onClose={props.onCloseAddZone}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-        <AddZoneIntervention
-                      selectedIntervention={selectedIntervention}
-                    />
+        {openAddZoneInterventionPopup && (
+                    <AddZoneIntervention
+                    selectedIntervention={selectedIntervention}
+                    handleCancelAddZoneIntervention={handleCancelAddZoneIntervention}
+                  />
+                  )}        
+       
         </Box>
       </Modal>
         <div>

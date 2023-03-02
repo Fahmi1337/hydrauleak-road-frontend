@@ -1,4 +1,4 @@
-.ZonePopup {
+.ZonePopup, .MapPopup {
 
     position: absolute;
     top: 52%;

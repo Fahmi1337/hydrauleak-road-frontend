@@ -12,7 +12,7 @@ import Modal from '@mui/material/Modal';
 const AddZonePopup = (props) => {
 
 const [onCloseAddZone, setOnCloseAddZone] = useState(true);
-const [selectedIntervention, setSelectedIntervention] = useState({"id" : 1})
+const [selectedIntervention, setSelectedIntervention] = useState({})
 const initialState = '';
 const [addZone, setAddZone] = useState(false);
 const [zoneData, setZoneData] = useState({
@@ -29,7 +29,8 @@ const style = {
 
   zIndex: 999999999999
 };
-const { zone_title, zone_description, zone_num, zone_status, zone_color, map, AreaZone, zone_coordinates } = zoneData;
+
+const { zone_title, zone_description, zone_num, zone_status, zone_color, map, zone_area, zone_coordinates } = zoneData;
 
 
 //get Zone Area Start
@@ -92,8 +93,13 @@ const { zone_title, zone_description, zone_num, zone_status, zone_color, map, Ar
 
 
  const deleteZone = () => {
-
-    window.location.reload();
+if(selectedIntervention.id){
+  props.handleCancelAddZoneIntervention();
+}
+   else{
+    props.handleCloseZone();
+   }
+   
     localStorage.removeItem("newZoneCoordinates");
     localStorage.removeItem("zoneArea");
   };
@@ -114,7 +120,7 @@ const { zone_title, zone_description, zone_num, zone_status, zone_color, map, Ar
     }
 
     const data = {
-      zone_title, zone_description, zone_num, zone_status, zone_color, map, AreaZone, zone_coordinates
+      zone_title, zone_description, zone_num, zone_status, zone_color, map: parseInt(map), zone_area: parseFloat(zone_area), zone_coordinates
     };
 
     axios
@@ -331,7 +337,7 @@ console.log("props.interventionId", selectedIntervention)
 
 
         <button onClick={handleSubmitData}>Submit</button> 
-        <button onClick={() => {deleteZone();}}>Cancel</button>
+        <button onClick={() => {deleteZone(); props.setRunEffectZone(false);}}>Cancel</button>
       </div>
         </Box>
       </Modal>

@@ -8,7 +8,7 @@ import AddMapContract from './AddMapContract'
 import Box from '@mui/material/Box';
 // import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-
+import './contracts.css'
 
 const Contract = (props) => {
 
@@ -20,6 +20,7 @@ const Contract = (props) => {
   const pagesVisited = pageNumber * itemsPerPage;
 
   const [openPopup, setOpenPopup] = useState(false);
+  const [openMapPopup, setOpenMapPopup] = useState(false);
   const [openAddContractPopup, setOpenAddContractPopup] = useState(false);
   const [openViewContractPopup, setOpenViewContractPopup] = useState(false);
   const [openAddMapContractPopup, setOpenAddMapContractPopup] = useState(false);
@@ -30,7 +31,13 @@ const handleOpen = () => setOpen(true);
 const handleClose = () => setOpen(false);
 
 const style = {
-
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  p: 4,
   zIndex: 999,
 };
 
@@ -99,7 +106,7 @@ const handleDeleteContract =async (contractId) => {
         <td>{item.contract_status}</td>
         <td>{item.is_published}</td>
         <td>
-           <button onClick={() => {handleOpen(); setSelectedContract(item);}}>Add Map</button>
+           <button onClick={() => {handleOpenAddMapContract(); setSelectedContract(item);}}>Add Map</button>
          </td>
          <td>
            <button onClick={() => {handleEditContract(item);handleOpenViewContract();}}>Details</button>
@@ -171,6 +178,12 @@ const handleOpenEditContract = () => {
   setOpenPopup(true);
 };
 
+
+
+
+
+
+
 const handleOpenAddContract = () => {
   setOpenAddContractPopup(true);
 };
@@ -184,7 +197,10 @@ const handleOpenViewContract = () => {
 const handleCloseViewContract = () => {
   setOpenViewContractPopup(false);
 };
-    
+const handleCancelAddMapContract = () => {
+  setOpenAddMapContractPopup(false);
+  setSelectedContract(null);
+};
 const handleOpenAddMapContract = () => {
   setOpenAddMapContractPopup(true);
 };
@@ -201,16 +217,21 @@ console.log("selectedContract",selectedContract )
                   )}         
           </div> */}
         <Modal
-        open={open}
+        open={openAddMapContractPopup}
         // onClick={handleClose}
         onClose={props.onCloseAddMap}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-        <AddMapContract
-                      selectedContract={selectedContract}
-                    />
+        {openAddMapContractPopup && (
+                    <AddMapContract
+                    handleCancelAddMapContract={handleCancelAddMapContract}
+                    selectedContract={selectedContract}
+                  />
+                  )} 
+    
+                    
         </Box>
       </Modal>
         <div>

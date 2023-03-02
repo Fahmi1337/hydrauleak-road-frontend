@@ -143,8 +143,10 @@ const handlePolygonCreated= props.handlePolygonCreated
 
     return (
         <>
+      {openZone && (
+   <AddZonePopup handlePolygonCreated={handlePolygonCreated} handleCloseZone={handleCloseZone} openZone={openZone} setRunEffectZone={setRunEffectZone}/>
+  )}
       
-      <AddZonePopup handlePolygonCreated={handlePolygonCreated} handleCloseZone={handleCloseZone} openZone={openZone}/>
 
       <AddPipePopup  handleClosePipe={handleClosePipe} openPipe={openPipe}/>
       
