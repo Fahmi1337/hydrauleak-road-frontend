@@ -264,15 +264,24 @@ console.log("selectedContract",selectedContract )
                     />
                   )}         
           </div>
-
+          <div className="pageTitleContainer">  <h1>Contracts</h1></div>
+          <div id="addTableButtonContainer"> <button onClick={() => handleOpenAddContract()}>Add Contract +</button></div>
       <div className="table-controls">
+     
         <div className="search-input">
-        <button onClick={() => handleOpenAddContract()}>Add Contract</button>
-          <label htmlFor="search">Search:</label>
-          <input type="text" id="search" value={searchTerm} onChange={handleSearchChange} />
+      
+          {/* <label htmlFor="search">Search:</label> */}
+          <input type="search" id="search" value={searchTerm} onChange={handleSearchChange} placeholder="Search..."/>
+          <div class="icons-container">
+    <div class="icon-search"></div>
+    <div class="icon-close">
+      <div class="x-up"></div>
+      <div class="x-down"></div>
+    </div>
+  </div>
         </div>
         <div className="status-filter">
-          <label htmlFor="status-filter">Filter by status:</label>
+          {/* <label htmlFor="status-filter">Filter by status:</label> */}
           <select id="status-filter" value={selectedStatus} onChange={handleStatusFilterChange}>
             <option value="">All</option>
             <option value="NotStart">not Started</option>
@@ -280,11 +289,15 @@ console.log("selectedContract",selectedContract )
             <option value="Completed">Completed</option>
           </select>
         </div>
+        
+       
       </div>
+     
 
 
-
+      
       <table>
+        
         <thead>
           <tr>
             <th>ID</th>
@@ -304,8 +317,8 @@ console.log("selectedContract",selectedContract )
         </tbody>
       </table>
       <ReactPaginate
-        previousLabel={'previous'}
-        nextLabel={'next'}
+        previousLabel={'<'}
+        nextLabel={'>'}
         pageCount={pageCount}
         onPageChange={changePage}
         containerClassName={'pagination'}

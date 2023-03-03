@@ -29,7 +29,13 @@ const [selectedContract, setSelectedContract] = useState({})
  
 
   const reloadPage = () => {
-    props.handleCancelAddMapContract();
+    if(selectedContract.id){
+      props.handleCancelAddMapContract();
+    }
+   else{
+    props.handleCloseMap();
+   }
+ 
     localStorage.removeItem("newSensorLng");
     localStorage.removeItem("newSensorLat");
   };

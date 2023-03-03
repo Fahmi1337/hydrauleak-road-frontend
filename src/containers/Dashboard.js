@@ -1040,7 +1040,7 @@ return () => {
 
 
 }
-, [ pipesData, pipesAccessData, zones, mapsData, searchCoordinates, coordinatesPipe, runEffectPipe, runEffectZone, runEffectSensor, lng, lat]);
+, [ pipesData, pipesAccessData, zones, mapsData, searchCoordinates, coordinatesPipe, runEffectPipe, runEffectZone, runEffectSensor]);
 
 return (
 <div>

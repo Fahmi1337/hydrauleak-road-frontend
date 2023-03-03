@@ -102,7 +102,7 @@ reloadPage();
     
     const reloadPage = () => {
     
-      window.location.reload();
+      
       localStorage.removeItem("selectedPipeId");
       localStorage.removeItem("newSensorLng");
       localStorage.removeItem("newSensorLat");
