@@ -95,8 +95,8 @@ const [coordinatesPipe, setCoordinatesPipe] = useState([]);
 
 const [runEffectSensor, setRunEffectSensor] = useState(false);
   
-const [lng, setLng] = useState(5);
-  const [lat, setLat] = useState(34);
+const [lng, setLng] = useState(parseFloat(localStorage.getItem("newSensorLng")));
+  const [lat, setLat] = useState(parseFloat(localStorage.getItem("newSensorLat")));
   const [marker, setMarker] = useState(null);
   const [addSensor, setAddSensor] = useState(false);
 
@@ -119,7 +119,20 @@ const [lng, setLng] = useState(5);
     window.dispatchEvent(new Event("storage"));
   };
 
+  const handleClickCenter = (e) => {
+    setLng(e.lngLat.lng);
+    setLat(e.lngLat.lat);
  
+  
+    window.localStorage.setItem("newSensorLng", e.lngLat.lng);
+    window.localStorage.setItem("newSensorLat", e.lngLat.lat);
+    window.dispatchEvent(new Event("storage"));
+  };
+
+
+
+
+
 const [viewport, setViewport] = useState({
   latitude: 24.8607,
   longitude: 67.0011,
@@ -275,7 +288,7 @@ const getPipes = e => {
   }, []);
 
  
-
+console.log("runEffectZone?", runEffectZone)
 // map const select delete update
 const [selectedMap, setSelectedMap] = useState();
 const [openViewMapPopup, setOpenViewMapPopup] = useState(false);
@@ -321,14 +334,39 @@ const [openUpdateZonePopup, setOpenUpdateZonePopup] = useState(false);
 
     
       mapboxgl.accessToken = accessToken;
+      
       const map = new mapboxgl.Map({
+        
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/streets-v11',
-        center: [-90.96, -0.47] || mapsData[2]?.map_coordinate || searchCoordinates,
+        // center:  mapsData[2]?.map_coordinate || [lng, lat] || searchCoordinates || [0, 0],
+        center:  [0, 0] || searchCoordinates,
         zoom: 15
       });
-
+     
       map.on('load', () => {
+
+
+        if (mapsData[2]?.map_coordinate){
+          map.easeTo({
+            center: mapsData[2]?.map_coordinate,
+            speed: 0.05,
+            curve: 0.1,
+            zoom : map.getZoom(),
+          });
+        }
+
+        if (lat){
+          map.easeTo({
+            center: [lng, lat],
+            speed: 0.05,
+            curve: 0.1,
+            zoom : map.getZoom(),
+          });
+          
+        }
+     
+
 
           //  console.log('centre', searchCoordinates?.features[0]?.center )
            console.log('centre map',  mapsData[2]?.map_coordinate  )
@@ -775,7 +813,7 @@ viewButton.addEventListener('click', () => {
     
   });
 
- 
+
   const draw = new MapboxDraw({
     displayControlsDefault: false,
     // Select which mapbox-gl-draw control buttons to add to the map.
@@ -788,7 +826,6 @@ viewButton.addEventListener('click', () => {
     // The user does not have to click the polygon control button first.
     // defaultMode: 'draw_polygon'
 });
-
 map.addControl(draw);
 
 map.on('draw.create', updateArea);
@@ -817,6 +854,10 @@ function updateArea(e) {
     }
    
 }
+
+ console.log("runEffectZone2",runEffectZone)
+
+
 });
 
 
@@ -985,8 +1026,13 @@ map.addControl(new MapboxGeocoder({
 
 
 
- 
- 
+ //UPDATE CENTER ONCLICK
+
+  map.on("click", handleClickCenter);
+
+return () => {
+  map.off("click", handleClickCenter);
+};
 
 
 
@@ -994,7 +1040,7 @@ map.addControl(new MapboxGeocoder({
 
 
 }
-, [ pipesData, pipesAccessData, zones, mapsData, searchCoordinates, coordinatesPipe, runEffectPipe, runEffectZone, runEffectSensor]);
+, [ pipesData, pipesAccessData, zones, mapsData, searchCoordinates, coordinatesPipe, runEffectPipe, runEffectZone, runEffectSensor, lng, lat]);
 
 return (
 <div>

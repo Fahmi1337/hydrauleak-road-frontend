@@ -11,7 +11,7 @@ const AddMapPopup = (props) => {
 
 const [addMap, setAddMap] = useState(false);
 
-
+const [selectedContract, setSelectedContract] = useState({})
   const initialState = '';
   const [lat, setLat] = useState(initialState);
   const [lng, setLng] = useState(initialState);
@@ -29,8 +29,9 @@ const [addMap, setAddMap] = useState(false);
  
 
   const reloadPage = () => {
-  
-    window.location.reload();
+    props.handleCancelAddMapContract();
+    localStorage.removeItem("newSensorLng");
+    localStorage.removeItem("newSensorLat");
   };
 
   useEffect(() => {
@@ -50,6 +51,7 @@ const [addMap, setAddMap] = useState(false);
   const [mapData, setMapData] = useState({
     map_title:'',
     map_description: '',
+    contract: 1,
   });
 
 
@@ -61,7 +63,7 @@ const [addMap, setAddMap] = useState(false);
       
     });
   };
-  const { map_title, map_description, map_creation_date, map_coordinate } = mapData;
+  const { map_title, map_description, map_creation_date, map_coordinate, contract } = mapData;
   const handleSubmitData = () => {
 
     if (!mapData.map_title || !mapData.map_description || !mapData.map_coordinate ) {
@@ -70,7 +72,7 @@ const [addMap, setAddMap] = useState(false);
     }
 
     const data = {
-      map_coordinate, map_creation_date, map_description, map_title
+      map_coordinate, map_creation_date, map_description, map_title, contract: parseInt(contract)
     };
 
     axios
@@ -96,7 +98,42 @@ const [addMap, setAddMap] = useState(false);
     // //Modal
 
     const OpenMap = props.openMap; 
+console.log("mapdata?", mapData);
 
+    const [contracts, setContracts] = useState([]);
+
+    const getContracts = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/api/contracts/`,
+          {
+            method: "GET",
+    
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => setContracts(data));
+    return response;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    
+    useEffect(() => {   
+      getContracts();  
+          }, []);
+
+          useEffect(() => {   
+            getContracts();
+              if (props.selectedContract){
+                setSelectedContract(props.selectedContract) ;
+              } 
+                }, []);   
+console.log("props.selectedContract", selectedContract)
   return (
     <>
  
@@ -115,6 +152,18 @@ const [addMap, setAddMap] = useState(false);
         <div className="MapPopup">
           <h3>Add Map</h3>
         <form>
+        <label>
+                Contract:
+                </label>
+                <select  
+                disabled={selectedContract.id > 0 ? true : false}
+                value={selectedContract.id > 0 ? selectedContract.id : mapData.contract}
+                  name="contract" onChange={handleMapDataChange} > <option disabled selected value> -- select an option -- </option>
+                  {contracts?.map(contract => (
+                    
+                  <option key={contract.id} value={contract.id}>{contract.contract_title}</option>          
+                  ))} 
+            </select>
         <label>Map title:</label>
           <input
             type="text"
@@ -146,7 +195,7 @@ const [addMap, setAddMap] = useState(false);
         </form>
         
         <button onClick={()=>{handleSubmitData();}}>Submit</button>
-        <button onClick={()=>{props.handleCloseMap();reloadPage();}}>Cancel</button>
+        <button onClick={()=>{reloadPage();}}>Cancel</button>
       </div>
         </Box>
       </Modal>
