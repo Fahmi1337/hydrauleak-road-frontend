@@ -72,9 +72,9 @@ const handleClosePipe = () => setOpenPipe(false);
 
 // Add Sensor
 //POPUP2
-const [open2, setOpen2] = React.useState(false);
-const handleOpen2 = () => setOpen2(true);
-const handleClose2 = () => setOpen2(false);
+const [openSensor, setOpenSensor] = React.useState(false);
+const handleOpenSensor = () => setOpenSensor(true);
+const handleCloseSensor = () => setOpenSensor(false);
 
 // Add PipeAccess
 //POPUP PipeAccess
@@ -147,16 +147,16 @@ const handlePolygonCreated= props.handlePolygonCreated
    <AddZonePopup handlePolygonCreated={handlePolygonCreated} handleCloseZone={handleCloseZone} openZone={openZone} setRunEffectZone={setRunEffectZone}/>
   )}
       
-
-      <AddPipePopup  handleClosePipe={handleClosePipe} openPipe={openPipe}/>
+{openPipe && (<AddPipePopup  handleClosePipe={handleClosePipe} openPipe={openPipe}/>)}
       
-      <AddPipeAccessPopup  handleClosePipeAccess={handleClosePipeAccess} openPipeAccess={openPipeAccess}/>
+     {openPipeAccess &&( <AddPipeAccessPopup  handleClosePipeAccess={handleClosePipeAccess} openPipeAccess={openPipeAccess}/>)} 
+     
+      {openMark && (<AddMarkPopup  handleCloseMark={handleCloseMark} openMark={openMark}/>)}
       
-      <AddMarkPopup  handleCloseMark={handleCloseMark} openMark={openMark}/>
+      {openMap && (<AddMapPopup  handleCloseMap={handleCloseMap} openMap={openMap}/>)}
       
-      <AddMapPopup  handleCloseMap={handleCloseMap} openMap={openMap}/>
-
-      <RightAddSensorPopup handleClose2={handleClose2} handleClose={handleClose} getSensors={props.getSensors} open2={open2}/>
+{openSensor && ( <RightAddSensorPopup handleCloseSensor={handleCloseSensor} handleClose={handleClose} getSensors={props.getSensors} openSensor={openSensor}/>)}
+     
         
         <Button onClick={handleOpen}>Contributes +</Button>
       <Modal
@@ -180,7 +180,7 @@ const handlePolygonCreated= props.handlePolygonCreated
 
           <button onClick={() => {setRunEffectSensor(true); handleOpenPipeAccess();  handleClose();}} >Add pipe Access </button>
 
-          <button onClick={() => { setRunEffectSensor(true); handleOpen2(); handleClose();}} >Add Sensor</button>
+          <button onClick={() => { setRunEffectSensor(true); handleOpenSensor(); handleClose();}} >Add Sensor</button>
           
           <button onClick={() => {setRunEffectSensor(true); handleOpenMark();  handleClose();}} >Add mark</button>
 

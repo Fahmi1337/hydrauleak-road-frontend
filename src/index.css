@@ -39,7 +39,7 @@
         font-size: 14px;
       }
       button {
-        height: 40px;
+       
         border-radius: 4px;
         margin-top: 10px;
         font-size: 15px;
@@ -54,6 +54,9 @@
         cursor: pointer;
         margin: 0px 15px;
         min-width: 100px;
+       
+        padding: 15px 25px;
+        font-size: 19px;
       }
       
       button:hover {
@@ -64,25 +67,38 @@
       table {
         width: 100%;
         padding: 1em;
-        margin: 20px 0;
+        margin: 5em 0;
         border-collapse: collapse;
-        box-shadow: 0 1px 2px 0 #c6e8c9;
+        box-shadow: 0px 1px 3px 0px #616a62;
       }
       
       thead {
-        background-color: #caf0ec;
+        background-color: white;
         font-size: 16px;
       }
       
       th {
         text-align: left;
-        padding: 8px;
+        padding: 30px;
         background-color: 1px solid #ffffff;
-        color: #4196F0;
+        color: #282A2E;
+
+        
+font-style: normal;
+font-weight: 400;
+font-size: 24px;
+line-height: 18px;
       }
       td {
+        color: #282A2E;
+
+        
+        font-style: normal;
+        font-weight: 400;
+        font-size: 22px;
+        line-height: 2em;
         text-align: left;
-        padding: 8px;
+        padding: 15px 30px;
       }
       
       tr {
@@ -90,7 +106,7 @@
       }
       
       tr:nth-child(even) {
-        background-color: #e0e0e0;
+        background-color: #ECEDEF;
       }
       
 
@@ -133,8 +149,8 @@
       } */
 
       .pagination a {
-        background-color: #4196F0;
-        color: white !important;
+        /* background-color: #4196F0; */
+        color: #212121 !important;
         padding: 13px 27px;
         text-decoration: none;
         border-radius: 5px;
@@ -222,9 +238,9 @@
         body { margin: 0; padding: 0; }
 #map { position: absolute; top: 0; bottom: 0; width: 100%; }
 
-        .table_container{
-          margin:13em;
-        }
+.table_container {
+  margin: 7em 5em 13em 18em;
+}
     .calculation-box {
         height: 75px;
         width: 150px;
@@ -297,3 +313,24 @@
   .mapboxgl-ctrl-bottom-right .mapboxgl-ctrl.mapboxgl-ctrl-group{
     margin-right: -50px;
   }
+  input, select{
+    font-size: 22px;
+    border-radius: 4px;
+    /* width: 10em; */
+    padding: 0.5em;
+  }
+  .popup-form p{
+    font-size: 24px;
+    margin: 20px;
+  }
+  .popup-form button{
+    margin-top: 30px;
+  }
+  .popup-form{
+    display: grid;
+    grid-template-columns: auto auto;
+  }
+  .popup-form h2{
+    color: #0671E0;
+  }
+ 

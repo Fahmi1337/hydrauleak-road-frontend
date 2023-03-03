@@ -21,7 +21,7 @@ import ClientManagement from './containers/clientManagement/ClientManagment';
 import AdminProfile from './containers/editProfiles/AdminProfile';
 import LeakerProfile from './containers/editProfiles/LeakerProfile';
 import ClientProfile from './containers/editProfiles/ClientProfile';
-
+import axios from 'axios';
 // import Activate from './containers/Activate';
 // import ResetPassword from './containers/ResetPassword';
 // import ResetPasswordConfirm from './containers/ResetPasswordConfirm';
@@ -50,14 +50,52 @@ const NoLayout = ({children}) => {
   }; 
 
 const App = () => {
-    const [isToken, setIsToken]= useState(true)
-   
 
+
+// //CHECK ME START
+//     const [me, setMe] = useState([]);
+
+
+
+
+//     useEffect(() => {
+//         getMe();
+       
+//       }, []);
+    
+    
+//        const getMe = async () => {
+//           try {
+//             const response = await fetch(
+//               `${process.env.REACT_APP_API_URL}/api/user/me`,
+//               {
+//                 method: "GET",
+        
+//                 headers: {
+//                   "Content-Type": "application/json",
+//                   Authorization: "Bearer " + localStorage.getItem("token"),
+//                 },
+//               }
+//             )
+//               .then((response) => response.json())
+//               .then((data) => setMe(data));
+//         return response;
+//           } catch (error) {
+//             console.log(error);
+//           }
+//         };
+//     //CHECK ME END
+//     console.log("me?", me.length)
+//TOKEN MANAGEMENT START
+    const [isToken, setIsToken]= useState(true)
 
     useEffect(() => {
+      
         const token = localStorage.getItem('token');
+
         if (token) {
             setIsToken(true)
+            
         }
         else{
             setIsToken(false)
@@ -65,7 +103,7 @@ const App = () => {
 
       }, [isToken]);
       console.log("this is the auth",isToken )
-
+//TOKEN MANAGEMENT END
         return(
     <Provider store={store}>
         <Router>

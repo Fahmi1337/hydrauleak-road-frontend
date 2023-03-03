@@ -213,13 +213,14 @@ const EditContractPopupForm =({ contract, onUpdateContract, onCancel, onOpen, ge
                     </select>
                 </label>
                 
+               
+                </form>
                 <div className="popup-form-buttons">
                     <button type="submit">Update</button>
                     <button type="button" onClick={onCancel}>
                     Cancel
                     </button>
                 </div>
-                </form>
             </div>
             </div>
 

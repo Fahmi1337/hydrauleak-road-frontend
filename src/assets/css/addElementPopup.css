@@ -1,5 +1,5 @@
-.MarkPopup {
-
+.MapPopup {
+    padding-top: 5%;
     position: absolute;
     top: 52%;
     left: 22.9%;
@@ -9,38 +9,38 @@
     background-color: rgba(255, 255, 255, 0.75);
     box-shadow: 24px;
     
-    padding-top: 5%;
+   
     }
 form {
+
     display: block;
     margin-top: 3.5em;
-   
 }
 
 .MuiBox-root{
     background-color: none;
   }
   
-.MarkPopup input,
-.MarkPopup label {
+.MapPopup input,
+.MapPopup label {
   width: 100%;
   display: block;
   margin-bottom: 10px;
 }
 
-.MarkPopup input {
+.MapPopup input {
   padding: 10px;
   font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 3px;
 }
 
-.MarkPopup label {
+.MapPopup label {
     font-weight: bold;
     color: #555;
   } 
 
-.MarkPopup button {
+.MapPopup button {
   padding: 10px;
   font-size: 14px;
   background-color: #0087ff;
@@ -52,6 +52,6 @@ form {
   cursor: pointer;
 }
 
-.MarkPopup button:hover {
+.MapPopup button:hover {
   background-color: #0064cc;
 }

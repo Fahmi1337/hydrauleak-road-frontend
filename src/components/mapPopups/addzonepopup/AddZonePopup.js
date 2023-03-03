@@ -98,8 +98,9 @@ if(selectedIntervention.id){
 }
    else{
     props.handleCloseZone();
+    window.location.reload();
    }
-   
+  
     localStorage.removeItem("newZoneCoordinates");
     localStorage.removeItem("zoneArea");
   };

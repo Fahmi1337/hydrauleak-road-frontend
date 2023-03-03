@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './profile.css';
+import '../../assets/css/profile.css';
 import ChangePassword from './ChangePassword';
 
 function AdminProfile() {
@@ -60,10 +60,14 @@ function AdminProfile() {
   };
 
   return (
-    <div className="profile-container">
-      <h1 className="profile-heading">Profile Page</h1>
-      {errorMessage && <div className="error-message">{errorMessage}</div>}
-      <form className="profile-form">
+   
+      <div>
+         <h1 className="profile-heading">Profile Page</h1>
+         {errorMessage && <div className="error-message">{errorMessage}</div>}
+ <div className="profile-container">
+
+    <div>
+    <form className="profile-container">
         <label htmlFor="name">Name:</label>
         <input type="text" id="name" value={name} onChange={handleNameChange} />
         <label htmlFor="email">Email:</label>
@@ -73,8 +77,15 @@ function AdminProfile() {
 
     <button type="button" onClick={handleSaveChanges}>Save Changes</button>
   </form>
-  <ChangePassword/>
+    </div>
+    <div>
+    <ChangePassword/>
+    </div>
+     
+ 
 </div>
+      </div>
+    
 );
 }
 

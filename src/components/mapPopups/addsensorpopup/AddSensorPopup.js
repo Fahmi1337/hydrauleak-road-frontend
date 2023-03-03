@@ -47,7 +47,7 @@ const RightAddSensorPopup = (props) => {
 
 
 
-const open2 = props.open2;
+const openSensor = props.openSensor;
 
   const handleSensorDataChange = (e) => {
     setSensorData({
@@ -98,11 +98,11 @@ const { sensor_coordinates, sensor_description, sensor_Indication, sensor_type, 
 
 
   const reloadPage = () => {
-    window.location.reload();
+  
     localStorage.removeItem("selectedPipeId");
     localStorage.removeItem("newSensorLng");
     localStorage.removeItem("newSensorLat");
-    props.handleClose2();
+    props.handleCloseSensor();
     };
 
 console.log("sensor frequency", sensorData.sensor_frequency)
@@ -114,7 +114,7 @@ console.log("sensor frequency", sensorData.sensor_frequency)
     hideBackdrop
     style={{ position: 'initial' }}
     
-      open={open2}
+      open={openSensor}
      
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"

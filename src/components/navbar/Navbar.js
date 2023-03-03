@@ -61,7 +61,9 @@ const getUserRoutes = () => {
     if(me.roles==="is_admin"){
         return(
             <>
-             <div id="logoContainer"> <img src={hydrauleaklogo} id="hydrauleak-logo" alt="hydrauleak"/></div>
+             <div id="logoContainer"> <img src={hydrauleaklogo} id="hydrauleak-logo" alt="hydrauleak"/>
+             <hr className="solid"></hr>
+             </div>
               {/* <li> <HomeIcon /> <a href="/">Dashboard</a></li>
                 <li> <ReceiptLongIcon /> <a href="/contracts">Contracts</a></li>
                 <li> <ContentPasteIcon /> <a href="/interventions">Interventions</a></li>
