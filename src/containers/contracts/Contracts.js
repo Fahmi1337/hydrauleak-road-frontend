@@ -67,8 +67,12 @@ const handleEditContract = (contract) => {
 // handle Delete contract
 const handleDeleteContract =async (contractId) => {
 
-  
-  await axios.delete(`${process.env.REACT_APP_API_URL}/api/contract/${contractId}/`,
+  const confirmation = window.confirm('Are you sure you want to delete this Contract?');
+
+  if (!confirmation) {
+    return;
+  }
+  await axios.delete(`${process.env.REACT_APP_API_URL}/api/contracts/${contractId}/`,
     
   {
         headers: {

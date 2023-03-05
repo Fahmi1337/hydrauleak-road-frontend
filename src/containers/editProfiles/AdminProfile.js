@@ -61,13 +61,15 @@ function AdminProfile() {
 
   return (
    
-      <div>
+      <div className="parent-container">
          <h1 className="profile-heading">Profile Page</h1>
          {errorMessage && <div className="error-message">{errorMessage}</div>}
  <div className="profile-container">
 
     <div>
+    
     <form className="profile-container">
+    <h2 className='profile-details'>Admin Profile details</h2>
         <label htmlFor="name">Name:</label>
         <input type="text" id="name" value={name} onChange={handleNameChange} />
         <label htmlFor="email">Email:</label>

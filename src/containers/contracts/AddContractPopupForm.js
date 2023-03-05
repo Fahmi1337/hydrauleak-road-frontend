@@ -19,18 +19,13 @@ const AddContractPopupForm = ({ onCancel, onOpen }) => {
   const [contractData, setContractData] = useState({
    
     // contract: 1, 
-      
+      // client: 1,
     // contract_title: '',
     // contract_description: '',
-    contract_type: 'Simple', 
+    
      
       contract_status: 'NotStart', 
       // contract_date: '', 
-      address: '', 
-      city: '', 
-      state: '', 
-      zipcode: '', 
-      // contract_estimate_time: '', 
        
       is_published: 'Not Published'
   });
@@ -61,7 +56,7 @@ const AddContractPopupForm = ({ onCancel, onOpen }) => {
   };
 
   const [clients, setClients] = useState([]);
-
+ console.log("the client data :", clients.filter((client) => client.roles.includes("is_client")).map((client) => (client.id))  )
 
   const getClients = async () => {
     try {
@@ -111,7 +106,7 @@ const AddContractPopupForm = ({ onCancel, onOpen }) => {
                  <label>
                  Select Client:
                 </label>
-                <select name="user" value={parseInt(contractData.user)} onChange={handleContractDataChange}>
+                <select name="client" value={contractData.client} onChange={handleContractDataChange}>
                 <option disabled value=""> -- select an option -- </option>
                 {clients.filter((client) => client.roles.includes("is_client")).map((client) => (
                   <option key={client.id} value={client.id}>
@@ -131,7 +126,7 @@ const AddContractPopupForm = ({ onCancel, onOpen }) => {
 
                 <label>
                 Contract work type:
-                    <select  type="text" name='contract_type' value={contractData.contract_work_type} onChange={handleContractDataChange} required>                   
+                    <select  type="text" name='contract_work_type' value={contractData.contract_work_type} onChange={handleContractDataChange} required>                   
                     <option value="Fire_Hydrant_Inspection">Fire Hydrant Inspection</option>
                     <option value=" All_City_Inspections">All City Inspections</option>
                     <option value="Clarifying_the_location_of_the_leak">Clarifying the location of the leak</option>
@@ -161,7 +156,7 @@ const AddContractPopupForm = ({ onCancel, onOpen }) => {
                 </label>
                 <label>
                 Estimate Time:
-                    <input type="date" name='contract_estimate_time' value={contractData.contract_estimate_end_date} onChange={handleContractDataChange} required/>
+                    <input type="date" name='contract_estimate_end_date' value={contractData.contract_estimate_end_date} onChange={handleContractDataChange} required/>
                 </label>
                 
                 <label>

@@ -64,27 +64,27 @@ const handleEditIntervention = (intervention) => {
 };
 
 // handle Delete intervention
-const handleDeleteIntervention =async (interventionId) => {
+const handleDeleteIntervention = async (interventionId) => {
+  const confirmation = window.confirm('Are you sure you want to delete this intervention?');
 
-  
-  await axios.delete(`${process.env.REACT_APP_API_URL}/api/intervention/${interventionId}/`,
+  if (!confirmation) {
+    return;
+  }
+
+  try {
+    await axios.delete(`${process.env.REACT_APP_API_URL}/api/interventions/${interventionId}/`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      }
+    });
     
-  {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' +   localStorage.getItem("token")
-}}
-)    
-  .then((res) => {
-    console.log(res.data);
-  })
-  .catch((err) => {
+    const newData = data.filter(item => item.id !== interventionId);
+    setData(newData);
+    setSelectedIntervention(null);
+  } catch (err) {
     console.error(err);
-  });
-
-  const newData = data.filter(item => item.id !== interventionId);
-  setData(newData);
-  setSelectedIntervention(null);
+  }
 };
 
   
