@@ -87,7 +87,11 @@ const handleEditClient = (client) => {
 
 // handle Delete client
 const handleDeleteClient =async (clientId) => {
+  const confirmation = window.confirm('Are you sure you want to delete this client?');
 
+  if (!confirmation) {
+    return;
+  }
   
   await axios.delete(`${process.env.REACT_APP_API_URL}/api/clients/${clientId}/`,
     

@@ -163,7 +163,13 @@ useEffect(() => {
 
 
 
-// Get the maps coordinates center and details  
+// Get the maps coordinates center and details 
+const [mapCenter, setMapCenter] = useState([]); 
+
+ console.log("this is the map center : ", mapCenter)
+const handleMapCenter =(e)=> {
+  setMapCenter(e.target.value)
+}
 const getMaps = e => {
   axios.get(`${process.env.REACT_APP_API_URL}/api/maps/`, {
     headers: {
@@ -397,6 +403,11 @@ mapsData.forEach((maps) => {
   deleteButton.addEventListener('click', () => {
     const mapId = deleteButton.getAttribute('data-map-id');
     // Send DELETE request to API endpoint using Map id
+    const confirmation = window.confirm('Are you sure you want to delete this map?');
+
+  if (!confirmation) {
+    return;
+  }
     axios.delete(`${process.env.REACT_APP_API_URL}/api/maps/${mapId}/`, {
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -456,6 +467,12 @@ sensorsData.forEach((sensor) => {
   deleteButton.addEventListener('click', () => {
     const sensorId = deleteButton.getAttribute('data-sensor-id');
     // Send DELETE request to API endpoint using Sensor id
+
+    const confirmation = window.confirm('Are you sure you want to delete this sensor?');
+
+  if (!confirmation) {
+    return;
+  }
     axios.delete(`${process.env.REACT_APP_API_URL}/api/sensors/${sensorId}/`, {
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -513,6 +530,12 @@ markersData.forEach((mark) => {
   deleteButton.addEventListener('click', () => {
     const markId = deleteButton.getAttribute('data-mark-id');
     // Send DELETE request to API endpoint using Mark id
+
+    const confirmation = window.confirm('Are you sure you want to delete this mark?');
+
+  if (!confirmation) {
+    return;
+  }
     axios.delete(`${process.env.REACT_APP_API_URL}/api/marks/${markId}/`, {
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -576,6 +599,11 @@ const deleteButton = marker._popup._content.querySelector('#deletePipeaccess');
 deleteButton.addEventListener('click', () => {
 const pipeaccessId = deleteButton.getAttribute('data-pipeaccess-id');
 // Send DELETE request to API endpoint using Pipe access id
+const confirmation = window.confirm('Are you sure you want to delete this pipe access?');
+
+  if (!confirmation) {
+    return;
+  }
 axios.delete(`${process.env.REACT_APP_API_URL}/api/pipeacces/${pipeaccessId}/`, {
 headers: {
 'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -664,6 +692,11 @@ pipesData.forEach((pipe) => {
   deleteButton.addEventListener('click', () => {
     const pipeId = deleteButton.getAttribute('data-pipe-id');
     // Send DELETE request to API endpoint using Pipe id
+    const confirmation = window.confirm('Are you sure you want to delete this pipe?');
+
+  if (!confirmation) {
+    return;
+  }
     axios.delete(`${process.env.REACT_APP_API_URL}/api/pipes/${pipeId}/`, {
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem("token")
@@ -755,6 +788,11 @@ const deleteButton = popupContent.querySelector('#deleteZone');
 deleteButton.addEventListener('click', () => {
   const zoneId = deleteButton.getAttribute('data-zone-id');
   // Send DELETE request to API endpoint using Zone id
+  const confirmation = window.confirm('Are you sure you want to delete this zone?');
+
+  if (!confirmation) {
+    return;
+  }
   axios.delete(`${process.env.REACT_APP_API_URL}/api/zones/${zoneId}/`, {
     headers: {
       'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -1059,6 +1097,29 @@ return (
 
 
 <div ref={mapContainer} style={{ width: '215em', height: '115em',left: '20em',top: '-10px' }} />
+
+
+{/* map Center SELECT */}
+<div  style = {{
+
+zIndex: 9999999,left: '50%'
+}}>
+            <label >Map:</label>        
+             
+            <select style = {{
+
+zIndex: 9999999,left: '50%'
+}}  type="text"  
+                  name="map" onChange={e => handleMapCenter(e)} value={mapCenter.map_coordinate} > <option disabled selected value> -- select an option -- </option>
+                  {mapsData?.map(map => (
+                    
+                  <option key={map.map_coordinate} value={map.map_coordinate}>{map.map_title}</option>          
+                  ))} 
+            </select>
+            
+        </div>
+{/* map Center SELECT */}
+
 
 {/* map Popups */}
 

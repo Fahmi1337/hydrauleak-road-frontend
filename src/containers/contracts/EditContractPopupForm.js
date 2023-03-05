@@ -145,7 +145,7 @@ const EditContractPopupForm =({ contract, onUpdateContract, onCancel, onOpen, ge
         aria-describedby="modal-modal-contract_description"
       >
         <Box sx={style}>
-            <div className="popup-form">
+            <div className="popup-form ">
             <div className="popup-form-overlay" onClick={onCancel}></div>
             <div className="popup-form-content">
                 <h2>Edit Contract</h2>

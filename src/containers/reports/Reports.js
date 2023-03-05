@@ -49,7 +49,11 @@ const Reports = () => {
 
   // handle Delete user
 const handleDeleteUser =async (reportId) => {
+  const confirmation = window.confirm('Are you sure you want to delete this report?');
 
+  if (!confirmation) {
+    return;
+  }
   
   await axios.delete(`${process.env.REACT_APP_API_URL}/api/reports/${reportId}/`,
     

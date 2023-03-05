@@ -64,6 +64,7 @@ function LeakerProfile() {
       <h1 className="profile-heading">Profile Page</h1>
       {errorMessage && <div className="error-message">{errorMessage}</div>}
       <form className="profile-form">
+      <h2 className='profile-details'>Leaker Profile details</h2>
         <label htmlFor="name">Name:</label>
         <input type="text" id="name" value={name} onChange={handleNameChange} />
         <label htmlFor="email">Email:</label>

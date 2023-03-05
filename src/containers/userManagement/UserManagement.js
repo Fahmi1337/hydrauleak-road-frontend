@@ -46,7 +46,11 @@ const handleEditUser = (user) => {
 
 // handle Delete user
 const handleDeleteUser =async (userId) => {
+  const confirmation = window.confirm('Are you sure you want to delete this user?');
 
+  if (!confirmation) {
+    return;
+  }
   
   await axios.delete(`${process.env.REACT_APP_API_URL}/api/user/${userId}/`,
     
