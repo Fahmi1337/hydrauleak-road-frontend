@@ -5,10 +5,7 @@
   .profile-container button{
     margin-top: 30px;
   }
-  .profile-container{
-    display: grid;
-    grid-template-columns: auto auto;
-  }
+
   .profile-container h2{
     color: #0671E0;
   }
