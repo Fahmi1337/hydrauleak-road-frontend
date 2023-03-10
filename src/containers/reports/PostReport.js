@@ -10,10 +10,37 @@ function PostReport() {
   const [addMarkCoordinates, setAddMarkCoordinates] = useState([]);
   const [addPipeCoordinates, setAddPipeCoordinates] = useState([]);
   const [addPipeAccessCoordinates, setAddPipeAccessCoordinates] = useState([]);
-  const [image, setImage] = useState(null);
+  // const [image, setImage] = useState(null);
+
+
+  // const [image, setImg] = useState("Image string will come here");
+  // const handleChangeImg = (e) => {
+  //   console.log(e.target.files[0]);
+  //   const reader = new FileReader();
+  //   reader.readAsDataURL(e.target.files[0]);
+  //   reader.onloadend = () => {
+  //     setImg(reader.result);
+  //   };
+  // };
+
+  const [image, setSelectedFile] = useState(null);
+
+  const handleFileSelect = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const add_sensor_coordinates = addSensorCoordinates.split(',').map(coord => parseFloat(coord));
+    const formData = new FormData();
+    formData.append('image', image);
+    formData.append('subject', subject);
+    formData.append('message', message);
+    formData.append('add_sensor_coordinates', JSON.stringify(add_sensor_coordinates));
+    formData.append('add_mark_coordinates', JSON.stringify(add_sensor_coordinates));
+    formData.append('add_pipe_coordinates', JSON.stringify(add_sensor_coordinates));
+    formData.append('add_pipe_access_coordinates', JSON.stringify(add_sensor_coordinates));
+    formData.append('report_date', new Date().toISOString());
     const report = {
       
       subject,
@@ -22,12 +49,11 @@ function PostReport() {
       add_mark_coordinates: addMarkCoordinates.split(',').map(coord => parseFloat(coord)),
       add_pipe_coordinates: addPipeCoordinates.split(',').map(coord => parseFloat(coord)),
       add_pipe_access_coordinates: addPipeAccessCoordinates.split(',').map(coord => parseFloat(coord)),
-      
-    //   image,
+      image: formData.get('image'),
       report_date: new Date().toISOString(),
     };
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/reports/`, report,{
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/reports/`, formData,{
         headers: {
           'Authorization': 'Bearer ' +  localStorage.getItem("token")
         }
@@ -71,8 +97,9 @@ function PostReport() {
       </label>
       <label>
         Image:
-        <input type="file" onChange={(e) => setImage(e.target.files[0])} />
+        <input onChange={handleFileSelect} type="file" name="image" />
       </label>
+      <img src={URL.createObjectURL(image)} alt="report" style={{width : '80%', height: 'auto'}}/>
       <button type="submit">Submit Report</button>
     </form>
   );

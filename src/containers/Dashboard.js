@@ -666,7 +666,7 @@ pipesData.forEach((pipe) => {
   },
   paint: {
   'line-color': '#3284ff',
-  'line-width': 5,
+  'line-width': 10,
   },
   });
   map.on('click', 'pipe-' + pipe.id, (e) => {
