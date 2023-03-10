@@ -166,7 +166,7 @@ useEffect(() => {
 // Get the maps coordinates center and details 
 const [mapCenter, setMapCenter] = useState([]); 
 
- console.log("this is the map center : ", mapCenter[0]);
+//  console.log("this is the map center : ", mapCenter[0]);
 const handleMapCenter =(e)=> {
   setMapCenter([e.target.value.split(",").map(parseFloat)])
 }
@@ -190,7 +190,7 @@ useEffect(() => {
   }, []);
 
 
-  console.log("maps data:" ,mapsData )
+  // console.log("maps data:" ,mapsData )
 
 // Get Pipes function 
 const getPipes = e => {
@@ -211,7 +211,7 @@ const getPipes = e => {
     getPipes();
   }, []);
 
-  console.log("pipe data:" ,pipesData )
+  // console.log("pipe data:" ,pipesData )
 
   // Get Pipes function 
   const getPipeAccess = e => {
@@ -294,7 +294,7 @@ const getPipes = e => {
   }, []);
 
  
-console.log("runEffectZone?", runEffectZone)
+
 // map const select delete update
 const [selectedMap, setSelectedMap] = useState();
 const [openViewMapPopup, setOpenViewMapPopup] = useState(false);
@@ -352,10 +352,10 @@ const [openUpdateZonePopup, setOpenUpdateZonePopup] = useState(false);
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/streets-v11',
         // center:  mapsData[2]?.map_coordinate || [lng, lat] || searchCoordinates || [0, 0],
-        center:  [0, 0] || searchCoordinates,
+        center:  [40.7061, -73.935242] || searchCoordinates,
         zoom: 15
       });
-      setMap(map);
+    
       map.on('load', () => {
 
 
@@ -387,8 +387,7 @@ if(mapCenter){
   });
 }
 
-          //  console.log('centre', searchCoordinates?.features[0]?.center )
-           console.log('centre map',  mapsData[2]?.map_coordinate  )
+     
 
 // Add Maps to the map 
 mapsData.forEach((maps) => {
@@ -683,6 +682,7 @@ pipesData.forEach((pipe) => {
   },
   });
   map.on('click', 'pipe-' + pipe.id, (e) => {
+    console.log("hellllooooo")
   const popupContent = document.createElement('div');
   popupContent.innerHTML = `<h3>Pipe title: ${pipe.pipe_title}</h3> 
   <h3>ID : ${pipe.id}</h3> 
@@ -1109,7 +1109,7 @@ return (
 {/* {addSensor && <div>Something showed up!</div>} */}
 
 
-<div ref={mapContainer} style={{ width: '225em', height: '124em',left: '21em',top: '-10px' }} />
+<div className="mapContainer" ref={mapContainer} style={{ width: '145em', height: '80.5em',left: '13.8em' }} />
 
 
 {/* map Center SELECT */}
@@ -1120,7 +1120,7 @@ return (
 
 zIndex: 9999999,left: '50%'
 }}  type="text"  
-                  name="map" onChange={e => handleMapCenter(e)} value={mapCenter.map_coordinate} >
+                  name="map" onChange={e => handleMapCenter(e)} value={mapCenter.map_coordinate} > <option disabled selected value> -- Select map center -- </option>
                   {mapsData?.map(map => (
                     
                   <option key={map.map_coordinate} value={map.map_coordinate}>{map.map_title}</option>          
