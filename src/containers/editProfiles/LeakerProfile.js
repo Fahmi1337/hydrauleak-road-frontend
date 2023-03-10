@@ -60,9 +60,12 @@ function LeakerProfile() {
   };
 
   return (
-    <div className="profile-container">
-      <h1 className="profile-heading">Profile Page</h1>
+    <div>
+       <h1 className="profile-heading">Profile Page</h1>
+ <div className="profile-container">
+     
       {errorMessage && <div className="error-message">{errorMessage}</div>}
+      
       <form className="profile-form">
       <h2 className='profile-details'>Leaker Profile details</h2>
         <label htmlFor="name">Name:</label>
@@ -71,12 +74,16 @@ function LeakerProfile() {
     <input type="email" id="email" value={email} onChange={handleEmailChange} />
     <label htmlFor="phone">Phone:</label>
     <input type="text" id="phone" value={phone} onChange={handlePhoneChange} />
-
-    
+  
     <button type="button" onClick={handleSaveChanges}>Save Changes</button>
   </form>
+  <div className="changePasswordContainer">
   <ChangePassword/>
+  </div>
+
 </div>
+    </div>
+   
 );
 }
 

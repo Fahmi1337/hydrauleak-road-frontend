@@ -37,7 +37,7 @@ const Map = (props) => {
   const [pipesData, setPipes] = useState([]);
   const [pipesAccessData, setPipeAcess] = useState([]);
 
-
+  const [map, setMap] = useState(null);
   
   const [mapsData, setMapsData] = useState([]);
   const [searchCoordinates, setSearchCoordinates] = useState([-71.3583, 50.1686]);
@@ -166,9 +166,9 @@ useEffect(() => {
 // Get the maps coordinates center and details 
 const [mapCenter, setMapCenter] = useState([]); 
 
- console.log("this is the map center : ", mapCenter)
+ console.log("this is the map center : ", mapCenter[0]);
 const handleMapCenter =(e)=> {
-  setMapCenter(e.target.value)
+  setMapCenter([e.target.value.split(",").map(parseFloat)])
 }
 const getMaps = e => {
   axios.get(`${process.env.REACT_APP_API_URL}/api/maps/`, {
@@ -331,7 +331,13 @@ const [openUpdateZonePopup, setOpenUpdateZonePopup] = useState(false);
   const mapContainer = React.useRef(null);
   
 
+  // const newAddSensor = () => {
+  //   const newMarker = new mapboxgl.Marker()
+  //     .setLngLat(map.getCenter())
+  //     .addTo(map);
 
+  //   setMarker(newMarker);
+  // };
 
   
   useEffect(() => {
@@ -349,7 +355,7 @@ const [openUpdateZonePopup, setOpenUpdateZonePopup] = useState(false);
         center:  [0, 0] || searchCoordinates,
         zoom: 15
       });
-     
+      setMap(map);
       map.on('load', () => {
 
 
@@ -372,7 +378,14 @@ const [openUpdateZonePopup, setOpenUpdateZonePopup] = useState(false);
           
         }
      
-
+if(mapCenter){
+  map.easeTo({
+    center: mapCenter[0],
+    speed: 0.05,
+    curve: 0.1,
+    zoom : map.getZoom(),
+  });
+}
 
           //  console.log('centre', searchCoordinates?.features[0]?.center )
            console.log('centre map',  mapsData[2]?.map_coordinate  )
@@ -1078,7 +1091,7 @@ return () => {
 
 
 }
-, [ pipesData, pipesAccessData, zones, mapsData, searchCoordinates, coordinatesPipe, runEffectPipe, runEffectZone, runEffectSensor]);
+, [ pipesData, pipesAccessData, zones, mapsData, searchCoordinates, coordinatesPipe, runEffectPipe, runEffectZone, runEffectSensor, mapCenter]);
 
 return (
 <div>
@@ -1096,21 +1109,18 @@ return (
 {/* {addSensor && <div>Something showed up!</div>} */}
 
 
-<div ref={mapContainer} style={{ width: '215em', height: '115em',left: '20em',top: '-10px' }} />
+<div ref={mapContainer} style={{ width: '225em', height: '124em',left: '21em',top: '-10px' }} />
 
 
 {/* map Center SELECT */}
-<div  style = {{
-
-zIndex: 9999999,left: '50%'
-}}>
-            <label >Map:</label>        
+<div  className="selectMapContainer">
+              
              
             <select style = {{
 
 zIndex: 9999999,left: '50%'
 }}  type="text"  
-                  name="map" onChange={e => handleMapCenter(e)} value={mapCenter.map_coordinate} > <option disabled selected value> -- select an option -- </option>
+                  name="map" onChange={e => handleMapCenter(e)} value={mapCenter.map_coordinate} >
                   {mapsData?.map(map => (
                     
                   <option key={map.map_coordinate} value={map.map_coordinate}>{map.map_title}</option>          
@@ -1270,16 +1280,7 @@ zIndex: 9999999,left: '50%'
 
 
 
-  <div className="calculation-box">
-    <p>Click the map to draw.</p>
 
-    {/* <button onClick={handlePolygonCreated} >Add Zone</button> */}
-    
-    {addSensor && (
-    <RightAddSensorPopup/>
-    )}
-    <div id="calculated-area"></div>   
-  </div>
 
 
 </div>

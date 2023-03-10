@@ -60,8 +60,10 @@ function ClientProfile() {
   };
 
   return (
-    <div className="profile-container">
-      <h1 className="profile-heading">Profile Page</h1>
+    <div>
+       <h1 className="profile-heading">Profile Page</h1>
+ <div className="profile-container">
+     
       {errorMessage && <div className="error-message">{errorMessage}</div>}
       
       <form className="profile-form">
@@ -75,8 +77,13 @@ function ClientProfile() {
   
     <button type="button" onClick={handleSaveChanges}>Save Changes</button>
   </form>
+  <div className="changePasswordContainer">
   <ChangePassword/>
+  </div>
+
 </div>
+    </div>
+   
 );
 }
 

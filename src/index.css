@@ -1,3 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
+html * {
+  font-family: 'Rubik', sans-serif;
+
+}
+textarea{
+  height: 15em;
+}
 .map-container {
     height: 400px;
     }
@@ -22,11 +30,11 @@
         margin-right: auto;
         margin-left: auto;
         margin-top: 30px;
-        color: #4196F0
+        color: #0671E0
       }
       .heading {
         color: #14877c;
-        border-bottom: 1px solid #4196F0;
+        border-bottom: 1px solid #0671E0;
         margin-bottom: 30px;
         padding-bottom: 10px;
       }
@@ -34,7 +42,7 @@
         width: 40%;
         min-width: 200px;
         border-radius: 10px;
-        border: 2px solid #4196F0;
+        border: 2px solid #0671E0;
         padding: 10px;
         font-size: 14px;
       }
@@ -49,8 +57,8 @@
         font-weight: 600;
         border-radius: 4px;
         color: #ffffff;
-        border: 1px solid #4196F0;
-        background-color: #4196F0;
+        border: 1px solid #0671E0;
+        background-color: #0671E0;
         cursor: pointer;
         margin: 0px 15px;
         min-width: 100px;
@@ -60,7 +68,7 @@
       }
       
       button:hover {
-        background: #4196F0;
+        background: #0671E0;
         color: #ffffff;
       }
       
@@ -87,7 +95,7 @@
 font-style: normal;
 font-weight: 400;
 font-size: 24px;
-line-height: 18px;
+line-height: 32px;
       }
       td {
         color: #282A2E;
@@ -98,7 +106,7 @@ line-height: 18px;
         font-size: 22px;
         line-height: 2em;
         text-align: left;
-        padding: 15px 30px;
+        padding: 30px 30px;
       }
       
       tr {
@@ -149,7 +157,7 @@ line-height: 18px;
       } */
 
       .pagination a {
-        /* background-color: #4196F0; */
+        
         color: #212121 !important;
         padding: 13px 27px;
         text-decoration: none;
@@ -333,4 +341,20 @@ line-height: 18px;
   .popup-form h2{
     color: #0671E0;
   }
- 
+ .selectMapContainer{
+  position: absolute !important;
+  color: white !important;
+  left: 38% !important;
+  top: -1% !important;
+  z-index: 999999999 !important;
+  font-size: 2em !important;
+
+  padding: 0.3em !important;
+  font-weight: 500 !important;
+  border-radius: 10px !important;
+ }
+ body {
+  -moz-transform: scale(0.65, 0.65); /* Moz-browsers */
+  zoom: 0.65; /* Other non-webkit browsers */
+  zoom: 65%; /* Webkit browsers */
+}

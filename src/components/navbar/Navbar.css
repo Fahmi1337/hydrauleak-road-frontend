@@ -12,7 +12,9 @@ body {
     justify-content: space-between;
     align-items: center;
   }
-  
+  .flex{
+    display: flex;
+  }
   .logo img {
     width: 60px;
     height: 60px;
@@ -57,10 +59,10 @@ body {
     height: 1.5em !important;
   }
   .active{
-    background-color: #4196F0;
+    background-color: #5ca2eb;
     color: white;
     width: 82%;
-    padding-left: 1.7em;
+    padding-left: 1.5em;
     margin-left: -0.22em;
   }
   .auth a {
@@ -75,7 +77,7 @@ body {
   }
 
   .left-nav {
-    width: 15em;
+    width: 16em;
     height: 100%;
     position: fixed;
     justify-content: center;
@@ -103,3 +105,7 @@ body {
   margin-top: -1.7em;
 }
 
+.nav-txt{
+  margin-top: 3rem;
+  margin-left: 0.5em;
+}

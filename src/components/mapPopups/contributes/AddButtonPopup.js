@@ -16,7 +16,9 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
-
+import SendIcon from '@mui/icons-material/Send';
+import Stack from '@mui/material/Stack';
+import ControlPointIcon from '@mui/icons-material/ControlPoint';
 
 const style = {
   position: 'absolute',
@@ -25,24 +27,13 @@ const style = {
   
   transform: 'translate(-50%, -50%)',
   width: 400,
-  height: 200,
+  height: "auto",
   bgcolor: 'rgba(255, 255, 255, 0.75)',
   boxShadow: 24,
   p: 4,
 };
 
-const style2 = {
-  position: 'absolute',
-  top: '52%',
-  left: '31%',
-  transform: 'translate(-50%, -50%)',
-  width: '34%',
- height: '96%',
-  bgcolor: 'rgba(255, 255, 255, 0.75)',
-  boxShadow: 24,
-  overflowY: 'scroll',
-  p: 4,
-};
+
 
 
     const AddButtonPopup = (props) => {
@@ -158,7 +149,7 @@ const handlePolygonCreated= props.handlePolygonCreated
 {openSensor && ( <RightAddSensorPopup handleCloseSensor={handleCloseSensor} handleClose={handleClose} getSensors={props.getSensors} openSensor={openSensor}/>)}
      
         
-        <Button onClick={handleOpen}>Contributes +</Button>
+        <Button className="contributesButton" onClick={handleOpen} variant="outlined" startIcon={<ControlPointIcon  />}> Contributes</Button>
       <Modal
         disableEnforceFocus
         hideBackdrop
@@ -171,7 +162,7 @@ const handlePolygonCreated= props.handlePolygonCreated
       >
         <Box sx={style}>
         
-          <div>
+          <div className="contributesButtonsContainer">
             {/* MODAL 2 */}
 
           <button onClick={() => {setRunEffectZone(true); handleOpenZone();  handleClose();}} >Add zone</button>
