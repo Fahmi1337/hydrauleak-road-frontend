@@ -352,10 +352,10 @@ const [openUpdateZonePopup, setOpenUpdateZonePopup] = useState(false);
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/streets-v11',
         // center:  mapsData[2]?.map_coordinate || [lng, lat] || searchCoordinates || [0, 0],
-        center:  [40.7061, -73.935242] || searchCoordinates,
+        center:  [-71.21088520218619,46.806343083853875] || searchCoordinates,
         zoom: 15
       });
-    
+   
       map.on('load', () => {
 
 
