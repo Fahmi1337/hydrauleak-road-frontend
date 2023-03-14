@@ -133,7 +133,7 @@ const handleDeleteUser =async (reportId) => {
   return (
     <div className="table_container">
       <div>
-        <h1>Reports</h1>
+      <div className="pageTitleContainer">  <h1>Reports</h1></div>
         <div className="table-controls">
           <div className="search-input">
           {/* <button onClick={() => handleOpenAddUser()}>Add User</button> */}
@@ -175,8 +175,8 @@ const handleDeleteUser =async (reportId) => {
       </div>
   
     <ReactPaginate
-        previousLabel={'previous'}
-        nextLabel={'next'}
+        previousLabel={'<'}
+        nextLabel={'>'}
         pageCount={pageCount}
         onPageChange={changePage}
         containerClassName={'pagination'}

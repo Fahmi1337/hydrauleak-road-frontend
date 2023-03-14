@@ -258,12 +258,24 @@ console.log("selectedIntervention",selectedIntervention )
                   )}         
           </div>
 
-      <div className="table-controls">
-        <div className="search-input">
-        <button onClick={() => handleOpenAddIntervention()}>Add Intervention</button>
+   
+      <div className="pageTitleContainer">  <h1>Interventions</h1></div>
+      <div id="addTableButtonContainer">
+        <button onClick={() => handleOpenAddIntervention()}>Add Intervention</button>  </div>
+        <div className="table-controls">
+          <div className="search-input">
+      
           <label htmlFor="search">Search:</label>
-          <input type="text" id="search" value={searchTerm} onChange={handleSearchChange} />
+          <input type="search" id="search" value={searchTerm} onChange={handleSearchChange} placeholder="Search..."/>
+          <div class="icons-container">
+    <div class="icon-search"></div>
+    <div class="icon-close">
+      <div class="x-up"></div>
+      <div class="x-down"></div>
+    </div>
+  </div>
         </div>
+      
         <div className="status-filter">
           <label htmlFor="status-filter">Filter by status:</label>
           <select id="status-filter" value={selectedStatus} onChange={handleStatusFilterChange}>
@@ -297,8 +309,8 @@ console.log("selectedIntervention",selectedIntervention )
         </tbody>
       </table>
       <ReactPaginate
-        previousLabel={'previous'}
-        nextLabel={'next'}
+        previousLabel={'<'}
+        nextLabel={'>'}
         pageCount={pageCount}
         onPageChange={changePage}
         containerClassName={'pagination'}

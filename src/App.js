@@ -3,7 +3,11 @@ import store from './store';
 import React, {useState, useEffect} from 'react'
 import { BrowserRouter as Router, Route, Routes,Navigate } from 'react-router-dom';
 //container
+
 import Test from './containers/Test'
+import Test2 from './containers/Test2'
+import Test3 from './containers/Test3'
+
 import Dashboard from './containers/Dashboard';
 import UserManagement from './containers/userManagement/UserManagement';
 import Login from './containers/login/Login';
@@ -120,6 +124,8 @@ const App = () => {
                     <Route path="/client-profile" element={ !isToken ? <Navigate to="/login" /> : <ClientProfile/> }/>;
 
                     <Route exact path='/test' element={<Test/>} />
+                    <Route exact path='/test2' element={<Test2/>} />
+                    <Route exact path='/test3' element={<Test3/>} />
 
                     <Route path="/interventions" element={ !isToken ? <Navigate to="/login" /> : <Interventions/> }/>;
                     <Route path="/add-zone-intervention" element={ !isToken ? <Navigate to="/login" /> : <AddZoneIntervention/> }/>;

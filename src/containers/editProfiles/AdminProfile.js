@@ -60,34 +60,30 @@ function AdminProfile() {
   };
 
   return (
-   
-      <div className="parent-container">
-         <h1 className="profile-heading">Profile Page</h1>
-         {errorMessage && <div className="error-message">{errorMessage}</div>}
- <div className="profile-container">
-
     <div>
-    
-    <form className="profile-container">
-    <h2 className='profile-details'>Admin Profile details</h2>
+       <h1 className="profile-heading">Profile Page</h1>
+ <div className="profile-container">
+     
+      {errorMessage && <div className="error-message">{errorMessage}</div>}
+      
+      <form className="profile-form">
+      <h2 className='profile-details'>Admin Profile details</h2>
         <label htmlFor="name">Name:</label>
         <input type="text" id="name" value={name} onChange={handleNameChange} />
         <label htmlFor="email">Email:</label>
     <input type="email" id="email" value={email} onChange={handleEmailChange} />
     <label htmlFor="phone">Phone:</label>
     <input type="text" id="phone" value={phone} onChange={handlePhoneChange} />
-
+  
     <button type="button" onClick={handleSaveChanges}>Save Changes</button>
   </form>
-    </div>
-    <div>
-    <ChangePassword/>
-    </div>
-     
- 
+  <div className="changePasswordContainer">
+  <ChangePassword/>
+  </div>
+
 </div>
-      </div>
-    
+    </div>
+   
 );
 }
 

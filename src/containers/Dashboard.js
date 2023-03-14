@@ -37,7 +37,7 @@ const Map = (props) => {
   const [pipesData, setPipes] = useState([]);
   const [pipesAccessData, setPipeAcess] = useState([]);
 
-
+  const [map, setMap] = useState(null);
   
   const [mapsData, setMapsData] = useState([]);
   const [searchCoordinates, setSearchCoordinates] = useState([-71.3583, 50.1686]);
@@ -166,9 +166,9 @@ useEffect(() => {
 // Get the maps coordinates center and details 
 const [mapCenter, setMapCenter] = useState([]); 
 
- console.log("this is the map center : ", mapCenter)
+//  console.log("this is the map center : ", mapCenter[0]);
 const handleMapCenter =(e)=> {
-  setMapCenter(e.target.value)
+  setMapCenter([e.target.value.split(",").map(parseFloat)])
 }
 const getMaps = e => {
   axios.get(`${process.env.REACT_APP_API_URL}/api/maps/`, {
@@ -190,7 +190,7 @@ useEffect(() => {
   }, []);
 
 
-  console.log("maps data:" ,mapsData )
+  // console.log("maps data:" ,mapsData )
 
 // Get Pipes function 
 const getPipes = e => {
@@ -211,7 +211,7 @@ const getPipes = e => {
     getPipes();
   }, []);
 
-  console.log("pipe data:" ,pipesData )
+  // console.log("pipe data:" ,pipesData )
 
   // Get Pipes function 
   const getPipeAccess = e => {
@@ -294,7 +294,7 @@ const getPipes = e => {
   }, []);
 
  
-console.log("runEffectZone?", runEffectZone)
+
 // map const select delete update
 const [selectedMap, setSelectedMap] = useState();
 const [openViewMapPopup, setOpenViewMapPopup] = useState(false);
@@ -331,7 +331,13 @@ const [openUpdateZonePopup, setOpenUpdateZonePopup] = useState(false);
   const mapContainer = React.useRef(null);
   
 
+  // const newAddSensor = () => {
+  //   const newMarker = new mapboxgl.Marker()
+  //     .setLngLat(map.getCenter())
+  //     .addTo(map);
 
+  //   setMarker(newMarker);
+  // };
 
   
   useEffect(() => {
@@ -346,10 +352,10 @@ const [openUpdateZonePopup, setOpenUpdateZonePopup] = useState(false);
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/streets-v11',
         // center:  mapsData[2]?.map_coordinate || [lng, lat] || searchCoordinates || [0, 0],
-        center:  [0, 0] || searchCoordinates,
+        center:  [-71.21088520218619,46.806343083853875] || searchCoordinates,
         zoom: 15
       });
-     
+   
       map.on('load', () => {
 
 
@@ -372,10 +378,16 @@ const [openUpdateZonePopup, setOpenUpdateZonePopup] = useState(false);
           
         }
      
+if(mapCenter){
+  map.easeTo({
+    center: mapCenter[0],
+    speed: 0.05,
+    curve: 0.1,
+    zoom : map.getZoom(),
+  });
+}
 
-
-          //  console.log('centre', searchCoordinates?.features[0]?.center )
-           console.log('centre map',  mapsData[2]?.map_coordinate  )
+     
 
 // Add Maps to the map 
 mapsData.forEach((maps) => {
@@ -666,10 +678,11 @@ pipesData.forEach((pipe) => {
   },
   paint: {
   'line-color': '#3284ff',
-  'line-width': 5,
+  'line-width': 10,
   },
   });
   map.on('click', 'pipe-' + pipe.id, (e) => {
+    console.log("hellllooooo")
   const popupContent = document.createElement('div');
   popupContent.innerHTML = `<h3>Pipe title: ${pipe.pipe_title}</h3> 
   <h3>ID : ${pipe.id}</h3> 
@@ -1078,7 +1091,7 @@ return () => {
 
 
 }
-, [ pipesData, pipesAccessData, zones, mapsData, searchCoordinates, coordinatesPipe, runEffectPipe, runEffectZone, runEffectSensor]);
+, [ pipesData, pipesAccessData, zones, mapsData, searchCoordinates, coordinatesPipe, runEffectPipe, runEffectZone, runEffectSensor, mapCenter]);
 
 return (
 <div>
@@ -1096,21 +1109,18 @@ return (
 {/* {addSensor && <div>Something showed up!</div>} */}
 
 
-<div ref={mapContainer} style={{ width: '215em', height: '115em',left: '20em',top: '-10px' }} />
+<div className="mapContainer" ref={mapContainer} style={{ width: '145em', height: '80.5em',left: '13.8em' }} />
 
 
 {/* map Center SELECT */}
-<div  style = {{
-
-zIndex: 9999999,left: '50%'
-}}>
-            <label >Map:</label>        
+<div  className="selectMapContainer">
+              
              
             <select style = {{
 
 zIndex: 9999999,left: '50%'
 }}  type="text"  
-                  name="map" onChange={e => handleMapCenter(e)} value={mapCenter.map_coordinate} > <option disabled selected value> -- select an option -- </option>
+                  name="map" onChange={e => handleMapCenter(e)} value={mapCenter.map_coordinate} > <option disabled selected value> -- Select map center -- </option>
                   {mapsData?.map(map => (
                     
                   <option key={map.map_coordinate} value={map.map_coordinate}>{map.map_title}</option>          
@@ -1270,16 +1280,7 @@ zIndex: 9999999,left: '50%'
 
 
 
-  <div className="calculation-box">
-    <p>Click the map to draw.</p>
 
-    {/* <button onClick={handlePolygonCreated} >Add Zone</button> */}
-    
-    {addSensor && (
-    <RightAddSensorPopup/>
-    )}
-    <div id="calculated-area"></div>   
-  </div>
 
 
 </div>

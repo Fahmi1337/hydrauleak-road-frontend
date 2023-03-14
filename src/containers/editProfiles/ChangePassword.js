@@ -58,8 +58,9 @@ const ChangePassword = () => {
 
   return (
     <div>
-      <h2>Change Password</h2>
+      
       <form onSubmit={handleSubmit}>
+      <h2>Change Password</h2>
         <div>
           <label htmlFor="old_password">Old Password</label>
           <input

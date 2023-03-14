@@ -190,13 +190,23 @@ const handleCloseAddUser = () => {
                     />
                   )}         
           </div>
-
-      <div className="table-controls">
+          <div className="pageTitleContainer">  <h1>Users Management</h1></div>
+   
+       
+        <div id="addTableButtonContainer"> <button onClick={() => handleOpenAddUser()}>Add User</button> </div>
+        <div className="table-controls">
         <div className="search-input">
-        <button onClick={() => handleOpenAddUser()}>Add User</button>
-          <label htmlFor="search">Search:</label>
-          <input type="text" id="search" value={searchTerm} onChange={handleSearchChange} />
-        </div>
+      
+      <label htmlFor="search">Search:</label>
+      <input type="search" id="search" value={searchTerm} onChange={handleSearchChange} placeholder="Search..."/>
+      <div class="icons-container">
+<div class="icon-search"></div>
+<div class="icon-close">
+  <div class="x-up"></div>
+  <div class="x-down"></div>
+</div>
+</div>
+    </div>
         <div className="role-filter">
           <label htmlFor="role-filter">Filter by role:</label>
           <select id="role-filter" value={selectedRole} onChange={handleRoleFilterChange}>
@@ -227,8 +237,8 @@ const handleCloseAddUser = () => {
         </tbody>
       </table>
       <ReactPaginate
-        previousLabel={'previous'}
-        nextLabel={'next'}
+        previousLabel={'<'}
+        nextLabel={'>'}
         pageCount={pageCount}
         onPageChange={changePage}
         containerClassName={'pagination'}

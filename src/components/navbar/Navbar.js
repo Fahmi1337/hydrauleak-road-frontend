@@ -73,13 +73,13 @@ const getUserRoutes = () => {
                 <li> <PersonIcon /> <a href="/admin-profile">Profile</a></li> */}
 
                 <Fragment>
-             <NavLink activeClassName="activeLink"  to='/'> <HomeIcon /> Dashboard</NavLink>
-              <NavLink activeClassName="activeLink"  to='/contracts'><ReceiptLongIcon /> Contracts</NavLink>
-              <NavLink activeClassName="activeLink"  to='/interventions'><ContentPasteIcon /> Interventions</NavLink>
-              <NavLink activeClassName="activeLink"  to='/reports'><SummarizeIcon /> Reports</NavLink>
-             <NavLink activeClassName="activeLink"  to='/client-management'> <GroupsIcon /> Clients</NavLink>
-             <NavLink activeClassName="activeLink"  to='/user-management'><PeopleOutlineIcon />  Users</NavLink>
-              <NavLink activeClassName="activeLink"  to='/client-profile'><PersonIcon /> Profile</NavLink>
+             <NavLink activeClassName="activeLink"  to='/'> <HomeIcon style={{ fill: 'white', marginBottom: '-0.5rem' }}/> <span className='nav-txt'>Dashboard</span> </NavLink>
+              <NavLink activeClassName="activeLink"  to='/contracts'><ReceiptLongIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }}/> <span className='nav-txt'> Contracts </span></NavLink>
+              <NavLink activeClassName="activeLink"  to='/interventions'><ContentPasteIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }} /> <span className='nav-txt'>Interventions </span></NavLink>
+              <NavLink activeClassName="activeLink"  to='/reports'><SummarizeIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }} /> <span className='nav-txt'>Reports </span></NavLink>
+             <NavLink activeClassName="activeLink"  to='/client-management'> <GroupsIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }} /><span className='nav-txt'> Clients </span></NavLink>
+             <NavLink activeClassName="activeLink"  to='/user-management'><PeopleOutlineIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }} /> <span className='nav-txt'> Users </span></NavLink>
+              <NavLink activeClassName="activeLink"  to='/admin-profile'><PersonIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }} /><span className='nav-txt'> Profile </span></NavLink>
              </Fragment>
                 </>
         )
@@ -89,11 +89,11 @@ const getUserRoutes = () => {
             <>
              <div id="logoContainer"> <img src={hydrauleaklogo} id="hydrauleak-logo" alt="hydrauleak"/></div>
              <Fragment>
-             <NavLink activeClassName="activeLink"  to='/'> <HomeIcon /> Dashboard</NavLink>
-             <NavLink activeClassName="activeLink"  to='/contracts'> <ReceiptLongIcon /> Contracts</NavLink>
-              <NavLink activeClassName="activeLink"  to='/interventions'><ContentPasteIcon /> Interventions</NavLink>
-              <NavLink activeClassName="activeLink"  to='/post-report'><SummarizeIcon /> Send Reports</NavLink>
-              <NavLink activeClassName="activeLink"  to='/client-profile'><PersonIcon /> Profile</NavLink>
+             <NavLink activeClassName="activeLink"  to='/'> <HomeIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }} /><span className='nav-txt'> Dashboard</span></NavLink>
+             <NavLink activeClassName="activeLink"  to='/contracts'> <ReceiptLongIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }} /><span className='nav-txt'> Contracts </span></NavLink>
+              <NavLink activeClassName="activeLink"  to='/interventions'><ContentPasteIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }} /> <span className='nav-txt'>Interventions </span></NavLink>
+              <NavLink activeClassName="activeLink"  to='/post-report'><SummarizeIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }} /><span className='nav-txt'> Send Reports </span></NavLink>
+              <NavLink activeClassName="activeLink"  to='/leaker-profile'><PersonIcon  style={{ fill: 'white', marginBottom: '-0.5rem'  }} /><span className='nav-txt'> Profile </span></NavLink>
              </Fragment>
             {/* <li><a href="/">Dashboard</a></li>
                          <li><a href="/contracts">Contracts</a></li>
@@ -106,15 +106,15 @@ const getUserRoutes = () => {
       
                      
     }
-    else{
+    else if(me.roles==="is_client"){
         return(
             <>
              <div id="logoContainer"> <img src={hydrauleaklogo} id="hydrauleak-logo" alt="hydrauleak"/></div>
              <Fragment>
-             <HomeIcon /> <NavLink activeClassName="activeLink"  to='/'>Dashboard</NavLink>
-             <ReceiptLongIcon /> <NavLink activeClassName="activeLink"  to='/contracts'>Contracts</NavLink>
-             <SummarizeIcon /> <NavLink activeClassName="activeLink"  to='/post-report'>Send Reports</NavLink>
-             <PersonIcon /> <NavLink activeClassName="activeLink"  to='/client-profile'>Profile</NavLink>
+             <HomeIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }}  /> <NavLink activeClassName="activeLink"  to='/'> <span className='nav-txt'> Dashboard </span></NavLink>
+             <ReceiptLongIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }} /> <NavLink activeClassName="activeLink"  to='/contracts'> <span className='nav-txt'> Contracts </span></NavLink>
+             <SummarizeIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }}  /> <NavLink activeClassName="activeLink"  to='/post-report'> <span className='nav-txt'> Send Reports </span></NavLink>
+             <PersonIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }}  /> <NavLink activeClassName="activeLink"  to='/client-profile'> <span className='nav-txt'> Profile </span></NavLink>
              </Fragment>
             {/* <li><a href="/">Dashboard</a></li>
                          <li><a href="/contracts">Contracts</a></li>
@@ -130,7 +130,7 @@ const getUserRoutes = () => {
 
     const authLinks = (
         <Fragment>
-        <NavLink activeClassName="activeLink"  onClick={logout} to='/login'><LogoutIcon /> Logout</NavLink>
+        <NavLink activeClassName="activeLink"  onClick={logout} to='/login'><LogoutIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }}  /> <span className='nav-txt'>Logout</span></NavLink>
         
     </Fragment>
       

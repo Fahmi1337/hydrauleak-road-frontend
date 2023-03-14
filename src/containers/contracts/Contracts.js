@@ -274,7 +274,7 @@ console.log("selectedContract",selectedContract )
      
         <div className="search-input">
       
-          {/* <label htmlFor="search">Search:</label> */}
+          <label htmlFor="search">Search:</label>
           <input type="search" id="search" value={searchTerm} onChange={handleSearchChange} placeholder="Search..."/>
           <div class="icons-container">
     <div class="icon-search"></div>
@@ -285,7 +285,7 @@ console.log("selectedContract",selectedContract )
   </div>
         </div>
         <div className="status-filter">
-          {/* <label htmlFor="status-filter">Filter by status:</label> */}
+          <label htmlFor="status-filter">Filter by status:</label>
           <select id="status-filter" value={selectedStatus} onChange={handleStatusFilterChange}>
             <option value="">All</option>
             <option value="NotStart">not Started</option>

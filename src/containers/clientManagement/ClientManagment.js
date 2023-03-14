@@ -262,16 +262,27 @@ const handleCloseViewClient = () => {
                   )}         
           </div>
 
-          <h3>Client Management</h3>
-          <br/>
-      <div className="table-controls">
+          <div className="pageTitleContainer">  <h1>Clients Management</h1></div>
+       
+    
         <div className="search-input">  
         {me.roles==="is_admin" && (
-   <button onClick={() => handleOpenAddClient()}>Add Client Data</button>
+  <div id="addTableButtonContainer">  <button onClick={() => handleOpenAddClient()}>Add Client Data</button> </div>
     )}     
+      <div className="table-controls">
         {/* <button onClick={() => handleOpenAddClient()}>Add Client Data</button> */}
-          <label htmlFor="search">Search:</label>
-          <input type="text" id="search" value={searchTerm} onChange={handleSearchChange} />
+        <div className="search-input">
+      
+      <label htmlFor="search">Search:</label>
+      <input type="search" id="search" value={searchTerm} onChange={handleSearchChange} placeholder="Search..."/>
+      <div class="icons-container">
+<div class="icon-search"></div>
+<div class="icon-close">
+  <div class="x-up"></div>
+  <div class="x-down"></div>
+</div>
+</div>
+    </div>
         </div>
         
       </div>
@@ -303,8 +314,8 @@ const handleCloseViewClient = () => {
         </tbody>
       </table>
       <ReactPaginate
-        previousLabel={'previous'}
-        nextLabel={'next'}
+        previousLabel={'<'}
+        nextLabel={'>'}
         pageCount={pageCount}
         onPageChange={changePage}
         containerClassName={'pagination'}
