@@ -11,6 +11,9 @@ const Test3 = () => {
   const [selectedSensor, setSelectedSensor] = useState();
 const [openViewSensorPopup, setOpenViewSensorPopup] = useState(false);
 const [openUpdateSensorPopup, setOpenUpdateSensorPopup] = useState(false);
+
+mapboxgl.accessToken = 'pk.eyJ1IjoiZmFobWloOTYiLCJhIjoiY2t1cXRkNWt2MGtxNjJucXZlN2FxemNpZiJ9.zBOiFS6ym4zFF9ZQ7zcmXA';
+
   useEffect(() => {
     const mapInstance = new mapboxgl.Map({
       container: 'map-container',

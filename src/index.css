@@ -358,3 +358,7 @@ line-height: 32px;
   zoom: 0.65; /* Other non-webkit browsers */
   zoom: 65%; /* Webkit browsers */
 }
+
+/* #sensor-blue-4{
+  display: none;
+} */
