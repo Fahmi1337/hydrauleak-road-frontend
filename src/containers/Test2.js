@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import mapboxgl from 'mapbox-gl';
-import sensorIcon from '../assets/icons/sensorBlue.png';
+import sensorBlueIcon from '../assets/icons/sensorBlue.png';
 
 const Test3 = () => {
   const [map, setMap] = useState({});
@@ -11,12 +11,15 @@ const Test3 = () => {
   const [selectedSensor, setSelectedSensor] = useState();
 const [openViewSensorPopup, setOpenViewSensorPopup] = useState(false);
 const [openUpdateSensorPopup, setOpenUpdateSensorPopup] = useState(false);
+
+mapboxgl.accessToken = 'pk.eyJ1IjoiZmFobWloOTYiLCJhIjoiY2t1cXRkNWt2MGtxNjJucXZlN2FxemNpZiJ9.zBOiFS6ym4zFF9ZQ7zcmXA';
+
   useEffect(() => {
     const mapInstance = new mapboxgl.Map({
       container: 'map-container',
       style: 'mapbox://styles/mapbox/streets-v11',
       center: [-71.21088520218619, 46.806343083853875],
-      zoom: 10
+      zoom: 15
     });
 
     mapInstance.on('load', () => {  
@@ -24,6 +27,10 @@ const [openUpdateSensorPopup, setOpenUpdateSensorPopup] = useState(false);
         sensorsData.forEach((sensor) => {
           const layerId = 'sensor-' + sensor.id;
           //   const sourceId = 'sensors-data';
+        
+          mapInstance.loadImage(sensorBlueIcon, (error, image) => {
+        if (error) throw error;
+        mapInstance.addImage('sensor-blue', image);
       
           // Add a new source with the sensor data
           mapInstance.addSource(layerId, {
@@ -45,22 +52,15 @@ const [openUpdateSensorPopup, setOpenUpdateSensorPopup] = useState(false);
           mapInstance.addLayer({
             id: 'sensor-'+sensor.id,
             type: 'symbol',
-            source: layerId,
+            source: 'sensor-'+sensor.id,
+            
             layout: {
-              'icon-image': 'sensor-icon',
-              'icon-size': 0.5
-            },
-            paint: {
-              'circle-color': '#F44336',
-              'circle-radius': 10
-            },
-            filter: ['==', '$type', 'Point'],
-            layout: {
+              'icon-image': 'sensor-blue',
+              'icon-size': 0.5,
               visibility: showSensors ? 'visible' : 'none'
             }
           });
-          
-          // Set up event listener for clicking on a sensor
+          });
           mapInstance.on('click', 'sensor-' + sensor.id, (e) => {
             console.log(e)
           const popupContent = document.createElement('div');
@@ -122,32 +122,15 @@ const [openUpdateSensorPopup, setOpenUpdateSensorPopup] = useState(false);
             setOpenViewSensorPopup(true);
           });      
         });
-          // Add a new layer for the sensors
-          mapInstance.addLayer({
-            id: 'sensor-'+sensor.id,
-            type: 'symbol',
-            source: 'sensor-'+sensor.id,
-            layout: {
-              'icon-image': sensorIcon,
-              'icon-size': 0.5,
-         
-            }
-          });
-          mapInstance.loadImage('http://placekitten.com/50/50', function(error, image) {
-
-    if (error) throw error;
-    // Add the loaded image to the style's sprite with the ID 'kitten'.
-    map.addImage('kitten', image);
-
-});
+       
         });
         
-        // Fit the map to the sensor data bounds
-        const bounds = new mapboxgl.LngLatBounds();
-        sensorsData.forEach(sensor => {
-          bounds.extend(sensor?.sensor_coordinates);
-        });
-        mapInstance.fitBounds(bounds, { padding: 50 });
+        // // Fit the map to the sensor data bounds
+        // const bounds = new mapboxgl.LngLatBounds();
+        // sensorsData.forEach(sensor => {
+        //   bounds.extend(sensor?.sensor_coordinates);
+        // });
+        // mapInstance.fitBounds(bounds, { padding: 50 });
 
 
       
@@ -189,11 +172,6 @@ const [openUpdateSensorPopup, setOpenUpdateSensorPopup] = useState(false);
   }, [showSensors]);
 
 
-
-
-console.log("hey?", sensorsData[1]?.id)
-
-
   function handleBlueMarkerCheckboxChange(event) {
     setBlueMarkerVisible(event.target.checked);
     sensorsData.forEach((sensor) => {
@@ -211,12 +189,9 @@ console.log("hey?", sensorsData[1]?.id)
 
 
 
-
-
-
-
   return (
     <div>
+     
       <div id="map-container" style={{ height: '400px' }} />
             <label>
          <input
@@ -226,6 +201,7 @@ console.log("hey?", sensorsData[1]?.id)
         />
         Show red marker
        </label>
+      
      </div>
    );
  }
