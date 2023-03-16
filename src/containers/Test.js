@@ -62,7 +62,7 @@ const MapWithSensors = () => {
       if (submitActive) {
         const lngLat = [e.lngLat.lng, e.lngLat.lat];
         setMapClickedCoordinates(lngLat);
-        const newMarker = new mapboxgl.Marker().setLngLat(lngLat).addTo(map.current);
+        // const newMarker = new mapboxgl.Marker().setLngLat(lngLat).addTo(map.current);
       }
     };
     
@@ -186,31 +186,8 @@ const HandleSetSubmitDeactivate = ()=>{
   return (
     <div>
 
-           {/* sensor Popups */}
-<div>
-  <div id="popup-container"></div>
-  {openViewSensorPopup && selectedSensor && (
-    <SensorViewPopup
-      sensor={selectedSensor}
-      onOpen={openViewSensorPopup}
-      onCancel={() => setOpenViewSensorPopup(false)}
-    />
-  )}
-</div>
-<div>
-  <div id="popup-container"></div>
-  {openUpdateSensorPopup && selectedSensor && (
-    <SensorUpdatePopup
-      sensor={selectedSensor}
-      onOpen={openUpdateSensorPopup}
-      onCancel={() => setOpenUpdateSensorPopup(false)}
-    />
-  )}
-</div>
-<button onClick={() => setSubmitActive(!submitActive)}>Activate Submit Mark</button>
 
-<ButtonWithPopup setSubmitActive={setSubmitActive} HandleSetSubmitDeactivate={HandleSetSubmitDeactivate} HandleSetSubmitActive={HandleSetSubmitActive} mapClickedCoordinates={mapClickedCoordinates} />
-{/* sensor Popups */}
+      {/* sensor Popups */}
       <label>
         <input
           type="checkbox"
@@ -220,9 +197,46 @@ const HandleSetSubmitDeactivate = ()=>{
         Show Sensors
       </label>
       <div
+        className="mapContainer" 
         ref={mapContainer}
-        style={{ height: "400px", width: "100%" }}
+        style={{ width: '145em', height: '80.5em',left: '13.8em' }}
       />
+
+
+        <ButtonWithPopup 
+          setSubmitActive={setSubmitActive} 
+          HandleSetSubmitDeactivate={HandleSetSubmitDeactivate} 
+          HandleSetSubmitActive={HandleSetSubmitActive} 
+          mapClickedCoordinates={mapClickedCoordinates} />
+
+      
+
+           {/* sensor Popups */}
+              <div>
+                <div id="popup-container"></div>
+                {openViewSensorPopup && selectedSensor && (
+                  <SensorViewPopup
+                    sensor={selectedSensor}
+                    onOpen={openViewSensorPopup}
+                    onCancel={() => setOpenViewSensorPopup(false)}
+                  />
+                )}
+              </div>
+              <div>
+                <div id="popup-container"></div>
+                {openUpdateSensorPopup && selectedSensor && (
+                  <SensorUpdatePopup
+                    sensor={selectedSensor}
+                    onOpen={openUpdateSensorPopup}
+                    onCancel={() => setOpenUpdateSensorPopup(false)}
+                  />
+                )}
+              </div>
+
+
+
+
+
     </div>
   );
 };
