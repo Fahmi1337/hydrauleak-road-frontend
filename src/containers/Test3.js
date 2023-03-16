@@ -6,7 +6,7 @@ import SensorViewPopup from '../components/mapPopups/addsensorpopup/SensorViewPo
 import SensorUpdatePopup from '../components/mapPopups/addsensorpopup/SensorUpdatePopup';
 import sensorBlueIcon from '../assets/icons/sensorBlue.png';
 
-
+import ButtonWithPopup from "../components/mapPopups/contributes/AddButtonPopup"
 
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiZmFobWloOTYiLCJhIjoiY2t1cXRkNWt2MGtxNjJucXZlN2FxemNpZiJ9.zBOiFS6ym4zFF9ZQ7zcmXA';
@@ -18,7 +18,8 @@ const MapWithSensors = () => {
   const map = useRef(null);
   const sensors = useRef([]);
 
-
+  const [submitActive, setSubmitActive] = useState(false);
+  const [mapClickedCoordinates, setMapClickedCoordinates] = useState([]);
   
   //sensor const select delete update 
   const [selectedSensor, setSelectedSensor] = useState();
@@ -56,8 +57,38 @@ const MapWithSensors = () => {
         zoom: 12,
       });
     }
-  }, []);
+    
+    const clickHandler = (e) => {
+      if (submitActive) {
+        const lngLat = [e.lngLat.lng, e.lngLat.lat];
+        setMapClickedCoordinates(lngLat);
+        const newMarker = new mapboxgl.Marker().setLngLat(lngLat).addTo(map.current);
+      }
+    };
+    
+    if (submitActive) {
+      map.current.on("click", clickHandler);
+    } else {
+      map.current.off("click", clickHandler);
+    }
+    
+    // Cleanup function to remove the event listener when the component unmounts
+    return () => {
+      if (map.current) {
+        map.current.off("click", clickHandler);
+      }
+    };
+  }, [submitActive, mapClickedCoordinates]);
 
+  console.log("coordinatess map clicked", mapClickedCoordinates )
+
+  console.log("submitActive 2", submitActive )
+
+
+
+
+
+  
   useEffect(() => {
     if (map.current) {
       sensors.current.forEach(sensor => {
@@ -145,6 +176,13 @@ const MapWithSensors = () => {
     }
   }, [sensorsData]);
 
+const HandleSetSubmitActive = ()=>{
+  setSubmitActive(true);
+}
+const HandleSetSubmitDeactivate = ()=>{
+  setSubmitActive(false);
+}
+  
   return (
     <div>
 
@@ -169,6 +207,9 @@ const MapWithSensors = () => {
     />
   )}
 </div>
+<button onClick={() => setSubmitActive(!submitActive)}>Activate Submit Mark</button>
+
+<ButtonWithPopup setSubmitActive={setSubmitActive} HandleSetSubmitDeactivate={HandleSetSubmitDeactivate} HandleSetSubmitActive={HandleSetSubmitActive} mapClickedCoordinates={mapClickedCoordinates} />
 {/* sensor Popups */}
       <label>
         <input
