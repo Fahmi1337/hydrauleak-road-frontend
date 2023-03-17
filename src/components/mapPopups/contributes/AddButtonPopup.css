@@ -45,6 +45,18 @@
   font-weight: 500 !important;
   border-radius: 10px !important;
 }
+.layersButton{
+  position: absolute !important;
+  color: white !important;
+  left: 40% !important;
+  top: 0% !important;
+  z-index: 999999999 !important;
+  font-size: 1.3em !important;
+  background-color: #0671E0 !important;
+  padding: 0.3em !important;
+  font-weight: 500 !important;
+  border-radius: 10px !important;
+}
 .contributesButtonsContainer{
   display: grid;
 grid-template-columns: 1fr 1fr;

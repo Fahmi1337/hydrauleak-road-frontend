@@ -2,7 +2,6 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
@@ -30,7 +29,7 @@
     "node-sass": "^8.0.0",
     "rc-pagination": "^3.2.0",
     "react": "^18.2.0",
-    "react-bootstrap": "^2.7.0",
+    "react-bootstrap": "^2.7.2",
     "react-bootstrap-4-pagination": "^1.0.4",
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
@@ -70,14 +69,13 @@
       "react-app/jest"
     ]
   },
-
   "browserslist": {
     "production": [
-      ">0.2%", 
-      "not dead", 
-      "not ie 11", 
-      "not chrome < 51", 
-      "not safari < 10", 
+      ">0.2%",
+      "not dead",
+      "not ie 11",
+      "not chrome < 51",
+      "not safari < 10",
       "not android < 51",
       "not op_mini all"
     ],
