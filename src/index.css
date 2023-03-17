@@ -362,3 +362,8 @@ line-height: 32px;
 /* #sensor-blue-4{
   display: none;
 } */
+
+.mapboxgl-marker{
+  width: 24px;
+  height: 33px;
+}

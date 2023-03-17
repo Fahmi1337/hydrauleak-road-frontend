@@ -8,9 +8,9 @@ import Modal from '@mui/material/Modal';
 
 const RightAddSensorPopup = (props) => {
 
-  const initialState = '';
-  const [lat, setLat] = useState(initialState);
-  const [lng, setLng] = useState(initialState);
+
+  const arrivedCoordinates = props.mapClickedCoordinates
+
 
   const [sensorData, setSensorData] = useState({
     sensor_Indication:'good',
@@ -18,32 +18,17 @@ const RightAddSensorPopup = (props) => {
     sensor_title:'',
     sensor_type:'unknown',
   });
-  function getLatLng() {
-    const lat = localStorage.getItem("newSensorLat");
-    const lng = localStorage.getItem("newSensorLng");
-   
-    
-      setLat(lat);
-      setLng(lng);
-    setSensorData({...sensorData, sensor_coordinates : [lng, lat], pipe: localStorage.getItem('selectedPipeId')});
-  }
- 
-
- 
 
   useEffect(() => {
-    getLatLng();
+    setSensorData(prevSensorData => ({
+      ...prevSensorData,
+      sensor_coordinates: arrivedCoordinates
+    }));
+  }, [arrivedCoordinates]);
+
+  useEffect(() => {
+    setSensorData({...sensorData,  pipe: localStorage.getItem('selectedPipeId')});
   }, []);
-  window.addEventListener("storage", () => {
-    getLatLng();
-  });
-  useEffect(() => {
-    if (lat !== initialState) {
-      localStorage.setItem("newSensorLat", lat);
-    }
-  }, [lng, lat]);
-
-
 
 
 
@@ -56,7 +41,7 @@ const openSensor = props.openSensor;
       
     });
   };
-console.log("sensorData?", sensorData)
+
 
 const { sensor_coordinates, sensor_description, sensor_Indication, sensor_type, sensor_creation_date, sensor_frequency, sensor_title, pipe } = sensorData;
   const handleSubmitData = () => {
@@ -100,8 +85,6 @@ const { sensor_coordinates, sensor_description, sensor_Indication, sensor_type, 
   const reloadPage = () => {
   
     localStorage.removeItem("selectedPipeId");
-    localStorage.removeItem("newSensorLng");
-    localStorage.removeItem("newSensorLat");
     props.handleCloseSensor();
     };
 

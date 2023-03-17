@@ -1,160 +1,30 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from "react";
+import mapboxgl from "mapbox-gl";
 import axios from 'axios';
-import mapboxgl from 'mapbox-gl';
-import sensorIcon from '../assets/icons/sensorBlue.png';
 
-const Test3 = () => {
-  const [map, setMap] = useState({});
+import SensorViewPopup from '../components/mapPopups/addsensorpopup/SensorViewPopup';
+import SensorUpdatePopup from '../components/mapPopups/addsensorpopup/SensorUpdatePopup';
+import sensorBlueIcon from '../assets/icons/sensorBlue.png';
+
+import ButtonWithPopup from "../components/mapPopups/contributes/AddButtonPopup"
+
+
+mapboxgl.accessToken = 'pk.eyJ1IjoiZmFobWloOTYiLCJhIjoiY2t1cXRkNWt2MGtxNjJucXZlN2FxemNpZiJ9.zBOiFS6ym4zFF9ZQ7zcmXA';
+
+const MapWithSensors = () => {
   const [sensorsData, setSensorsData] = useState([]);
   const [showSensors, setShowSensors] = useState(true);
-  const [blueMarkerVisible, setBlueMarkerVisible] = useState(true);
+  const mapContainer = useRef(null);
+  const map = useRef(null);
+  const sensors = useRef([]);
+
+  const [submitActive, setSubmitActive] = useState(false);
+  const [mapClickedCoordinates, setMapClickedCoordinates] = useState([]);
+  
+  //sensor const select delete update 
   const [selectedSensor, setSelectedSensor] = useState();
-const [openViewSensorPopup, setOpenViewSensorPopup] = useState(false);
-const [openUpdateSensorPopup, setOpenUpdateSensorPopup] = useState(false);
-  useEffect(() => {
-    const mapInstance = new mapboxgl.Map({
-      container: 'map-container',
-      style: 'mapbox://styles/mapbox/streets-v11',
-      center: [-71.21088520218619, 46.806343083853875],
-      zoom: 10
-    });
-
-    mapInstance.on('load', () => {  
-      if (mapInstance) {
-        sensorsData.forEach((sensor) => {
-          const layerId = 'sensor-' + sensor.id;
-          //   const sourceId = 'sensors-data';
-      
-          // Add a new source with the sensor data
-          mapInstance.addSource(layerId, {
-            type: 'geojson',
-            data: {
-              type: 'Feature',
-              geometry: {
-                type: 'Point',
-                coordinates: sensor.sensor_coordinates
-              },
-              properties: {
-                title: sensor.sensor_title,
-                description: sensor.sensor_description
-              }
-            }
-          });
-      
-          // Add a new layer for the sensors
-          mapInstance.addLayer({
-            id: 'sensor-'+sensor.id,
-            type: 'circle',
-            source: 'sensor-'+sensor.id,
-            paint: {
-              'circle-color': '#F44336',
-              'circle-radius': 10
-            },
-            layout: {
-              visibility: showSensors ? 'visible' : 'none'
-            }
-          });
-          mapInstance.on('click', 'sensor-' + sensor.id, (e) => {
-            console.log(e)
-          const popupContent = document.createElement('div');
-          popupContent.innerHTML = `<h3>Sensor title: ${sensor.sensor_title}</h3> 
-          <h3>ID : ${sensor.id}</h3> 
-          <p>Sensor description: ${sensor.sensor_description}</p> 
-          <p>Sensor type: ${sensor.sensor_type}</p> 
-          
-          <p>sensor status: ${sensor.sensor_status}</p> 
-          <p>sensor length: ${sensor.sensor_length}</p> 
-          <button id="deletesensor" data-sensor-id="${sensor.id}">Delete</button> 
-          <button id="updatesensor" data-sensor-id="${sensor.id}">Update</button> 
-          <button id="viewsensor" data-sensor-id="${sensor.id}">View Details</button>` ;
-          new mapboxgl.Popup()
-          .setLngLat(e.lngLat)
-          .setDOMContent(popupContent)
-          .addTo(map);
-          localStorage.setItem("selectedSensorId",sensor.id);
-        
-          //delete sensor
-          const deleteButton = document.getElementById('deleteSensor');
-          deleteButton.addEventListener('click', () => {
-            const sensorId = deleteButton.getAttribute('data-sensor-id');
-            // Send DELETE request to API endpoint using sensor id
-            const confirmation = window.confirm('Are you sure you want to delete this sensor?');
-        
-          if (!confirmation) {
-            return;
-          }
-            axios.delete(`${process.env.REACT_APP_API_URL}/api/sensors/${sensorId}/`, {
-              headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem("token")
-              }
-            })
-            .then(response => {
-              // console.log('sensor deleted', response.data);
-              // Remove the sensor from the map
-              map.removeLayer('sensor-' + sensor.id);
-              map.removeSource('sensor-' + sensor.id);
-            })
-            .catch(error => {
-              console.error('Error deleting sensor', error);
-            });
-          });
-          
-          // Set up event listener for update button
-          const updateButton = document.getElementById('updateSensor');
-          updateButton.addEventListener('click', () => {
-            // code to open update popup
-            setSelectedSensor(sensor);
-            setOpenUpdateSensorPopup(true);
-            // console.log('Update button clicked');
-          });
-          
-          // Set up event listener for view button
-          const viewButton = document.getElementById('viewSensor');
-          viewButton.addEventListener('click', () => {     
-            setSelectedSensor(sensor);
-            setOpenViewSensorPopup(true);
-          });      
-        });
-          // Add a new layer for the sensors
-          mapInstance.addLayer({
-            id: 'sensor-'+sensor.id,
-            type: 'symbol',
-            source: 'sensor-'+sensor.id,
-            layout: {
-              'icon-image': sensorIcon,
-              'icon-size': 0.5,
-         
-            }
-          });
-          mapInstance.loadImage('http://placekitten.com/50/50', function(error, image) {
-
-    if (error) throw error;
-    // Add the loaded image to the style's sprite with the ID 'kitten'.
-    map.addImage('kitten', image);
-
-});
-        });
-        
-        // Fit the map to the sensor data bounds
-        const bounds = new mapboxgl.LngLatBounds();
-        sensorsData.forEach(sensor => {
-          bounds.extend(sensor?.sensor_coordinates);
-        });
-        mapInstance.fitBounds(bounds, { padding: 50 });
-
-
-      
-
-
-      }
-    });
-
-    setMap(mapInstance);
-
-    return () => mapInstance.remove();
-  }, [sensorsData, showSensors]);
-
-
+  const [openViewSensorPopup, setOpenViewSensorPopup] = useState(false);
+  const [openUpdateSensorPopup, setOpenUpdateSensorPopup] = useState(false);
 
 
 
@@ -162,65 +32,199 @@ const [openUpdateSensorPopup, setOpenUpdateSensorPopup] = useState(false);
   const getSensors = useCallback(() => {
     axios.get(`${process.env.REACT_APP_API_URL}/api/sensors/`, {
       headers: {
-        'Authorization': 'Bearer ' +  localStorage.getItem('token')
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
       }
     })
-    .then(res => {
-      setSensorsData(res.data.data.map(sensor => sensor));
-    })
-    .catch(err => {
-      console.log(err);
-    });
+      .then(res => {
+        setSensorsData(res.data.data.map(sensor => sensor));
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }, []);
 
   useEffect(() => {
     getSensors();
   }, [getSensors]);
 
-  const handleToggleSensors = useCallback(() => {
-    setShowSensors(!showSensors);
+
+  useEffect(() => {
+    if (!map.current) {
+      map.current = new mapboxgl.Map({
+        container: mapContainer.current,
+        style: "mapbox://styles/mapbox/streets-v11",
+        center: [-71.21088520218619, 46.806343083853875],
+        zoom: 12,
+      });
+    }
+    
+    const clickHandler = (e) => {
+      if (submitActive) {
+        const lngLat = [e.lngLat.lng, e.lngLat.lat];
+        setMapClickedCoordinates(lngLat);
+        const newMarker = new mapboxgl.Marker().setLngLat(lngLat).addTo(map.current);
+      }
+    };
+    
+    if (submitActive) {
+      map.current.on("click", clickHandler);
+    } else {
+      map.current.off("click", clickHandler);
+    }
+    
+    // Cleanup function to remove the event listener when the component unmounts
+    return () => {
+      if (map.current) {
+        map.current.off("click", clickHandler);
+      }
+    };
+  }, [submitActive, mapClickedCoordinates]);
+
+  console.log("coordinatess map clicked", mapClickedCoordinates )
+
+  console.log("submitActive 2", submitActive )
+
+
+
+
+
+  
+  useEffect(() => {
+    if (map.current) {
+      sensors.current.forEach(sensor => {
+        if (showSensors) {
+          sensor.addTo(map.current);
+        } else {
+          sensor.remove();
+        }
+      });
+    }
   }, [showSensors]);
 
+    useEffect(() => {
+    if (map.current && sensors.current.length === 0) {
+      sensorsData.forEach(sensor => {
 
+        const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
+        <h3>ID: ${sensor.id}</h3>  
+        <h3>Sensor title: ${sensor.sensor_title}</h3>
+      
+        <p>Sensor description: ${sensor.sensor_description}</p>
+        <p>Sensor type: ${sensor.sensor_type}</p>
+        <p>Sensor diameter range: ${sensor.sensor_diameter_range}</p>             
+        <p>Sensor indication: ${sensor.sensor_Indication}</p>
+    
+        <button id="deleteSensor" data-sensor-id="${sensor.id}">Delete</button>
+        <button id="updateSensor" data-sensor-id="${sensor.id}">Update</button>
+        <button id="viewSensor" data-sensor-id="${sensor.id}">View</button>
+        `);
+        const marker = new mapboxgl.Marker({
+            element: document.createElement('img'),
+            anchor: 'bottom',
+            offset: [0, -16], // half the icon height
+          })
+          .setPopup(popup)
+          .setLngLat(sensor.sensor_coordinates)
+          .addTo(map.current);
+         // Adjust the size of the image
+         marker.getElement().setAttribute('src', sensorBlueIcon);
+          sensors.current.push(marker);
 
+          // Delete Sensor
+        const deleteButton = marker._popup._content.querySelector('#deleteSensor');
+        deleteButton.addEventListener('click', () => {
+          const sensorId = deleteButton.getAttribute('data-sensor-id');
+          // Send DELETE request to API endpoint using Sensor id
 
-console.log("hey?", sensorsData[1]?.id)
+          const confirmation = window.confirm('Are you sure you want to delete this sensor?');
 
-
-  function handleBlueMarkerCheckboxChange(event) {
-    setBlueMarkerVisible(event.target.checked);
-    sensorsData.forEach((sensor) => {
-
-        if (map) {
-            if (event.target.checked) {
-              map.setLayoutProperty('sensor-'+sensor.id, 'visibility', 'visible');
-            } else {
-              map.setLayoutProperty('sensor-'+sensor.id, 'visibility', 'none');
-            }
+          if (!confirmation) {
+            return;
           }
-    })
-   
-  }
 
+          axios.delete(`${process.env.REACT_APP_API_URL}/api/sensors/${sensorId}/`, {
+            headers: {
+              'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+          })
+          .then(response => {
+            // console.log('Sensor deleted', response.data);
+            // Remove the Sensor from the map
+            marker.remove();
+          })
+          .catch(error => {
+            console.error('Error deleting Sensor', error);
+          });
+        });
 
+        // Update Sensor
+        const updateButton = marker._popup._content.querySelector('#updateSensor');
+        updateButton.addEventListener('click', () => {
+          // code to open update popup
+          setSelectedSensor(sensor);
+          setOpenUpdateSensorPopup(true);
+          // console.log('Update button clicked');
+        });
 
+        // View Sensor
+        const viewButton = marker._popup._content.querySelector('#viewSensor');
+        viewButton.addEventListener('click', () => {
+          setSelectedSensor(sensor);
+          setOpenViewSensorPopup(true);
+        });
+      });
+    }
+  }, [sensorsData]);
 
-
-
-
+const HandleSetSubmitActive = ()=>{
+  setSubmitActive(true);
+}
+const HandleSetSubmitDeactivate = ()=>{
+  setSubmitActive(false);
+}
+  
   return (
     <div>
-      <div id="map-container" style={{ height: '400px' }} />
-            <label>
-         <input
-           type="checkbox"
-           checked={blueMarkerVisible}
-           onChange={handleBlueMarkerCheckboxChange}
-        />
-        Show red marker
-       </label>
-     </div>
-   );
- }
 
- export default Test3;
+           {/* sensor Popups */}
+<div>
+  <div id="popup-container"></div>
+  {openViewSensorPopup && selectedSensor && (
+    <SensorViewPopup
+      sensor={selectedSensor}
+      onOpen={openViewSensorPopup}
+      onCancel={() => setOpenViewSensorPopup(false)}
+    />
+  )}
+</div>
+<div>
+  <div id="popup-container"></div>
+  {openUpdateSensorPopup && selectedSensor && (
+    <SensorUpdatePopup
+      sensor={selectedSensor}
+      onOpen={openUpdateSensorPopup}
+      onCancel={() => setOpenUpdateSensorPopup(false)}
+    />
+  )}
+</div>
+<button onClick={() => setSubmitActive(!submitActive)}>Activate Submit Mark</button>
+
+<ButtonWithPopup setSubmitActive={setSubmitActive} HandleSetSubmitDeactivate={HandleSetSubmitDeactivate} HandleSetSubmitActive={HandleSetSubmitActive} mapClickedCoordinates={mapClickedCoordinates} />
+{/* sensor Popups */}
+      <label>
+        <input
+          type="checkbox"
+          checked={showSensors}
+          onChange={() => setShowSensors(!showSensors)}
+        />
+        Show Sensors
+      </label>
+      <div
+        ref={mapContainer}
+        style={{ height: "400px", width: "100%" }}
+      />
+    </div>
+  );
+};
+
+export default MapWithSensors;

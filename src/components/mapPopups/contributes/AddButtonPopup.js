@@ -65,7 +65,7 @@ const handleClosePipe = () => setOpenPipe(false);
 //POPUP2
 const [openSensor, setOpenSensor] = React.useState(false);
 const handleOpenSensor = () => setOpenSensor(true);
-const handleCloseSensor = () => setOpenSensor(false);
+const handleCloseSensor = () =>{props.HandleSetSubmitDeactivate(); setOpenSensor(false);}
 
 // Add PipeAccess
 //POPUP PipeAccess
@@ -114,6 +114,8 @@ const [addSensorPop, setAddSensorPop] = useState(false)
         props.handleClickSensor(props.data);
       };
 
+    const {setSubmitActive} = props;
+    const {mapClickedCoordinates} = props;
 
     const {setRunEffectSensor} = props;
     const {setRunEffectPipe} = props;
@@ -138,15 +140,15 @@ const handlePolygonCreated= props.handlePolygonCreated
    <AddZonePopup handlePolygonCreated={handlePolygonCreated} handleCloseZone={handleCloseZone} openZone={openZone} setRunEffectZone={setRunEffectZone}/>
   )}
       
-{openPipe && (<AddPipePopup  handleClosePipe={handleClosePipe} openPipe={openPipe}/>)}
+      {openPipe && (<AddPipePopup  handleClosePipe={handleClosePipe} openPipe={openPipe}/>)}
       
-     {openPipeAccess &&( <AddPipeAccessPopup  handleClosePipeAccess={handleClosePipeAccess} openPipeAccess={openPipeAccess}/>)} 
+      {openPipeAccess &&( <AddPipeAccessPopup  handleClosePipeAccess={handleClosePipeAccess} openPipeAccess={openPipeAccess}/>)} 
      
       {openMark && (<AddMarkPopup  handleCloseMark={handleCloseMark} openMark={openMark}/>)}
       
       {openMap && (<AddMapPopup  handleCloseMap={handleCloseMap} openMap={openMap}/>)}
       
-{openSensor && ( <RightAddSensorPopup handleCloseSensor={handleCloseSensor} handleClose={handleClose} getSensors={props.getSensors} openSensor={openSensor}/>)}
+{openSensor && (<RightAddSensorPopup handleCloseSensor={handleCloseSensor} handleClose={handleClose} openSensor={openSensor} mapClickedCoordinates = {mapClickedCoordinates} />)}
      
         
         <Button className="contributesButton" onClick={handleOpen} variant="outlined" startIcon={<ControlPointIcon  />}> Contributes</Button>
@@ -171,7 +173,7 @@ const handlePolygonCreated= props.handlePolygonCreated
 
           <button onClick={() => {setRunEffectSensor(true); handleOpenPipeAccess();  handleClose();}} >Add pipe Access </button>
 
-          <button onClick={() => { setRunEffectSensor(true); handleOpenSensor(); handleClose();}} >Add Sensor</button>
+      <button onClick={() => { setSubmitActive(true); handleOpenSensor(); handleClose();}} >Add Sensor</button>
           
           <button onClick={() => {setRunEffectSensor(true); handleOpenMark();  handleClose();}} >Add mark</button>
 
