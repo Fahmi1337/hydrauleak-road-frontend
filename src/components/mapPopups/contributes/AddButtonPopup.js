@@ -218,7 +218,7 @@ const handlePolygonCreated= props.handlePolygonCreated
 
 
 AddButtonPopup.propTypes = {
-  setRunEffectSensor: PropTypes.func.isRequired,
+  setRunEffectSensor: PropTypes.func,
 };
 
 export default AddButtonPopup
