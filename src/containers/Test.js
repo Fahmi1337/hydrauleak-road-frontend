@@ -27,6 +27,8 @@ import PipeUpdatePopup from '../components/mapPopups/addpipepopup/PipeUpdatePopu
 
 import ZoneViewPopup from '../components/mapPopups/addzonepopup/ZoneViewPopup';
 import ZoneUpdatePopup from '../components/mapPopups/addzonepopup/ZoneUpdatePopup';
+import * as turf from '@turf/turf'
+import MapboxDraw from "@mapbox/mapbox-gl-draw";
 
 import MapViewPopup from '../components/mapPopups/addmappopup/MapViewPopup';
 import MapUpdatePopup from '../components/mapPopups/addmappopup/MapUpdatePopup';
@@ -35,7 +37,7 @@ import { useGetMaps, useGetPipes,useGetPipeAccess, useGetMarkers, useGetZones, u
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiZmFobWloOTYiLCJhIjoiY2t1cXRkNWt2MGtxNjJucXZlN2FxemNpZiJ9.zBOiFS6ym4zFF9ZQ7zcmXA';
 
-const MapWithSensors = () => {
+const Test = () => {
   // const [sensorsData, setSensorsData] = useState([]);
   const [showSensors, setShowSensors] = useState(true);
   const [showMarkers, setShowMarkers] = useState(true);
@@ -46,6 +48,23 @@ const MapWithSensors = () => {
   const mapContainer = useRef(null);
   const map = useRef(null);
   
+
+  
+  const sensors = useRef([]);
+  const markers = useRef([]);
+  const pipesAccess = useRef([]);
+  const mapsRef = useRef([]);
+  const pipes = useRef([]);
+  const zones = useRef([]);
+
+  const sensorsData = useGetSensors();
+  const markersData = useGetMarkers();
+  const pipesAccessData = useGetPipeAccess();
+  const mapsData = useGetMaps();
+  const pipesData = useGetPipes();
+  const zonesData = useGetZones();
+
+
 
   const [submitActive, setSubmitActive] = useState(false);
   const [mapClickedCoordinates, setMapClickedCoordinates] = useState([]);
@@ -83,24 +102,6 @@ const [openViewZonePopup, setOpenViewZonePopup] = useState(false);
 const [openUpdateZonePopup, setOpenUpdateZonePopup] = useState(false);
 
 
-  const sensors = useRef([]);
-  const markers = useRef([]);
-  const pipesAccess = useRef([]);
-  const mapsRef = useRef([]);
-  const pipes = useRef([]);
-  const zones = useRef([]);
-
-  const sensorsData = useGetSensors();
-  const markersData = useGetMarkers();
-  const pipesAccessData = useGetPipeAccess();
-  const mapsData = useGetMaps();
-  
-
-
-  const pipesData = useGetPipes();
-  
-  
-  const zonesData = useGetZones();
 
 
 
@@ -516,31 +517,7 @@ const [openUpdateZonePopup, setOpenUpdateZonePopup] = useState(false);
 
   
 
-  // // //PIPE HANDLING START
-  useEffect(() => {
-    if (map.current) {
-   
-        pipes.current.forEach(pipe => {
-          if (showPipes) {
-          
-              map.current.setLayoutProperty('pipe-'+pipe.id , 'visibility', 'visible');
-            
-          
-          } else {
-          
-              map.current.setLayoutProperty('pipe-'+pipe.id , 'visibility', 'none');
-          
-          }
-        });
-    
-
-    }
-  }, [showPipes, map]);
-
-
-useEffect(() => {
-  setShowPipes(showPipes);
-}, [showPipes]);
+// //PIPE HANDLING START
 
 useEffect(() => {
   
@@ -572,7 +549,7 @@ useEffect(() => {
           layout: {
             'line-join': 'round',
             'line-cap': 'round',
-            'visibility': showPipes ? 'visible' : 'none',
+            // 'visibility': showPipes ? 'visible' : 'none',
           },
           paint: {
             'line-color': '#3284ff',
@@ -650,7 +627,227 @@ useEffect(() => {
       }, [pipesData, showPipes]);
       //PIPE HANDLING END
 
+      
 
+
+      const handleShowPipe = () => {
+        
+        pipesData.forEach((pipe) => {
+    
+            if (map.current) {
+                if (!showPipes) {
+                  map.current.setLayoutProperty('pipe-'+pipe.id, 'visibility', 'visible');
+                } else {
+                  map.current.setLayoutProperty('pipe-'+pipe.id, 'visibility', 'none');
+                }
+              }
+        })
+    
+      }
+
+
+
+
+
+
+// // //ZONE HANDLING START
+
+// useEffect(() => {
+  
+//   if (map.current && zones.current.length === 0) {
+   
+// // Add Zones to the map
+// zonesData.forEach(zone => {
+//   map.addSource(zone.id.toString(), {
+//   type: 'geojson',
+//   data: {
+//   type: 'Feature',
+//   geometry: {
+//   type: 'Polygon',
+//   coordinates: [zone.zone_coordinates]
+//   }
+//   }
+//   });
+  
+//   map.addLayer({
+//   id: zone.id.toString(),
+//   type: 'fill',
+//   source: zone.id.toString(),
+//   layout: {},
+//   paint: {
+//   'fill-color': zone.zone_color,
+//   'fill-opacity': 0.5
+//   }
+//   });
+  
+//   map.addLayer({
+//   id: zone.id.toString() + 'outline',
+//   type: 'line',
+//   source: zone.id.toString(),
+//   layout: {},
+//   paint: {
+//   'line-color': "black",
+//   'line-width': 3
+//   }
+//   });
+  
+//   // Add a popup to the zone that fetches the id and the coordinates
+//   map.on('click', zone.id.toString(), (e) => {
+//   const popupContent = document.createElement('div');
+//   popupContent.innerHTML = `<h3>Title : ${zone.zone_title}</h3> 
+//   <h3>ID : ${zone.id}</h3> 
+//   <P>Color : ${zone.zone_color}</P> 
+//   <p>Map : ${zone.map}</p> 
+//   <button id="deleteZone" data-zone-id="${zone.id}">Delete</button> 
+//   <button id="updateZone">Update</button> <button id="viewZone">View</button>` ;
+//   new mapboxgl.Popup()
+//   .setLngLat(e.lngLat)
+//   .setDOMContent(popupContent)
+//   .addTo(map);
+// // delete Zone
+// const deleteButton = popupContent.querySelector('#deleteZone');
+// deleteButton.addEventListener('click', () => {
+//   const zoneId = deleteButton.getAttribute('data-zone-id');
+//   // Send DELETE request to API endpoint using Zone id
+//   const confirmation = window.confirm('Are you sure you want to delete this zone?');
+
+//   if (!confirmation) {
+//     return;
+//   }
+//   axios.delete(`${process.env.REACT_APP_API_URL}/api/zones/${zoneId}/`, {
+//     headers: {
+//       'Authorization': 'Bearer ' + localStorage.getItem('token')
+//     }
+//   })
+//   .then(response => {
+//     // console.log('Zone deleted', response.data);
+//     // Remove the Zone from the map
+//     map.removeLayer(zoneId.toString()); // Remove the fill layer
+//     map.removeLayer(zoneId.toString() + 'outline'); // Remove the outline layer
+//     map.removeSource(zoneId.toString()); // Remove the source
+//   })
+//   .catch(error => {
+//     console.error('Error deleting Zone', error);
+//   });
+// });
+
+// const updateButton = popupContent.querySelector('#updateZone');
+// updateButton.addEventListener('click', () => {
+//   // code to open update popup
+//   setSelectedZone(zone);
+//   setOpenUpdateZonePopup(true);
+//   // console.log('Update button clicked');
+// });
+
+// const viewButton = popupContent.querySelector('#viewZone');
+// viewButton.addEventListener('click', () => {
+//   setSelectedZone(zone);
+//   setOpenViewZonePopup(true);
+// });
+// });
+
+
+
+
+//       // Change the cursor to a pointer when
+//       // the mouse is over the states layer.
+//       map.on('mouseenter', 'states-layer', () => {
+//       map.getCanvas().style.cursor = 'pointer';
+//       });
+       
+//       // Change the cursor back to a pointer
+//       // when it leaves the states layer.
+//       map.on('mouseleave', 'states-layer', () => {
+//       map.getCanvas().style.cursor = '';
+//       });
+
+
+//   });
+
+
+//   map.on('click', function (e) {
+//     map.dragPan.disable();
+//     map.dragPan.enable();
+//   });
+
+//   map.on('dragend', function (e) {
+//     const coordinates = e.target.getBounds().getCenter().toArray();
+//     setZoneCoordinates(coordinates);
+    
+//   });
+
+
+//   const draw = new MapboxDraw({
+//     displayControlsDefault: false,
+//     // Select which mapbox-gl-draw control buttons to add to the map.
+   
+//     controls: {
+//         polygon: !showZones,
+//         trash: !showZones
+//     },
+//     // Set mapbox-gl-draw to draw by default.
+//     // The user does not have to click the polygon control button first.
+//     // defaultMode: 'draw_polygon'
+// });
+// map.addControl(draw);
+
+// map.on('draw.create', updateArea);
+// map.on('draw.delete', updateArea);
+// map.on('draw.update', updateArea);
+
+// function updateArea(e) {
+//     const data = draw.getAll();
+//     const answer = document.getElementById('calculated-area');
+//     if (data.features.length > 0) {
+     
+//         const area = turf.area(data);
+        
+ 
+//         // Restrict the area to 2 decimal points.
+//         const rounded_area = Math.round(area * 100) / 100000;
+//         answer.innerHTML = `<p><strong>${rounded_area}</strong></p><p>square meters</p>`;
+
+//         setZoneCoordinates(data.features[0].geometry.coordinates[0])
+//         window.localStorage.setItem("zoneArea", rounded_area.toLocaleString());
+//         window.dispatchEvent(new Event("zoneAreaStorage"));
+//     } else {
+//         answer.innerHTML = '';
+//         if (e.type !== 'draw.delete')
+//             alert('Click the map to draw a polygon.');
+//     }
+   
+//   }
+// }
+
+
+
+   
+  
+
+
+ 
+//       }, [zonesData, showZones]);
+//       //ZONE HANDLING END
+
+      
+
+
+//       const handleShowZone = () => {
+        
+//         zonesData.forEach((zone) => {
+    
+//             if (map.current) {
+//                 if (!showZones) {
+//                   map.current.setLayoutProperty('zone-'+zone.id, 'visibility', 'visible');
+//                 } else {
+//                   map.current.setLayoutProperty('zone-'+zone.id, 'visibility', 'none');
+//                 }
+//               }
+//         })
+    
+//       }
+
+      
 
 
 
@@ -674,8 +871,11 @@ useEffect(() => {
         showMarkers={showMarkers} setShowMarkers={setShowMarkers}
         showPipeAccess={showPipeAccess} setShowPipeAccess={setShowPipeAccess}
         showMaps={showMaps} setShowMaps={setShowMaps}
-        showZones={showZones} setShowZones={setShowZones}
-        showPipes={showPipes} setShowPipes={setShowPipes}
+        showZones={showZones} setShowZones={setShowZones} 
+        // handleShowZone={handleShowZone}
+
+        showPipes={showPipes} setShowPipes={setShowPipes} handleShowPipe={handleShowPipe}
+        // handleShowPipe={handleShowPipe}
         />
 
       {/* sensor Popups start*/}
@@ -827,4 +1027,4 @@ useEffect(() => {
   );
 };
 
-export default MapWithSensors;
+export default Test;
