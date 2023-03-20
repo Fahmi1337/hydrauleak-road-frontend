@@ -7,26 +7,31 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 
 
-const AddMapPopup = (props) => {
+  const AddMapPopup = (props) => {
 
-const [addMap, setAddMap] = useState(false);
+  const arrivedCoordinates = props.mapClickedCoordinates
 
-const [selectedContract, setSelectedContract] = useState({})
+  const [addMap, setAddMap] = useState(false);
+
+  const [selectedContract, setSelectedContract] = useState({})
   const initialState = '';
-  const [lat, setLat] = useState(initialState);
-  const [lng, setLng] = useState(initialState);
 
-
-  function getLatLng() {
-    const lat = localStorage.getItem("newSensorLat");
-    const lng = localStorage.getItem("newSensorLng");
-   
-    
-      setLat(lat);
-      setLng(lng);
-    setMapData({...mapData, map_coordinate : [lng, lat]});
-  }
+  const [mapData, setMapData] = useState({
+    map_title:'',
+    map_description: '',
+    contract: 1,
+  });
  
+
+
+  useEffect(() => {
+    setMapData(prevMapData => ({
+      ...prevMapData,
+      Map_coordinate: arrivedCoordinates
+    }));
+  }, [arrivedCoordinates]);
+
+console.log("the map coordinates:", arrivedCoordinates)
 
   const reloadPage = () => {
     if(selectedContract.id){
@@ -36,29 +41,14 @@ const [selectedContract, setSelectedContract] = useState({})
     props.handleCloseMap();
    }
  
-    localStorage.removeItem("newSensorLng");
+    localStorage.removeItem("newmapLng");
     localStorage.removeItem("newSensorLat");
   };
 
-  useEffect(() => {
-    getLatLng();
-  }, []);
-  window.addEventListener("storage", () => {
-    getLatLng();
-  });
-  useEffect(() => {
-    if (lat !== initialState) {
-      localStorage.setItem("newSensorLat", lat);
-    }
-  }, [lng, lat]);
 
 
 
-  const [mapData, setMapData] = useState({
-    map_title:'',
-    map_description: '',
-    contract: 1,
-  });
+
 
 
 
@@ -188,7 +178,7 @@ console.log("props.selectedContract", selectedContract)
           disabled
             type="text"
             name="map_coordinate"
-            value={mapData.map_coordinate}
+            value={mapData.map_coordinate || arrivedCoordinates}
             onChange={e => handleMapDataChange(e)}
           />
           <label>Map creation date:</label>

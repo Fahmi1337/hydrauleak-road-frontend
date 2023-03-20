@@ -99,7 +99,9 @@ function PostReport() {
         Image:
         <input onChange={handleFileSelect} type="file" name="image" />
       </label>
-      <img src={URL.createObjectURL(image)} alt="report" style={{width : '80%', height: 'auto'}}/>
+
+      {/* {URL.createObjectURL(image) && ( <img src={URL.createObjectURL(image)} alt="report" />)} */}
+     
       <button type="submit">Submit Report</button>
     </form>
   );

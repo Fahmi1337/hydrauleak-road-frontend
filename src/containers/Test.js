@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import mapboxgl from "mapbox-gl";
 import axios from 'axios';
 
-
+import '../assets/css/mapPopup.css';
 import ButtonWithPopup from "../components/mapPopups/contributes/AddButtonPopup"
 import MapLayersPopup from "../components/mapPopups/mapLayersPopup/MapLayersPopup"
 
@@ -650,202 +650,127 @@ useEffect(() => {
 
 
 
-// // //ZONE HANDLING START
+// //ZONE HANDLING START
 
-// useEffect(() => {
+useEffect(() => {
   
-//   if (map.current && zones.current.length === 0) {
-   
-// // Add Zones to the map
-// zonesData.forEach(zone => {
-//   map.addSource(zone.id.toString(), {
-//   type: 'geojson',
-//   data: {
-//   type: 'Feature',
-//   geometry: {
-//   type: 'Polygon',
-//   coordinates: [zone.zone_coordinates]
-//   }
-//   }
-//   });
+  if (map.current) {
+    map.current.on('load', () => {
+// Add Zones to the map
+zonesData.forEach(zone => {
+  map.current.addSource( 'zone-' + zone.id , {
+  type: 'geojson',
+  data: {
+  type: 'Feature',
+  geometry: {
+  type: 'Polygon',
+  coordinates: [zone.zone_coordinates]
+  }
+  }
+  });
   
-//   map.addLayer({
-//   id: zone.id.toString(),
-//   type: 'fill',
-//   source: zone.id.toString(),
-//   layout: {},
-//   paint: {
-//   'fill-color': zone.zone_color,
-//   'fill-opacity': 0.5
-//   }
-//   });
+  map.current.addLayer({
+  id: 'zone-' + zone.id,
+  type: 'fill',
+  source: 'zone-' + zone.id,
+  layout: {},
+  paint: {
+  'fill-color': zone.zone_color,
+  'fill-opacity': 0.5
+  }
+  });
   
-//   map.addLayer({
-//   id: zone.id.toString() + 'outline',
-//   type: 'line',
-//   source: zone.id.toString(),
-//   layout: {},
-//   paint: {
-//   'line-color': "black",
-//   'line-width': 3
-//   }
-//   });
+  map.current.addLayer({
+  id: 'zone-' + zone.id + 'outline',
+  type: 'line',
+  source: 'zone-' + zone.id,
+  layout: {},
+  paint: {
+  'line-color': "black",
+  'line-width': 3
+  }
+  });
   
-//   // Add a popup to the zone that fetches the id and the coordinates
-//   map.on('click', zone.id.toString(), (e) => {
-//   const popupContent = document.createElement('div');
-//   popupContent.innerHTML = `<h3>Title : ${zone.zone_title}</h3> 
-//   <h3>ID : ${zone.id}</h3> 
-//   <P>Color : ${zone.zone_color}</P> 
-//   <p>Map : ${zone.map}</p> 
-//   <button id="deleteZone" data-zone-id="${zone.id}">Delete</button> 
-//   <button id="updateZone">Update</button> <button id="viewZone">View</button>` ;
-//   new mapboxgl.Popup()
-//   .setLngLat(e.lngLat)
-//   .setDOMContent(popupContent)
-//   .addTo(map);
-// // delete Zone
-// const deleteButton = popupContent.querySelector('#deleteZone');
-// deleteButton.addEventListener('click', () => {
-//   const zoneId = deleteButton.getAttribute('data-zone-id');
-//   // Send DELETE request to API endpoint using Zone id
-//   const confirmation = window.confirm('Are you sure you want to delete this zone?');
+  // Add a popup to the zone that fetches the id and the coordinates
+  map.current.on('click', 'zone-' + zone.id, (e) => {
+  const popupContent = document.createElement('div');
+  popupContent.innerHTML = `<h3>Title : ${zone.zone_title}</h3> 
+  <h3>ID : ${zone.id}</h3> 
+  <P>Color : ${zone.zone_color}</P> 
+  <p>Map : ${zone.map}</p> 
+  <button id="deleteZone" data-zone-id="${zone.id}">Delete</button> 
+  <button id="updateZone" >Update</button> 
+  <button id="viewZone" >View</button>` ;
+  new mapboxgl.Popup()
+  .setLngLat(e.lngLat)
+  .setDOMContent(popupContent)
+  .addTo(map.current);
+// delete Zone
+const deleteButton = popupContent.querySelector('#deleteZone');
+deleteButton.addEventListener('click', () => {
+  const zoneId = deleteButton.getAttribute('data-zone-id');
+  // Send DELETE request to API endpoint using Zone id
+  const confirmation = window.confirm('Are you sure you want to delete this zone?');
 
-//   if (!confirmation) {
-//     return;
-//   }
-//   axios.delete(`${process.env.REACT_APP_API_URL}/api/zones/${zoneId}/`, {
-//     headers: {
-//       'Authorization': 'Bearer ' + localStorage.getItem('token')
-//     }
-//   })
-//   .then(response => {
-//     // console.log('Zone deleted', response.data);
-//     // Remove the Zone from the map
-//     map.removeLayer(zoneId.toString()); // Remove the fill layer
-//     map.removeLayer(zoneId.toString() + 'outline'); // Remove the outline layer
-//     map.removeSource(zoneId.toString()); // Remove the source
-//   })
-//   .catch(error => {
-//     console.error('Error deleting Zone', error);
-//   });
-// });
+  if (!confirmation) {
+    return;
+  }
+  axios.delete(`${process.env.REACT_APP_API_URL}/api/zones/${zoneId}/`, {
+    headers: {
+      'Authorization': 'Bearer ' + localStorage.getItem('token')
+    }
+  })
+  .then(response => {
+    // console.log('Zone deleted', response.data);
+    // Remove the Zone from the map
+    map.current.removeLayer(zoneId.toString()); // Remove the fill layer
+    map.current.removeLayer(zoneId.toString() + 'outline'); // Remove the outline layer
+    map.current.removeSource(zoneId.toString()); // Remove the source
+  })
+  .catch(error => {
+    console.error('Error deleting Zone', error);
+  });
+});
 
-// const updateButton = popupContent.querySelector('#updateZone');
-// updateButton.addEventListener('click', () => {
-//   // code to open update popup
-//   setSelectedZone(zone);
-//   setOpenUpdateZonePopup(true);
-//   // console.log('Update button clicked');
-// });
+const updateButton = popupContent.querySelector('#updateZone');
+updateButton.addEventListener('click', () => {
+  // code to open update popup
+  setSelectedZone(zone);
+  setOpenUpdateZonePopup(true);
+  // console.log('Update button clicked');
+});
 
-// const viewButton = popupContent.querySelector('#viewZone');
-// viewButton.addEventListener('click', () => {
-//   setSelectedZone(zone);
-//   setOpenViewZonePopup(true);
-// });
-// });
-
-
-
-
-//       // Change the cursor to a pointer when
-//       // the mouse is over the states layer.
-//       map.on('mouseenter', 'states-layer', () => {
-//       map.getCanvas().style.cursor = 'pointer';
-//       });
-       
-//       // Change the cursor back to a pointer
-//       // when it leaves the states layer.
-//       map.on('mouseleave', 'states-layer', () => {
-//       map.getCanvas().style.cursor = '';
-//       });
-
-
-//   });
-
-
-//   map.on('click', function (e) {
-//     map.dragPan.disable();
-//     map.dragPan.enable();
-//   });
-
-//   map.on('dragend', function (e) {
-//     const coordinates = e.target.getBounds().getCenter().toArray();
-//     setZoneCoordinates(coordinates);
-    
-//   });
-
-
-//   const draw = new MapboxDraw({
-//     displayControlsDefault: false,
-//     // Select which mapbox-gl-draw control buttons to add to the map.
-   
-//     controls: {
-//         polygon: !showZones,
-//         trash: !showZones
-//     },
-//     // Set mapbox-gl-draw to draw by default.
-//     // The user does not have to click the polygon control button first.
-//     // defaultMode: 'draw_polygon'
-// });
-// map.addControl(draw);
-
-// map.on('draw.create', updateArea);
-// map.on('draw.delete', updateArea);
-// map.on('draw.update', updateArea);
-
-// function updateArea(e) {
-//     const data = draw.getAll();
-//     const answer = document.getElementById('calculated-area');
-//     if (data.features.length > 0) {
-     
-//         const area = turf.area(data);
-        
+const viewButton = popupContent.querySelector('#viewZone');
+viewButton.addEventListener('click', () => {
+  setSelectedZone(zone);
+  setOpenViewZonePopup(true);
+  popupContent.remove();
+});      
+})      
+});
+  }
+  )}
  
-//         // Restrict the area to 2 decimal points.
-//         const rounded_area = Math.round(area * 100) / 100000;
-//         answer.innerHTML = `<p><strong>${rounded_area}</strong></p><p>square meters</p>`;
-
-//         setZoneCoordinates(data.features[0].geometry.coordinates[0])
-//         window.localStorage.setItem("zoneArea", rounded_area.toLocaleString());
-//         window.dispatchEvent(new Event("zoneAreaStorage"));
-//     } else {
-//         answer.innerHTML = '';
-//         if (e.type !== 'draw.delete')
-//             alert('Click the map to draw a polygon.');
-//     }
-   
-//   }
-// }
-
-
-
-   
-  
-
-
- 
-//       }, [zonesData, showZones]);
-//       //ZONE HANDLING END
+      }, [zonesData, showZones]);
+      //ZONE HANDLING END
 
       
 
 
-//       const handleShowZone = () => {
+      const handleShowZone = () => {
         
-//         zonesData.forEach((zone) => {
+        zonesData.forEach((zone) => {
     
-//             if (map.current) {
-//                 if (!showZones) {
-//                   map.current.setLayoutProperty('zone-'+zone.id, 'visibility', 'visible');
-//                 } else {
-//                   map.current.setLayoutProperty('zone-'+zone.id, 'visibility', 'none');
-//                 }
-//               }
-//         })
+            if (map.current) {
+                if (!showZones) {
+                  map.current.setLayoutProperty('zone-'+zone.id, 'visibility', 'visible');
+                } else {
+                  map.current.setLayoutProperty('zone-'+zone.id, 'visibility', 'none');
+                }
+              }
+        })
     
-//       }
+      }
 
       
 
@@ -872,7 +797,7 @@ useEffect(() => {
         showPipeAccess={showPipeAccess} setShowPipeAccess={setShowPipeAccess}
         showMaps={showMaps} setShowMaps={setShowMaps}
         showZones={showZones} setShowZones={setShowZones} 
-        // handleShowZone={handleShowZone}
+        handleShowZone={handleShowZone}
 
         showPipes={showPipes} setShowPipes={setShowPipes} handleShowPipe={handleShowPipe}
         // handleShowPipe={handleShowPipe}
