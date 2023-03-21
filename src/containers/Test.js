@@ -188,7 +188,7 @@ const [openUpdateZonePopup, setOpenUpdateZonePopup] = useState(false);
     
         <button id="deleteSensor" data-sensor-id="${sensor.id}">Delete</button>
         <button id="updateSensor" data-sensor-id="${sensor.id}">Update</button>
-        <button id="viewSensor" data-sensor-id="${sensor.id}">View</button>
+        <button id="viewSensor" data-sensor-id="${sensor.id}">View Details</button>
         `);
         const marker = new mapboxgl.Marker({
             element: document.createElement('img'),
@@ -363,7 +363,7 @@ const [openUpdateZonePopup, setOpenUpdateZonePopup] = useState(false);
           <p>Pipe: ${pipeaccess.pipe}</p>             
           <button id="deletePipeaccess" data-pipeaccess-id="${pipeaccess.id}">Delete</button>
           <button id="updatePipeaccess" data-pipeaccess-id="${pipeaccess.id}">Update</button>
-          <button id="viewPipeaccess" data-pipeaccess-id="${pipeaccess.id}">View</button>
+          <button id="viewPipeaccess" data-pipeaccess-id="${pipeaccess.id}">View Details</button>
         `);
         const marker = new mapboxgl.Marker({
             element: document.createElement('img'),
@@ -451,7 +451,7 @@ const [openUpdateZonePopup, setOpenUpdateZonePopup] = useState(false);
 
           <button id="deleteMap" data-map-id="${mapData.id}">Delete</button>
           <button id="updateMap" data-map-id="${mapData.id}">Update</button>
-          <button id="viewMap" data-map-id="${mapData.id}">View</button>
+          <button id="viewMap" data-map-id="${mapData.id}">View Details</button>
         `);
         const marker = new mapboxgl.Marker({
             element: document.createElement('img'),
@@ -604,16 +604,16 @@ useEffect(() => {
             // code to open update popup
             setSelectedPipe(pipe);
             setOpenUpdatePipePopup(true);
-            popup.remove(); // close the popup after opening the update popup
+            // popup.remove(); // close the popup after opening the update popup
         // console.log('Update button clicked');
       });
       
       // Set up event listener for view button
-      const viewButton = document.getElementById('viewPipe');
+      const viewButton = document.getElementById('viewPipe-' + pipe.id);
       viewButton.addEventListener('click', () => {     
         setSelectedPipe(pipe);
         setOpenViewPipePopup(true);
-        popup.remove();
+        
       });      
       })
 
@@ -700,7 +700,7 @@ zonesData.forEach(zone => {
   <p>Map : ${zone.map}</p> 
   <button id="deleteZone" data-zone-id="${zone.id}">Delete</button> 
   <button id="updateZone" >Update</button> 
-  <button id="viewZone" >View</button>` ;
+  <button id="viewZone" >View Details</button>` ;
   new mapboxgl.Popup()
   .setLngLat(e.lngLat)
   .setDOMContent(popupContent)
