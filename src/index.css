@@ -335,6 +335,9 @@ line-height: 32px;
     margin-top: 30px;
   }
   .popup-form{
+    overflow-y: scroll;
+    height: 45em;
+    width: 60em;
     display: grid;
     grid-template-columns: auto auto;
   }

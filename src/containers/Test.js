@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import mapboxgl from "mapbox-gl";
 import axios from 'axios';
 
-
+import '../assets/css/mapPopup.css';
 import ButtonWithPopup from "../components/mapPopups/contributes/AddButtonPopup"
 import MapLayersPopup from "../components/mapPopups/mapLayersPopup/MapLayersPopup"
 
@@ -27,6 +27,8 @@ import PipeUpdatePopup from '../components/mapPopups/addpipepopup/PipeUpdatePopu
 
 import ZoneViewPopup from '../components/mapPopups/addzonepopup/ZoneViewPopup';
 import ZoneUpdatePopup from '../components/mapPopups/addzonepopup/ZoneUpdatePopup';
+import * as turf from '@turf/turf'
+import MapboxDraw from "@mapbox/mapbox-gl-draw";
 
 import MapViewPopup from '../components/mapPopups/addmappopup/MapViewPopup';
 import MapUpdatePopup from '../components/mapPopups/addmappopup/MapUpdatePopup';
@@ -35,7 +37,7 @@ import { useGetMaps, useGetPipes,useGetPipeAccess, useGetMarkers, useGetZones, u
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiZmFobWloOTYiLCJhIjoiY2t1cXRkNWt2MGtxNjJucXZlN2FxemNpZiJ9.zBOiFS6ym4zFF9ZQ7zcmXA';
 
-const MapWithSensors = () => {
+const Test = () => {
   // const [sensorsData, setSensorsData] = useState([]);
   const [showSensors, setShowSensors] = useState(true);
   const [showMarkers, setShowMarkers] = useState(true);
@@ -46,6 +48,23 @@ const MapWithSensors = () => {
   const mapContainer = useRef(null);
   const map = useRef(null);
   
+
+  
+  const sensors = useRef([]);
+  const markers = useRef([]);
+  const pipesAccess = useRef([]);
+  const mapsRef = useRef([]);
+  const pipes = useRef([]);
+  const zones = useRef([]);
+
+  const sensorsData = useGetSensors();
+  const markersData = useGetMarkers();
+  const pipesAccessData = useGetPipeAccess();
+  const mapsData = useGetMaps();
+  const pipesData = useGetPipes();
+  const zonesData = useGetZones();
+
+
 
   const [submitActive, setSubmitActive] = useState(false);
   const [mapClickedCoordinates, setMapClickedCoordinates] = useState([]);
@@ -83,24 +102,6 @@ const [openViewZonePopup, setOpenViewZonePopup] = useState(false);
 const [openUpdateZonePopup, setOpenUpdateZonePopup] = useState(false);
 
 
-  const sensors = useRef([]);
-  const markers = useRef([]);
-  const pipesAccess = useRef([]);
-  const mapsRef = useRef([]);
-  const pipes = useRef([]);
-  const zones = useRef([]);
-
-  const sensorsData = useGetSensors();
-  const markersData = useGetMarkers();
-  const pipesAccessData = useGetPipeAccess();
-  const mapsData = useGetMaps();
-  
-
-
-  const pipesData = useGetPipes();
-  
-  
-  const zonesData = useGetZones();
 
 
 
@@ -516,31 +517,7 @@ const [openUpdateZonePopup, setOpenUpdateZonePopup] = useState(false);
 
   
 
-  // // //PIPE HANDLING START
-  useEffect(() => {
-    if (map.current) {
-   
-        pipes.current.forEach(pipe => {
-          if (showPipes) {
-          
-              map.current.setLayoutProperty('pipe-'+pipe.id , 'visibility', 'visible');
-            
-          
-          } else {
-          
-              map.current.setLayoutProperty('pipe-'+pipe.id , 'visibility', 'none');
-          
-          }
-        });
-    
-
-    }
-  }, [showPipes, map]);
-
-
-useEffect(() => {
-  setShowPipes(showPipes);
-}, [showPipes]);
+// //PIPE HANDLING START
 
 useEffect(() => {
   
@@ -572,7 +549,7 @@ useEffect(() => {
           layout: {
             'line-join': 'round',
             'line-cap': 'round',
-            'visibility': showPipes ? 'visible' : 'none',
+            // 'visibility': showPipes ? 'visible' : 'none',
           },
           paint: {
             'line-color': '#3284ff',
@@ -650,7 +627,152 @@ useEffect(() => {
       }, [pipesData, showPipes]);
       //PIPE HANDLING END
 
+      
 
+
+      const handleShowPipe = () => {
+        
+        pipesData.forEach((pipe) => {
+    
+            if (map.current) {
+                if (!showPipes) {
+                  map.current.setLayoutProperty('pipe-'+pipe.id, 'visibility', 'visible');
+                } else {
+                  map.current.setLayoutProperty('pipe-'+pipe.id, 'visibility', 'none');
+                }
+              }
+        })
+    
+      }
+
+
+
+
+
+
+// //ZONE HANDLING START
+
+useEffect(() => {
+  
+  if (map.current) {
+    map.current.on('load', () => {
+// Add Zones to the map
+zonesData.forEach(zone => {
+  map.current.addSource( 'zone-' + zone.id , {
+  type: 'geojson',
+  data: {
+  type: 'Feature',
+  geometry: {
+  type: 'Polygon',
+  coordinates: [zone.zone_coordinates]
+  }
+  }
+  });
+  
+  map.current.addLayer({
+  id: 'zone-' + zone.id,
+  type: 'fill',
+  source: 'zone-' + zone.id,
+  layout: {},
+  paint: {
+  'fill-color': zone.zone_color,
+  'fill-opacity': 0.5
+  }
+  });
+  
+  map.current.addLayer({
+  id: 'zone-' + zone.id + 'outline',
+  type: 'line',
+  source: 'zone-' + zone.id,
+  layout: {},
+  paint: {
+  'line-color': "black",
+  'line-width': 3
+  }
+  });
+  
+  // Add a popup to the zone that fetches the id and the coordinates
+  map.current.on('click', 'zone-' + zone.id, (e) => {
+  const popupContent = document.createElement('div');
+  popupContent.innerHTML = `<h3>Title : ${zone.zone_title}</h3> 
+  <h3>ID : ${zone.id}</h3> 
+  <P>Color : ${zone.zone_color}</P> 
+  <p>Map : ${zone.map}</p> 
+  <button id="deleteZone" data-zone-id="${zone.id}">Delete</button> 
+  <button id="updateZone" >Update</button> 
+  <button id="viewZone" >View</button>` ;
+  new mapboxgl.Popup()
+  .setLngLat(e.lngLat)
+  .setDOMContent(popupContent)
+  .addTo(map.current);
+// delete Zone
+const deleteButton = popupContent.querySelector('#deleteZone');
+deleteButton.addEventListener('click', () => {
+  const zoneId = deleteButton.getAttribute('data-zone-id');
+  // Send DELETE request to API endpoint using Zone id
+  const confirmation = window.confirm('Are you sure you want to delete this zone?');
+
+  if (!confirmation) {
+    return;
+  }
+  axios.delete(`${process.env.REACT_APP_API_URL}/api/zones/${zoneId}/`, {
+    headers: {
+      'Authorization': 'Bearer ' + localStorage.getItem('token')
+    }
+  })
+  .then(response => {
+    // console.log('Zone deleted', response.data);
+    // Remove the Zone from the map
+    map.current.removeLayer(zoneId.toString()); // Remove the fill layer
+    map.current.removeLayer(zoneId.toString() + 'outline'); // Remove the outline layer
+    map.current.removeSource(zoneId.toString()); // Remove the source
+  })
+  .catch(error => {
+    console.error('Error deleting Zone', error);
+  });
+});
+
+const updateButton = popupContent.querySelector('#updateZone');
+updateButton.addEventListener('click', () => {
+  // code to open update popup
+  setSelectedZone(zone);
+  setOpenUpdateZonePopup(true);
+  // console.log('Update button clicked');
+});
+
+const viewButton = popupContent.querySelector('#viewZone');
+viewButton.addEventListener('click', () => {
+  setSelectedZone(zone);
+  setOpenViewZonePopup(true);
+  popupContent.remove();
+});      
+})      
+});
+  }
+  )}
+ 
+      }, [zonesData, showZones]);
+      //ZONE HANDLING END
+
+      
+
+
+      const handleShowZone = () => {
+        
+        zonesData.forEach((zone) => {
+    
+            if (map.current) {
+                if (!showZones) {
+                  map.current.setLayoutProperty('zone-'+zone.id, 'visibility', 'visible');
+                } else {
+                  map.current.setLayoutProperty('zone-'+zone.id, 'visibility', 'none');
+                }
+              }
+        })
+    
+      }
+
+      
 
 
 
@@ -674,8 +796,11 @@ useEffect(() => {
         showMarkers={showMarkers} setShowMarkers={setShowMarkers}
         showPipeAccess={showPipeAccess} setShowPipeAccess={setShowPipeAccess}
         showMaps={showMaps} setShowMaps={setShowMaps}
-        showZones={showZones} setShowZones={setShowZones}
-        showPipes={showPipes} setShowPipes={setShowPipes}
+        showZones={showZones} setShowZones={setShowZones} 
+        handleShowZone={handleShowZone}
+
+        showPipes={showPipes} setShowPipes={setShowPipes} handleShowPipe={handleShowPipe}
+        // handleShowPipe={handleShowPipe}
         />
 
       {/* sensor Popups start*/}
@@ -827,4 +952,4 @@ useEffect(() => {
   );
 };
 
-export default MapWithSensors;
+export default Test;

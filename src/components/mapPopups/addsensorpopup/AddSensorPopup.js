@@ -22,13 +22,14 @@ const RightAddSensorPopup = (props) => {
   useEffect(() => {
     setSensorData(prevSensorData => ({
       ...prevSensorData,
-      sensor_coordinates: arrivedCoordinates
+      sensor_coordinates: arrivedCoordinates,
+      pipe: localStorage.getItem('selectedPipeId')
     }));
   }, [arrivedCoordinates]);
 
-  useEffect(() => {
-    setSensorData({...sensorData,  pipe: localStorage.getItem('selectedPipeId')});
-  }, []);
+  // useEffect(() => {
+  //   setSensorData({...sensorData,  pipe: localStorage.getItem('selectedPipeId')});
+  // }, [sensorData]);
 
 
 

@@ -37,8 +37,17 @@ const style = {
   // useCallback hook to toggle showPipes state
   const toggleShowPipes = useCallback(() => {
     props.setShowPipes(!props.showPipes);
+    props.handleShowPipe()
   }, [props]);
 
+
+
+
+    // useCallback hook to toggle showPipes state
+    const toggleShowZones = useCallback(() => {
+      props.setShowZones(!props.showZones);
+      props.handleShowZone()
+    }, [props]);
     return (
         <>
         <Button className="layersButton" onClick={handleOpen} variant="outlined" startIcon={<ControlPointIcon  />}> Layers</Button>
@@ -121,7 +130,7 @@ const style = {
       
       <Form.Check inline id="switch1" className="pl-5">
       <Form.Check.Input
-       ref={(el) => (props.mapContainerRef.current = el)}
+   
         checked={props.showPipes}
         onChange={toggleShowPipes}
       />
@@ -137,7 +146,7 @@ const style = {
       <Form.Check inline id="switch1" className="pl-5">
       <Form.Check.Input
         checked={props.showZones}
-        onChange={() => props.setShowZones(!props.showZones)}
+        onChange={toggleShowZones}
       />
     
     </Form.Check>

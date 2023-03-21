@@ -10,40 +10,9 @@ import Modal from '@mui/material/Modal';
 const AddMarkPopup = (props) => {
 
 
-
+  const arrivedCoordinates = props.mapClickedCoordinates
 
   const initialState = '';
-  const [lat, setLat] = useState(initialState);
-  const [lng, setLng] = useState(initialState);
-
-
-  function getLatLng() {
-    const lat = localStorage.getItem("newSensorLat");
-    const lng = localStorage.getItem("newSensorLng");
-   
-    
-      setLat(lat);
-      setLng(lng);
-    setMarkData({...markData, mark_coordinates : [lng, lat], pipe : localStorage.getItem('selectedPipeId')});
-
-   
-  }
- 
-
- 
-
-  useEffect(() => {
-    getLatLng();
-  }, []);
-  window.addEventListener("storage", () => {
-    getLatLng();
-  });
-  useEffect(() => {
-    if (lat !== initialState) {
-      localStorage.setItem("newSensorLat", lat);
-    }
-  }, [lng, lat]);
-
 
 
   const [markData, setMarkData] = useState({
@@ -53,6 +22,22 @@ const AddMarkPopup = (props) => {
     mark_title : '', 
    
   });
+
+
+  
+  useEffect(() => {
+    setMarkData(prevMarkData => ({
+      ...prevMarkData,
+      mark_coordinates: arrivedCoordinates,
+      pipe: localStorage.getItem('selectedPipeId')
+    }));
+  }, [arrivedCoordinates]);
+
+  // useEffect(() => {
+  //   setMarkData({...markData,  pipe: localStorage.getItem('selectedPipeId')});
+  // }, [markData]);
+
+
   const { mark_coordinates, mark_creation_date, mark_description, mark_title, pipe } = markData;
   
 
@@ -118,10 +103,8 @@ console.log("mark data?", markData)
     
 
     const reloadPage = () => {
-     props.handleCloseMark();
-      localStorage.removeItem("selectedPipeId");
-      localStorage.removeItem("newSensorLng");
-      localStorage.removeItem("newSensorLat");
+      props.handleCloseMark();
+      localStorage.removeItem("selectedPipeId");    
       
     };
 
