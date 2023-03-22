@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./addPipeAccessPopup.css";
+import "../../../assets/css/ContributesPopup.css"
 import axios from 'axios';
 
 import Box from '@mui/material/Box';
@@ -56,7 +56,7 @@ const PipeAccessUpdatePopup = ({ onOpen, onCancel, pipeAccess }) => {
       >
         <Box>
           <div>
-            <div className="PipeAccessPopup">
+            <div className="contributesPopup">
               <h3>Update Pipe Access</h3>
               <form>
               <label>Pipe:</label>
@@ -105,8 +105,10 @@ const PipeAccessUpdatePopup = ({ onOpen, onCancel, pipeAccess }) => {
                  
                 </select>
               </form>
-              <button onClick={handleSubmitData}>Submit</button>
-              <button onClick={onCancel}>Cancel</button>
+              <div className='formButtonsContainer'>
+                <button onClick={handleSubmitData}>Submit</button>
+                <button onClick={onCancel}>Cancel</button>
+              </div>
             </div>
           </div>
         </Box>

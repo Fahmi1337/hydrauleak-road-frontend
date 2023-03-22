@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./addMapPopup.css";
+import "../../../assets/css/ContributesPopup.css"
 import axios from 'axios';
 
 import Box from '@mui/material/Box';
@@ -56,7 +56,7 @@ const MapUpdatePopup = ({ onOpen, onCancel, map }) => {
       >
         <Box>
           <div>
-            <div className="MapPopup">
+            <div className="contributesPopup">
               <h3>Update Map</h3>
               <form>
                 <label>Map coordinates:</label>
@@ -84,8 +84,11 @@ const MapUpdatePopup = ({ onOpen, onCancel, map }) => {
                   onChange={handleMapDataChange}
                 />
               </form>
-              <button onClick={handleSubmitData}>Submit</button>
-              <button onClick={onCancel}>Cancel</button>
+              <div className='formButtonsContainer'>
+                <button onClick={handleSubmitData}>Submit</button>
+                <button onClick={onCancel}>Cancel</button>
+              </div>
+              
             </div>
           </div>
         </Box>

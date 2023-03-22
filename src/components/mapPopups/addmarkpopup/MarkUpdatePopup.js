@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./addMarkPopup.css";
+import "../../../assets/css/ContributesPopup.css"
 import axios from 'axios';
 
 import Box from '@mui/material/Box';
@@ -57,7 +57,7 @@ const MarkUpdatePopup = ({ onOpen, onCancel, mark }) => {
       >
         <Box>
           <div>
-            <div className="MarkPopup">
+            <div className="contributesPopup">
               <h3>Update Mark</h3>
               <form>
 
@@ -95,8 +95,11 @@ const MarkUpdatePopup = ({ onOpen, onCancel, mark }) => {
                   onChange={handleMarkDataChange}
                 />
               </form>
-              <button onClick={handleSubmitData}>Submit</button>
-              <button onClick={onCancel}>Cancel</button>
+              <div className='formButtonsContainer'>
+                <button onClick={handleSubmitData}>Submit</button>
+                <button onClick={onCancel}>Cancel</button>
+              </div>
+              
             </div>
           </div>
         </Box>

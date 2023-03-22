@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./addPipePopup.css"
+import "../../../assets/css/ContributesPopup.css"
 import axios from 'axios';
 
 import Box from '@mui/material/Box';
@@ -86,7 +86,7 @@ const PipeUpdatePopup = ({ onOpen, onCancel, pipe }) => {
       >
         <Box>
           <div>
-            <div className="PipePopup">
+            <div className="contributesPopup">
               <h3>Update Pipe</h3>
               <form>
                 
@@ -164,8 +164,11 @@ const PipeUpdatePopup = ({ onOpen, onCancel, pipe }) => {
                   onChange={handlePipeDataChange}
                 />
               </form>
-              <button onClick={handleSubmitData}>Submit</button>
+
+              <div className='formButtonsContainer'>
+                <button onClick={handleSubmitData}>Submit</button>
                 <button onClick={onCancel}>Cancel</button>
+              </div>
             </div>
           </div>
         </Box>

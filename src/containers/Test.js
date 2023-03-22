@@ -121,25 +121,47 @@ const Test = () => {
 
 
   useEffect(() => {
-    if (!map.current  ) {
+    if (!map.current) {
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
         style: "mapbox://styles/mapbox/streets-v11",
         center: [-71.21088520218619, 46.806343083853875],
         zoom: 12,
       });
+  
+      // Map search Geocoder
+      map.current.addControl(
+        new MapboxGeocoder({
+          accessToken: mapboxgl.accessToken,
+          mapboxgl: mapboxgl,
+          placeholder: "Search for location",
+          marker: false,
+          position: "top-right",
+        }),
+        "top-left"
+      );
+  
+      // Navigation Control
+      map.current.addControl(
+        new mapboxgl.NavigationControl({
+          style: "compact",
+          zoom: map.current.getZoom(),
+          bearing: map.current.getBearing(),
+          pitch: map.current.getPitch(),
+        }),
+        "bottom-right"
+      );
     }
   
-    if(mapCenter[0]){
+    if (mapCenter[0]) {
       map.current.easeTo({
         center: mapCenter[0],
         speed: 0.05,
         curve: 0.1,
-        zoom : 15,
+        zoom: 15,
       });
-    };
-
-
+    }
+  
     // click handled markers coordinates
     const clickHandler = (e) => {
       if (submitActive) {
@@ -148,44 +170,21 @@ const Test = () => {
         // const newMarker = new mapboxgl.Marker().setLngLat(lngLat).addTo(map.current);
       }
     };
-    
+  
     if (submitActive) {
       map.current.on("click", clickHandler);
     } else {
       map.current.off("click", clickHandler);
     }
-    
+  
     // Cleanup function to remove the event listener when the component unmounts
     return () => {
       if (map.current) {
         map.current.off("click", clickHandler);
       }
     };
-
-
   }, [submitActive, mapClickedCoordinates, mapCenter]);
-
-  useEffect(() => {
-
-    //Map search Geocoder
-    map.current.addControl(new MapboxGeocoder({
-      accessToken: mapboxgl.accessToken,
-      mapboxgl: mapboxgl,
-      
-      placeholder: 'Search for location',
-          marker: false,
-          position: 'top-right',
-    }),'top-left');
-
-    // Navigation Control
-    map.current.addControl(new mapboxgl.NavigationControl({
-      style: 'compact',
-      zoom: map.current.getZoom(),
-      bearing: map.current.getBearing(),
-      pitch: map.current.getPitch(),
-    }),'bottom-right');
-
-  }, [mapCenter]);
+  
 
   useEffect(() => {
   }, []);
@@ -949,8 +948,10 @@ viewButton.addEventListener('click', () => {
             if (map.current) {
                 if (!showZones) {
                   map.current.setLayoutProperty('zone-'+zone.id, 'visibility', 'visible');
+                  map.current.setLayoutProperty('zone-' + zone.id + 'outline', 'visibility', 'visible');
                 } else {
                   map.current.setLayoutProperty('zone-'+zone.id, 'visibility', 'none');
+                  map.current.setLayoutProperty('zone-' + zone.id + 'outline', 'visibility', 'none');
                 }
               }
         })
@@ -961,7 +962,7 @@ viewButton.addEventListener('click', () => {
       useEffect(() => {
 
 
-
+    
         // Change the cursor to a pointer when
     // the mouse is over the states layer.
     map.current.on('mouseenter', 'states-layer', () => {
@@ -998,9 +999,9 @@ viewButton.addEventListener('click', () => {
     });
     map.current.addControl(draw);
 
-      // map.current.on('draw.create', updateArea);
-      // map.current.on('draw.delete', updateArea);
-      // map.current.on('draw.update', updateArea);
+      map.current.on('draw.create', updateArea);
+      map.current.on('draw.delete', updateArea);
+      map.current.on('draw.update', updateArea);
       
       function updateArea(e) {
         const data = draw.getAll();

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./addZonePopup.css";
+import "../../../assets/css/ContributesPopup.css"
 import axios from 'axios';
 
 import Box from '@mui/material/Box';
@@ -84,7 +84,7 @@ useEffect(() => {
       >
         <Box>
           <div>
-            <div className="ZonePopup">
+            <div className="contributesPopup">
               <h3>Update Zone</h3>
               <form>
                 
@@ -126,8 +126,10 @@ useEffect(() => {
 
                 
               </form>
-              <button onClick={handleSubmitData}>Submit</button>
-              <button onClick={onCancel}>Cancel</button>
+              <div className='formButtonsContainer'>
+                <button onClick={handleSubmitData}>Submit</button>
+                <button onClick={onCancel}>Cancel</button>
+              </div>
             </div>
           </div>
         </Box>

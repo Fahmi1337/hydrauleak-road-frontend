@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./addZonePopup.css"
+import "../../../assets/css/ContributesPopup.css"
 import axios from 'axios';
 
 
@@ -192,7 +192,7 @@ console.log("props.interventionId", selectedIntervention)
       >
         <Box sx={style}>
         
-        <div className="ZonePopup">
+        <div className="contributesPopup">
           <h3>Add Zone</h3>
        
         <form>
@@ -292,9 +292,11 @@ console.log("props.interventionId", selectedIntervention)
 
         </form>
 
-
-        <button onClick={handleSubmitData}>Submit</button> 
-        <button onClick={() => {deleteZone();}}>Cancel</button>
+        <div className='formButtonsContainer'>
+                <button onClick={handleSubmitData}>Submit</button>
+                <button onClick={() => {deleteZone();}}>Cancel</button>
+              </div>
+ 
       </div>
         </Box>
       </Modal>
