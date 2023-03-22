@@ -341,9 +341,6 @@ const [openUpdateZonePopup, setOpenUpdateZonePopup] = useState(false);
 
   
   useEffect(() => {
-
-  
-
     
       mapboxgl.accessToken = accessToken;
       
@@ -357,7 +354,6 @@ const [openUpdateZonePopup, setOpenUpdateZonePopup] = useState(false);
       });
    
       map.on('load', () => {
-
 
         if (mapsData[2]?.map_coordinate){
           map.easeTo({
@@ -375,17 +371,16 @@ const [openUpdateZonePopup, setOpenUpdateZonePopup] = useState(false);
             curve: 0.1,
             zoom : map.getZoom(),
           });
-          
         }
-     
-if(mapCenter){
-  map.easeTo({
-    center: mapCenter[0],
-    speed: 0.05,
-    curve: 0.1,
-    zoom : map.getZoom(),
-  });
-}
+            
+        if(mapCenter){
+          map.easeTo({
+            center: mapCenter[0],
+            speed: 0.05,
+            curve: 0.1,
+            zoom : map.getZoom(),
+          });
+        }
 
      
 
@@ -1113,20 +1108,13 @@ return (
 
 
 {/* map Center SELECT */}
-<div  className="selectMapContainer">
-              
-             
-            <select style = {{
-
-zIndex: 9999999,left: '50%'
-}}  type="text"  
+        <div  className="selectMapContainer">             
+            <select style = {{zIndex: 9999999,left: '50%'}}  type="text"  
                   name="map" onChange={e => handleMapCenter(e)} value={mapCenter.map_coordinate} > <option disabled selected value> -- Select map center -- </option>
-                  {mapsData?.map(map => (
-                    
-                  <option key={map.map_coordinate} value={map.map_coordinate}>{map.map_title}</option>          
+                  {mapsData?.map(map => (   
+                    <option key={map.map_coordinate} value={map.map_coordinate}>{map.map_title}</option>          
                   ))} 
-            </select>
-            
+            </select>          
         </div>
 {/* map Center SELECT */}
 

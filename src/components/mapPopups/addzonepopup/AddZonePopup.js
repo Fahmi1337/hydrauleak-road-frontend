@@ -33,61 +33,17 @@ const style = {
 const { zone_title, zone_description, zone_num, zone_status, zone_color, map, zone_area, zone_coordinates } = zoneData;
 
 
-//get Zone Area Start
-// const [zoneArea, setZoneArea] = useState(initialState);
 
-// function getZoneArea() {
+const zoneCoordinates = props.zoneCoordinates
 
-//   const zoneArea = localStorage.getItem("zoneArea");
-  
-//   setZoneArea(zoneArea);
-    
-//   setZoneData({...zoneData, zone_area : zoneArea});
-//   console.log("zoneData zone_area ", zoneData.zone_area)
-//   console.log(" zoneArea ", zoneArea)
-
-// }
-
-// useEffect(() => {
-  
-//   getZoneArea();
-//       }, [AreaZone]);
-
-
-//       window.addEventListener("zoneAreaStorage", () => {
-//         getZoneArea();
-// });
-
-//get Zone Area end
-
-
-
-
-
-
-  const [coordinatesZone, setCoordinatesZone] = useState(initialState);
-  
-
-  function getLatLng() {
-
-    const zoneCoordinates= localStorage.getItem("newZoneCoordinates");
-    
-    setCoordinatesZone(JSON.parse(zoneCoordinates));
-
-    
-      
-    setZoneData({...zoneData, zone_coordinates : JSON.parse(zoneCoordinates), zone_area: localStorage.getItem("zoneArea")});
-  }
  
-  useEffect(() => {
-    
-        getLatLng();
-        
-        }, []);
-        window.addEventListener("zoneStorage", () => {
-            getLatLng();
-  });
- 
+        useEffect(() => {
+          setZoneData({ ...zoneData,
+            zone_coordinates: zoneCoordinates,}
+           
+            // zone_area: localStorage.getItem("zoneArea")
+          );
+        }, [zoneCoordinates]);
 
 
 
@@ -98,9 +54,9 @@ if(selectedIntervention.id){
 }
    else{
     props.handleCloseZone();
-    window.location.reload();
+    props.setSubmitZoneActive(false);
    }
-  
+   props.setSubmitZoneActive(false);
     localStorage.removeItem("newZoneCoordinates");
     localStorage.removeItem("zoneArea");
   };
@@ -338,7 +294,7 @@ console.log("props.interventionId", selectedIntervention)
 
 
         <button onClick={handleSubmitData}>Submit</button> 
-        <button onClick={() => {deleteZone(); props.setRunEffectZone(false);}}>Cancel</button>
+        <button onClick={() => {deleteZone();}}>Cancel</button>
       </div>
         </Box>
       </Modal>
