@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import mapboxgl from "mapbox-gl";
 import axios from 'axios';
 
@@ -11,7 +11,9 @@ import sensorBlueIcon from '../assets/icons/sensorBlue.png';
 import markIcon from '../assets/icons/Mark.png';
 import mapIcon from '../assets/icons/Map.png';
 import pipeAccessIcon from '../assets/icons/PipeAccess.png';
-
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+import * as turf from '@turf/turf'
+import MapboxDraw from "@mapbox/mapbox-gl-draw";
 
 import SensorViewPopup from '../components/mapPopups/addsensorpopup/SensorViewPopup';
 import SensorUpdatePopup from '../components/mapPopups/addsensorpopup/SensorUpdatePopup';
@@ -27,8 +29,6 @@ import PipeUpdatePopup from '../components/mapPopups/addpipepopup/PipeUpdatePopu
 
 import ZoneViewPopup from '../components/mapPopups/addzonepopup/ZoneViewPopup';
 import ZoneUpdatePopup from '../components/mapPopups/addzonepopup/ZoneUpdatePopup';
-import * as turf from '@turf/turf'
-import MapboxDraw from "@mapbox/mapbox-gl-draw";
 
 import MapViewPopup from '../components/mapPopups/addmappopup/MapViewPopup';
 import MapUpdatePopup from '../components/mapPopups/addmappopup/MapUpdatePopup';
@@ -48,15 +48,12 @@ const Test = () => {
   const mapContainer = useRef(null);
   const map = useRef(null);
   
-
-  
   const sensors = useRef([]);
   const markers = useRef([]);
   const pipesAccess = useRef([]);
   const mapsRef = useRef([]);
   const pipes = useRef([]);
-  const zones = useRef([]);
-
+  
   const sensorsData = useGetSensors();
   const markersData = useGetMarkers();
   const pipesAccessData = useGetPipeAccess();
@@ -64,51 +61,45 @@ const Test = () => {
   const pipesData = useGetPipes();
   const zonesData = useGetZones();
 
-
-
   const [submitActive, setSubmitActive] = useState(false);
+  const [submitZoneActive, setSubmitZoneActive] = useState(false);
+  const [submitPipeActive, setSubmitPipeActive] = useState(false);
   const [mapClickedCoordinates, setMapClickedCoordinates] = useState([]);
   
- 
+  const [zones, setZones] = useState([]);
 
-// map const select delete update
-const [selectedMap, setSelectedMap] = useState();
-const [openViewMapPopup, setOpenViewMapPopup] = useState(false);
-const [openUpdateMapPopup, setOpenUpdateMapPopup] = useState(false);
+  // map const select delete update
+  const [selectedMap, setSelectedMap] = useState();
+  const [openViewMapPopup, setOpenViewMapPopup] = useState(false);
+  const [openUpdateMapPopup, setOpenUpdateMapPopup] = useState(false);
 
-//sensor const select delete update 
-const [selectedSensor, setSelectedSensor] = useState();
-const [openViewSensorPopup, setOpenViewSensorPopup] = useState(false);
-const [openUpdateSensorPopup, setOpenUpdateSensorPopup] = useState(false);
+  //sensor const select delete update 
+  const [selectedSensor, setSelectedSensor] = useState();
+  const [openViewSensorPopup, setOpenViewSensorPopup] = useState(false);
+  const [openUpdateSensorPopup, setOpenUpdateSensorPopup] = useState(false);
 
-// mark const select delete update
-const [selectedMark, setSelectedMark] = useState();
-const [openViewMarkPopup, setOpenViewMarkPopup] = useState(false);
-const [openUpdateMarkPopup, setOpenUpdateMarkPopup] = useState(false);
+  // mark const select delete update
+  const [selectedMark, setSelectedMark] = useState();
+  const [openViewMarkPopup, setOpenViewMarkPopup] = useState(false);
+  const [openUpdateMarkPopup, setOpenUpdateMarkPopup] = useState(false);
 
-// pipe const select delete update
-const [selectedPipe, setSelectedPipe] = useState();
-const [openViewPipePopup, setOpenViewPipePopup] = useState(false);
-const [openUpdatePipePopup, setOpenUpdatePipePopup] = useState(false);
+  // pipe const select delete update
+  const [selectedPipe, setSelectedPipe] = useState();
+  const [openViewPipePopup, setOpenViewPipePopup] = useState(false);
+  const [openUpdatePipePopup, setOpenUpdatePipePopup] = useState(false);
 
-// pipeaccess const select delete update
-const [selectedPipeaccess, setSelectedPipeaccess] = useState();
-const [openViewPipeaccessPopup, setOpenViewPipeaccessPopup] = useState(false);
-const [openUpdatePipeaccessPopup, setOpenUpdatePipeaccessPopup] = useState(false);
+  // pipeaccess const select delete update
+  const [selectedPipeaccess, setSelectedPipeaccess] = useState();
+  const [openViewPipeaccessPopup, setOpenViewPipeaccessPopup] = useState(false);
+  const [openUpdatePipeaccessPopup, setOpenUpdatePipeaccessPopup] = useState(false);
 
-// zone const select delete update
-const [selectedZone, setSelectedZone] = useState();
-const [openViewZonePopup, setOpenViewZonePopup] = useState(false);
-const [openUpdateZonePopup, setOpenUpdateZonePopup] = useState(false);
-
-
-
-
-
-  const [searchCoordinates, setSearchCoordinates] = useState([-71.3583, 50.1686]);
-
+  // zone const select delete update
+  const [selectedZone, setSelectedZone] = useState();
+  const [openViewZonePopup, setOpenViewZonePopup] = useState(false);
+  const [openUpdateZonePopup, setOpenUpdateZonePopup] = useState(false);
 
   const [zoneCoordinates, setZoneCoordinates] = useState([]);
+  const [pipeCoordinates, setPipeCoordinates] = useState([]);
 
   const HandleSetSubmitActive = ()=>{
     setSubmitActive(true);
@@ -118,13 +109,19 @@ const [openUpdateZonePopup, setOpenUpdateZonePopup] = useState(false);
   }
     
 
+  // Get the maps coordinates center and details 
+  const [mapCenter, setMapCenter] = useState([]); 
 
+  //  console.log("this is the map center : ", mapCenter[0]);
+  const handleMapCenter =(e)=> {
+    setMapCenter([e.target.value.split(",").map(parseFloat)])
+  }
 
 
 
 
   useEffect(() => {
-    if (!map.current) {
+    if (!map.current  ) {
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
         style: "mapbox://styles/mapbox/streets-v11",
@@ -132,7 +129,18 @@ const [openUpdateZonePopup, setOpenUpdateZonePopup] = useState(false);
         zoom: 12,
       });
     }
-    
+  
+    if(mapCenter[0]){
+      map.current.easeTo({
+        center: mapCenter[0],
+        speed: 0.05,
+        curve: 0.1,
+        zoom : 15,
+      });
+    };
+
+
+    // click handled markers coordinates
     const clickHandler = (e) => {
       if (submitActive) {
         const lngLat = [e.lngLat.lng, e.lngLat.lat];
@@ -153,12 +161,38 @@ const [openUpdateZonePopup, setOpenUpdateZonePopup] = useState(false);
         map.current.off("click", clickHandler);
       }
     };
-  }, [submitActive, mapClickedCoordinates]);
+
+
+  }, [submitActive, mapClickedCoordinates, mapCenter]);
+
+  useEffect(() => {
+
+    //Map search Geocoder
+    map.current.addControl(new MapboxGeocoder({
+      accessToken: mapboxgl.accessToken,
+      mapboxgl: mapboxgl,
+      
+      placeholder: 'Search for location',
+          marker: false,
+          position: 'top-right',
+    }),'top-left');
+
+    // Navigation Control
+    map.current.addControl(new mapboxgl.NavigationControl({
+      style: 'compact',
+      zoom: map.current.getZoom(),
+      bearing: map.current.getBearing(),
+      pitch: map.current.getPitch(),
+    }),'bottom-right');
+
+  }, [mapCenter]);
+
+  useEffect(() => {
+  }, []);
 
 
 
-
-
+  
 
   //SENSOR HANDLING START
   useEffect(() => {
@@ -627,7 +661,6 @@ useEffect(() => {
       }, [pipesData, showPipes]);
       //PIPE HANDLING END
 
-      
 
 
       const handleShowPipe = () => {
@@ -644,6 +677,158 @@ useEffect(() => {
         })
     
       }
+
+
+
+
+
+
+
+
+
+
+      useEffect(() => {
+  
+        if (submitPipeActive){
+    map.current.on('load', () => {
+            const geojson = {
+              'type': 'FeatureCollection',
+              'features': []
+              };
+              
+              // Used to draw a line between points
+              const linestring = {
+              'type': 'Feature',
+              'geometry': {
+              'type': 'LineString',
+              'coordinates': []
+              }
+              };
+              map.current.on('load', () => {
+                map.current.addSource('geojson', {
+                'type': 'geojson',
+                'data': geojson
+                });
+                
+                // Add styles to the map
+                map.current.addLayer({
+                id: 'measure-points',
+                type: 'circle',
+                source: 'geojson',
+                paint: {
+                'circle-radius': 5,
+                'circle-color': 'blue'
+                },
+                filter: ['in', '$type', 'Point']
+                });
+                map.current.addLayer({
+                id: 'measure-lines',
+                type: 'line',
+                source: 'geojson',
+                layout: {
+                'line-cap': 'round',
+                'line-join': 'round'
+                },
+                paint: {
+                'line-color': 'blue',
+                'line-width': 2.5
+                },
+                filter: ['in', '$type', 'LineString']
+                });
+                
+                map.current.on('click', (e) => {
+                    
+                const features = map.current.queryRenderedFeatures(e.point, {
+                layers: ['measure-points']
+                });
+                
+                // Remove the linestring from the group
+                // so we can redraw it based on the points collection.
+                if (geojson.features.length > 1) geojson.features.pop();
+                
+                // Clear the distance container to populate it with a new value.
+            
+                
+                // If a feature was clicked, remove it from the map.
+                if (features.length) {
+                const id = features[0].properties.id;
+                geojson.features = geojson.features.filter(
+                (point) => point.properties.id !== id
+                );
+                } else {
+                const point = {
+                'type': 'Feature',
+                'geometry': {
+                'type': 'Point',
+                'coordinates': [e.lngLat.lng, e.lngLat.lat]
+                },
+                'properties': {
+                'id': String(new Date().getTime())
+                }
+                };
+                
+                geojson.features.push(point);
+                }
+                
+                if (geojson.features.length > 0) {
+                linestring.geometry.coordinates = geojson.features.map(
+                (point) => point.geometry.coordinates
+                );
+                
+                geojson.features.push(linestring);
+                
+                // Populate the distanceContainer with total distance
+                const value = document.createElement('pre');
+                const distance = turf.length(linestring);
+                value.textContent = `Total distance: ${distance.toLocaleString()}km`;
+                // console.log("values :", value )
+                // distanceContainer.appendChild(value);
+                window.localStorage.setItem("pipeLength", distance.toLocaleString());
+                
+                window.dispatchEvent(new Event("pipeLengthStorage"));
+                }
+                
+                map.current.getSource('geojson').setData(geojson);
+          
+          
+                pipeCoordinates.push([e.lngLat.lng, e.lngLat.lat]);
+                
+              
+                });
+              });
+              map.current.on('mousemove', (e) => {
+                  const features = map.current.queryRenderedFeatures(e.point, {
+                  layers: ['measure-points']
+                  });
+                  // Change the cursor to a pointer when hovering over a point on the map.
+                  // Otherwise cursor is a crosshair.
+              map.current.getCanvas().style.cursor = features.length
+                  ? 'pointer'
+                  : 'crosshair';
+                  });
+          
+                
+              });
+                }  
+            }, [pipeCoordinates, submitPipeActive]);
+
+
+
+console.log("pipe coordinates :", pipeCoordinates)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -772,34 +957,126 @@ viewButton.addEventListener('click', () => {
     
       }
 
-      
+  
+      useEffect(() => {
 
+
+
+        // Change the cursor to a pointer when
+    // the mouse is over the states layer.
+    map.current.on('mouseenter', 'states-layer', () => {
+      map.current.getCanvas().style.cursor = 'pointer';
+      });
+       
+      // Change the cursor back to a pointer
+      // when it leaves the states layer.
+      map.current.on('mouseleave', 'states-layer', () => {
+        map.current.getCanvas().style.cursor = '';
+      });
+
+      map.current.on('click', function (e) {
+        map.current.dragPan.disable();
+        map.current.dragPan.enable();
+      });
+    
+      map.current.on('dragend', function (e) {
+        const coordinates = e.target.getBounds().getCenter().toArray();
+        setZoneCoordinates(coordinates);
+        
+      });
+      const draw = new MapboxDraw({
+        displayControlsDefault: false,
+        // Select which mapbox-gl-draw control buttons to add to the map.
+       
+        controls: {
+            polygon: submitZoneActive,
+            trash: submitZoneActive
+        },
+        // Set mapbox-gl-draw to draw by default.
+        // The user does not have to click the polygon control button first.
+        // defaultMode: 'draw_polygon'
+    });
+    map.current.addControl(draw);
+
+      // map.current.on('draw.create', updateArea);
+      // map.current.on('draw.delete', updateArea);
+      // map.current.on('draw.update', updateArea);
+      
+      function updateArea(e) {
+        const data = draw.getAll();
+        const answer = document.getElementById('calculated-area');
+        if (data.features.length > 0) {
+         
+            const area = turf.area(data);
+            
+     
+            // Restrict the area to 2 decimal points.
+            const rounded_area = Math.round(area * 100) / 100000;
+            answer.innerHTML = `<p><strong>${rounded_area}</strong></p><p>square meters</p>`;
+    
+            setZoneCoordinates(data.features[0].geometry.coordinates[0])
+            window.localStorage.setItem("zoneArea", rounded_area.toLocaleString());
+            window.dispatchEvent(new Event("zoneAreaStorage"));
+        } else {
+            answer.innerHTML = '';
+            if (e.type !== 'draw.delete')
+                alert('Click the map to draw a polygon.');
+        }
+       
+    }
+  
+      map.current.on('dragend', function (e) {
+        const coordinates = e.target.getBounds().getCenter().toArray();
+        setZoneCoordinates(coordinates);
+  
+      });
+
+
+  return () => {
+    map.current.off("draw.create");
+    map.current.removeControl(draw);
+  };
+}, [submitZoneActive]);
 
 
   return (
     <div>
-  <div
+      <div
         className="mapContainer" 
         ref={mapContainer}
         style={{ width: '145em', height: '80.5em',left: '13.8em' }}
       />
 
+      {/* map Center SELECT */}
+          <div  className="selectMapContainer">             
+              <select style = {{zIndex: 9999999,left: '50%'}}  type="text"  
+                    name="map" onChange={e => handleMapCenter(e)} value={mapCenter.map_coordinate} > <option disabled selected value> -- Select map center -- </option>
+                    {mapsData?.map(map => (   
+                      <option key={map.map_coordinate} value={map.map_coordinate}>{map.map_title}</option>          
+                    ))} 
+              </select>          
+          </div>
+      {/* map Center SELECT */}
+
+
 
         <ButtonWithPopup 
           setSubmitActive={setSubmitActive} 
+          setSubmitZoneActive={setSubmitZoneActive}
+          setSubmitPipeActive={setSubmitPipeActive}
+          zoneCoordinates={zoneCoordinates}
+          pipeCoordinates={pipeCoordinates}
+          mapClickedCoordinates={mapClickedCoordinates} 
           HandleSetSubmitDeactivate={HandleSetSubmitDeactivate} 
-          HandleSetSubmitActive={HandleSetSubmitActive} 
-          mapClickedCoordinates={mapClickedCoordinates} />
+          HandleSetSubmitActive={HandleSetSubmitActive}/>
 
         <MapLayersPopup 
-        showSensors={showSensors} setShowSensors={setShowSensors}
-        showMarkers={showMarkers} setShowMarkers={setShowMarkers}
-        showPipeAccess={showPipeAccess} setShowPipeAccess={setShowPipeAccess}
-        showMaps={showMaps} setShowMaps={setShowMaps}
-        showZones={showZones} setShowZones={setShowZones} 
-        handleShowZone={handleShowZone}
-
-        showPipes={showPipes} setShowPipes={setShowPipes} handleShowPipe={handleShowPipe}
+          showSensors={showSensors} setShowSensors={setShowSensors}
+          showMarkers={showMarkers} setShowMarkers={setShowMarkers}
+          showPipeAccess={showPipeAccess} setShowPipeAccess={setShowPipeAccess}
+          showMaps={showMaps} setShowMaps={setShowMaps}
+          showZones={showZones} setShowZones={setShowZones} handleShowZone={handleShowZone}
+          showPipes={showPipes} setShowPipes={setShowPipes} handleShowPipe={handleShowPipe}
         // handleShowPipe={handleShowPipe}
         />
 
