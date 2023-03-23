@@ -55,42 +55,42 @@ const NoLayout = ({children}) => {
 
 const App = () => {
 
-
 // //CHECK ME START
-//     const [me, setMe] = useState([]);
+const [me, setMe] = useState([]);
+
+
+// const getMe = async () => {
+//     try {
+//       const response = await fetch(
+//         `${process.env.REACT_APP_API_URL}/api/user/me`,
+//         {
+//           method: "GET",
+  
+//           headers: {
+//             "Content-Type": "application/json",
+//             Authorization: "Bearer " + localStorage.getItem("token"),
+//           },
+//         }
+//       )
+//         .then((response) => response.json())
+//         .then((data) => setMe(data));
+//   return response;
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   };
+
+
+// useEffect(() => {
+//     getMe();
+//     console.log("token me ", me.messages.message )
+//    if(me.messages.message.includes("invali")){
+//     localStorage.removeItem('token');
+//    }
+//   }, [me]);
 
 
 
-
-//     useEffect(() => {
-//         getMe();
-       
-//       }, []);
-    
-    
-//        const getMe = async () => {
-//           try {
-//             const response = await fetch(
-//               `${process.env.REACT_APP_API_URL}/api/user/me`,
-//               {
-//                 method: "GET",
-        
-//                 headers: {
-//                   "Content-Type": "application/json",
-//                   Authorization: "Bearer " + localStorage.getItem("token"),
-//                 },
-//               }
-//             )
-//               .then((response) => response.json())
-//               .then((data) => setMe(data));
-//         return response;
-//           } catch (error) {
-//             console.log(error);
-//           }
-//         };
-//     //CHECK ME END
-//     console.log("me?", me.length)
-//TOKEN MANAGEMENT START
     const [isToken, setIsToken]= useState(true)
 
     useEffect(() => {

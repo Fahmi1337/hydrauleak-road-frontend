@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import "./addSensorPopup.css"
+import "../../../assets/css/ContributesPopup.css"
 import axios from 'axios';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';

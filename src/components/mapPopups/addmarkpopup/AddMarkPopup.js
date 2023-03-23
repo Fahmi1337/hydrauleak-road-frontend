@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./addMarkPopup.css"
+import "../../../assets/css/ContributesPopup.css"
 import axios from 'axios';
 
 
@@ -123,7 +123,7 @@ console.log("mark data?", markData)
       >
         <Box >
         
-        <div className="MarkPopup">
+        <div className="contributesPopup">
           <h3>Add Mark</h3>
         <form>
 
@@ -176,8 +176,12 @@ console.log("mark data?", markData)
           
           
         </form>
-        <button onClick={()=>{handleSubmitData();}}>Submit</button>
-        <button onClick={()=>{props.handleCloseMark();reloadPage();}}>Cancel</button>
+
+        <div className='formButtonsContainer'>
+          <button onClick={()=>{handleSubmitData();}}>Submit</button>
+          <button onClick={()=>{props.handleCloseMark();reloadPage();}}>Cancel</button>
+        </div>
+      
       </div>
         </Box>
       </Modal>

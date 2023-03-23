@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./addPipePopup.css"
+import "../../../assets/css/ContributesPopup.css"
 import axios from 'axios';
 
 
@@ -179,7 +179,7 @@ console.log("maps details", maps)
       >
         <Box >
         
-        <div className="PipePopup">
+        <div className="contributesPopup">
           <h3>Add Pipe</h3>
         <form>
 
@@ -272,9 +272,11 @@ console.log("maps details", maps)
 
         </form>
 
-       
-        <button onClick={handleSubmitData}>Submit</button>
-        <button onClick={() => {props.handleClosePipe(); deletePipe();}}>Cancel</button>
+        <div className='formButtonsContainer'>
+                <button onClick={handleSubmitData}>Submit</button>
+                <button onClick={() => {props.handleClosePipe(); deletePipe();}}>Cancel</button>
+              </div>       
+
       </div>
         </Box>
       </Modal>

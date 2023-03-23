@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./addPipeAccessPopup.css";
+import "../../../assets/css/ContributesPopup.css"
 import axios from 'axios';
 
 
@@ -102,7 +102,7 @@ reloadPage();
       >
         <Box >
         
-        <div className="PipeAccessPopup">
+        <div className="contributesPopup">
           <h3>Add Pipe Access</h3>
         <form>
                             
@@ -148,8 +148,11 @@ reloadPage();
 
 
         </form>
-        <button onClick={()=>{handleSubmitData();}}>Submit</button>
-        <button onClick={()=>{props.handleClosePipeAccess(); reloadPage();}}>Cancel</button>
+        <div className='formButtonsContainer'>
+                <button  onClick={()=>{handleSubmitData();}}>Submit</button>
+                <button onClick={()=>{props.handleClosePipeAccess(); reloadPage();}}>Cancel</button>
+              </div>
+    
       </div>
         </Box>
       </Modal>

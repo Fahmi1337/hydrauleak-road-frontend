@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import "./addSensorPopup.css"
+import "../../../assets/css/ContributesPopup.css"
 import axios from 'axios';
 import Box from '@mui/material/Box';
 // import Button from '@mui/material/Button';
@@ -107,7 +107,7 @@ console.log("sensor frequency", sensorData.sensor_frequency)
       
         <div>
       
-        <div className="SensorPopup">
+        <div className="contributesPopup">
           <h3>Add Sensor</h3>
       <form>
       <label>Select Pipe:</label>
@@ -174,8 +174,12 @@ console.log("sensor frequency", sensorData.sensor_frequency)
 
 
       </form>
+      <div className='formButtonsContainer'>
       <button onClick={handleSubmitData}>Submit</button>
       <button onClick={reloadPage}>Cancel</button>
+
+      </div>
+   
     </div>
         </div>
       </Box>

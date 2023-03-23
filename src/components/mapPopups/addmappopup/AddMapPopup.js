@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./addMapPopup.css"
+import "../../../assets/css/ContributesPopup.css"
 import axios from 'axios';
 
 
@@ -145,7 +145,7 @@ console.log("props.selectedContract", selectedContract)
       >
         <Box >
         
-        <div className="MapPopup">
+        <div className="contributesPopup">
           <h3>Add Map</h3>
         <form>
         <label>
@@ -189,9 +189,12 @@ console.log("props.selectedContract", selectedContract)
             onChange={e => handleMapDataChange(e)}
           />
         </form>
+        <div className='formButtonsContainer'>
+          <button onClick={handleSubmitData}>Submit</button>
+          <button onClick={reloadPage}>Cancel</button>
+
+      </div>
         
-        <button onClick={()=>{handleSubmitData();}}>Submit</button>
-        <button onClick={()=>{reloadPage();}}>Cancel</button>
       </div>
         </Box>
       </Modal>
