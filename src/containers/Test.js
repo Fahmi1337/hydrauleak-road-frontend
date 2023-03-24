@@ -35,7 +35,7 @@ import MapUpdatePopup from '../components/mapPopups/addmappopup/MapUpdatePopup';
 
 import { useGetMaps, useGetPipes,useGetPipeAccess, useGetMarkers, useGetZones, useGetSensors } from "../actions/ApiFunctions";
 
-mapboxgl.accessToken = 'pk.eyJ1IjoiZmFobWloOTYiLCJhIjoiY2t1cXRkNWt2MGtxNjJucXZlN2FxemNpZiJ9.zBOiFS6ym4zFF9ZQ7zcmXA';
+mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 
 const Test = () => {
   // const [sensorsData, setSensorsData] = useState([]);
@@ -688,7 +688,7 @@ useEffect(() => {
 
       useEffect(() => {
   
-        if (submitPipeActive){
+         if (submitPipeActive){
     map.current.on('load', () => {
             const geojson = {
               'type': 'FeatureCollection',
@@ -808,7 +808,7 @@ useEffect(() => {
           
                 
               });
-                }  
+                 }  
             }, [pipeCoordinates, submitPipeActive]);
 
 
@@ -930,8 +930,21 @@ viewButton.addEventListener('click', () => {
   setOpenViewZonePopup(true);
   popupContent.remove();
 });      
-})      
 });
+      // Change the cursor to a pointer when
+      // the mouse is over the states layer.
+      map.current.on('mouseenter', 'states-layer', () => {
+        map.current.getCanvas().style.cursor = 'pointer';
+        });
+         
+        // Change the cursor back to a pointer
+        // when it leaves the states layer.
+        map.current.on('mouseleave', 'states-layer', () => {
+          map.current.getCanvas().style.cursor = '';
+        });      
+});
+
+
   }
   )}
  
@@ -959,85 +972,169 @@ viewButton.addEventListener('click', () => {
       }
 
   
-      useEffect(() => {
+//       useEffect(() => {
 
 
+
+//       map.current.on('click', function (e) {
+//         map.current.dragPan.disable();
+//         map.current.dragPan.enable();
+//       });
     
-        // Change the cursor to a pointer when
-    // the mouse is over the states layer.
-    map.current.on('mouseenter', 'states-layer', () => {
-      map.current.getCanvas().style.cursor = 'pointer';
-      });
-       
-      // Change the cursor back to a pointer
-      // when it leaves the states layer.
-      map.current.on('mouseleave', 'states-layer', () => {
-        map.current.getCanvas().style.cursor = '';
-      });
-
-      map.current.on('click', function (e) {
-        map.current.dragPan.disable();
-        map.current.dragPan.enable();
-      });
-    
-      map.current.on('dragend', function (e) {
-        const coordinates = e.target.getBounds().getCenter().toArray();
-        setZoneCoordinates(coordinates);
+//       map.current.on('dragend', function (e) {
+//         const coordinates = e.target.getBounds().getCenter().toArray();
+//         setZoneCoordinates(coordinates);
         
-      });
+//       });
+//       const draw = new MapboxDraw({
+//         displayControlsDefault: false,
+//         // Select which mapbox-gl-draw control buttons to add to the map.
+       
+//         controls: {
+//             polygon: submitZoneActive,
+//             trash: submitZoneActive
+//         },
+//         // Set mapbox-gl-draw to draw by default.
+//         // The user does not have to click the polygon control button first.
+//         // defaultMode: 'draw_polygon'
+//     });
+//     map.current.addControl(draw);
+
+
+      
+//     function updateArea(e) {
+//       const data = draw ? draw.getAll() : null;
+//       const answer = document.getElementById('calculated-area');
+//       if (data && data.features.length > 0) {
+//       const area = turf.area(data);
+//       const rounded_area = Math.round(area * 100) / 100000;
+//       answer.innerHTML = `<p><strong>${rounded_area}</strong></p><p>square meters</p>`;
+//       setZoneCoordinates(data.features[0].geometry.coordinates[0])
+//       window.localStorage.setItem("zoneArea", rounded_area.toLocaleString());
+//       window.dispatchEvent(new Event("zoneAreaStorage"));
+//       } else {
+//       answer.innerHTML = '';
+//       if (e.type !== 'draw.delete')
+//       alert('Click the map to draw a polygon.');
+//       }
+//       }
+  
+//       map.current.on('dragend', function (e) {
+//         const coordinates = e.target.getBounds().getCenter().toArray();
+//         setZoneCoordinates(coordinates);
+  
+//       });
+
+
+//   return () => {
+//     map.current.on('draw.create', updateArea);
+//     map.current.on('draw.delete', updateArea);
+//     map.current.on('draw.update', updateArea);
+//     map.current.off("draw.create");
+//     map.current.removeControl(draw);
+//   };
+// }, [submitZoneActive]);
+
+
+// const [polygon, setPolygon] = useState([]);
+// const [area, setArea] = useState(null);
+
+// const drawPolygon = () => {
+//   const draw = new MapboxDraw({
+//     displayControlsDefault: false,
+//     controls: {
+//       polygon: true,
+//       trash: true
+//     }
+//   });
+//   map.current.addControl(draw);
+
+//   map.current.on("draw.create", () => {
+//     const polygonData = draw.getAll();
+//     if (polygonData.features.length > 0) {
+//       const coordinates = polygonData.features[0].geometry.coordinates[0];
+//       if (coordinates.length > 0) {
+//         setPolygon(coordinates);
+//         setArea(calculateArea(coordinates));
+//       }
+//     }
+//   });
+
+//   map.current.on("draw.delete", () => {
+//     setPolygon([]);
+//     setArea(null);
+//   });
+// };
+
+// const calculateArea = (coordinates) => {
+//   const turf = require("@turf/turf");
+//   const ring = coordinates[0]; // get the first linear ring of the polygon
+//   if (ring.length < 4) {
+//     // if the linear ring has less than 4 coordinates, return null
+//     return null;
+//   }
+//   // close the linear ring by adding the first coordinate to the end
+//   ring.push(ring[0]);
+//   const polygon = turf.polygon([ring]);
+//   const area = turf.area(polygon);
+//   return area;
+// };
+
+// useEffect(() => {
+//   map.current.on("load", () => {
+//     drawPolygon();
+//   });
+// }, []);
+
+const [polygon, setPolygon] = useState(null);
+const [area, setArea] = useState(null);
+
+
+useEffect(() => {
+ 
+
+  map.current.on('load', () => {
+     
+
       const draw = new MapboxDraw({
         displayControlsDefault: false,
-        // Select which mapbox-gl-draw control buttons to add to the map.
-       
         controls: {
-            polygon: submitZoneActive,
-            trash: submitZoneActive
+          polygon: true,
+          trash: true,
         },
-        // Set mapbox-gl-draw to draw by default.
-        // The user does not have to click the polygon control button first.
-        // defaultMode: 'draw_polygon'
-    });
-    map.current.addControl(draw);
-
-      map.current.on('draw.create', updateArea);
-      map.current.on('draw.delete', updateArea);
-      map.current.on('draw.update', updateArea);
-      
-      function updateArea(e) {
-        const data = draw.getAll();
-        const answer = document.getElementById('calculated-area');
-        if (data.features.length > 0) {
-         
-            const area = turf.area(data);
-            
-     
-            // Restrict the area to 2 decimal points.
-            const rounded_area = Math.round(area * 100) / 100000;
-            answer.innerHTML = `<p><strong>${rounded_area}</strong></p><p>square meters</p>`;
-    
-            setZoneCoordinates(data.features[0].geometry.coordinates[0])
-            window.localStorage.setItem("zoneArea", rounded_area.toLocaleString());
-            window.dispatchEvent(new Event("zoneAreaStorage"));
-        } else {
-            answer.innerHTML = '';
-            if (e.type !== 'draw.delete')
-                alert('Click the map to draw a polygon.');
-        }
-       
-    }
-  
-      map.current.on('dragend', function (e) {
-        const coordinates = e.target.getBounds().getCenter().toArray();
-        setZoneCoordinates(coordinates);
-  
       });
 
+      map.current.addControl(draw);
 
-  return () => {
-    map.current.off("draw.create");
-    map.current.removeControl(draw);
-  };
-}, [submitZoneActive]);
+      map.current.on('draw.create', () => {
+        const polygon = draw.getAll().features[0];
+        setPolygon(polygon);
+
+        const area = turf.area(polygon.geometry);
+        setArea(area);
+      });
+
+      map.current.on('draw.delete', () => {
+        setPolygon(null);
+        setArea(null);
+      });
+    });
+ 
+
+
+}, []);
+
+
+
+
+
+
+
+
+
+console.log("polygon area:",area)
+
+
 
 
   return (
