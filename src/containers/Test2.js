@@ -1,53 +1,80 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import mapboxgl from "mapbox-gl";
 
+mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 
-mapboxgl.accessToken = 'pk.eyJ1IjoiZmFobWloOTYiLCJhIjoiY2t1cXRkNWt2MGtxNjJucXZlN2FxemNpZiJ9.zBOiFS6ym4zFF9ZQ7zcmXA';
-
-const SubmitMark = () => {
-  const [popup, setPopup] = useState(null);
-  const [submitActive, setSubmitActive] = useState(false);
-  const mapContainer = useRef(null);
-  const map = useRef(null);
+const PolygonArea = () => {
+  const [map, setMap] = useState(null);
+  const [polygon, setPolygon] = useState(null);
+  const [area, setArea] = useState(null);
 
   useEffect(() => {
-    if (!map.current) {
-      map.current = new mapboxgl.Map({
-        container: mapContainer.current,
-        style: "mapbox://styles/mapbox/streets-v11",
-        center: [-71.21088520218619, 46.806343083853875],
-        zoom: 12,
+    const map = new mapboxgl.Map({
+      container: "map",
+      style: "mapbox://styles/mapbox/streets-v11",
+      center: [-74.5, 40],
+      zoom: 9,
+    });
+
+    setMap(map);
+
+    map.on("load", () => {
+      map.addSource("polygon", {
+        type: "geojson",
+        data: {
+          type: "Feature",
+          geometry: {
+            type: "Polygon",
+            coordinates: [[]],
+          },
+        },
       });
 
-      map.current.on("click", e => {
-        if (submitActive) {
-          const lngLat = [e.lngLat.lng, e.lngLat.lat];
-          const newMarker = new mapboxgl.Marker().setLngLat(lngLat).addTo(map.current);
-
-          const newPopup = new mapboxgl.Popup().setLngLat(lngLat).setHTML(`Coordinates: ${lngLat}`).addTo(map.current);
-
-          setPopup(newPopup);
-        }
+      map.addLayer({
+        id: "polygon",
+        type: "fill",
+        source: "polygon",
+        paint: {
+          "fill-color": "#888",
+          "fill-opacity": 0.5,
+        },
       });
-    }
-  }, [submitActive]);
 
-  const handleSubmit = () => {
-    if (popup) {
-      popup.remove();
+      map.on("click", (e) => {
+        const coordinates = e.lngLat.toArray();
+        const polygonCoordinates = polygon ? polygon.geometry.coordinates[0] : [];
+        polygonCoordinates.push(coordinates);
+        map.getSource("polygon").setData({
+          type: "Feature",
+          geometry: {
+            type: "Polygon",
+            coordinates: [polygonCoordinates],
+          },
+        });
+        setPolygon({
+          type: "Feature",
+          geometry: {
+            type: "Polygon",
+            coordinates: [polygonCoordinates],
+          },
+        });
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    if (polygon !== null && polygon !== undefined) {
+      const area = mapboxgl.turf.area(polygon);
+      setArea(area);
     }
-  };
+  }, [polygon]);
 
   return (
     <div>
-      <button onClick={() => setSubmitActive(!submitActive)}>Activate Submit Mark</button>
-      <button onClick={handleSubmit}>Submit Marker</button>
-      <div
-        ref={mapContainer}
-        style={{ height: "400px", width: "100%" }}
-      />
+      <div id="map" style={{ width: "100%", height: "400px" }}></div>
+      <div>Area: {area}</div>
     </div>
   );
 };
 
-export default SubmitMark;
+export default PolygonArea;
