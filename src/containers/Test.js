@@ -116,8 +116,9 @@ const Test = () => {
   const handleMapCenter =(e)=> {
     setMapCenter([e.target.value.split(",").map(parseFloat)])
   }
-
-
+//Zone
+  const [polygon, setPolygon] = useState(null);
+  const [area, setArea] = useState(0);
 
 
   useEffect(() => {
@@ -128,7 +129,9 @@ const Test = () => {
         center: [-71.21088520218619, 46.806343083853875],
         zoom: 12,
       });
-  
+      map.current.on("load", () => {
+        initializePolygon(submitZoneActive);
+      });
       // Map search Geocoder
       map.current.addControl(
         new MapboxGeocoder({
@@ -161,6 +164,10 @@ const Test = () => {
         zoom: 15,
       });
     }
+
+
+
+
   
     // click handled markers coordinates
     const clickHandler = (e) => {
@@ -176,21 +183,21 @@ const Test = () => {
     } else {
       map.current.off("click", clickHandler);
     }
-  
+
     // Cleanup function to remove the event listener when the component unmounts
     return () => {
       if (map.current) {
         map.current.off("click", clickHandler);
       }
     };
-  }, [submitActive, mapClickedCoordinates, mapCenter]);
+    
+  }, [submitActive, mapClickedCoordinates, mapCenter, polygon, submitZoneActive, submitZoneActive]);
   
 
-  useEffect(() => {
-  }, []);
 
 
 
+console.log("area?", area);
   
 
   //SENSOR HANDLING START
@@ -688,7 +695,7 @@ useEffect(() => {
 
       useEffect(() => {
   
-         if (submitPipeActive){
+        //  if (submitPipeActive){
     map.current.on('load', () => {
             const geojson = {
               'type': 'FeatureCollection',
@@ -766,8 +773,8 @@ useEffect(() => {
                 }
                 };
                 
-                geojson.features.push(point);
-                }
+                geojson.features.push(point); 
+                       }
                 
                 if (geojson.features.length > 0) {
                 linestring.geometry.coordinates = geojson.features.map(
@@ -808,7 +815,7 @@ useEffect(() => {
           
                 
               });
-                 }  
+                //  }  
             }, [pipeCoordinates, submitPipeActive]);
 
 
@@ -941,7 +948,9 @@ viewButton.addEventListener('click', () => {
         // when it leaves the states layer.
         map.current.on('mouseleave', 'states-layer', () => {
           map.current.getCanvas().style.cursor = '';
-        });      
+        });    
+        
+      
 });
 
 
@@ -971,170 +980,58 @@ viewButton.addEventListener('click', () => {
     
       }
 
-  
-//       useEffect(() => {
 
 
-
-//       map.current.on('click', function (e) {
-//         map.current.dragPan.disable();
-//         map.current.dragPan.enable();
-//       });
+      const initializePolygon = (submitZoneActive) => {
+        const draw = new MapboxDraw({
+          displayControlsDefault: false,
+          controls: {
+            polygon: submitZoneActive,
+            trash: submitZoneActive,
+          },
+          userProperties: submitZoneActive, // enable user-defined properties
+        });
     
-//       map.current.on('dragend', function (e) {
-//         const coordinates = e.target.getBounds().getCenter().toArray();
-//         setZoneCoordinates(coordinates);
-        
-//       });
-//       const draw = new MapboxDraw({
-//         displayControlsDefault: false,
-//         // Select which mapbox-gl-draw control buttons to add to the map.
-       
-//         controls: {
-//             polygon: submitZoneActive,
-//             trash: submitZoneActive
-//         },
-//         // Set mapbox-gl-draw to draw by default.
-//         // The user does not have to click the polygon control button first.
-//         // defaultMode: 'draw_polygon'
-//     });
-//     map.current.addControl(draw);
+        map.current.addControl(draw);
+    
+        map.current.on("draw.create", () => {
+          const features = draw.getAll().features;
+          const polygon = features[0];
+    
+          // generate a unique ID for the polygon
+          // const id = Math.random().toString(36).substring(2, 15);
+          // polygon.id = id;
+    
+          setPolygon(polygon);
+    
+          const turfPolygon = turf?.polygon(polygon?.geometry?.coordinates);
+          const area = turf?.area(turfPolygon);
+          setZoneCoordinates(polygon.geometry.coordinates);
+          setArea(Math.round(area * 100) / 100000);
+        });
+    
+        map.current.on("draw.delete", () => {
+          setPolygon(null);
+          setArea(0);
+          setZoneCoordinates([]);
+        });
 
-
+    
+      };
       
-//     function updateArea(e) {
-//       const data = draw ? draw.getAll() : null;
-//       const answer = document.getElementById('calculated-area');
-//       if (data && data.features.length > 0) {
-//       const area = turf.area(data);
-//       const rounded_area = Math.round(area * 100) / 100000;
-//       answer.innerHTML = `<p><strong>${rounded_area}</strong></p><p>square meters</p>`;
-//       setZoneCoordinates(data.features[0].geometry.coordinates[0])
-//       window.localStorage.setItem("zoneArea", rounded_area.toLocaleString());
-//       window.dispatchEvent(new Event("zoneAreaStorage"));
-//       } else {
-//       answer.innerHTML = '';
-//       if (e.type !== 'draw.delete')
-//       alert('Click the map to draw a polygon.');
-//       }
-//       }
-  
-//       map.current.on('dragend', function (e) {
-//         const coordinates = e.target.getBounds().getCenter().toArray();
-//         setZoneCoordinates(coordinates);
-  
-//       });
 
+      console.log("zoneCoordinates??", zoneCoordinates)
 
-//   return () => {
-//     map.current.on('draw.create', updateArea);
-//     map.current.on('draw.delete', updateArea);
-//     map.current.on('draw.update', updateArea);
-//     map.current.off("draw.create");
-//     map.current.removeControl(draw);
-//   };
-// }, [submitZoneActive]);
-
-
-// const [polygon, setPolygon] = useState([]);
-// const [area, setArea] = useState(null);
-
-// const drawPolygon = () => {
-//   const draw = new MapboxDraw({
-//     displayControlsDefault: false,
-//     controls: {
-//       polygon: true,
-//       trash: true
-//     }
-//   });
-//   map.current.addControl(draw);
-
-//   map.current.on("draw.create", () => {
-//     const polygonData = draw.getAll();
-//     if (polygonData.features.length > 0) {
-//       const coordinates = polygonData.features[0].geometry.coordinates[0];
-//       if (coordinates.length > 0) {
-//         setPolygon(coordinates);
-//         setArea(calculateArea(coordinates));
-//       }
-//     }
-//   });
-
-//   map.current.on("draw.delete", () => {
-//     setPolygon([]);
-//     setArea(null);
-//   });
-// };
-
-// const calculateArea = (coordinates) => {
-//   const turf = require("@turf/turf");
-//   const ring = coordinates[0]; // get the first linear ring of the polygon
-//   if (ring.length < 4) {
-//     // if the linear ring has less than 4 coordinates, return null
-//     return null;
-//   }
-//   // close the linear ring by adding the first coordinate to the end
-//   ring.push(ring[0]);
-//   const polygon = turf.polygon([ring]);
-//   const area = turf.area(polygon);
-//   return area;
-// };
-
-// useEffect(() => {
-//   map.current.on("load", () => {
-//     drawPolygon();
-//   });
-// }, []);
-
-const [polygon, setPolygon] = useState(null);
-const [area, setArea] = useState(null);
-
-
-useEffect(() => {
- 
-
-  map.current.on('load', () => {
-     
-
-      const draw = new MapboxDraw({
-        displayControlsDefault: false,
-        controls: {
-          polygon: true,
-          trash: true,
-        },
-      });
-
-      map.current.addControl(draw);
-
-      map.current.on('draw.create', () => {
-        const polygon = draw.getAll().features[0];
-        setPolygon(polygon);
-
-        const area = turf.area(polygon.geometry);
-        setArea(area);
-      });
-
-      map.current.on('draw.delete', () => {
-        setPolygon(null);
-        setArea(null);
-      });
-    });
- 
-
-
-}, []);
-
-
-
-
-
-
-
-
-
-console.log("polygon area:",area)
-
-
+    //   useEffect (() =>{
+    //   const drawControls = document.querySelectorAll(".mapboxgl-draw_ctrl-draw-btn");
+    //   if (map.current) {
+    //     if (!submitZoneActive) {
+    //       drawControls.style.display = "none";
+    //     } else {
+    //       drawControls.style.display = "block";
+    //     }
+    //   }
+    // },[submitZoneActive])
 
 
   return (
@@ -1163,6 +1060,7 @@ console.log("polygon area:",area)
           setSubmitZoneActive={setSubmitZoneActive}
           setSubmitPipeActive={setSubmitPipeActive}
           zoneCoordinates={zoneCoordinates}
+          area = {area}
           pipeCoordinates={pipeCoordinates}
           mapClickedCoordinates={mapClickedCoordinates} 
           HandleSetSubmitDeactivate={HandleSetSubmitDeactivate} 
@@ -1175,7 +1073,7 @@ console.log("polygon area:",area)
           showMaps={showMaps} setShowMaps={setShowMaps}
           showZones={showZones} setShowZones={setShowZones} handleShowZone={handleShowZone}
           showPipes={showPipes} setShowPipes={setShowPipes} handleShowPipe={handleShowPipe}
-        // handleShowPipe={handleShowPipe}
+          // handleShowPipe={handleShowPipe}
         />
 
       {/* sensor Popups start*/}

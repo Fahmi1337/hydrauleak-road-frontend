@@ -109,7 +109,8 @@ const handlePolygonCreated= props.handlePolygonCreated
       setSubmitZoneActive={setSubmitZoneActive} 
       handlePolygonCreated={handlePolygonCreated} 
       handleCloseZone={handleCloseZone} 
-      openZone={openZone} />)}
+      openZone={openZone} 
+      area = {props.area}/>)}
       
       {openPipe && (<AddPipePopup 
       pipeCoordinates={props.pipeCoordinates}
@@ -159,7 +160,7 @@ const handlePolygonCreated= props.handlePolygonCreated
           <div className="contributesButtonsContainer">
             {/* MODAL 2 */}
 
-          <button onClick={() => {setSubmitZoneActive (true);handleOpenZone();  handleClose();}} >Add zone</button>
+          <button onClick={() => {setSubmitZoneActive(true); handleOpenZone();  handleClose();}} >Add zone</button>
 
           <button  onClick={() => {setSubmitPipeActive(true);handleOpenPipe();  handleClose();}} >Add pipe</button>
 

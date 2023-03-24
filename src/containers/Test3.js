@@ -1,82 +1,76 @@
-import React, { useRef, useState, useEffect, useCallback } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import mapboxgl from "mapbox-gl";
-
-mapboxgl.accessToken =
-  "pk.eyJ1IjoiZmFobWloOTYiLCJhIjoiY2t1cXRkNWt2MGtxNjJucXZlN2FxemNpZiJ9.zBOiFS6ym4zFF9ZQ7zcmXA";
+import * as turf from '@turf/turf';
+import MapboxDraw from "@mapbox/mapbox-gl-draw";
+mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 
 const Map = () => {
   const [map, setMap] = useState(null);
-  const [showCircle, setShowCircle] = useState(true);
+  const [line, setLine] = useState(null);
 
   useEffect(() => {
-    const initializeMap = ({ setMap, mapContainer }) => {
-      const map = new mapboxgl.Map({
-        container: mapContainer,
-        style: "mapbox://styles/mapbox/streets-v11",
-        center: [-73.935242, 40.73061],
-        zoom: 12,
+    const map = new mapboxgl.Map({
+      container: "map",
+      style: "mapbox://styles/mapbox/streets-v11",
+      center: [0, 0],
+      zoom: 2,
+    });
+
+    map.on("load", () => {
+      setMap(map);
+
+      map.addSource("line", {
+        type: "geojson",
+        data: {
+          type: "FeatureCollection",
+          features: [],
+        },
       });
 
-      map.on("load", () => {
-        // Add a red circle layer
-        map.addLayer({
-          id: "circle",
-          type: "circle",
-          source: {
-            type: "geojson",
-            data: {
-              type: "FeatureCollection",
-              features: [
-                {
-                  type: "Feature",
-                  geometry: {
-                    type: "Point",
-                    coordinates: [-73.935242, 40.73061],
-                  },
-                },
-              ],
-            },
-          },
-          paint: {
-            "circle-radius": 10,
-            "circle-color": "#ff0000",
-          },
-        });
-
-        setMap(map);
+      map.addLayer({
+        id: "line-layer",
+        type: "line",
+        source: "line",
+        layout: {
+          "line-cap": "round",
+          "line-join": "round",
+        },
+        paint: {
+          "line-color": "#888",
+          "line-width": 8,
+        },
       });
-    };
+    });
 
-    if (!map) initializeMap({ setMap, mapContainer: mapContainerRef.current });
-  }, [map]);
-
-  const toggleShowCircle = useCallback(() => {
-    setShowCircle((showCircle) => !showCircle);
+    return () => map.remove();
   }, []);
 
-  useEffect(() => {
-    if (map) {
-      if (showCircle) {
-        map.setLayoutProperty("circle", "visibility", "visible");
-      } else {
-        map.setLayoutProperty("circle", "visibility", "none");
-      }
-    }
-  }, [map, showCircle]);
+  const drawLine = () => {
+    const draw = new MapboxDraw({
+      displayControlsDefault: false,
+      controls: {
+        line_string: true,
+        trash: true,
+      },
+    });
 
-  const mapContainerRef = useRef(null);
+    map.addControl(draw);
+
+    map.on("draw.create", (e) => {
+      const features = e.features;
+      const line = features[0];
+
+      setLine(line);
+
+      draw.deleteAll();
+    });
+  };
 
   return (
-    <div>
-      <div
-        ref={(el) => (mapContainerRef.current = el)}
-        style={{ height: "400px" }}
-      />
-      <label>
-        <input type="checkbox" checked={showCircle} onChange={toggleShowCircle} />
-        Show Circle
-      </label>
-    </div>
+    <>
+      <div id="map" style={{ height: "500px" }}></div>
+      <button onClick={drawLine}>Draw Line</button>
+    </>
   );
 };
 
