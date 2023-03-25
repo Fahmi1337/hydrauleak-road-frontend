@@ -10,8 +10,7 @@ import Modal from '@mui/material/Modal';
 const AddPipePopup = (props) => {
 
 // const [addPipe, setAddPipe] = useState(false);
-const initialState = '';
-const [pipe_coordinates, setPipeCoordinates] = useState(initialState);
+
 
 const [pipeData, setPipeData] = useState({
   
@@ -22,7 +21,7 @@ const [pipeData, setPipeData] = useState({
   map:1
 
 });
-const { pipe_creation_date, pipe_description, pipe_diameter, pipe_length, pipe_type, pipe_title, pipe_material, pipe_status, map } = pipeData;
+const { pipe_creation_date, pipe_description, pipe_diameter, pipe_length, pipe_type, pipe_title, pipe_material, pipe_status,pipe_coordinates, map } = pipeData;
 const handlePipeDataChange = (e) => {
   setPipeData({
     ...pipeData,
@@ -31,49 +30,20 @@ const handlePipeDataChange = (e) => {
   });
 };
    //get Pipe Coordinates
-  function getPipeCoordinates() {
-    
-    setPipeCoordinates(JSON.parse(localStorage.getItem("newCoordinates")));
-  
-    setPipeData({...pipeData, pipe_coordinates : JSON.parse(localStorage.getItem("newCoordinates"))});
-  }
-
-  useEffect(() => {
-    
-    getPipeCoordinates();
-
-        }, []);
-     
-
-        window.addEventListener("storage", () => {
-          getPipeCoordinates();
-        
-    });
+ 
+   const pipeCoordinates = props.pipeCoordinates
+   const pipeLength = props.pipeLength
+ 
+   useEffect(() => {
+     setPipeData({ ...pipeData,
+       pipe_coordinates: pipeCoordinates,
+       pipe_length: pipeLength
+     }
+       
+     );
+   }, [pipeCoordinates,pipeLength]);
 
 //get Pipe Coordinates
-
-//get Pipe Length start
-const [LengthPipe, setPipeLength] = useState(initialState);
-
-function getPipeLength() {
-
-  const pipeLength = localStorage.getItem("pipeLength");
-  
-  setPipeLength(pipeLength);
-    
-  setPipeData({...pipeData, pipe_length : pipeLength*1000});
-}
-
-useEffect(() => {
-  
-  getPipeLength();
-      }, [LengthPipe]);
-      window.addEventListener("pipeLengthStorage", () => {
-        getPipeLength();
-});
-
-//get Pipe Length end
-
 
 
  
@@ -199,7 +169,7 @@ console.log("maps details", maps)
           
             type="text"
             name="pipe_coordinates"
-            value={pipe_coordinates}
+            value={pipeData.pipe_coordinates}
             onChange={e => handlePipeDataChange(e)}
           />
           

@@ -1,76 +1,74 @@
-import React, { useRef, useState, useEffect } from "react";
-import mapboxgl from "mapbox-gl";
-import * as turf from '@turf/turf';
-import MapboxDraw from "@mapbox/mapbox-gl-draw";
+import React, { useEffect, useRef, useState } from 'react';
+import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import MapboxDraw from '@mapbox/mapbox-gl-draw';
+import * as turf from '@turf/turf'
+
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 
 const Map = () => {
-  const [map, setMap] = useState(null);
-  const [line, setLine] = useState(null);
+  const mapContainer = useRef(null);
+  const map = useRef(null);
+  const [lineLength, setLineLength] = useState(null);
+  const [lineCoordinates, setLineCoordinates] = useState([]);
 
   useEffect(() => {
-    const map = new mapboxgl.Map({
-      container: "map",
-      style: "mapbox://styles/mapbox/streets-v11",
-      center: [0, 0],
-      zoom: 2,
-    });
-
-    map.on("load", () => {
-      setMap(map);
-
-      map.addSource("line", {
-        type: "geojson",
-        data: {
-          type: "FeatureCollection",
-          features: [],
-        },
+    if (!map.current) {
+      map.current = new mapboxgl.Map({
+        container: mapContainer.current,
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [-122.420679, 37.772537],
+        zoom: 13
       });
 
-      map.addLayer({
-        id: "line-layer",
-        type: "line",
-        source: "line",
-        layout: {
-          "line-cap": "round",
-          "line-join": "round",
+      const draw = new MapboxDraw({
+        displayControlsDefault: false,
+        controls: {
+          line_string: true,
+          trash: true
         },
-        paint: {
-          "line-color": "#888",
-          "line-width": 8,
-        },
+        userProperties: true // enable user properties for features
       });
-    });
 
-    return () => map.remove();
-  }, []);
+      map.current.addControl(draw, 'top-left');
 
-  const drawLine = () => {
-    const draw = new MapboxDraw({
-      displayControlsDefault: false,
-      controls: {
-        line_string: true,
-        trash: true,
-      },
-    });
+      map.current.on('draw.create', () => {
+        const { features } = draw.getAll();
+        const lineFeature = features.find(feature => feature.geometry.type === 'LineString');
+        if (lineFeature) {
+          const lineLength = turf.length(lineFeature); // turf.js library
+          setLineLength(lineLength);
+          setLineCoordinates(lineFeature.geometry.coordinates);
+        }
+      });
 
-    map.addControl(draw);
+      map.current.on('draw.update', () => {
+        const { features } = draw.getAll();
+        const lineFeature = features.find(feature => feature.geometry.type === 'LineString');
+        if (lineFeature) {
+          const lineLength = turf.length(lineFeature); // turf.js library
+          setLineLength(lineLength);
+          setLineCoordinates(lineFeature.geometry.coordinates);
+        }
+      });
 
-    map.on("draw.create", (e) => {
-      const features = e.features;
-      const line = features[0];
+    }
 
-      setLine(line);
-
-      draw.deleteAll();
-    });
-  };
+    console.log("the pipesss", lineCoordinates, lineLength) 
+  }, [lineCoordinates, lineLength]);
 
   return (
-    <>
-      <div id="map" style={{ height: "500px" }}></div>
-      <button onClick={drawLine}>Draw Line</button>
-    </>
+    <div
+      ref={mapContainer}
+      style={{ width: '100%', height: '500px' }}
+    >
+      <div>
+        {lineLength && `Length: ${lineLength.toFixed(2)} meters`}
+      </div>
+      <div>
+        {lineCoordinates.length > 0 && `Coordinates: ${JSON.stringify(lineCoordinates)}`}
+      </div>
+    </div>
   );
 };
 

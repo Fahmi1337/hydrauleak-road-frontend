@@ -57,6 +57,7 @@ if(selectedIntervention.id){
    else{
     props.handleCloseZone();
     props.setSubmitZoneActive(false);
+    window.location.reload();
    }
    props.setSubmitZoneActive(false);
     localStorage.removeItem("newZoneCoordinates");

@@ -12,7 +12,6 @@ const AddPipeAccessPopup = (props) => {
 
 
   const arrivedCoordinates = props.mapClickedCoordinates
-  const initialState = '';
 
   const [pipeAccessData, setPipeAccessData] = useState({
     pipe_access_description:'',
@@ -80,11 +79,9 @@ reloadPage();
     
     const reloadPage = () => {
     
-      
-      localStorage.removeItem("selectedPipeId");
-      localStorage.removeItem("newSensorLng");
-      localStorage.removeItem("newSensorLat");
+      localStorage.removeItem("selectedPipeId");    
       props.handleClosePipeAccess();
+      window.location.reload();
       };
 
   return (

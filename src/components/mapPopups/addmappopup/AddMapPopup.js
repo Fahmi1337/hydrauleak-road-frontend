@@ -39,6 +39,7 @@ console.log("the map coordinates:", arrivedCoordinates)
     }
    else{
     props.handleCloseMap();
+    window.location.reload();
    }
  
     localStorage.removeItem("newmapLng");
@@ -88,7 +89,7 @@ console.log("the map coordinates:", arrivedCoordinates)
         console.error(err);
       });
     
-      // reloadPage();
+      reloadPage();
   };
 
     // //Modal

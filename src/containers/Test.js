@@ -14,6 +14,7 @@ import pipeAccessIcon from '../assets/icons/PipeAccess.png';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import * as turf from '@turf/turf'
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
+import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 
 import SensorViewPopup from '../components/mapPopups/addsensorpopup/SensorViewPopup';
 import SensorUpdatePopup from '../components/mapPopups/addsensorpopup/SensorUpdatePopup';
@@ -66,7 +67,6 @@ const Test = () => {
   const [submitPipeActive, setSubmitPipeActive] = useState(false);
   const [mapClickedCoordinates, setMapClickedCoordinates] = useState([]);
   
-  const [zones, setZones] = useState([]);
 
   // map const select delete update
   const [selectedMap, setSelectedMap] = useState();
@@ -129,9 +129,7 @@ const Test = () => {
         center: [-71.21088520218619, 46.806343083853875],
         zoom: 12,
       });
-      map.current.on("load", () => {
-        initializePolygon(submitZoneActive);
-      });
+     
       // Map search Geocoder
       map.current.addControl(
         new MapboxGeocoder({
@@ -154,6 +152,10 @@ const Test = () => {
         }),
         "bottom-right"
       );
+
+      map.current.on('load', () => {
+        setMapLoaded(true);
+      });
     }
   
     if (mapCenter[0]) {
@@ -191,14 +193,134 @@ const Test = () => {
       }
     };
     
-  }, [submitActive, mapClickedCoordinates, mapCenter, polygon, submitZoneActive, submitZoneActive]);
+  }, [submitActive, mapClickedCoordinates, mapCenter, polygon]);
   
 
 
 
 
-console.log("area?", area);
+
+
+
   
+
+  // Draw Zone start
+  const [polygonArea, setPolygonArea] = useState(null);
+  const [polygonCoordinates, setPolygonCoordinates] = useState([]);
+  const [mapLoaded, setMapLoaded] = useState(false);
+
+
+
+
+  useEffect(() => {
+    if (submitZoneActive) {
+      const draw = new MapboxDraw({
+        displayControlsDefault: false,
+        controls: {
+          polygon: true, // add polygon drawing tool
+          trash: true
+        },
+        userProperties: true // enable user properties for features
+      });
+
+      map.current.addControl(draw, 'top-right');
+
+      map.current.on('draw.create', () => {
+        const { features } = draw.getAll();
+        const polygonFeature = features.find(feature => feature.geometry.type === 'Polygon');
+        if (polygonFeature) {
+          const polygonArea = turf.area(polygonFeature); // turf.js library
+          setPolygonArea(polygonArea);
+          setPolygonCoordinates(polygonFeature.geometry.coordinates[0]);
+        }
+      });
+
+      map.current.on('draw.update', () => {
+        const { features } = draw.getAll();
+        const polygonFeature = features.find(feature => feature.geometry.type === 'Polygon');
+        if (polygonFeature) {
+          const polygonArea = turf.area(polygonFeature); // turf.js library
+          setPolygonArea(polygonArea);
+          setPolygonCoordinates(polygonFeature.geometry.coordinates[0]);
+        }
+      });
+    }
+  }, [mapLoaded,submitZoneActive]);
+
+  useEffect(() => {
+
+    setZoneCoordinates(polygonCoordinates)
+    setArea((polygonArea / 1000000).toFixed(2))
+    console.log(
+      'the Zonesss km²',
+      JSON.stringify(polygonCoordinates),
+      (polygonArea / 1000000).toFixed(2)
+    );
+  }, [polygonCoordinates, polygonArea, zoneCoordinates, area]);
+
+  // Draw Zone end
+  
+
+ 
+
+  // Draw Pipe start
+  const [lineLength, setLineLength] = useState(0);
+  const [lineCoordinates, setLineCoordinates] = useState([]);
+  const [pipeLength, setPipeLength] = useState(0);
+
+
+
+  useEffect(() => {
+    if (mapLoaded && submitPipeActive) {
+      const draw = new MapboxDraw({
+        displayControlsDefault: false,
+        controls: {
+          line_string: true,
+          trash: true
+        },
+        userProperties: true // enable user properties for features
+      });
+
+      map.current.addControl(draw, 'top-right');
+
+      map.current.on('draw.create', () => {
+        const { features } = draw.getAll();
+        const lineFeature = features.find(feature => feature.geometry.type === 'LineString');
+        if (lineFeature) {
+          const lineLength = turf.length(lineFeature); // turf.js library
+          setLineLength(lineLength);
+          setLineCoordinates(lineFeature.geometry.coordinates);
+        }
+      });
+
+      map.current.on('draw.update', () => {
+        const { features } = draw.getAll();
+        const lineFeature = features.find(feature => feature.geometry.type === 'LineString');
+        if (lineFeature) {
+          const lineLength = turf.length(lineFeature); // turf.js library
+          setLineLength(lineLength);
+          setLineCoordinates(lineFeature.geometry.coordinates);
+        }
+      });
+    }
+  }, [mapLoaded,submitPipeActive]);
+
+  useEffect(() => {
+
+    setPipeCoordinates(lineCoordinates)
+    setPipeLength(lineLength.toFixed(2))
+    console.log(
+      'the pipess m',
+      JSON.stringify(lineCoordinates),
+      lineLength
+    );
+  }, [lineCoordinates, lineLength, pipeCoordinates, pipeLength]);
+
+  // Draw Pipe end
+  
+
+
+
 
   //SENSOR HANDLING START
   useEffect(() => {
@@ -686,161 +808,6 @@ useEffect(() => {
 
 
 
-
-
-
-
-
-
-
-      useEffect(() => {
-  
-        //  if (submitPipeActive){
-    map.current.on('load', () => {
-            const geojson = {
-              'type': 'FeatureCollection',
-              'features': []
-              };
-              
-              // Used to draw a line between points
-              const linestring = {
-              'type': 'Feature',
-              'geometry': {
-              'type': 'LineString',
-              'coordinates': []
-              }
-              };
-              map.current.on('load', () => {
-                map.current.addSource('geojson', {
-                'type': 'geojson',
-                'data': geojson
-                });
-                
-                // Add styles to the map
-                map.current.addLayer({
-                id: 'measure-points',
-                type: 'circle',
-                source: 'geojson',
-                paint: {
-                'circle-radius': 5,
-                'circle-color': 'blue'
-                },
-                filter: ['in', '$type', 'Point']
-                });
-                map.current.addLayer({
-                id: 'measure-lines',
-                type: 'line',
-                source: 'geojson',
-                layout: {
-                'line-cap': 'round',
-                'line-join': 'round'
-                },
-                paint: {
-                'line-color': 'blue',
-                'line-width': 2.5
-                },
-                filter: ['in', '$type', 'LineString']
-                });
-                
-                map.current.on('click', (e) => {
-                    
-                const features = map.current.queryRenderedFeatures(e.point, {
-                layers: ['measure-points']
-                });
-                
-                // Remove the linestring from the group
-                // so we can redraw it based on the points collection.
-                if (geojson.features.length > 1) geojson.features.pop();
-                
-                // Clear the distance container to populate it with a new value.
-            
-                
-                // If a feature was clicked, remove it from the map.
-                if (features.length) {
-                const id = features[0].properties.id;
-                geojson.features = geojson.features.filter(
-                (point) => point.properties.id !== id
-                );
-                } else {
-                const point = {
-                'type': 'Feature',
-                'geometry': {
-                'type': 'Point',
-                'coordinates': [e.lngLat.lng, e.lngLat.lat]
-                },
-                'properties': {
-                'id': String(new Date().getTime())
-                }
-                };
-                
-                geojson.features.push(point); 
-                       }
-                
-                if (geojson.features.length > 0) {
-                linestring.geometry.coordinates = geojson.features.map(
-                (point) => point.geometry.coordinates
-                );
-                
-                geojson.features.push(linestring);
-                
-                // Populate the distanceContainer with total distance
-                const value = document.createElement('pre');
-                const distance = turf.length(linestring);
-                value.textContent = `Total distance: ${distance.toLocaleString()}km`;
-                // console.log("values :", value )
-                // distanceContainer.appendChild(value);
-                window.localStorage.setItem("pipeLength", distance.toLocaleString());
-                
-                window.dispatchEvent(new Event("pipeLengthStorage"));
-                }
-                
-                map.current.getSource('geojson').setData(geojson);
-          
-          
-                pipeCoordinates.push([e.lngLat.lng, e.lngLat.lat]);
-                
-              
-                });
-              });
-              map.current.on('mousemove', (e) => {
-                  const features = map.current.queryRenderedFeatures(e.point, {
-                  layers: ['measure-points']
-                  });
-                  // Change the cursor to a pointer when hovering over a point on the map.
-                  // Otherwise cursor is a crosshair.
-              map.current.getCanvas().style.cursor = features.length
-                  ? 'pointer'
-                  : 'crosshair';
-                  });
-          
-                
-              });
-                //  }  
-            }, [pipeCoordinates, submitPipeActive]);
-
-
-
-console.log("pipe coordinates :", pipeCoordinates)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // //ZONE HANDLING START
 
 useEffect(() => {
@@ -982,58 +949,6 @@ viewButton.addEventListener('click', () => {
 
 
 
-      const initializePolygon = (submitZoneActive) => {
-        const draw = new MapboxDraw({
-          displayControlsDefault: false,
-          controls: {
-            polygon: submitZoneActive,
-            trash: submitZoneActive,
-          },
-          userProperties: submitZoneActive, // enable user-defined properties
-        });
-    
-        map.current.addControl(draw);
-    
-        map.current.on("draw.create", () => {
-          const features = draw.getAll().features;
-          const polygon = features[0];
-    
-          // generate a unique ID for the polygon
-          // const id = Math.random().toString(36).substring(2, 15);
-          // polygon.id = id;
-    
-          setPolygon(polygon);
-    
-          const turfPolygon = turf?.polygon(polygon?.geometry?.coordinates);
-          const area = turf?.area(turfPolygon);
-          setZoneCoordinates(polygon.geometry.coordinates);
-          setArea(Math.round(area * 100) / 100000);
-        });
-    
-        map.current.on("draw.delete", () => {
-          setPolygon(null);
-          setArea(0);
-          setZoneCoordinates([]);
-        });
-
-    
-      };
-      
-
-      console.log("zoneCoordinates??", zoneCoordinates)
-
-    //   useEffect (() =>{
-    //   const drawControls = document.querySelectorAll(".mapboxgl-draw_ctrl-draw-btn");
-    //   if (map.current) {
-    //     if (!submitZoneActive) {
-    //       drawControls.style.display = "none";
-    //     } else {
-    //       drawControls.style.display = "block";
-    //     }
-    //   }
-    // },[submitZoneActive])
-
-
   return (
     <div>
       <div
@@ -1062,6 +977,7 @@ viewButton.addEventListener('click', () => {
           zoneCoordinates={zoneCoordinates}
           area = {area}
           pipeCoordinates={pipeCoordinates}
+          pipeLength= {pipeLength}
           mapClickedCoordinates={mapClickedCoordinates} 
           HandleSetSubmitDeactivate={HandleSetSubmitDeactivate} 
           HandleSetSubmitActive={HandleSetSubmitActive}/>

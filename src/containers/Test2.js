@@ -1,158 +1,96 @@
-import React, { useRef, useState } from "react";
-import mapboxgl from "mapbox-gl";
+import React, { useEffect, useRef, useState } from 'react';
+import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import MapboxDraw from '@mapbox/mapbox-gl-draw';
+import * as turf from '@turf/turf';
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 
-const PolygonAreaCalculator = () => {
-  const [map, setMap] = useState(null);
-  const [polygon, setPolygon] = useState(null);
+const Map = () => {
   const mapContainer = useRef(null);
+  const map = useRef(null);
+  const [polygonArea, setPolygonArea] = useState(null);
+  const [polygonCoordinates, setPolygonCoordinates] = useState([]);
+  const [mapLoaded, setMapLoaded] = useState(false);
+  const [showControls, setShowControls] = useState(true);
 
-  const drawPolygon = () => {
-    // Create a new polygon object
-    const newPolygon = new mapboxgl.Draw({
-      type: "polygon",
-      // Set the polygon mode to 'simple_select'
-      // to enable selection and editing of existing polygons
-      mode: "simple_select",
-      // Set the style of the polygon
-      // You can customize the style to fit your needs
-      style: {
-        fill: {
-          color: "#c7e9b4",
-          opacity: 0.5,
-        },
-        stroke: {
-          color: "#3b3b3b",
-          width: 2,
-        },
-      },
-    });
+  useEffect(() => {
+    if (!map.current) {
+      map.current = new mapboxgl.Map({
+        container: mapContainer.current,
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [-122.420679, 37.772537],
+        zoom: 13
+      });
 
-    // Add the polygon object to the map
-    map.addControl(newPolygon);
-
-    // Listen for the polygon creation event
-    map.on("draw.create", (event) => {
-      // Save the created polygon to the state
-      setPolygon(event.features[0]);
-
-      // Remove the draw control
-      map.removeControl(newPolygon);
-    });
-
-    // Listen for the polygon update event
-    map.on("draw.update", (event) => {
-      // Save the updated polygon to the state
-      setPolygon(event.features[0]);
-    });
-  };
-
-  const calculatePolygonArea = () => {
-    if (!polygon) {
-      alert("Please draw a polygon first!");
-      return;
+      map.current.on('load', () => {
+        setMapLoaded(true);
+      });
     }
-
-    // Get the coordinates of the polygon
-    const coordinates = polygon.geometry.coordinates[0];
-
-    // Calculate the area of the polygon using the Shoelace formula
-    let area = 0;
-    for (let i = 0; i < coordinates.length - 1; i++) {
-      area += coordinates[i][0] * coordinates[i + 1][1];
-      area -= coordinates[i + 1][0] * coordinates[i][1];
-    }
-    area = Math.abs(area / 2);
-
-    alert(`The area of the polygon is ${area} square meters.`);
-  };
-
-  // Initialize the map when the component mounts
-  React.useEffect(() => {
-    const newMap = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: "mapbox://styles/mapbox/streets-v11",
-      center: [0, 0],
-      zoom: 2,
-    });
-
-    setMap(newMap);
-
-    return () => newMap.remove();
   }, []);
 
-
-
-  React.useEffect(() => {
-     // Create a new polygon object
-     const newPolygon = new mapboxgl.Draw({
-      type: "polygon",
-      // Set the polygon mode to 'simple_select'
-      // to enable selection and editing of existing polygons
-      mode: "simple_select",
-      // Set the style of the polygon
-      // You can customize the style to fit your needs
-      style: {
-        fill: {
-          color: "#c7e9b4",
-          opacity: 0.5,
+  useEffect(() => {
+    if (mapLoaded) {
+      const draw = new MapboxDraw({
+        displayControlsDefault: false,
+        controls: {
+          polygon: true, // add polygon drawing tool
+          trash: true
         },
-        stroke: {
-          color: "#3b3b3b",
-          width: 2,
-        },
-      },
-    });
+        userProperties: true // enable user properties for features
+      });
 
-    // Add the polygon object to the map
-    map.addControl(newPolygon);
+      map.current.addControl(draw, 'top-left');
 
-    // Listen for the polygon creation event
-    map.on("draw.create", (event) => {
-      // Save the created polygon to the state
-      setPolygon(event.features[0]);
+      map.current.on('draw.create', () => {
+        const { features } = draw.getAll();
+        const polygonFeature = features.find(feature => feature.geometry.type === 'Polygon');
+        if (polygonFeature) {
+          const polygonArea = turf.area(polygonFeature); // turf.js library
+          setPolygonArea(polygonArea);
+          setPolygonCoordinates(polygonFeature.geometry.coordinates[0]);
+        }
+      });
 
-      // Remove the draw control
-      map.removeControl(newPolygon);
-    });
-
-    // Listen for the polygon update event
-    map.on("draw.update", (event) => {
-      // Save the updated polygon to the state
-      setPolygon(event.features[0]);
-    });
-
-
-
-    if (!polygon) {
-      alert("Please draw a polygon first!");
-      return;
+      map.current.on('draw.update', () => {
+        const { features } = draw.getAll();
+        const polygonFeature = features.find(feature => feature.geometry.type === 'Polygon');
+        if (polygonFeature) {
+          const polygonArea = turf.area(polygonFeature); // turf.js library
+          setPolygonArea(polygonArea);
+          setPolygonCoordinates(polygonFeature.geometry.coordinates[0]);
+        }
+      });
     }
+  }, [mapLoaded]);
 
-    // Get the coordinates of the polygon
-    const coordinates = polygon.geometry.coordinates[0];
+  useEffect(() => {
+    console.log(
+      'the Zonesss km²',
+      JSON.stringify(polygonCoordinates),
+      (polygonArea / 1000000).toFixed(2)
+    );
+  }, [polygonCoordinates, polygonArea]);
 
-    // Calculate the area of the polygon using the Shoelace formula
-    let area = 0;
-    for (let i = 0; i < coordinates.length - 1; i++) {
-      area += coordinates[i][0] * coordinates[i + 1][1];
-      area -= coordinates[i + 1][0] * coordinates[i][1];
-    }
-    area = Math.abs(area / 2);
-
-    alert(`The area of the polygon is ${area} square meters.`);
-
-  }, []);
-
+  const toggleControls = () => {
+    setShowControls(!showControls);
+  };
 
   return (
-    <>
-      <div ref={mapContainer} style={{ height: "500px" }} />
-      <button onClick={drawPolygon}>Draw a Polygon</button>
-      <button onClick={calculatePolygonArea}>Calculate Area</button>
-    </>
+    <div>
+      <div>
+        <button onClick={toggleControls}>{showControls ? 'Hide' : 'Show'} controls</button>
+      </div>
+      {showControls && (
+        <div ref={mapContainer} style={{ width: '100%', height: '500px' }}>
+          <div>{polygonArea && `Area: ${(polygonArea / 1000000).toFixed(2)} hectares`}</div>
+          <div>
+            {polygonCoordinates.length > 0 && `Coordinates: ${JSON.stringify(polygonCoordinates)}`}
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
-export default PolygonAreaCalculator;
+export default Map;

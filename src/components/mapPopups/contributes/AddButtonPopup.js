@@ -116,7 +116,8 @@ const handlePolygonCreated= props.handlePolygonCreated
       pipeCoordinates={props.pipeCoordinates}
       setSubmitPipeActive={setSubmitPipeActive} 
       handleClosePipe={handleClosePipe} 
-      openPipe={openPipe}/>)}   
+      openPipe={openPipe}
+      pipeLength={props.pipeLength}/>)}   
 
       {openPipeAccess &&( <AddPipeAccessPopup  
       handleClosePipeAccess={handleClosePipeAccess} 
