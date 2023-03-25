@@ -27,7 +27,7 @@ import Modal from '@mui/material/Modal';
   useEffect(() => {
     setMapData(prevMapData => ({
       ...prevMapData,
-      Map_coordinate: arrivedCoordinates
+      map_coordinate: arrivedCoordinates
     }));
   }, [arrivedCoordinates]);
 
@@ -179,7 +179,7 @@ console.log("props.selectedContract", selectedContract)
           disabled
             type="text"
             name="map_coordinate"
-            value={mapData.map_coordinate || arrivedCoordinates}
+            value={mapData.map_coordinate}
             onChange={e => handleMapDataChange(e)}
           />
           <label>Map creation date:</label>
