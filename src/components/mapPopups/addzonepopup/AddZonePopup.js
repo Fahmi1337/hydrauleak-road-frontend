@@ -39,9 +39,11 @@ const zoneCoordinates = props.zoneCoordinates
  
         useEffect(() => {
           setZoneData({ ...zoneData,
-            zone_coordinates: zoneCoordinates,}
+            zone_coordinates: zoneCoordinates,
+            zone_area: props.area
+          }
            
-            // zone_area: localStorage.getItem("zoneArea")
+            
           );
         }, [zoneCoordinates]);
 
