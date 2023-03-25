@@ -125,11 +125,11 @@ const Test = () => {
     if (!map.current) {
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
-        style: "mapbox://styles/mapbox/streets-v11",
+        style: "mapbox://styles/mapbox/satellite-streets-v12",
         center: [-71.21088520218619, 46.806343083853875],
         zoom: 12,
       });
-     
+      
       // Map search Geocoder
       map.current.addControl(
         new MapboxGeocoder({
@@ -157,6 +157,17 @@ const Test = () => {
         setMapLoaded(true);
       });
     }
+
+    const layerList = document.getElementById('menu');
+      const inputs = layerList.getElementsByTagName('input');
+      const onClick = (layer) => {
+        const layerId = layer.target.id;
+        map.current.setStyle('mapbox://styles/mapbox/' + layerId);
+      };
+  
+      for (const input of inputs) {
+        input.onclick = onClick;
+      }
   
     if (mapCenter[0]) {
       map.current.easeTo({
@@ -213,7 +224,7 @@ const Test = () => {
 
 
   useEffect(() => {
-    if (submitZoneActive) {
+    if (mapLoaded && submitZoneActive) {
       const draw = new MapboxDraw({
         displayControlsDefault: false,
         controls: {
@@ -956,6 +967,41 @@ viewButton.addEventListener('click', () => {
         ref={mapContainer}
         style={{ width: '145em', height: '80.5em',left: '13.8em' }}
       />
+<style>
+        {`
+          body {
+            margin: 0;
+            padding: 0;
+          }
+          #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+          }
+          #menu {
+            position: absolute;
+            background: #efefef;
+            padding: 10px;
+            font-family: 'Open Sans', sans-serif;
+          }
+        `}
+      </style>
+      
+      <div id="menu">
+        <input id="satellite-streets-v12" type="radio" name="rtoggle" value="satellite" defaultChecked />
+        <label htmlFor="satellite-streets-v12">satellite streets</label>
+        <input id="light-v11" type="radio" name="rtoggle" value="light" />
+        <label htmlFor="light-v11">light</label>
+        <input id="dark-v11" type="radio" name="rtoggle" value="dark" />
+        <label htmlFor="dark-v11">dark</label>
+        <input id="streets-v12" type="radio" name="rtoggle" value="streets" />
+        <label htmlFor="streets-v12">streets</label>
+        <input id="outdoors-v12" type="radio" name="rtoggle" value="outdoors" />
+        <label htmlFor="outdoors-v12">outdoors</label>
+      </div>
+      <script src="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js"></script>
+      
 
       {/* map Center SELECT */}
           <div  className="selectMapContainer">             

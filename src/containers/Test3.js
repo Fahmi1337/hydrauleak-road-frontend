@@ -1,75 +1,72 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 import mapboxgl from 'mapbox-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
-import MapboxDraw from '@mapbox/mapbox-gl-draw';
-import * as turf from '@turf/turf'
 
-mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
-
-const Map = () => {
-  const mapContainer = useRef(null);
-  const map = useRef(null);
-  const [lineLength, setLineLength] = useState(null);
-  const [lineCoordinates, setLineCoordinates] = useState([]);
-
+const MapboxMap = () => {
   useEffect(() => {
-    if (!map.current) {
-      map.current = new mapboxgl.Map({
-        container: mapContainer.current,
-        style: 'mapbox://styles/mapbox/streets-v11',
-        center: [-122.420679, 37.772537],
-        zoom: 13
-      });
+    mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 
-      const draw = new MapboxDraw({
-        displayControlsDefault: false,
-        controls: {
-          line_string: true,
-          trash: true
-        },
-        userProperties: true // enable user properties for features
-      });
+    const map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/satellite-streets-v12',
+      center: [-2.81361, 36.77271],
+      zoom: 13,
+    });
 
-      map.current.addControl(draw, 'top-left');
+    const layerList = document.getElementById('menu');
+    const inputs = layerList.getElementsByTagName('input');
 
-      map.current.on('draw.create', () => {
-        const { features } = draw.getAll();
-        const lineFeature = features.find(feature => feature.geometry.type === 'LineString');
-        if (lineFeature) {
-          const lineLength = turf.length(lineFeature); // turf.js library
-          setLineLength(lineLength);
-          setLineCoordinates(lineFeature.geometry.coordinates);
-        }
-      });
+    const onClick = (layer) => {
+      const layerId = layer.target.id;
+      map.setStyle('mapbox://styles/mapbox/' + layerId);
+    };
 
-      map.current.on('draw.update', () => {
-        const { features } = draw.getAll();
-        const lineFeature = features.find(feature => feature.geometry.type === 'LineString');
-        if (lineFeature) {
-          const lineLength = turf.length(lineFeature); // turf.js library
-          setLineLength(lineLength);
-          setLineCoordinates(lineFeature.geometry.coordinates);
-        }
-      });
-
+    for (const input of inputs) {
+      input.onclick = onClick;
     }
 
-    console.log("the pipesss", lineCoordinates, lineLength) 
-  }, [lineCoordinates, lineLength]);
+    return () => {
+      map.remove();
+    };
+  }, []);
 
   return (
-    <div
-      ref={mapContainer}
-      style={{ width: '100%', height: '500px' }}
-    >
-      <div>
-        {lineLength && `Length: ${lineLength.toFixed(2)} meters`}
+    <>
+      <style>
+        {`
+          body {
+            margin: 0;
+            padding: 0;
+          }
+          #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+          }
+          #menu {
+            position: absolute;
+            background: #efefef;
+            padding: 10px;
+            font-family: 'Open Sans', sans-serif;
+          }
+        `}
+      </style>
+      <div id="map"></div>
+      <div id="menu">
+        <input id="satellite-streets-v12" type="radio" name="rtoggle" value="satellite" defaultChecked />
+        <label htmlFor="satellite-streets-v12">satellite streets</label>
+        <input id="light-v11" type="radio" name="rtoggle" value="light" />
+        <label htmlFor="light-v11">light</label>
+        <input id="dark-v11" type="radio" name="rtoggle" value="dark" />
+        <label htmlFor="dark-v11">dark</label>
+        <input id="streets-v12" type="radio" name="rtoggle" value="streets" />
+        <label htmlFor="streets-v12">streets</label>
+        <input id="outdoors-v12" type="radio" name="rtoggle" value="outdoors" />
+        <label htmlFor="outdoors-v12">outdoors</label>
       </div>
-      <div>
-        {lineCoordinates.length > 0 && `Coordinates: ${JSON.stringify(lineCoordinates)}`}
-      </div>
-    </div>
+      <script src="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js"></script>
+    </>
   );
 };
 
-export default Map;
+export default MapboxMap;
