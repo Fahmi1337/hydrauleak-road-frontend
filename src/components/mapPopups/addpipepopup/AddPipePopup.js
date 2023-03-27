@@ -14,11 +14,11 @@ const AddPipePopup = (props) => {
 
 const [pipeData, setPipeData] = useState({
   
-  pipe_diameter:0,
+  pipe_diameter:"0",
   pipe_material:"undefined",
   pipe_status:"unknown",
   pipe_type:"undefined",
-  map:1
+  map: "3",
 
 });
 const { pipe_creation_date, pipe_description, pipe_diameter, pipe_length, pipe_type, pipe_title, pipe_material, pipe_status,pipe_coordinates, map } = pipeData;
@@ -46,7 +46,7 @@ const handlePipeDataChange = (e) => {
 //get Pipe Coordinates
 
 
- 
+ console.log("pipeData?", pipeData)
 
 
 const handleSubmitData = () => {

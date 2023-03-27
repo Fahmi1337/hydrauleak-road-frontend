@@ -370,3 +370,11 @@ line-height: 32px;
   width: 24px;
   height: 33px;
 }
+.appContainer{
+  display: grid;
+grid-template-columns: 10vw 90vw;
+}
+
+@media only screen and (max-width: 1700px) {
+
+}

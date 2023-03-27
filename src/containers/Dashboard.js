@@ -1103,8 +1103,31 @@ return (
 <ButtonWithPopup  data={props.data} handleClickSensor={handleClickSensor} setRunEffectSensor={setRunEffectSensor} getSensors={getSensors} setRunEffectPipe={setRunEffectPipe} setRunEffectZone={setRunEffectZone}/>
 {/* {addSensor && <div>Something showed up!</div>} */}
 
+<style>
+        {`
+          body {
+            margin: 0;
+            padding: 0;
+          }
+          #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 91%;
+            right: 0%;
+            left: 9%;
+          }
+          #menu {
+            position: absolute;
+            background: #efefef;
+            padding: 10px;
+            font-family: 'Open Sans', sans-serif;
+          }
+        `}
+      </style>
+<div className="mapContainer" ref={mapContainer} id="map" />
 
-<div className="mapContainer" ref={mapContainer} style={{ width: '145em', height: '80.5em',left: '13.8em' }} />
+
 
 
 {/* map Center SELECT */}

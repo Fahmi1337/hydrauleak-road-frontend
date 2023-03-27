@@ -23,7 +23,7 @@ zone_area: parseFloat(localStorage.getItem("zoneArea")),
   zone_status: 'notStart',
   zone_color: 'orange',
   zone_coordinates: '',
-  map: 1
+  map: "3"
 });
 const style = {
 

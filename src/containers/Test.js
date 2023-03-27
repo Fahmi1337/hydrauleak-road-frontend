@@ -219,20 +219,36 @@ const Test = () => {
   const [polygonArea, setPolygonArea] = useState(null);
   const [polygonCoordinates, setPolygonCoordinates] = useState([]);
   const [mapLoaded, setMapLoaded] = useState(false);
-
+  const [controlsEnabled, setControlsEnabled] = useState(true);
 
 
 
   useEffect(() => {
-    if (mapLoaded && submitZoneActive) {
+
+
       const draw = new MapboxDraw({
         displayControlsDefault: false,
         controls: {
-          polygon: true, // add polygon drawing tool
-          trash: true
+          polygon: false, // add polygon drawing tool
+          trash: false
         },
-        userProperties: true // enable user properties for features
+        userProperties: false // enable user properties for features
       });
+
+     
+      // const drawControl = map.current.getControl('draw');
+
+      // console.log("submit active zone", submitZoneActive)
+      // if (submitZoneActive){
+      //   drawControl.update({
+      //       controls: {
+      //         polygon: true,
+      //         trash: true
+      //       }
+      //     });
+      //   }
+    
+      
 
       map.current.addControl(draw, 'top-right');
 
@@ -255,8 +271,8 @@ const Test = () => {
           setPolygonCoordinates(polygonFeature.geometry.coordinates[0]);
         }
       });
-    }
-  }, [mapLoaded,submitZoneActive]);
+    
+  }, [submitZoneActive]);
 
   useEffect(() => {
 
@@ -267,7 +283,12 @@ const Test = () => {
       JSON.stringify(polygonCoordinates),
       (polygonArea / 1000000).toFixed(2)
     );
-  }, [polygonCoordinates, polygonArea, zoneCoordinates, area]);
+
+  
+      
+    
+
+  }, [controlsEnabled,polygonCoordinates, polygonArea, zoneCoordinates, area]);
 
   // Draw Zone end
   
@@ -965,7 +986,7 @@ viewButton.addEventListener('click', () => {
       <div
         className="mapContainer" 
         ref={mapContainer}
-        style={{ width: '145em', height: '80.5em',left: '13.8em' }}
+       id="map"
       />
 <style>
         {`
@@ -977,7 +998,9 @@ viewButton.addEventListener('click', () => {
             position: absolute;
             top: 0;
             bottom: 0;
-            width: 100%;
+            width: 91%;
+            right: 0%;
+            left: 9%;
           }
           #menu {
             position: absolute;
