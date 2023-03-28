@@ -40,10 +40,11 @@ const SignUp = ({ setAlert, signup, isAuthenticated }) => {
                     content='sign up page'
                 />
             </Helmet>
-            <h1 className='auth__title'>Sign Up</h1>
-            <p className='auth__lead'>Create your Account</p>
+            {/* <h1 className='auth__title'>Sign Up</h1>
+            <p className='auth__lead'>Create your Account</p> */}
             <form className='auth__form' onSubmit={e => onSubmit(e)}>
                 <div className='auth__form__group'>
+                <label>Name :</label>
                     <input 
                         className='auth__form__input'
                         type='text'
@@ -55,6 +56,7 @@ const SignUp = ({ setAlert, signup, isAuthenticated }) => {
                     />
                 </div>
                 <div className='auth__form__group'>
+                <label>Email :</label>
                     <input 
                         className='auth__form__input'
                         type='email'
@@ -66,6 +68,7 @@ const SignUp = ({ setAlert, signup, isAuthenticated }) => {
                     />
                 </div>
                 <div className='auth__form__group'>
+                <label>Phone :</label>
                     <input 
                         className='auth__form__input'
                         type='phone'
@@ -77,6 +80,7 @@ const SignUp = ({ setAlert, signup, isAuthenticated }) => {
                     />
                 </div>
                 <div className='auth__form__group'>
+                <label>Password :</label>
                     <input
                         className='auth__form__input'
                         type='password'
@@ -88,6 +92,7 @@ const SignUp = ({ setAlert, signup, isAuthenticated }) => {
                     />
                 </div>
                 <div className='auth__form__group'>
+                <label>Confirm Password :</label>
                     <input
                         className='auth__form__input'
                         type='password'
@@ -100,9 +105,9 @@ const SignUp = ({ setAlert, signup, isAuthenticated }) => {
                 </div>
                 <button className='auth__form__button'>Register</button>
             </form>
-            <p className='auth__authtext'>
+            {/* <p className='auth__authtext'>
                 Already have an account? <Link className='auth__authtext__link' to='/login'>Sign In</Link>
-            </p>
+            </p> */}
         </div>
     );
 

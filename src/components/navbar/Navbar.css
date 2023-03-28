@@ -65,7 +65,7 @@ body {
     padding-left: 1.5em;
     margin-left: -0.22em;
   }
-  .auth a {
+  /* .auth a {
     background-color: #e8491d;
     padding: 10px;
     color: white;
@@ -74,7 +74,7 @@ body {
     font-weight: 500;
     border-radius: 4px;
     display: inline-block;
-  }
+  } */
 
   .left-nav {
     width: 16em;
