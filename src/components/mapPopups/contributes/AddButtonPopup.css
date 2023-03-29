@@ -48,7 +48,7 @@
 .layersButton{
   position: absolute !important;
   color: white !important;
-  left: 40% !important;
+  right: 2% !important;
   top: 0% !important;
   z-index: 999999999 !important;
   font-size: 1.3em !important;
@@ -59,9 +59,28 @@
 }
 .contributesButtonsContainer{
   display: grid;
-grid-template-columns: 1fr 1fr;
+  grid-template-columns: 33% 33% 33%;
 }
 .contributesButtonsContainer button{
  margin : 1em;
   
 }
+.contributesButtonsContainer img{
+  cursor: pointer;
+}
+input[type="checkbox"]{
+  width: 25px;
+  height: 25px;
+}
+
+.mapLayersButtonContainer img{
+  cursor: pointer;
+  position: absolute;
+  width: 4em;
+  height: auto;
+  bottom: 2em;
+  }
+  .mapLayersContainer{
+    top: 52%;
+    left: 10%;
+  }

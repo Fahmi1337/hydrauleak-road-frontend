@@ -8,6 +8,8 @@ import AddMapContract from './AddMapContract'
 import Box from '@mui/material/Box';
 // import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import './contracts.css'
 
 const Contract = (props) => {
@@ -115,12 +117,17 @@ const handleDeleteContract =async (contractId) => {
          <td>
            <button onClick={() => {handleEditContract(item);handleOpenViewContract();}}>Details</button>
          </td>
-         <td>
-           <button onClick={() =>  {handleEditContract(item); handleOpenEditContract();}}>Edit</button>
-         </td>
-         <td>
-           <button onClick={() => handleDeleteContract(item.id)}>Delete</button>
-         </td>
+         <td className='tableEditTd'> 
+    <EditIcon onClick={() =>  {handleEditContract(item); handleOpenEditContract();}} />
+  
+   </td>
+   <td className='tableDeleteTd'> 
+    <DeleteIcon onClick={() => handleDeleteContract(item.id)}/>
+    
+   </td>
+
+
+ 
       </tr>
     ));
 
@@ -269,7 +276,7 @@ console.log("selectedContract",selectedContract )
                   )}         
           </div>
           <div className="pageTitleContainer">  <h1>Contracts</h1></div>
-          <div id="addTableButtonContainer"> <button onClick={() => handleOpenAddContract()}>Add Contract +</button></div>
+          <div id="addTableButtonContainer"> <button onClick={() => handleOpenAddContract()}>+ Add Contract</button></div>
       <div className="table-controls">
      
         <div className="search-input">

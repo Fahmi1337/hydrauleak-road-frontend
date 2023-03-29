@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { login } from '../../actions/auth';
 import hydraulogo from "../../assets/icons/Hydrauleak.png"
+import hydrauleakBackground from "../../assets/icons/hydrauleak-background.png"
 import '../../assets/css/login.css'
 import SignUp from "../Signup"
 const Login = ({ login, isAuthenticated }) => {
@@ -27,7 +28,7 @@ const Login = ({ login, isAuthenticated }) => {
         return <Navigate  to='/' />;
     
     return (
-        <div className='auth'>
+        <div className='auth' style={{backgroundImage: "url(" + hydrauleakBackground + ")"}}>
             <Helmet>
                 <title>Hydrauleak Road - Login</title>
                 <meta
@@ -37,8 +38,8 @@ const Login = ({ login, isAuthenticated }) => {
             </Helmet>
 
 
-<div className="LoginContainer">
-    <div className='LoginContainerLeft'>
+<div className="LoginContainer" >
+    <div className='LoginContainerLeft'  >
         <div className='loginTextLeft'><h1>We locate leaks quickly to save water, money and the environment.</h1>
         <p>Hydrauleak is an innovative, dynamic and expansionist organization that aims to modernize the water sector. The company's strategy is based on listening to its customers and innovating to meet their needs.</p>
  
@@ -96,10 +97,6 @@ const Login = ({ login, isAuthenticated }) => {
      </div>
 )}
 
-          
-            {/* <p className='auth__authtext'>
-                Don't have an account? <Link className='auth__authtext__link' to='/signup'>Sign Up</Link>
-            </p> */}
         </div>
     </div>
 </div>

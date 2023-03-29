@@ -4,7 +4,8 @@ import ReactPaginate from 'react-paginate';
 import EditClientPopupForm from './EditClientPopupForm';
 import AddClientPopupForm from './AddClientPopupForm';
 import ViewClientPopupForm from './ViewClientPopupForm';
-
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 
 const ClientManagement = () => {
@@ -134,24 +135,18 @@ const handleDeleteClient =async (clientId) => {
     <td ><button onClick={() => handleRowClick(item)}>Details</button></td>
     )} 
        {me.roles==="is_admin" && (
-    <td>
-    <button onClick={() =>  {handleEditClient(item); handleOpenEditClient();}}>Edit</button>
+   <td className='tableEditTd'> 
+   <EditIcon onClick={() =>  {handleEditClient(item); handleOpenEditClient();}} />
+ 
   </td>
     )} 
        {me.roles==="is_admin" && (
-   <td>
-   <button onClick={() => handleDeleteClient(item.id)}>Delete</button>
- </td>
+     <td className='tableDeleteTd'> 
+     <DeleteIcon onClick={() => handleDeleteClient(item.id)}/>
+     
+    </td>
     )} 
 
-
-        {/* <td ><button onClick={() => handleRowClick(item)}>Details</button></td>
-         <td>
-           <button onClick={() =>  {handleEditClient(item); handleOpenEditClient();}}>Edit</button>
-         </td>
-         <td>
-           <button onClick={() => handleDeleteClient(item.id)}>Delete</button>
-         </td> */}
       </tr>
     ));
 
@@ -271,10 +266,10 @@ const handleCloseViewClient = () => {
     
         <div className="search-input">  
         {me.roles==="is_admin" && (
-  <div id="addTableButtonContainer">  <button onClick={() => handleOpenAddClient()}>Add Client Data</button> </div>
+  <div id="addTableButtonContainer">  <button onClick={() => handleOpenAddClient()}>+ Add Client Data</button> </div>
     )}     
       <div className="table-controls">
-        {/* <button onClick={() => handleOpenAddClient()}>Add Client Data</button> */}
+      
         <div className="search-input">
       
       <label htmlFor="search">Search:</label>

@@ -1,10 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
 import mapboxgl from "mapbox-gl";
 import axios from 'axios';
-
+import layersIcon from "../assets/icons/layersIcon.png"
 import '../assets/css/mapPopup.css';
 import ButtonWithPopup from "../components/mapPopups/contributes/AddButtonPopup"
 import MapLayersPopup from "../components/mapPopups/mapLayersPopup/MapLayersPopup"
+
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
 
 import sensorGreenIcon from '../assets/icons/sensorGreen.png';
 import sensorBlueIcon from '../assets/icons/sensorBlue.png';
@@ -120,6 +123,24 @@ const Test = () => {
   const [polygon, setPolygon] = useState(null);
   const [area, setArea] = useState(0);
 
+  //Map Layers Popup
+  const style = {
+    position: 'absolute',
+    top: '45%',
+    left: '22%',
+    
+    transform: 'translate(-50%, -50%)',
+    width: "auto",
+    height: "auto",
+    bgcolor: 'rgba(255, 255, 255, 0.75)',
+    boxShadow: 24,
+    p: 4,
+  };
+  //POPUP1
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(!open);
+  const handleClose = () => setOpen(false);
+//POPUP1
 
   useEffect(() => {
     if (!map.current) {
@@ -236,17 +257,7 @@ const Test = () => {
       });
 
      
-      // const drawControl = map.current.getControl('draw');
-
-      // console.log("submit active zone", submitZoneActive)
-      // if (submitZoneActive){
-      //   drawControl.update({
-      //       controls: {
-      //         polygon: true,
-      //         trash: true
-      //       }
-      //     });
-      //   }
+ 
     
       
 
@@ -1010,8 +1021,12 @@ viewButton.addEventListener('click', () => {
           }
         `}
       </style>
-      
-      <div id="menu">
+      <div className="mapLayersButtonContainer">
+      <img src={layersIcon} alt="layers" onClick={handleOpen}/>
+      </div>
+     
+    
+      <div id="menu" style={{display: open? "block" : "none"}} className="mapLayersContainer">
         <input id="satellite-streets-v12" type="radio" name="rtoggle" value="satellite" defaultChecked />
         <label htmlFor="satellite-streets-v12">satellite streets</label>
         <input id="light-v11" type="radio" name="rtoggle" value="light" />
@@ -1024,7 +1039,6 @@ viewButton.addEventListener('click', () => {
         <label htmlFor="outdoors-v12">outdoors</label>
       </div>
       <script src="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js"></script>
-      
 
       {/* map Center SELECT */}
           <div  className="selectMapContainer">             

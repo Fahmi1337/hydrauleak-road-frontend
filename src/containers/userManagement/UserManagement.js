@@ -3,7 +3,8 @@ import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 import EditUserPopupForm from './EditUserPopupForm';
 import AddUserPopupForm from './AddUserPopupForm';
-
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 
 
@@ -89,14 +90,21 @@ const handleDeleteUser =async (userId) => {
         <td>{item.email}</td>
         <td>{item.phone}</td>
         <td>{item.roles}</td>
-         <td>
-           <button onClick={() =>  {handleEditUser(item); handleOpenEditUser();}}>Edit</button>
-         </td>
-         <td>
-           <button onClick={() => handleDeleteUser(item.id)}>Delete</button>
-         </td>
+        <td className='tableEditTd'> 
+    <EditIcon onClick={() =>  {handleEditUser(item); handleOpenEditUser();}} />
+  
+   </td>
+   <td className='tableDeleteTd'> 
+    <DeleteIcon onClick={() => handleDeleteUser(item.id)}/>
+    
+   </td>
       </tr>
     ));
+
+
+
+   
+
 
   const pageCount = Math.ceil(data.length / itemsPerPage);
 

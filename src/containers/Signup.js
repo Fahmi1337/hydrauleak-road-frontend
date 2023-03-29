@@ -40,8 +40,7 @@ const SignUp = ({ setAlert, signup, isAuthenticated }) => {
                     content='sign up page'
                 />
             </Helmet>
-            {/* <h1 className='auth__title'>Sign Up</h1>
-            <p className='auth__lead'>Create your Account</p> */}
+       
             <form className='auth__form' onSubmit={e => onSubmit(e)}>
                 <div className='auth__form__group'>
                 <label>Name :</label>
