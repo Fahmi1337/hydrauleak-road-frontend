@@ -6,16 +6,22 @@ import Button from '@mui/material/Button';
 
 import Modal from '@mui/material/Modal';
 
+import sensor from "../../../assets/icons/contributes/sensor.png";
+import pipe from "../../../assets/icons/contributes/pipe.png";
+import pipeAccess from "../../../assets/icons/contributes/pipeAccess.png";
+import zone from "../../../assets/icons/contributes/zone.png";
+import mark from "../../../assets/icons/contributes/mark.png";
+import map from "../../../assets/icons/contributes/map.png";
 
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
 
 const style = {
   position: 'absolute',
-  top: '32%',
-  left: '22%',
+  top: '45%',
+  right: '-8%',
   
   transform: 'translate(-50%, -50%)',
-  width: 400,
+  width: "auto",
   height: "auto",
   bgcolor: 'rgba(255, 255, 255, 0.75)',
   boxShadow: 24,
@@ -30,7 +36,7 @@ const style = {
 
 //POPUP1
     const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
+    const handleOpen = () => setOpen(!open);
     const handleClose = () => setOpen(false);
 //POPUP1
 
@@ -73,6 +79,7 @@ const style = {
             <div>
       
             <Form.Check inline id="switch1" className="pl-5">
+            <img src={sensor} alt="sensor"/>
             <Form.Check.Input
               checked={props.showSensors}
               onChange={() => props.setShowSensors(!props.showSensors)}
@@ -80,13 +87,14 @@ const style = {
           
           </Form.Check>
           <Form.Label>Sensors</Form.Label>
-     
+          
     
      
     </div>
     <div>
       
       <Form.Check inline id="switch1" className="pl-5">
+      <img src={mark} alt="marker"/>
       <Form.Check.Input
         checked={props.showMarkers}
         onChange={() => props.setShowMarkers(!props.showMarkers)}
@@ -101,6 +109,7 @@ const style = {
 <div>
       
       <Form.Check inline id="switch1" className="pl-5">
+      <img src={pipeAccess} alt="pipeAccess"/>
       <Form.Check.Input
         checked={props.showPipeAccess}
         onChange={() => props.setShowPipeAccess(!props.showPipeAccess)}
@@ -115,6 +124,7 @@ const style = {
 <div>
       
       <Form.Check inline id="switch1" className="pl-5">
+      <img src={map} alt="map"/>
       <Form.Check.Input
         checked={props.showMaps}
         onChange={() => props.setShowMaps(!props.showMaps)}
@@ -129,6 +139,7 @@ const style = {
 <div>
       
       <Form.Check inline id="switch1" className="pl-5">
+      <img src={pipe} alt="pipe"/>
       <Form.Check.Input
    
         checked={props.showPipes}
@@ -144,6 +155,7 @@ const style = {
 <div>
       
       <Form.Check inline id="switch1" className="pl-5">
+      <img src={zone} alt="zone"/>
       <Form.Check.Input
         checked={props.showZones}
         onChange={toggleShowZones}
@@ -159,7 +171,7 @@ const style = {
          {/* MODAL 2 */}
       
           </div>
-          <button onClick={() => { handleClose(); }}>Close</button>
+          {/* <button onClick={() => { handleClose(); }}>Close</button> */}
         </Box>
         
       </Modal>

@@ -6,6 +6,8 @@ import AddInterventionPopupForm from './AddInterventionPopupForm';
 import ViewInterventionPopup from './ViewInterventionPopup'
 import AddZoneIntervention from './AddZoneIntervention'
 import Box from '@mui/material/Box';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 // import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import './interventions.css'
@@ -110,11 +112,13 @@ const handleDeleteIntervention = async (interventionId) => {
          <td>
            <button onClick={() => {handleEditIntervention(item);handleOpenViewIntervention();}}>Details</button>
          </td>
-         <td>
-           <button onClick={() =>  {handleEditIntervention(item); handleOpenEditIntervention();}}>Edit</button>
+         <td className='tableEditTd'> 
+          <EditIcon onClick={() =>  {handleEditIntervention(item); handleOpenEditIntervention();}} />
+        
          </td>
-         <td>
-           <button onClick={() => handleDeleteIntervention(item.id)}>Delete</button>
+         <td className='tableDeleteTd'> 
+          <DeleteIcon onClick={() => handleDeleteIntervention(item.id)}/>
+          
          </td>
       </tr>
     ));
@@ -261,7 +265,7 @@ console.log("selectedIntervention",selectedIntervention )
    
       <div className="pageTitleContainer">  <h1>Interventions</h1></div>
       <div id="addTableButtonContainer">
-        <button onClick={() => handleOpenAddIntervention()}>Add Intervention</button>  </div>
+        <button onClick={() => handleOpenAddIntervention()}>+ Add Intervention</button>  </div>
         <div className="table-controls">
           <div className="search-input">
       

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios'
 import ReactPaginate from 'react-paginate';
 import './reports.css';
+import DeleteIcon from '@mui/icons-material/Delete';
+
 import ReportPopup from './ReportPopup'
 const Reports = () => {
   
@@ -90,9 +92,11 @@ const handleDeleteUser =async (reportId) => {
          <td>{report.subject}</td>
          <td>{report.message}</td>
          <td ><button onClick={() => handleRowClick(report)}>Details</button></td>
-       <td>
-         <button onClick={() => handleDeleteUser(report.id)}>Delete</button>
-       </td>
+  
+       <td className='tableDeleteTd'> 
+          <DeleteIcon onClick={() =>  handleDeleteUser(report.id)}/>
+          
+         </td>
     </tr>
   ));
   const pageCount = Math.ceil(data.length / itemsPerPage);

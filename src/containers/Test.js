@@ -1,10 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
 import mapboxgl from "mapbox-gl";
 import axios from 'axios';
-
+import layersIcon from "../assets/icons/layersIcon.png"
 import '../assets/css/mapPopup.css';
 import ButtonWithPopup from "../components/mapPopups/contributes/AddButtonPopup"
 import MapLayersPopup from "../components/mapPopups/mapLayersPopup/MapLayersPopup"
+
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
 
 import sensorGreenIcon from '../assets/icons/sensorGreen.png';
 import sensorBlueIcon from '../assets/icons/sensorBlue.png';
@@ -120,6 +123,24 @@ const Test = () => {
   const [polygon, setPolygon] = useState(null);
   const [area, setArea] = useState(0);
 
+  //Map Layers Popup
+  const style = {
+    position: 'absolute',
+    top: '45%',
+    left: '22%',
+    
+    transform: 'translate(-50%, -50%)',
+    width: "auto",
+    height: "auto",
+    bgcolor: 'rgba(255, 255, 255, 0.75)',
+    boxShadow: 24,
+    p: 4,
+  };
+  //POPUP1
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(!open);
+  const handleClose = () => setOpen(false);
+//POPUP1
 
   useEffect(() => {
     if (!map.current) {
@@ -219,20 +240,26 @@ const Test = () => {
   const [polygonArea, setPolygonArea] = useState(null);
   const [polygonCoordinates, setPolygonCoordinates] = useState([]);
   const [mapLoaded, setMapLoaded] = useState(false);
-
+  const [controlsEnabled, setControlsEnabled] = useState(true);
 
 
 
   useEffect(() => {
-    if (mapLoaded && submitZoneActive) {
+
+
       const draw = new MapboxDraw({
         displayControlsDefault: false,
         controls: {
-          polygon: true, // add polygon drawing tool
-          trash: true
+          polygon: false, // add polygon drawing tool
+          trash: false
         },
-        userProperties: true // enable user properties for features
+        userProperties: false // enable user properties for features
       });
+
+     
+ 
+    
+      
 
       map.current.addControl(draw, 'top-right');
 
@@ -255,8 +282,8 @@ const Test = () => {
           setPolygonCoordinates(polygonFeature.geometry.coordinates[0]);
         }
       });
-    }
-  }, [mapLoaded,submitZoneActive]);
+    
+  }, [submitZoneActive]);
 
   useEffect(() => {
 
@@ -267,7 +294,12 @@ const Test = () => {
       JSON.stringify(polygonCoordinates),
       (polygonArea / 1000000).toFixed(2)
     );
-  }, [polygonCoordinates, polygonArea, zoneCoordinates, area]);
+
+  
+      
+    
+
+  }, [controlsEnabled,polygonCoordinates, polygonArea, zoneCoordinates, area]);
 
   // Draw Zone end
   
@@ -965,7 +997,7 @@ viewButton.addEventListener('click', () => {
       <div
         className="mapContainer" 
         ref={mapContainer}
-        style={{ width: '145em', height: '80.5em',left: '13.8em' }}
+       id="map"
       />
 <style>
         {`
@@ -977,7 +1009,9 @@ viewButton.addEventListener('click', () => {
             position: absolute;
             top: 0;
             bottom: 0;
-            width: 100%;
+            width: 91%;
+            right: 0%;
+            left: 9%;
           }
           #menu {
             position: absolute;
@@ -987,8 +1021,12 @@ viewButton.addEventListener('click', () => {
           }
         `}
       </style>
-      
-      <div id="menu">
+      <div className="mapLayersButtonContainer">
+      <img src={layersIcon} alt="layers" onClick={handleOpen}/>
+      </div>
+     
+    
+      <div id="menu" style={{display: open? "block" : "none"}} className="mapLayersContainer">
         <input id="satellite-streets-v12" type="radio" name="rtoggle" value="satellite" defaultChecked />
         <label htmlFor="satellite-streets-v12">satellite streets</label>
         <input id="light-v11" type="radio" name="rtoggle" value="light" />
@@ -1001,7 +1039,6 @@ viewButton.addEventListener('click', () => {
         <label htmlFor="outdoors-v12">outdoors</label>
       </div>
       <script src="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js"></script>
-      
 
       {/* map Center SELECT */}
           <div  className="selectMapContainer">             

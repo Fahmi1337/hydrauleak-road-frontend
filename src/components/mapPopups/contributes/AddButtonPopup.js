@@ -15,12 +15,18 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 
+import sensor from "../../../assets/icons/contributes/sensor.png";
+import pipe from "../../../assets/icons/contributes/pipe.png";
+import pipeAccess from "../../../assets/icons/contributes/pipeAccess.png";
+import zone from "../../../assets/icons/contributes/zone.png";
+import mark from "../../../assets/icons/contributes/mark.png";
+import map from "../../../assets/icons/contributes/map.png";
 
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
 
 const style = {
   position: 'absolute',
-  top: '32%',
+  top: '21%',
   left: '22%',
   
   transform: 'translate(-50%, -50%)',
@@ -39,7 +45,7 @@ const style = {
 
 //POPUP1
     const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
+    const handleOpen = () => setOpen(!open);
     const handleClose = () => setOpen(false);
 //POPUP1
 
@@ -160,8 +166,32 @@ const handlePolygonCreated= props.handlePolygonCreated
         
           <div className="contributesButtonsContainer">
             {/* MODAL 2 */}
+            <div>
+            <img src={sensor} alt="sensor" onClick={() => { setSubmitActive(true); handleOpenSensor(); handleClose();}}/>
+<h4>Sensors</h4>
+            </div>
+<div>
+<img src={pipe} alt="pipe" onClick={() => {setSubmitPipeActive(true);handleOpenPipe();  handleClose();}}/>
+<h4>Pipes</h4>
+</div>
+<div>
+<img src={pipeAccess} alt="pipeAccess" onClick={() => {setSubmitActive(true); handleOpenPipeAccess();  handleClose();}}/>
+<h4>Pipe Access</h4>
+</div>
+<div>
+<img src={mark} alt="mark" onClick={() => {setSubmitActive(true); handleOpenMark();  handleClose();}}/>
+<h4>Marks</h4>
+</div>
+<div>
+<img src={zone} alt="zone" onClick={() => {setSubmitZoneActive(true); handleOpenZone();  handleClose();}}/>
+<h4>Zones</h4>
+</div>
+<div>
+<img src={map} alt="map" onClick={() => {setSubmitActive(true); handleOpenMap();  handleClose();}}/>
+<h4>Maps</h4>
+</div>
 
-          <button onClick={() => {setSubmitZoneActive(true); handleOpenZone();  handleClose();}} >Add zone</button>
+          {/* <button onClick={() => {setSubmitZoneActive(true); handleOpenZone();  handleClose();}} >Add zone</button>
 
           <button  onClick={() => {setSubmitPipeActive(true);handleOpenPipe();  handleClose();}} >Add pipe</button>
 
@@ -171,8 +201,8 @@ const handlePolygonCreated= props.handlePolygonCreated
           
           <button onClick={() => {setSubmitActive(true); handleOpenMark();  handleClose();}} >Add mark</button>
 
-          <button onClick={() => {setSubmitActive(true); handleOpenMap();  handleClose();}}>Add Map</button>
-          <button onClick={() => { handleClose(); }}>Close</button>
+          <button onClick={() => {setSubmitActive(true); handleOpenMap();  handleClose();}}>Add Map</button> */}
+          {/* <button onClick={() => { handleClose(); }}>Close</button> */}
            
        
        
