@@ -87,7 +87,7 @@ const { sensor_coordinates, sensor_description, sensor_Indication, sensor_type, 
   
     localStorage.removeItem("selectedPipeId");
     props.handleCloseSensor();
-    window.location.reload();
+    // window.location.reload();
     };
 
 console.log("sensor frequency", sensorData.sensor_frequency)

@@ -105,7 +105,7 @@ console.log("mark data?", markData)
     const reloadPage = () => {
       props.handleCloseMark();
       localStorage.removeItem("selectedPipeId");    
-      window.location.reload();
+      // window.location.reload();
     };
 
   return (

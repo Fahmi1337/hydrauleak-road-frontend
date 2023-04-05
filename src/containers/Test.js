@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from "react";
 import mapboxgl from "mapbox-gl";
 import axios from 'axios';
@@ -6,11 +7,11 @@ import '../assets/css/mapPopup.css';
 import ButtonWithPopup from "../components/mapPopups/contributes/AddButtonPopup"
 import MapLayersPopup from "../components/mapPopups/mapLayersPopup/MapLayersPopup"
 
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
+// import Box from '@mui/material/Box';
+// import Modal from '@mui/material/Modal';
 
 import sensorGreenIcon from '../assets/icons/sensorGreen.png';
-import sensorBlueIcon from '../assets/icons/sensorBlue.png';
+// import sensorBlueIcon from '../assets/icons/sensorBlue.png';
 import markIcon from '../assets/icons/Mark.png';
 import mapIcon from '../assets/icons/Map.png';
 import pipeAccessIcon from '../assets/icons/PipeAccess.png';
@@ -118,6 +119,8 @@ const Test = () => {
   //  console.log("this is the map center : ", mapCenter[0]);
   const handleMapCenter =(e)=> {
     setMapCenter([e.target.value.split(",").map(parseFloat)])
+    localStorage.setItem("mapCenter", [e.target.value.split(",").map(parseFloat)]);
+    // window.location.reload();
   }
 //Zone
   const [polygon, setPolygon] = useState(null);
@@ -142,14 +145,33 @@ const Test = () => {
   const handleClose = () => setOpen(false);
 //POPUP1
 
+const [selectedStyle, setSelectedStyle] = useState('satellite-streets-v12');
   useEffect(() => {
-    if (!map.current) {
+    // if (map.current){
+     const  localSelectedStyle= localStorage.getItem('selectedStyle')
+     console.log("localSelectedStyle", localSelectedStyle)
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
         style: "mapbox://styles/mapbox/satellite-streets-v12",
         center: [-71.21088520218619, 46.806343083853875],
         zoom: 12,
       });
+
+      
+      const layerList = document.getElementById('menu');
+      const inputs = layerList.getElementsByTagName('input');
+
+      const onClick = (style) => {
+        setSelectedStyle(style);
+        localStorage.setItem("selectedStyle", style);
+        window.location.reload();
+      };
+
+      for (const input of inputs) {
+        input.onclick = () => {
+          onClick(input.value);
+        };
+      }
       
       // Map search Geocoder
       map.current.addControl(
@@ -177,22 +199,17 @@ const Test = () => {
       map.current.on('load', () => {
         setMapLoaded(true);
       });
-    }
+    
 
-    const layerList = document.getElementById('menu');
-      const inputs = layerList.getElementsByTagName('input');
-      const onClick = (layer) => {
-        const layerId = layer.target.id;
-        map.current.setStyle('mapbox://styles/mapbox/' + layerId);
-      };
-  
-      for (const input of inputs) {
-        input.onclick = onClick;
-      }
-  
-    if (mapCenter[0]) {
+      const localMapCenter = localStorage.getItem('mapCenter')
+    if (localMapCenter) {
+      
+      const mapCenterArray = localMapCenter.split(',').map(str => parseFloat(str));
+      console.log("the map localMapCenter array", mapCenterArray);
+      console.log("the map localMapCenter", [localMapCenter])
+      console.log("the map mapCenter", mapCenter[0])
       map.current.easeTo({
-        center: mapCenter[0],
+        center: mapCenterArray,
         speed: 0.05,
         curve: 0.1,
         zoom: 15,
@@ -225,7 +242,7 @@ const Test = () => {
       }
     };
     
-  }, [submitActive, mapClickedCoordinates, mapCenter, polygon]);
+  }, [submitActive, mapClickedCoordinates, mapCenter, polygon, selectedStyle]);
   
 
 
@@ -246,14 +263,14 @@ const Test = () => {
 
   useEffect(() => {
 
-
+    if (mapLoaded && submitZoneActive) {
       const draw = new MapboxDraw({
         displayControlsDefault: false,
         controls: {
-          polygon: false, // add polygon drawing tool
-          trash: false
+          polygon: true, // add polygon drawing tool
+          trash: true
         },
-        userProperties: false // enable user properties for features
+        userProperties: true // enable user properties for features
       });
 
      
@@ -262,7 +279,7 @@ const Test = () => {
       
 
       map.current.addControl(draw, 'top-right');
-
+    
       map.current.on('draw.create', () => {
         const { features } = draw.getAll();
         const polygonFeature = features.find(feature => feature.geometry.type === 'Polygon');
@@ -282,8 +299,8 @@ const Test = () => {
           setPolygonCoordinates(polygonFeature.geometry.coordinates[0]);
         }
       });
-    
-  }, [submitZoneActive]);
+    }
+  }, [mapLoaded,submitZoneActive]);
 
   useEffect(() => {
 
@@ -994,11 +1011,7 @@ viewButton.addEventListener('click', () => {
 
   return (
     <div>
-      <div
-        className="mapContainer" 
-        ref={mapContainer}
-       id="map"
-      />
+      
 <style>
         {`
           body {
@@ -1021,21 +1034,27 @@ viewButton.addEventListener('click', () => {
           }
         `}
       </style>
+      <div
+        className="mapContainer" 
+        ref={mapContainer}
+       id="map"
+      />
       <div className="mapLayersButtonContainer">
       <img src={layersIcon} alt="layers" onClick={handleOpen}/>
       </div>
      
     
       <div id="menu" style={{display: open? "block" : "none"}} className="mapLayersContainer">
-        <input id="satellite-streets-v12" type="radio" name="rtoggle" value="satellite" defaultChecked />
+
+        <input id="satellite-streets-v12" type="radio" name="rtoggle" value="satellite-streets-v12" checked={selectedStyle === 'satellite-streets-v12'} />
         <label htmlFor="satellite-streets-v12">satellite streets</label>
-        <input id="light-v11" type="radio" name="rtoggle" value="light" />
+        <input id="light-v11" type="radio" name="rtoggle" value="light-v11" checked={selectedStyle === 'light-v11'} />
         <label htmlFor="light-v11">light</label>
-        <input id="dark-v11" type="radio" name="rtoggle" value="dark" />
+        <input id="dark-v11" type="radio" name="rtoggle" value="dark-v11" checked={selectedStyle === 'dark-v11'} />
         <label htmlFor="dark-v11">dark</label>
-        <input id="streets-v12" type="radio" name="rtoggle" value="streets" />
+        <input id="streets-v12" type="radio" name="rtoggle" value="streets-v12" checked={selectedStyle === 'streets-v12'} />
         <label htmlFor="streets-v12">streets</label>
-        <input id="outdoors-v12" type="radio" name="rtoggle" value="outdoors" />
+        <input id="outdoors-v12" type="radio" name="rtoggle" value="outdoors-v12" checked={selectedStyle === 'outdoors-v12'} />
         <label htmlFor="outdoors-v12">outdoors</label>
       </div>
       <script src="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js"></script>

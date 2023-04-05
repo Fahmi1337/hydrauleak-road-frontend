@@ -81,7 +81,7 @@ reloadPage();
     
       localStorage.removeItem("selectedPipeId");    
       props.handleClosePipeAccess();
-      window.location.reload();
+      // window.location.reload();
       };
 
   return (
