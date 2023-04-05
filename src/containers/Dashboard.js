@@ -179,9 +179,9 @@ const [selectedStyle, setSelectedStyle] = useState('satellite-streets-v12');
         "bottom-right"
       );
 
-      // map.current.on('load', () => {
-      //   setMapLoaded(true);
-      // });
+      map.current.on('load', () => {
+        setMapLoaded(true);
+      });
     }
 
  
