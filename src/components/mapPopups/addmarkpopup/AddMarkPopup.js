@@ -88,7 +88,7 @@ console.log("mark data?", markData)
     
   
     reloadPage();
-    
+    window.location.reload();
   };
 
 

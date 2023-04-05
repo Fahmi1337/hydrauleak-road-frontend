@@ -60,7 +60,7 @@ function ClientProfile() {
   };
 
   return (
-    <div>
+    <div className="profile-body">
        <h1 className="profile-heading">Profile Page</h1>
  <div className="profile-container">
      

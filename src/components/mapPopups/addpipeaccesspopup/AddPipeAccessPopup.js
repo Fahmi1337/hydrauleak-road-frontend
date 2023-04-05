@@ -65,8 +65,8 @@ const AddPipeAccessPopup = (props) => {
       console.error(err);
     });
 
-reloadPage();
-
+    reloadPage();
+    window.location.reload();
   };
 
 

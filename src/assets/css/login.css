@@ -1,4 +1,5 @@
 .LoginContainer{
+    /* zoom: 60%; */
     display: grid;
     grid-template-columns: 50% 50%;
 }
@@ -15,6 +16,7 @@
     line-height: 1.3em;
 }
 .LoginContainerRight img{
+    
     width: auto;
     height: auto;
     float: right;
@@ -46,9 +48,19 @@ cursor: pointer;
     margin-top: 25px;
 }
 .auth{
+
     background-repeat: no-repeat;
-    padding-bottom: 20em;
+    padding-bottom: 12em;
     background-position-x: -61%;
     padding-left: 15em;
     margin-left: -12em;
+}
+.auth img{
+
+ height: auto;
+ width: auto;
+}
+
+.loginBackgroundContainer{
+    zoom: 66%;
 }

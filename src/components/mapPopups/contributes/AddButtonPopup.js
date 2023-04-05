@@ -26,8 +26,8 @@ import ControlPointIcon from '@mui/icons-material/ControlPoint';
 
 const style = {
   position: 'absolute',
-  top: '21%',
-  left: '22%',
+  top: '27%',
+  left: '41%',
   
   transform: 'translate(-50%, -50%)',
   width: 400,
@@ -35,6 +35,8 @@ const style = {
   bgcolor: 'rgba(255, 255, 255, 0.75)',
   boxShadow: 24,
   p: 4,
+  padding: "32px",
+  zoom: "71%",
 };
 
 
@@ -166,30 +168,30 @@ const handlePolygonCreated= props.handlePolygonCreated
         
           <div className="contributesButtonsContainer">
             {/* MODAL 2 */}
-            <div>
-            <img src={sensor} alt="sensor" onClick={() => { setSubmitActive(true); handleOpenSensor(); handleClose();}}/>
-<h4>Sensors</h4>
+            <div className="contributesButtonsContainerImg">
+            <img  src={sensor} alt="sensor" onClick={() => { setSubmitActive(true); handleOpenSensor(); handleClose();}}/>
+              <h4>Sensors</h4>
             </div>
-<div>
-<img src={pipe} alt="pipe" onClick={() => {setSubmitPipeActive(true);handleOpenPipe();  handleClose();}}/>
-<h4>Pipes</h4>
-</div>
-<div>
-<img src={pipeAccess} alt="pipeAccess" onClick={() => {setSubmitActive(true); handleOpenPipeAccess();  handleClose();}}/>
-<h4>Pipe Access</h4>
-</div>
-<div>
-<img src={mark} alt="mark" onClick={() => {setSubmitActive(true); handleOpenMark();  handleClose();}}/>
-<h4>Marks</h4>
-</div>
-<div>
-<img src={zone} alt="zone" onClick={() => {setSubmitZoneActive(true); handleOpenZone();  handleClose();}}/>
-<h4>Zones</h4>
-</div>
-<div>
-<img src={map} alt="map" onClick={() => {setSubmitActive(true); handleOpenMap();  handleClose();}}/>
-<h4>Maps</h4>
-</div>
+            <div className="contributesButtonsContainerImg">
+            <img src={pipe} alt="pipe" onClick={() => {setSubmitPipeActive(true);handleOpenPipe();  handleClose();}}/>
+             <h4>Pipes</h4>
+            </div>
+            <div className="contributesButtonsContainerImg">
+            <img src={pipeAccess} alt="pipeAccess" onClick={() => {setSubmitActive(true); handleOpenPipeAccess();  handleClose();}}/>
+              <h4>Pipe Access</h4>
+            </div>
+            <div className="contributesButtonsContainerImg">
+            <img src={mark} alt="mark" onClick={() => {setSubmitActive(true); handleOpenMark();  handleClose();}}/>
+            <h4>Marks</h4>
+            </div>
+            <div className="contributesButtonsContainerImg">
+            <img src={zone} alt="zone" onClick={() => {setSubmitZoneActive(true); handleOpenZone();  handleClose();}}/>
+            <h4>Zones</h4>
+            </div>
+            <div className="contributesButtonsContainerImg">
+            <img src={map} alt="map" onClick={() => {setSubmitActive(true); handleOpenMap();  handleClose();}}/>
+            <h4>Maps</h4>
+            </div>
 
           {/* <button onClick={() => {setSubmitZoneActive(true); handleOpenZone();  handleClose();}} >Add zone</button>
 

@@ -17,9 +17,19 @@ form {
     margin-top: 3.5em;
 }
 
-.MuiBox-root{
+.MuiBox-root {
+    margin-left: auto;
+    margin-right: auto;
     background-color: none;
   }
+.contributesButtonsContainerImg img{
+  text-align: center;
+  margin-left: 30%;
+  margin-right: 30%;
+}
+.contributesButtonsContainerImg h4{
+  text-align: center;
+}
   
 .MapPopup input,
 .MapPopup label {

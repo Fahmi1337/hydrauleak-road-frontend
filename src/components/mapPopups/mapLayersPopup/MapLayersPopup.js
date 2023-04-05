@@ -17,9 +17,8 @@ import ControlPointIcon from '@mui/icons-material/ControlPoint';
 
 const style = {
   position: 'absolute',
-  top: '45%',
-  right: '-8%',
-  
+  top: '35%',
+  right: '10.5%',
   transform: 'translate(-50%, -50%)',
   width: "auto",
   height: "auto",

@@ -145,13 +145,13 @@ const Test = () => {
   const handleClose = () => setOpen(false);
 //POPUP1
 
-const [selectedStyle, setSelectedStyle] = useState('satellite-streets-v12');
+const [selectedStyle, setSelectedStyle] = useState('light-v11');
 
   useEffect(() => {
     if (!map.current) {
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
-        style: "mapbox://styles/mapbox/satellite-streets-v12",
+        style: "mapbox://styles/mapbox/light-v11",
         center: [-71.21088520218619, 46.806343083853875],
         zoom: 12,
       });
@@ -184,27 +184,6 @@ const [selectedStyle, setSelectedStyle] = useState('satellite-streets-v12');
       });
     }
 
- 
-
-  
-      const localMapCenter = localStorage.getItem('mapCenter')
-    if (localMapCenter) {
-      
-      const mapCenterArray = localMapCenter.split(',').map(str => parseFloat(str));
-      console.log("the map localMapCenter array", mapCenterArray);
-      console.log("the map localMapCenter", [localMapCenter])
-      console.log("the map mapCenter", mapCenter[0])
-      map.current.easeTo({
-        center: mapCenterArray,
-        speed: 0.05,
-        curve: 0.1,
-        zoom: 15,
-      });
-      // localStorage.removeItem("mapCenter");
-    }
-
-
-
   
     // click handled markers coordinates
     const clickHandler = (e) => {
@@ -228,9 +207,30 @@ const [selectedStyle, setSelectedStyle] = useState('satellite-streets-v12');
       }
     };
     
-  }, [submitActive, mapClickedCoordinates, mapCenter, polygon, selectedStyle]);
+  }, [submitActive, mapClickedCoordinates, polygon, selectedStyle]);
   
 
+
+  useEffect(() => {
+
+    const localMapCenter = localStorage.getItem('mapCenter')
+    if (localMapCenter) {
+      
+      const mapCenterArray = localMapCenter.split(',').map(str => parseFloat(str));
+      console.log("the map localMapCenter array", mapCenterArray);
+      console.log("the map localMapCenter", [localMapCenter])
+      console.log("the map mapCenter", mapCenter[0])
+      map.current.easeTo({
+        center: mapCenterArray,
+        speed: 0.05,
+        curve: 0.1,
+        zoom: 15,
+      });
+      // localStorage.removeItem("mapCenter");
+    }
+
+  }, [mapCenter]);
+    
 
 
 
@@ -726,7 +726,7 @@ const [selectedStyle, setSelectedStyle] = useState('satellite-streets-v12');
               const updateButton = marker._popup._content.querySelector('#updateMap');
               updateButton.addEventListener('click', () => {
                 // code to open update popup
-                setSelectedMap(mapsRef);
+                setSelectedMap(mapData);
                 setOpenUpdateMapPopup(true);
                 // console.log('Update button clicked');
               });
@@ -734,7 +734,7 @@ const [selectedStyle, setSelectedStyle] = useState('satellite-streets-v12');
               
               const ViewButton = marker._popup._content.querySelector('#viewMap');
               ViewButton.addEventListener('click', () => {
-                setSelectedMap(mapsRef);
+                setSelectedMap(mapData);
                 setOpenViewMapPopup(true);
               });
             });
@@ -1041,7 +1041,7 @@ useEffect(() => {
             bottom: 0;
             width: 91%;
             right: 0%;
-            left: 9%;
+            left: 9.6%;
           }
           #menu {
             position: absolute;
@@ -1057,10 +1057,10 @@ useEffect(() => {
      
     
       <div id="menu" style={{display: open? "block" : "none"}} className="mapLayersContainer">
-        <input id="satellite-streets-v12" type="radio" name="rtoggle" value="satellite" defaultChecked />
-        <label htmlFor="satellite-streets-v12">satellite streets</label>
-        <input id="light-v11" type="radio" name="rtoggle" value="light" />
+        <input id="light-v11" type="radio" name="rtoggle" value="light" defaultChecked />
         <label htmlFor="light-v11">light</label>
+        <input id="satellite-streets-v12" type="radio" name="rtoggle" value="satellite"/>
+        <label htmlFor="satellite-streets-v12">satellite streets</label>
         <input id="dark-v11" type="radio" name="rtoggle" value="dark" />
         <label htmlFor="dark-v11">dark</label>
         <input id="streets-v12" type="radio" name="rtoggle" value="streets" />

@@ -1,13 +1,14 @@
 .contributesPopup {
+    zoom: 115%;
     padding-top: 1%;
     padding-bottom: 1%;
     position: absolute;
     top: 52%;
-    left: 22.9%;
+    left: 20.6%;
     transform: translate(-50%, -50%);
-    width: 28%;
+    width: 25%;
     height: 100%;
-    background-color: rgba(255, 255, 255, 0.75);
+    background-color: rgba(255, 255, 255, 1);
     display: grid;
     align-content: center;
     justify-content: center;
@@ -60,6 +61,7 @@
     transition: border-color .3s ease;
   }
   .MuiBox-root{
+    zoom: 46%;
     background-color: none;
   }
   

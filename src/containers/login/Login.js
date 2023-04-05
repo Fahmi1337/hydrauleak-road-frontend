@@ -28,6 +28,8 @@ const Login = ({ login, isAuthenticated }) => {
         return <Navigate  to='/' />;
     
     return (
+        <div className='loginBackgroundContainer'>
+
         <div className='auth' style={{backgroundImage: "url(" + hydrauleakBackground + ")"}}>
             <Helmet>
                 <title>Hydrauleak Road - Login</title>
@@ -100,7 +102,7 @@ const Login = ({ login, isAuthenticated }) => {
         </div>
     </div>
 </div>
-
+</div>
             
     );
 };

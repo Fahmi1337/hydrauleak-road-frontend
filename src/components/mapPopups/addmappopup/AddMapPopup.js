@@ -90,6 +90,7 @@ console.log("the map coordinates:", arrivedCoordinates)
       });
     
       reloadPage();
+      window.location.reload();
   };
 
     // //Modal

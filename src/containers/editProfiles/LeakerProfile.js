@@ -60,9 +60,9 @@ function LeakerProfile() {
   };
 
   return (
-    <div>
+    <div className="profile-body">
        <h1 className="profile-heading">Profile Page</h1>
- <div className="profile-container">
+      <div className="profile-container">
      
       {errorMessage && <div className="error-message">{errorMessage}</div>}
       

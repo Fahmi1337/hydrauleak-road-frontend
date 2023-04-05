@@ -67,19 +67,19 @@ const { sensor_coordinates, sensor_description, sensor_Indication, sensor_type, 
             headers: {
               'Content-Type': 'application/json',
               'Authorization': 'Bearer ' +   localStorage.getItem("token")
-  }}
+      }}
   
-  )    
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  
-   
-    reloadPage();
-  };
+        )    
+            .then((res) => {
+              console.log(res.data);
+            })
+            .catch((err) => {
+              console.error(err);
+            });
+        
+          reloadPage();
+          window.location.reload();
+      };
 
 
 
