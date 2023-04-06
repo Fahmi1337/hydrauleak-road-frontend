@@ -10,7 +10,8 @@ const RightAddSensorPopup = (props) => {
 
 
   const arrivedCoordinates = props.mapClickedCoordinates
-
+  const setSensorsDataState =props.setSensorsDataState
+  const sensorsDataState=props.sensorsDataState
 
   const [sensorData, setSensorData] = useState({
     sensor_Indication:'good',
@@ -18,8 +19,9 @@ const RightAddSensorPopup = (props) => {
     sensor_title:'',
     sensor_type:'unknown',
   });
-
+  // console.log("sensorsDataState",props.sensorsDataState)
   useEffect(() => {
+    
     setSensorData(prevSensorData => ({
       ...prevSensorData,
       sensor_coordinates: arrivedCoordinates,
@@ -76,8 +78,14 @@ const { sensor_coordinates, sensor_description, sensor_Indication, sensor_type, 
             .catch((err) => {
               console.error(err);
             });
-        
+            console.log("data data ", data)
+            
+
+            // setSensorsDataState({...sensorsDataState, data})
+            // console.log("data data append", sensorsDataState)
           reloadPage();
+        
+          
           window.location.reload();
       };
 
@@ -90,7 +98,7 @@ const { sensor_coordinates, sensor_description, sensor_Indication, sensor_type, 
     // window.location.reload();
     };
 
-console.log("sensor frequency", sensorData.sensor_frequency)
+// console.log("sensor frequency", sensorData.sensor_frequency)
 
   return (
 <>

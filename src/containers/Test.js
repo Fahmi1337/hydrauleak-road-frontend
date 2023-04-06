@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import mapboxgl from "mapbox-gl";
 import axios from 'axios';
@@ -7,11 +6,11 @@ import '../assets/css/mapPopup.css';
 import ButtonWithPopup from "../components/mapPopups/contributes/AddButtonPopup"
 import MapLayersPopup from "../components/mapPopups/mapLayersPopup/MapLayersPopup"
 
-// import Box from '@mui/material/Box';
-// import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
 
 import sensorGreenIcon from '../assets/icons/sensorGreen.png';
-// import sensorBlueIcon from '../assets/icons/sensorBlue.png';
+import sensorBlueIcon from '../assets/icons/sensorBlue.png';
 import markIcon from '../assets/icons/Mark.png';
 import mapIcon from '../assets/icons/Map.png';
 import pipeAccessIcon from '../assets/icons/PipeAccess.png';
@@ -60,6 +59,11 @@ const Test = () => {
   const pipes = useRef([]);
   
   const sensorsData = useGetSensors();
+  const [sensorsDataState, setSensorsDataState] = useState(sensorsData);
+  useEffect(() => {
+    setSensorsDataState(sensorsData)
+  }, [sensorsDataState, sensorsData]);
+ 
   const markersData = useGetMarkers();
   const pipesAccessData = useGetPipeAccess();
   const mapsData = useGetMaps();
@@ -122,6 +126,7 @@ const Test = () => {
     localStorage.setItem("mapCenter", [e.target.value.split(",").map(parseFloat)]);
     // window.location.reload();
   }
+
 //Zone
   const [polygon, setPolygon] = useState(null);
   const [area, setArea] = useState(0);
@@ -145,33 +150,16 @@ const Test = () => {
   const handleClose = () => setOpen(false);
 //POPUP1
 
-const [selectedStyle, setSelectedStyle] = useState('satellite-streets-v12');
+const [selectedStyle, setSelectedStyle] = useState('light-v11');
+
   useEffect(() => {
-    // if (map.current){
-     const  localSelectedStyle= localStorage.getItem('selectedStyle')
-     console.log("localSelectedStyle", localSelectedStyle)
+    if (!map.current) {
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
-        style: "mapbox://styles/mapbox/satellite-streets-v12",
+        style: "mapbox://styles/mapbox/light-v11",
         center: [-71.21088520218619, 46.806343083853875],
         zoom: 12,
       });
-
-      
-      const layerList = document.getElementById('menu');
-      const inputs = layerList.getElementsByTagName('input');
-
-      const onClick = (style) => {
-        setSelectedStyle(style);
-        localStorage.setItem("selectedStyle", style);
-        window.location.reload();
-      };
-
-      for (const input of inputs) {
-        input.onclick = () => {
-          onClick(input.value);
-        };
-      }
       
       // Map search Geocoder
       map.current.addControl(
@@ -199,25 +187,7 @@ const [selectedStyle, setSelectedStyle] = useState('satellite-streets-v12');
       map.current.on('load', () => {
         setMapLoaded(true);
       });
-    
-
-      const localMapCenter = localStorage.getItem('mapCenter')
-    if (localMapCenter) {
-      
-      const mapCenterArray = localMapCenter.split(',').map(str => parseFloat(str));
-      console.log("the map localMapCenter array", mapCenterArray);
-      console.log("the map localMapCenter", [localMapCenter])
-      console.log("the map mapCenter", mapCenter[0])
-      map.current.easeTo({
-        center: mapCenterArray,
-        speed: 0.05,
-        curve: 0.1,
-        zoom: 15,
-      });
     }
-
-
-
 
   
     // click handled markers coordinates
@@ -242,14 +212,60 @@ const [selectedStyle, setSelectedStyle] = useState('satellite-streets-v12');
       }
     };
     
-  }, [submitActive, mapClickedCoordinates, mapCenter, polygon, selectedStyle]);
+  }, [submitActive, mapClickedCoordinates, polygon, selectedStyle]);
   
 
 
+  useEffect(() => {
+
+    const localMapCenter = localStorage.getItem('mapCenter')
+    if (localMapCenter) {
+      
+      const mapCenterArray = localMapCenter.split(',').map(str => parseFloat(str));
+      console.log("the map localMapCenter array", mapCenterArray);
+      console.log("the map localMapCenter", [localMapCenter])
+      console.log("the map mapCenter", mapCenter[0])
+      map.current.easeTo({
+        center: mapCenterArray,
+        speed: 0.05,
+        curve: 0.1,
+        zoom: 15,
+      });
+      // localStorage.removeItem("mapCenter");
+    }
+
+  }, [mapCenter]);
+    
 
 
 
+  useEffect(() => {
 
+    const layerList = document.getElementById('menu');
+    const inputs = layerList.getElementsByTagName('input');
+    
+    const onClick = (layer) => {
+
+      const layerId = layer.target.id;
+      console.log("layerId",layerId)
+      localStorage.setItem("selectedStyle", layerId);
+      
+      
+      window.location.reload();
+    };
+    for (const input of inputs) {
+      input.onclick = onClick;
+    }
+
+    if (selectedStyle){
+    const  localSelectedStyle= localStorage.getItem('selectedStyle')
+      setSelectedStyle(localSelectedStyle)
+      console.log("localSelectedStyle",localSelectedStyle)
+      map.current.setStyle('mapbox://styles/mapbox/' + localSelectedStyle);
+    }
+
+  }, [selectedStyle]);
+    
 
   
 
@@ -377,7 +393,6 @@ const [selectedStyle, setSelectedStyle] = useState('satellite-streets-v12');
   }, [lineCoordinates, lineLength, pipeCoordinates, pipeLength]);
 
   // Draw Pipe end
-  
 
 
 
@@ -396,8 +411,10 @@ const [selectedStyle, setSelectedStyle] = useState('satellite-streets-v12');
   }, [showSensors]);
 
     useEffect(() => {
+      
     if (map.current && sensors.current.length === 0) {
-      sensorsData.forEach(sensor => {
+      console.log("sensorsDataState1",sensorsDataState)
+      sensorsDataState.forEach(sensor => {
 
         const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
         <h3>ID: ${sensor.id}</h3>  
@@ -468,7 +485,7 @@ const [selectedStyle, setSelectedStyle] = useState('satellite-streets-v12');
         });
       });
     }
-  }, [sensorsData]);
+  }, [sensorsDataState]);
   //SENSOR HANDLING END
 
 
@@ -716,7 +733,7 @@ const [selectedStyle, setSelectedStyle] = useState('satellite-streets-v12');
               const updateButton = marker._popup._content.querySelector('#updateMap');
               updateButton.addEventListener('click', () => {
                 // code to open update popup
-                setSelectedMap(mapsRef);
+                setSelectedMap(mapData);
                 setOpenUpdateMapPopup(true);
                 // console.log('Update button clicked');
               });
@@ -724,7 +741,7 @@ const [selectedStyle, setSelectedStyle] = useState('satellite-streets-v12');
               
               const ViewButton = marker._popup._content.querySelector('#viewMap');
               ViewButton.addEventListener('click', () => {
-                setSelectedMap(mapsRef);
+                setSelectedMap(mapData);
                 setOpenViewMapPopup(true);
               });
             });
@@ -736,135 +753,6 @@ const [selectedStyle, setSelectedStyle] = useState('satellite-streets-v12');
 
 
 
-
-  
-
-// //PIPE HANDLING START
-
-useEffect(() => {
-  
-  if (map.current && pipes.current.length === 0) {
-   
-    map.current.on('load', () => {
-      // Add pipes to the map
-      pipesData.forEach((pipe) => {
-        console.log("???", 'pipe-' + pipe.id)
-        const coordinates = pipe.pipe_coordinates;
-        // create a GeoJSON feature with the pipe coordinates
-        const pipeFeature = {
-          type: 'Feature',
-          geometry: {
-            type: 'LineString',
-            coordinates: coordinates,
-          },
-          properties: {},
-        };
-        // add the pipe feature to the map
-        map.current.addSource('pipe-' + pipe.id, {
-          type: 'geojson',
-          data: pipeFeature,
-        });
-        map.current.addLayer({
-          id: 'pipe-' + pipe.id,
-          type: 'line',
-          source: 'pipe-' + pipe.id,
-          layout: {
-            'line-join': 'round',
-            'line-cap': 'round',
-            // 'visibility': showPipes ? 'visible' : 'none',
-          },
-          paint: {
-            'line-color': '#3284ff',
-            'line-width': 5,
-          },
-        });
-        console.log("showPipes?", showPipes ? 'visible' : 'none',)
-        // map.current.setLayoutProperty('pipe-' + pipe.id,'visibility',showPipes ? 'visible' : 'none');
-        map.current.on('click', 'pipe-' + pipe.id, (e) => {
-          const popupContent = document.createElement('div');
-          popupContent.innerHTML = `<h3>Pipe title: ${pipe.pipe_title}</h3> 
-          <h3>ID : ${pipe.id}</h3> 
-          <p>Pipe description: ${pipe.pipe_description}</p> 
-          <p>Pipe type: ${pipe.pipe_type}</p> 
-          <p>Pipe status: ${pipe.pipe_status}</p> 
-          <p>Pipe length: ${pipe.pipe_length}</p> 
-          <button id="deletePipe-${pipe.id}">Delete</button> 
-          <button id="updatePipe-${pipe.id}">Update</button> 
-          <button id="viewPipe-${pipe.id}">View Details</button>`;
-          const popup = new mapboxgl.Popup()
-            .setLngLat(e.lngLat)
-            .setDOMContent(popupContent)
-            .addTo(map.current);
-          localStorage.setItem("selectedPipeId", pipe.id);
-          // Set up event listener for delete button
-          const deleteButton = document.getElementById('deletePipe-' + pipe.id);
-          deleteButton.addEventListener('click', () => {
-            const confirmation = window.confirm('Are you sure you want to delete this pipe?');
-            if (!confirmation) {
-              return;
-            }
-            // Send DELETE request to API endpoint using Pipe id
-            axios.delete(`${process.env.REACT_APP_API_URL}/api/pipes/${pipe.id}/`, {
-              headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem("token")
-              }
-            })
-            .then(response => {
-              // console.log('Pipe deleted', response.data);
-              // Remove the Pipe from the map
-              map.current.removeLayer('pipe-' + pipe.id);
-              map.current.removeSource('pipe-' + pipe.id);
-              popup.remove(); // close the popup after deleting the pipe
-            })
-            .catch(error => {
-              console.error('Error deleting Pipe', error);
-            });
-          });
-          // Set up event listener for update button
-          const updateButton = document.getElementById('updatePipe-' + pipe.id);
-          updateButton.addEventListener('click', () => {
-            // code to open update popup
-            setSelectedPipe(pipe);
-            setOpenUpdatePipePopup(true);
-            // popup.remove(); // close the popup after opening the update popup
-        // console.log('Update button clicked');
-      });
-      
-      // Set up event listener for view button
-      const viewButton = document.getElementById('viewPipe-' + pipe.id);
-      viewButton.addEventListener('click', () => {     
-        setSelectedPipe(pipe);
-        setOpenViewPipePopup(true);
-        
-      });      
-      })
-
-            
-    });
-    
-    });
-    
-        }
-        
-      }, [pipesData, showPipes]);
-      //PIPE HANDLING END
-
-
-
-      const handleShowPipe = () => {
-        
-        pipesData.forEach((pipe) => {
-    
-            if (map.current) {
-                if (!showPipes) {
-                  map.current.setLayoutProperty('pipe-'+pipe.id, 'visibility', 'visible');
-                } else {
-                  map.current.setLayoutProperty('pipe-'+pipe.id, 'visibility', 'none');
-                }
-              }
-        })
-    
-      }
 
 
 
@@ -894,20 +782,20 @@ zonesData.forEach(zone => {
   layout: {},
   paint: {
   'fill-color': zone.zone_color,
-  'fill-opacity': 0.5
+  'fill-opacity': 0.3
   }
   });
   
-  map.current.addLayer({
-  id: 'zone-' + zone.id + 'outline',
-  type: 'line',
-  source: 'zone-' + zone.id,
-  layout: {},
-  paint: {
-  'line-color': "black",
-  'line-width': 3
-  }
-  });
+  // map.current.addLayer({
+  // id: 'zone-' + zone.id + 'outline',
+  // type: 'line',
+  // source: 'zone-' + zone.id,
+  // layout: {},
+  // paint: {
+  // 'line-color': "black",
+  // 'line-width': 3
+  // }
+  // });
   
   // Add a popup to the zone that fetches the id and the coordinates
   map.current.on('click', 'zone-' + zone.id, (e) => {
@@ -1009,9 +897,145 @@ viewButton.addEventListener('click', () => {
 
 
 
+
+      
+  
+
+// //PIPE HANDLING START
+
+useEffect(() => {
+  
+  if (map.current && pipes.current.length === 0) {
+   
+    map.current.on('load', () => {
+      // Add pipes to the map
+      pipesData.forEach((pipe) => {
+        console.log("???", 'pipe-' + pipe.id)
+        const coordinates = pipe.pipe_coordinates;
+        // create a GeoJSON feature with the pipe coordinates
+        const pipeFeature = {
+          type: 'Feature',
+          geometry: {
+            type: 'LineString',
+            coordinates: coordinates,
+          },
+          properties: {},
+        };
+        // add the pipe feature to the map
+        map.current.addSource('pipe-' + pipe.id, {
+          type: 'geojson',
+          data: pipeFeature,
+        });
+        map.current.addLayer({
+          id: 'pipe-' + pipe.id,
+          type: 'line',
+          source: 'pipe-' + pipe.id,
+          layout: {
+            'line-join': 'round',
+            'line-cap': 'round',
+            // 'visibility': showPipes ? 'visible' : 'none',
+          },
+          paint: {
+            'line-color': '#3284ff',
+            'line-width': 3,
+          },
+        });
+        console.log("showPipes?", showPipes ? 'visible' : 'none',)
+        // map.current.setLayoutProperty('pipe-' + pipe.id,'visibility',showPipes ? 'visible' : 'none');
+        map.current.on('click', 'pipe-' + pipe.id, (e) => {
+          const popupContent = document.createElement('div');
+          popupContent.innerHTML = `<h3>Pipe title: ${pipe.pipe_title}</h3> 
+          <h3>ID : ${pipe.id}</h3> 
+          <p>Pipe description: ${pipe.pipe_description}</p> 
+          <p>Pipe type: ${pipe.pipe_type}</p> 
+          <p>Pipe status: ${pipe.pipe_status}</p> 
+          <p>Pipe length: ${pipe.pipe_length}</p> 
+          <button id="deletePipe-${pipe.id}">Delete</button> 
+          <button id="updatePipe-${pipe.id}">Update</button> 
+          <button id="viewPipe-${pipe.id}">View Details</button>`;
+          const popup = new mapboxgl.Popup()
+            .setLngLat(e.lngLat)
+            .setDOMContent(popupContent)
+            .addTo(map.current);
+          localStorage.setItem("selectedPipeId", pipe.id);
+          // Set up event listener for delete button
+          const deleteButton = document.getElementById('deletePipe-' + pipe.id);
+          deleteButton.addEventListener('click', () => {
+            const confirmation = window.confirm('Are you sure you want to delete this pipe?');
+            if (!confirmation) {
+              return;
+            }
+            // Send DELETE request to API endpoint using Pipe id
+            axios.delete(`${process.env.REACT_APP_API_URL}/api/pipes/${pipe.id}/`, {
+              headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem("token")
+              }
+            })
+            .then(response => {
+              // console.log('Pipe deleted', response.data);
+              // Remove the Pipe from the map
+              map.current.removeLayer('pipe-' + pipe.id);
+              map.current.removeSource('pipe-' + pipe.id);
+              popup.remove(); // close the popup after deleting the pipe
+            })
+            .catch(error => {
+              console.error('Error deleting Pipe', error);
+            });
+          });
+          // Set up event listener for update button
+          const updateButton = document.getElementById('updatePipe-' + pipe.id);
+          updateButton.addEventListener('click', () => {
+            // code to open update popup
+            setSelectedPipe(pipe);
+            setOpenUpdatePipePopup(true);
+            // popup.remove(); // close the popup after opening the update popup
+        // console.log('Update button clicked');
+      });
+      
+      // Set up event listener for view button
+      const viewButton = document.getElementById('viewPipe-' + pipe.id);
+      viewButton.addEventListener('click', () => {     
+        setSelectedPipe(pipe);
+        setOpenViewPipePopup(true);
+        
+      });      
+      })
+
+            
+    });
+    
+    });
+    
+        }
+        
+      }, [pipesData, showPipes]);
+      //PIPE HANDLING END
+
+
+
+      const handleShowPipe = () => {
+        
+        pipesData.forEach((pipe) => {
+    
+            if (map.current) {
+                if (!showPipes) {
+                  map.current.setLayoutProperty('pipe-'+pipe.id, 'visibility', 'visible');
+                } else {
+                  map.current.setLayoutProperty('pipe-'+pipe.id, 'visibility', 'none');
+                }
+              }
+        })
+    
+      }
+
+
   return (
     <div>
-      
+      <div
+        className="mapContainer" 
+        ref={mapContainer}
+       id="map"
+      />
 <style>
         {`
           body {
@@ -1024,7 +1048,7 @@ viewButton.addEventListener('click', () => {
             bottom: 0;
             width: 91%;
             right: 0%;
-            left: 9%;
+            left: 9.6%;
           }
           #menu {
             position: absolute;
@@ -1034,27 +1058,21 @@ viewButton.addEventListener('click', () => {
           }
         `}
       </style>
-      <div
-        className="mapContainer" 
-        ref={mapContainer}
-       id="map"
-      />
       <div className="mapLayersButtonContainer">
       <img src={layersIcon} alt="layers" onClick={handleOpen}/>
       </div>
      
     
       <div id="menu" style={{display: open? "block" : "none"}} className="mapLayersContainer">
-
-        <input id="satellite-streets-v12" type="radio" name="rtoggle" value="satellite-streets-v12" checked={selectedStyle === 'satellite-streets-v12'} />
-        <label htmlFor="satellite-streets-v12">satellite streets</label>
-        <input id="light-v11" type="radio" name="rtoggle" value="light-v11" checked={selectedStyle === 'light-v11'} />
+        <input id="light-v11" type="radio" name="rtoggle" value="light" defaultChecked />
         <label htmlFor="light-v11">light</label>
-        <input id="dark-v11" type="radio" name="rtoggle" value="dark-v11" checked={selectedStyle === 'dark-v11'} />
+        <input id="satellite-streets-v12" type="radio" name="rtoggle" value="satellite"/>
+        <label htmlFor="satellite-streets-v12">satellite streets</label>
+        <input id="dark-v11" type="radio" name="rtoggle" value="dark" />
         <label htmlFor="dark-v11">dark</label>
-        <input id="streets-v12" type="radio" name="rtoggle" value="streets-v12" checked={selectedStyle === 'streets-v12'} />
+        <input id="streets-v12" type="radio" name="rtoggle" value="streets" />
         <label htmlFor="streets-v12">streets</label>
-        <input id="outdoors-v12" type="radio" name="rtoggle" value="outdoors-v12" checked={selectedStyle === 'outdoors-v12'} />
+        <input id="outdoors-v12" type="radio" name="rtoggle" value="outdoors" />
         <label htmlFor="outdoors-v12">outdoors</label>
       </div>
       <script src="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js"></script>
@@ -1073,6 +1091,8 @@ viewButton.addEventListener('click', () => {
 
 
         <ButtonWithPopup 
+        sensorsDataState={sensorsDataState}
+        setSensorsDataState={setSensorsDataState}
           setSubmitActive={setSubmitActive} 
           setSubmitZoneActive={setSubmitZoneActive}
           setSubmitPipeActive={setSubmitPipeActive}

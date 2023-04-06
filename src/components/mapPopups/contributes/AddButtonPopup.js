@@ -143,6 +143,8 @@ const handlePolygonCreated= props.handlePolygonCreated
       mapClickedCoordinates = {mapClickedCoordinates}/>)}
       
       {openSensor && (<RightAddSensorPopup 
+      sensorsDataState={props.sensorsDataState}
+      setSensorsDataState={props.setSensorsDataState}
       handleCloseSensor={handleCloseSensor} 
       handleClose={handleClose} 
       openSensor={openSensor} 

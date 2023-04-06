@@ -1,10 +1,11 @@
 .contributesPopup {
+    z-index: 9999999;
     zoom: 115%;
     padding-top: 1%;
     padding-bottom: 1%;
     position: absolute;
     top: 52%;
-    left: 20.6%;
+    left: 22.15%;
     transform: translate(-50%, -50%);
     width: 25%;
     height: 100%;

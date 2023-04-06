@@ -17,6 +17,7 @@ import Modal from '@mui/material/Modal';
   const initialState = '';
 
   const [mapData, setMapData] = useState({
+    id:100,
     map_title:'',
     map_description: '',
     contract: 1,
@@ -31,7 +32,7 @@ import Modal from '@mui/material/Modal';
     }));
   }, [arrivedCoordinates]);
 
-console.log("the map coordinates:", arrivedCoordinates)
+// console.log("the map coordinates:", arrivedCoordinates)
 
   const reloadPage = () => {
     if(selectedContract.id){
@@ -96,7 +97,7 @@ console.log("the map coordinates:", arrivedCoordinates)
     // //Modal
 
     const OpenMap = props.openMap; 
-console.log("mapdata?", mapData);
+// console.log("mapdata?", mapData);
 
     const [contracts, setContracts] = useState([]);
 
@@ -131,7 +132,7 @@ console.log("mapdata?", mapData);
                 setSelectedContract(props.selectedContract) ;
               } 
                 }, []);   
-console.log("props.selectedContract", selectedContract)
+// console.log("props.selectedContract", selectedContract)
   return (
     <>
  
