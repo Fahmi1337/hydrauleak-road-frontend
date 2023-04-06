@@ -43,7 +43,7 @@ const Login = ({ login, isAuthenticated }) => {
 <div className="LoginContainer" >
     <div className='LoginContainerLeft'  >
         <div className='loginTextLeft'><h1>We locate leaks quickly to save water, money and the environment.</h1>
-        <p>Hydrauleak is an innovative, dynamic and expansionist organization that aims to modernize the water sector. The company's strategy is based on listening to its customers and innovating to meet their needs.</p>
+        <p>Hydrauleak Road is a user-friendly app that helps water leak detection companies manage client data, including cities and companies. The app streamlines the process of finding water leaks on the street, making it an essential tool for optimizing operations and reducing costs while providing exceptional service to clients.</p>
  
         </div>
 
