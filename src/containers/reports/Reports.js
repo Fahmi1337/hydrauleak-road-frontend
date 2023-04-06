@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios'
 import ReactPaginate from 'react-paginate';
 import './reports.css';
+import DeleteIcon from '@mui/icons-material/Delete';
+
 import ReportPopup from './ReportPopup'
 const Reports = () => {
   
@@ -49,7 +51,11 @@ const Reports = () => {
 
   // handle Delete user
 const handleDeleteUser =async (reportId) => {
+  const confirmation = window.confirm('Are you sure you want to delete this report?');
 
+  if (!confirmation) {
+    return;
+  }
   
   await axios.delete(`${process.env.REACT_APP_API_URL}/api/reports/${reportId}/`,
     
@@ -86,9 +92,11 @@ const handleDeleteUser =async (reportId) => {
          <td>{report.subject}</td>
          <td>{report.message}</td>
          <td ><button onClick={() => handleRowClick(report)}>Details</button></td>
-       <td>
-         <button onClick={() => handleDeleteUser(report.id)}>Delete</button>
-       </td>
+  
+       <td className='tableDeleteTd'> 
+          <DeleteIcon onClick={() =>  handleDeleteUser(report.id)}/>
+          
+         </td>
     </tr>
   ));
   const pageCount = Math.ceil(data.length / itemsPerPage);
@@ -129,7 +137,7 @@ const handleDeleteUser =async (reportId) => {
   return (
     <div className="table_container">
       <div>
-        <h1>Reports</h1>
+      <div className="pageTitleContainer">  <h1>Reports</h1></div>
         <div className="table-controls">
           <div className="search-input">
           {/* <button onClick={() => handleOpenAddUser()}>Add User</button> */}
@@ -171,8 +179,8 @@ const handleDeleteUser =async (reportId) => {
       </div>
   
     <ReactPaginate
-        previousLabel={'previous'}
-        nextLabel={'next'}
+        previousLabel={'<'}
+        nextLabel={'>'}
         pageCount={pageCount}
         onPageChange={changePage}
         containerClassName={'pagination'}

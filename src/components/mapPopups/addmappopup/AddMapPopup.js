@@ -1,55 +1,55 @@
 import React, { useState, useEffect } from "react";
-import "./addMapPopup.css"
+import "../../../assets/css/ContributesPopup.css"
 import axios from 'axios';
 
 
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
 
-const AddMapPopup = (props) => {
+  const AddMapPopup = (props) => {
 
-const [addMap, setAddMap] = useState(false);
+  const arrivedCoordinates = props.mapClickedCoordinates
 
+  const [addMap, setAddMap] = useState(false);
 
+  const [selectedContract, setSelectedContract] = useState({})
   const initialState = '';
-  const [lat, setLat] = useState(initialState);
-  const [lng, setLng] = useState(initialState);
-
-
-  function getLatLng() {
-    const lat = localStorage.getItem("newSensorLat");
-    const lng = localStorage.getItem("newSensorLng");
-   
-    
-      setLat(lat);
-      setLng(lng);
-    setMapData({...mapData, map_coordinate : [lng, lat]});
-  }
- 
-
-  const reloadPage = () => {
-    window.location.reload();
-  };
-
-  useEffect(() => {
-    getLatLng();
-  }, []);
-  window.addEventListener("storage", () => {
-    getLatLng();
-  });
-  useEffect(() => {
-    if (lat !== initialState) {
-      localStorage.setItem("newSensorLat", lat);
-    }
-  }, [lng, lat]);
-
-
 
   const [mapData, setMapData] = useState({
+    map_title:'',
+    map_description: '',
+    contract: 1,
   });
+ 
+
+
+  useEffect(() => {
+    setMapData(prevMapData => ({
+      ...prevMapData,
+      map_coordinate: arrivedCoordinates
+    }));
+  }, [arrivedCoordinates]);
+
+console.log("the map coordinates:", arrivedCoordinates)
+
+  const reloadPage = () => {
+    if(selectedContract.id){
+      props.handleCancelAddMapContract();
+    }
+   else{
+    props.handleCloseMap();
+    // window.location.reload();
+   }
+ 
+    localStorage.removeItem("newmapLng");
+    localStorage.removeItem("newSensorLat");
+  };
+
+
+
+
+
 
 
 
@@ -60,12 +60,20 @@ const [addMap, setAddMap] = useState(false);
       
     });
   };
-
+  const { map_title, map_description, map_creation_date, map_coordinate, contract } = mapData;
   const handleSubmitData = () => {
 
+    if (!mapData.map_title || !mapData.map_description || !mapData.map_coordinate ) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
+    const data = {
+      map_coordinate, map_creation_date, map_description, map_title, contract: parseInt(contract)
+    };
 
     axios
-      .post(`${process.env.REACT_APP_API_URL}/api/maps/`, mapData,
+      .post(`${process.env.REACT_APP_API_URL}/api/maps/`, data,
       
       {
             headers: {
@@ -80,24 +88,50 @@ const [addMap, setAddMap] = useState(false);
       .catch((err) => {
         console.error(err);
       });
-    setAddMap(false);
     
+      reloadPage();
+      window.location.reload();
   };
 
-
-
-
-
     // //Modal
-    const [showMapModal, setShowMapModal] = useState(true);
 
-    const handleCloseMapModal = () => setShowMapModal(false);
-    const handleShowMapModal = () => setShowMapModal(true);
-   
+    const OpenMap = props.openMap; 
+console.log("mapdata?", mapData);
 
-    const OpenMap = props.openMap;
+    const [contracts, setContracts] = useState([]);
+
+    const getContracts = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/api/contracts/`,
+          {
+            method: "GET",
     
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => setContracts(data));
+    return response;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    
+    useEffect(() => {   
+      getContracts();  
+          }, []);
 
+          useEffect(() => {   
+            getContracts();
+              if (props.selectedContract){
+                setSelectedContract(props.selectedContract) ;
+              } 
+                }, []);   
+console.log("props.selectedContract", selectedContract)
   return (
     <>
  
@@ -106,16 +140,28 @@ const [addMap, setAddMap] = useState(false);
       hideBackdrop
       style={{ position: 'initial' }}
       
-        open={OpenMap && showMapModal}
+        open={OpenMap}
        
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Box >
         
-        <div className="MapPopup">
+        <div className="contributesPopup">
           <h3>Add Map</h3>
         <form>
+        <label>
+                Contract:
+                </label>
+                <select  
+                disabled={selectedContract.id > 0 ? true : false}
+                value={selectedContract.id > 0 ? selectedContract.id : mapData.contract}
+                  name="contract" onChange={handleMapDataChange} > <option disabled selected value> -- select an option -- </option>
+                  {contracts?.map(contract => (
+                    
+                  <option key={contract.id} value={contract.id}>{contract.contract_title}</option>          
+                  ))} 
+            </select>
         <label>Map title:</label>
           <input
             type="text"
@@ -124,15 +170,16 @@ const [addMap, setAddMap] = useState(false);
             onChange={e => handleMapDataChange(e)}
           />
 
-          
           <label>Map description:</label>
-            <textarea value={mapData.map_description} onChange={e => handleMapDataChange(e)} />
+            <textarea type="text"
+            name="map_description" value={mapData.map_description} onChange={e => handleMapDataChange(e)} />
           
 
           <label>Map coordinates:</label>
           <input
+          disabled
             type="text"
-            name="reading_coordinates"
+            name="map_coordinate"
             value={mapData.map_coordinate}
             onChange={e => handleMapDataChange(e)}
           />
@@ -144,9 +191,12 @@ const [addMap, setAddMap] = useState(false);
             onChange={e => handleMapDataChange(e)}
           />
         </form>
+        <div className='formButtonsContainer'>
+          <button onClick={handleSubmitData}>Submit</button>
+          <button onClick={reloadPage}>Cancel</button>
+
+      </div>
         
-        <button onClick={()=>{handleSubmitData();reloadPage();}}>Submit</button>
-        <button onClick={()=>{props.handleCloseMap();reloadPage();}}>Cancel</button>
       </div>
         </Box>
       </Modal>

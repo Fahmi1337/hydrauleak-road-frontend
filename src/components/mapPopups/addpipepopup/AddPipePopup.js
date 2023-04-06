@@ -1,30 +1,27 @@
 import React, { useState, useEffect } from "react";
-import "./addPipePopup.css"
+import "../../../assets/css/ContributesPopup.css"
 import axios from 'axios';
 
 
 import Box from '@mui/material/Box';
-// import Button from '@mui/material/Button';
-// import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
 
 const AddPipePopup = (props) => {
 
 // const [addPipe, setAddPipe] = useState(false);
-const initialState = '';
-const [pipe_coordinates, setPipeCoordinates] = useState(initialState);
+
 
 const [pipeData, setPipeData] = useState({
   
-  pipe_diameter:0,
+  pipe_diameter:"0",
   pipe_material:"undefined",
   pipe_status:"unknown",
   pipe_type:"undefined",
-  map:1
+  map: "3",
 
 });
-const { pipe_creation_date, pipe_description, pipe_diameter, pipe_length, pipe_type, pipe_title, pipe_material, pipe_status, map } = pipeData;
+const { pipe_creation_date, pipe_description, pipe_diameter, pipe_length, pipe_type, pipe_title, pipe_material, pipe_status,pipe_coordinates, map } = pipeData;
 const handlePipeDataChange = (e) => {
   setPipeData({
     ...pipeData,
@@ -33,54 +30,24 @@ const handlePipeDataChange = (e) => {
   });
 };
    //get Pipe Coordinates
-  function getPipeCoordinates() {
-    
-    setPipeCoordinates(JSON.parse(localStorage.getItem("newCoordinates")));
-  
-    setPipeData({...pipeData, pipe_coordinates : JSON.parse(localStorage.getItem("newCoordinates"))});
-  }
-
-  useEffect(() => {
-    
-    getPipeCoordinates();
-
-        }, []);
-     
-
-        window.addEventListener("storage", () => {
-          getPipeCoordinates();
-        
-    });
+ 
+   const pipeCoordinates = props.pipeCoordinates
+   const pipeLength = props.pipeLength
+ 
+   useEffect(() => {
+     setPipeData({ ...pipeData,
+       pipe_coordinates: pipeCoordinates,
+       pipe_length: pipeLength
+     }
+       
+     );
+   }, [pipeCoordinates,pipeLength]);
 
 //get Pipe Coordinates
 
-//get Pipe Length start
-const [LengthPipe, setPipeLength] = useState(initialState);
 
-function getPipeLength() {
+ console.log("pipeData?", pipeData)
 
-  const pipeLength = localStorage.getItem("pipeLength");
-  
-  setPipeLength(pipeLength);
-    
-  setPipeData({...pipeData, pipe_length : pipeLength*1000});
-}
-
-useEffect(() => {
-  
-  getPipeLength();
-      }, [LengthPipe]);
-      window.addEventListener("pipeLengthStorage", () => {
-        getPipeLength();
-});
-
-//get Pipe Length end
-
-
-
- 
-// console.log("distance?", pipeData.pipe_length);
-// console.log("pipedata?", pipeData)
 
 const handleSubmitData = () => {
   // Check if the required fields are not empty
@@ -119,12 +86,14 @@ const handleSubmitData = () => {
       .catch((err) => {
         console.error(err);
       });
+  
    
     deletePipe();
     
   };
 
   const deletePipe = () => {
+ 
     window.location.reload();
     localStorage.removeItem("newCoordinates");
     localStorage.removeItem("pipeLength");
@@ -132,10 +101,6 @@ const handleSubmitData = () => {
     
   };
 
-  // console.log("coordinatesPipe", pipe_coordinates);
-  
-  // console.log("pipeData?", pipeData);
-   
 
     const OpenPipe = props.openPipe;
     
@@ -184,7 +149,7 @@ console.log("maps details", maps)
       >
         <Box >
         
-        <div className="PipePopup">
+        <div className="contributesPopup">
           <h3>Add Pipe</h3>
         <form>
 
@@ -204,7 +169,7 @@ console.log("maps details", maps)
           
             type="text"
             name="pipe_coordinates"
-            value={pipe_coordinates}
+            value={pipeData.pipe_coordinates}
             onChange={e => handlePipeDataChange(e)}
           />
           
@@ -277,9 +242,11 @@ console.log("maps details", maps)
 
         </form>
 
-       
-        <button onClick={handleSubmitData}>Submit</button>
-        <button onClick={() => {props.handleClosePipe(); deletePipe();}}>Cancel</button>
+        <div className='formButtonsContainer'>
+                <button onClick={handleSubmitData}>Submit</button>
+                <button onClick={() => {props.handleClosePipe(); deletePipe();}}>Cancel</button>
+              </div>       
+
       </div>
         </Box>
       </Modal>

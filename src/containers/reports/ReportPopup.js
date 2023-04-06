@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
 
@@ -40,10 +38,10 @@ const ReportPopup =({ onCancel, onOpen, selectedReport }) => {
             <h2>{selectedReport.subject}</h2>
         <p>description: {selectedReport.message}</p>
         <p>Report Date: {selectedReport.report_date}</p>
-        <p>Add Sensor Coordinates: {selectedReport.add_sensor_coordinates.join(', ')}</p>
-        <p>Add Mark Coordinates: {selectedReport.add_mark_coordinates.join(', ')}</p>
-        <p>Add Pipe Coordinates: {selectedReport.add_pipe_coordinates.join(', ')}</p>
-        <p>Add Pipe Access Coordinates: {selectedReport.add_pipe_access_coordinates.join(', ')}</p>
+        <p>Add Sensor Coordinates: {selectedReport.add_sensor_coordinates}</p>
+        <p>Add Mark Coordinates: {selectedReport.add_mark_coordinates}</p>
+        <p>Add Pipe Coordinates: {selectedReport.add_pipe_coordinates}</p>
+        <p>Add Pipe Access Coordinates: {selectedReport.add_pipe_access_coordinates}</p>
         <button type="button" onClick={onCancel}>
                     Cancel
                     </button>

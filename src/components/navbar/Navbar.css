@@ -1,6 +1,6 @@
 
 body {
-    background-color: #f2f2f2;
+    background-color: white;
     font-family: sans-serif;
   }
   
@@ -12,13 +12,18 @@ body {
     justify-content: space-between;
     align-items: center;
   }
-  
+  .flex{
+    display: flex;
+  }
   .logo img {
     width: 60px;
     height: 60px;
     border-radius: 50%;
   }
-  
+  hr.solid {
+    border-top: 1px solid #fff0;
+    margin-bottom: 4em;
+  }
   nav {
     display: flex;
   }
@@ -30,7 +35,7 @@ body {
     display: flex;
     font-size: 1.5rem;
     font-weight: bold;
-    color: green;
+    
   }
   
   nav li {
@@ -38,31 +43,47 @@ body {
   }
   
   nav a {
-    color: #2f00ff;
+    color: white;
     text-decoration: none;
-    font-size: 14px;
+    font-size: 22px;
     font-weight: 500;
+    margin: 20px 10px 20px 20px;
+    padding: 10px 15px;
+   
   }
-  
-  .auth a {
+  .navbar__left__auth{
+    margin-top: 8em;
+  }
+  svg{
+    width: 1.5em !important;
+    height: 1.5em !important;
+  }
+  .active{
+    background-color: #5ca2eb;
+    color: white;
+    width: 82%;
+    padding-left: 1.5em;
+    margin-left: -0.22em;
+  }
+  /* .auth a {
     background-color: #e8491d;
     padding: 10px;
-    color: #f2f2f2;
+    color: white;
     text-decoration: none;
     font-size: 14px;
     font-weight: 500;
     border-radius: 4px;
     display: inline-block;
-  }
+  } */
 
   .left-nav {
-    width: 120px;
+    width: 17em;
     height: 100%;
     position: fixed;
     justify-content: center;
     top: 0;
     left: 0;
-    background: #FFFFFF;
+    background: #0671E0;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 0px;
     padding-top: 50px;
@@ -74,3 +95,17 @@ body {
     justify-content: space-between;
     height: 50%;
   }
+#hydrauleak-logo{
+  width: 90%;
+  height: unset;
+  margin-left: -1em;
+}
+#logoContainer{
+  text-align: center;
+  margin-top: -1.7em;
+}
+
+.nav-txt{
+  margin-top: 3rem;
+  margin-left: 0.5em;
+}

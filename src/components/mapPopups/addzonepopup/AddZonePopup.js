@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./addZonePopup.css"
+import "../../../assets/css/ContributesPopup.css"
 import axios from 'axios';
 
 
@@ -11,91 +11,58 @@ import Modal from '@mui/material/Modal';
 
 const AddZonePopup = (props) => {
 
-
+const [onCloseAddZone, setOnCloseAddZone] = useState(true);
+const [selectedIntervention, setSelectedIntervention] = useState({})
 const initialState = '';
 const [addZone, setAddZone] = useState(false);
 const [zoneData, setZoneData] = useState({
   zone_title: '',
   zone_description: '',
 zone_area: parseFloat(localStorage.getItem("zoneArea")),
-  zone_date: '',
+  
   zone_status: 'notStart',
   zone_color: 'orange',
   zone_coordinates: '',
-  map: 1
+  map: "3"
 });
-const { zone_title, zone_description, zone_num, zone_date, zone_status, zone_color, map } = zoneData;
+const style = {
 
+  zIndex: 999999999999
+};
 
-//get Zone Area Start
-const [AreaZone, setZoneArea] = useState(initialState);
-
-function getZoneArea() {
-
-  const zoneArea = localStorage.getItem("zoneArea");
-  
-  setZoneArea(zoneArea);
-    
-  setZoneData({...zoneData, zone_area : zoneArea});
-  console.log("zoneData zone_area ", zoneData.zone_area)
-  console.log(" zoneArea ", zoneArea)
-
-}
-
-useEffect(() => {
-  
-  getZoneArea();
-      }, [AreaZone]);
-
-
-      window.addEventListener("zoneAreaStorage", () => {
-        getZoneArea();
-});
-
-//get Zone Area end
+const { zone_title, zone_description, zone_num, zone_status, zone_color, map, zone_area, zone_coordinates } = zoneData;
 
 
 
+const zoneCoordinates = props.zoneCoordinates
 
-
-
-  const [zone_coordinates, setCoordinatesZone] = useState(initialState);
-  
-
-  function getLatLng() {
-
-    const zoneCoordinates= localStorage.getItem("newZoneCoordinates");
-    
-    setCoordinatesZone(JSON.parse(zoneCoordinates));
-
-    
-      
-    setZoneData({...zoneData, zone_coordinates : JSON.parse(zoneCoordinates)});
-  }
  
-  useEffect(() => {
-    
-        getLatLng();
-        
-        }, []);
-        window.addEventListener("zoneStorage", () => {
-            getLatLng();
-  });
- 
+        useEffect(() => {
+          setZoneData({ ...zoneData,
+            zone_coordinates: zoneCoordinates,
+            zone_area: props.area
+          }
+           
+            
+          );
+        }, [zoneCoordinates]);
 
 
 
 
  const deleteZone = () => {
+if(selectedIntervention.id){
+  props.handleCancelAddZoneIntervention();
+}
+   else{
+    props.handleCloseZone();
+    props.setSubmitZoneActive(false);
     window.location.reload();
+   }
+   props.setSubmitZoneActive(false);
     localStorage.removeItem("newZoneCoordinates");
+    localStorage.removeItem("zoneArea");
   };
-
-
-
-  
-
-
 
   const handleZoneDataChange = (e) => {
     setZoneData({
@@ -107,10 +74,17 @@ useEffect(() => {
   };
 
   const handleSubmitData = () => {
+    if (!zoneData.zone_title || !zoneData.zone_description || !zoneData.zone_coordinates) {
+      alert("Please fill in all required fields.");
+      return;
+    }
 
+    const data = {
+      zone_title, zone_description, zone_num, zone_status, zone_color, map: parseInt(map), zone_area: parseFloat(zone_area), zone_coordinates
+    };
 
     axios
-      .post(`${process.env.REACT_APP_API_URL}/api/zones/`,  { zone_title, zone_description, zone_num, zone_date, zone_status, zone_color, map, AreaZone, zone_coordinates },
+      .post(`${process.env.REACT_APP_API_URL}/api/zones/`,  data,
       
       {
             headers: {
@@ -126,32 +100,23 @@ useEffect(() => {
         console.error(err);
       });
  
- 
-  
+      deleteZone();
+      
+      props.handleCloseZone();
   };
 
 
-  const handleZoneSubmitButton = (e) => {
-    e.preventDefault();
-    // props.handlePolygonCreated(); 
-    handleSubmitData(); 
-    // deleteZone();
-    props.handleCloseZone();
+  // const handleZoneSubmitButton = () => {  
+  //   handleSubmitData(); 
+    
+  //   props.handleCloseZone();
    
-  }
+  // }
 
 
     // //Modal
-    const [showZoneModal, setShowZoneModal] = useState(true);
-
-    const handleCloseZoneModal = () => setShowZoneModal(false);
-    const handleShowZoneModal = () => setShowZoneModal(true);
-   
 
     const OpenZone = props.openZone;
-    
-
-console.log("zone coordinates", zoneData.zone_coordinates)
 
 const [maps, setMaps] = useState([]);
 
@@ -180,8 +145,41 @@ useEffect(() => {
   getMaps();  
       }, []);
 
-console.log("zonedata?", zoneData)
 
+
+
+      const [interventions, setInterventions] = useState([]);
+
+const getInterventions = async () => {
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/interventions/`,
+      {
+        method: "GET",
+
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => setInterventions(data));
+return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+useEffect(() => {   
+  getInterventions();
+    if (props.selectedIntervention){
+      setSelectedIntervention(props.selectedIntervention) ;
+    } 
+      }, []);
+
+   
+console.log("props.interventionId", selectedIntervention)
   return (
     <>
  
@@ -190,17 +188,35 @@ console.log("zonedata?", zoneData)
       hideBackdrop
       style={{ position: 'initial' }}
       
-        open={OpenZone && showZoneModal}
+        open={OpenZone}
        
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box >
+        <Box sx={style}>
         
-        <div className="ZonePopup">
+        <div className="contributesPopup">
           <h3>Add Zone</h3>
        
         <form>
+
+
+
+
+        <div className='listinform__section'>
+            <label >Intervention :</label>        
+             
+            <select  type="text"  
+                  name="intervention" onChange={e => handleZoneDataChange(e)} value={zoneData.intervention || selectedIntervention.id} > <option disabled selected value> -- select an option -- </option>
+                  {interventions?.map(intervention => (
+                    
+                  <option key={intervention.id} value={intervention.id}>{intervention.intervention_title}</option>          
+                  ))} 
+            </select>
+            
+        </div>
+
+
 
         <div className='listinform__section'>
             <label >Map:</label>        
@@ -214,6 +230,7 @@ console.log("zonedata?", zoneData)
             </select>
             
         </div>
+
 
     
         <label>Zone coordinates:</label>
@@ -230,7 +247,7 @@ console.log("zonedata?", zoneData)
           disabled
             type="text"
             name="zone_area"
-            value={parseFloat(AreaZone)}
+            value={parseFloat(localStorage.getItem("zoneArea")) || parseFloat(zoneData.zone_area)}
             onChange={e => handleZoneDataChange(e)}
           />
         <label>Zone title:</label>
@@ -245,13 +262,13 @@ console.log("zonedata?", zoneData)
             <textarea type="text" name="zone_description" value={zoneData.zone_description} onChange={e => handleZoneDataChange(e)} />
 
 
-          <label>Zone creation date:</label>
+          {/* <label>Zone creation date:</label>
           <input
             type="datetime-local"
             name="zone_date"
             value={zoneData.zone_date}
             onChange={e => handleZoneDataChange(e)}
-          />
+          /> */}
            
           <label>Zone Status:</label>
               <select type="text" name="zone_status"
@@ -278,10 +295,11 @@ console.log("zonedata?", zoneData)
 
         </form>
 
-         {/* <button onClick={() => {props.handlePolygonCreated(); handleSubmitData(); deleteZone();}}>Submit</button>*/}
-        {/* <button onClick={() => {props.handlePolygonCreated(); }}>Submit</button>  */}
-        <button onClick={handleZoneSubmitButton}>Submit</button> 
-        <button onClick={() => {props.handleCloseZone(); deleteZone();}}>Cancel</button>
+        <div className='formButtonsContainer'>
+                <button onClick={handleSubmitData}>Submit</button>
+                <button onClick={() => {deleteZone();}}>Cancel</button>
+              </div>
+ 
       </div>
         </Box>
       </Modal>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 // import Button from '@mui/material/Button';
 // import Typography from '@mui/material/Typography';
@@ -15,7 +15,12 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+
+
+
 const AddClientPopupForm = ({ onCancel, onOpen }) => {
+  
+
   const [clientData, setClientData] = useState({
     // photo: '',
     description: '',
@@ -24,8 +29,9 @@ const AddClientPopupForm = ({ onCancel, onOpen }) => {
     inscription_date: '',
     client_files: []
   });
-
+  const [error, setError] = useState(null);
   const handleClientDataChange = (e) => {
+    
     setClientData({
       ...clientData,
       [e.target.name]: e.target.value,
@@ -34,7 +40,14 @@ const AddClientPopupForm = ({ onCancel, onOpen }) => {
 
   const handleSubmitData = (e) => {
     e.preventDefault(); // prevent the default form submission
-    axios.post(`${process.env.REACT_APP_API_URL}/api/clients/`, clientData, {
+  
+    // Convert clientData.user to an integer
+    const clientDataInt = {
+      ...clientData,
+      user: parseInt(clientData.user)
+    };
+  
+    axios.post(`${process.env.REACT_APP_API_URL}/api/clients/`, clientDataInt, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -47,8 +60,44 @@ const AddClientPopupForm = ({ onCancel, onOpen }) => {
       })
       .catch((err) => {
         console.error(err);
+        setError(err.message || err.response.statusText);
       });
   };
+  
+
+
+
+  
+  const [clients, setClients] = useState([]);
+
+  const getClients = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/user/`,
+        {
+          method: "GET",
+  
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      );
+      const data = await response.json();
+      setClients(data);
+    } catch (error) {
+      console.log(error);
+     
+    }
+
+
+  };
+  
+  useEffect(() => {
+    getClients();
+  }, []);
+
+
 
   return (
     <>
@@ -62,27 +111,35 @@ const AddClientPopupForm = ({ onCancel, onOpen }) => {
       >
         <Box sx={style}>
           <div className="popup-form">
-            {/* <div className="popup-form-overlay" onClick={onCancel}></div> */}
+          
             <div className="popup-form-content">
               <h2>Add Client Details</h2>
+              <p>{error}</p>
               <form onSubmit={handleSubmitData}>
-              <label>
-                  Client User:
-                  <select name="roles" value={clientData.roles} onChange={handleClientDataChange}>
-                    <option value="is_admin">dev Pending</option>                  
-                  </select>
-                </label>
+              <label >Client profile:</label>        
+             
+              <select name="user" value={parseInt(clientData.user)} onChange={(e) => handleClientDataChange(e)}>
+                <option disabled value=""> -- select an option -- </option>
+                {clients.filter((client) => client.roles.includes("is_client")).map((client) => (
+                  <option key={client.id} value={client.id}>
+                    {client.name}
+                  </option>
+                ))}
+              </select>
+
+
+              
                 <label> Description:</label>
-                  <textarea type="text" name="name" value={clientData.description} onChange={handleClientDataChange} />
+                  <textarea type="text" name="description" value={clientData.description} onChange={handleClientDataChange} />
                 
                 <label>
                   Address:
-                  <input type="email" name="email" value={clientData.address} onChange={handleClientDataChange} />
+                  <input type="text" name="address" value={clientData.address} onChange={handleClientDataChange} />
                 </label>
 
                 <label>
                 Client data creation date:
-                    <input type="date" value={clientData.inscription_date} onChange={handleClientDataChange} />
+                    <input  type="datetime-local" name="inscription_date" value={clientData.inscription_date} onChange={handleClientDataChange} />
                 </label>
 
                 <label>File:</label>

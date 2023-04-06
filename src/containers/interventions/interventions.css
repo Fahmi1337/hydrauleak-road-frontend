@@ -1,0 +1,14 @@
+.ZonePopup button{
+    width: 90% !important;
+  }
+.ZonePopup{
+    left: 27.9% !important;
+    height: 74.2% !important;
+    top: 41.6% !important;
+  }
+  .tableDeleteTd{
+    color: rgb(221, 17, 17) !important;
+  }
+  .tableDeleteTd svg, .tableEditTd svg{
+    cursor: pointer;
+  }

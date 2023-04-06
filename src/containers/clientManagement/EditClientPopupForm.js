@@ -83,22 +83,22 @@ const EditClientPopupForm =({ client, onUpdateClient, onCancel, onOpen, getClien
                 <label>
                   Client User:
                   <input name="name" 
-                //   value={} 
-                //   onChange={handleDescriptionChange}
+                value={client.user.name} 
+                onChange={handleDescriptionChange}
                   />
                     
                 </label>
                 <label> Description:</label>
-                  <textarea type="text" name="name" value={description} onChange={handleDescriptionChange} />
+                  <textarea type="text" name="name" value={client.description} onChange={handleDescriptionChange} />
                 
                 <label>
                   Address:
-                  <input type="email" name="email" value={address} onChange={handleAddressChange} />
+                  <input type="email" name="email" value={client.address} onChange={handleAddressChange} />
                 </label>
 
                 <label>
                 Client data creation date:
-                    <input type="date" value={inscriptionDate} onChange={handleInscriptionDateChange} />
+                    <input type="date" value={client.inscription_Date} onChange={handleInscriptionDateChange} />
                 </label>
 
                 <label>File:</label>

@@ -8,16 +8,25 @@ import Modal from '@mui/material/Modal';
 const SensorViewPopup =({ onCancel, onOpen, sensor }) => {
 
 
-  const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '60%',  
-    transform: 'translate(-50%, -50%)', 
-    bgcolor: 'rgba(255, 255, 255, 0.75)',
-    boxShadow: 24,
-    p: 4,
-  };
+//   const style = {
+//     position: 'absolute',
+//     top: 0,
+//     right: 0,
+//     width: '20%',
+//     height: '100%',
+//     bgcolor: 'background.paper',
+//     p: 4,
+//   };
 
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  p: 4,
+};
 
   return (
 

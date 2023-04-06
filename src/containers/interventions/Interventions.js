@@ -3,11 +3,16 @@ import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 import EditInterventionPopupForm from './EditInterventionPopupForm';
 import AddInterventionPopupForm from './AddInterventionPopupForm';
+import ViewInterventionPopup from './ViewInterventionPopup'
+import AddZoneIntervention from './AddZoneIntervention'
+import Box from '@mui/material/Box';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+// import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+import './interventions.css'
 
-
-
-
-const Intervention = () => {
+const Intervention = (props) => {
 
   const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -18,10 +23,24 @@ const Intervention = () => {
 
   const [openPopup, setOpenPopup] = useState(false);
   const [openAddInterventionPopup, setOpenAddInterventionPopup] = useState(false);
-
+  const [openViewInterventionPopup, setOpenViewInterventionPopup] = useState(false);
+ 
 
 const [selectedIntervention, setSelectedIntervention] = useState(null); // new state variable
-  
+const [open, setOpen] = React.useState(false);
+const handleOpen = () => setOpen(true);
+const handleClose = () => setOpen(false);
+
+
+
+
+const [openAddZoneInterventionPopup, setOpenAddZoneInterventionPopup] = useState(false);
+
+
+const style = {
+
+  zIndex: 999,
+};
 
     const getInterventions = e => {
       axios.get(`${process.env.REACT_APP_API_URL}/api/interventions/`, {
@@ -47,27 +66,27 @@ const handleEditIntervention = (intervention) => {
 };
 
 // handle Delete intervention
-const handleDeleteIntervention =async (interventionId) => {
+const handleDeleteIntervention = async (interventionId) => {
+  const confirmation = window.confirm('Are you sure you want to delete this intervention?');
 
-  
-  await axios.delete(`${process.env.REACT_APP_API_URL}/api/intervention/${interventionId}/`,
+  if (!confirmation) {
+    return;
+  }
+
+  try {
+    await axios.delete(`${process.env.REACT_APP_API_URL}/api/interventions/${interventionId}/`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      }
+    });
     
-  {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' +   localStorage.getItem("token")
-}}
-)    
-  .then((res) => {
-    console.log(res.data);
-  })
-  .catch((err) => {
+    const newData = data.filter(item => item.id !== interventionId);
+    setData(newData);
+    setSelectedIntervention(null);
+  } catch (err) {
     console.error(err);
-  });
-
-  const newData = data.filter(item => item.id !== interventionId);
-  setData(newData);
-  setSelectedIntervention(null);
+  }
 };
 
   
@@ -87,11 +106,19 @@ const handleDeleteIntervention =async (interventionId) => {
         <td>{item.intervention_type}</td>
         <td>{item.intervention_status}</td>
         <td>{item.is_published}</td>
-         <td>
-           <button onClick={() =>  {handleEditIntervention(item); handleOpenEditIntervention();}}>Edit</button>
+        <td>
+           <button onClick={() => {handleOpenAddZoneIntervention(); setSelectedIntervention(item);}}>Add Zone</button>
          </td>
          <td>
-           <button onClick={() => handleDeleteIntervention(item.id)}>Delete</button>
+           <button onClick={() => {handleEditIntervention(item);handleOpenViewIntervention();}}>Details</button>
+         </td>
+         <td className='tableEditTd'> 
+          <EditIcon onClick={() =>  {handleEditIntervention(item); handleOpenEditIntervention();}} />
+        
+         </td>
+         <td className='tableDeleteTd'> 
+          <DeleteIcon onClick={() => handleDeleteIntervention(item.id)}/>
+          
          </td>
       </tr>
     ));
@@ -146,6 +173,7 @@ const handleUpdateIntervention = async (intervention) => {
 
 // handle buttons
 const handleCancelEditIntervention = () => {
+  setOpenPopup(false);
   setSelectedIntervention(null);
 };
 
@@ -159,20 +187,58 @@ const handleOpenAddIntervention = () => {
 const handleCloseAddIntervention = () => {
   setOpenAddInterventionPopup(false);
 };
+
+const handleOpenViewIntervention = () => {
+  setOpenViewInterventionPopup(true);
+};
+const handleCloseViewIntervention = () => {
+  setOpenViewInterventionPopup(false);
+};
     
+const handleCancelAddZoneIntervention = () => {
+  setOpenAddZoneInterventionPopup(false);
+  setSelectedIntervention(null);
+};
+const handleOpenAddZoneIntervention = () => {
+  setOpenAddZoneInterventionPopup(true);
+};
 
-
-
+console.log("selectedIntervention",selectedIntervention )
   return (
     <div className="table_container">
 
+{/* <div>
+                  {openAddZoneInterventionPopup && (
+                    <AddZoneIntervention
+                      interventionId={selectedIntervention}
+                    />
+                  )}         
+          </div> */}
+        <Modal
+        open={openAddZoneInterventionPopup}
+        // onClick={handleClose}
+        onClose={props.onCloseAddZone}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+        {openAddZoneInterventionPopup && (
+                    <AddZoneIntervention
+                    selectedIntervention={selectedIntervention}
+                    handleCancelAddZoneIntervention={handleCancelAddZoneIntervention}
+                  />
+                  )}        
+       
+        </Box>
+      </Modal>
         <div>
-                  {selectedIntervention && (
+                  {openPopup && (
                     <EditInterventionPopupForm
                       intervention={selectedIntervention}
                       onUpdateIntervention={handleUpdateIntervention}
                       onCancel={handleCancelEditIntervention}
                       onOpen = {openPopup}
+                      getInterventions = {getInterventions}
                     />
                   )}         
           </div>
@@ -185,12 +251,35 @@ const handleCloseAddIntervention = () => {
                   )}         
           </div>
 
-      <div className="table-controls">
-        <div className="search-input">
-        <button onClick={() => handleOpenAddIntervention()}>Add Intervention</button>
+          <div>
+                  {openViewInterventionPopup && (
+                    <ViewInterventionPopup 
+                    selectedIntervention={selectedIntervention}
+                    interventionId={selectedIntervention.id}                 
+                      onCancel={handleCloseViewIntervention}
+                      onOpen = {openViewInterventionPopup}
+                    />
+                  )}         
+          </div>
+
+   
+      <div className="pageTitleContainer">  <h1>Interventions</h1></div>
+      <div id="addTableButtonContainer">
+        <button onClick={() => handleOpenAddIntervention()}>+ Add Intervention</button>  </div>
+        <div className="table-controls">
+          <div className="search-input">
+      
           <label htmlFor="search">Search:</label>
-          <input type="text" id="search" value={searchTerm} onChange={handleSearchChange} />
+          <input type="search" id="search" value={searchTerm} onChange={handleSearchChange} placeholder="Search..."/>
+          <div class="icons-container">
+    <div class="icon-search"></div>
+    <div class="icon-close">
+      <div class="x-up"></div>
+      <div class="x-down"></div>
+    </div>
+  </div>
         </div>
+      
         <div className="status-filter">
           <label htmlFor="status-filter">Filter by status:</label>
           <select id="status-filter" value={selectedStatus} onChange={handleStatusFilterChange}>
@@ -213,6 +302,10 @@ const handleCloseAddIntervention = () => {
             <th>Type</th>
             <th>Status</th>
             <th>published</th>
+            <th>Add Zone</th>
+            <th>Details</th>
+            <th>Edit</th>
+            <th>Delete</th>
           </tr>
         </thead>
         <tbody>
@@ -220,8 +313,8 @@ const handleCloseAddIntervention = () => {
         </tbody>
       </table>
       <ReactPaginate
-        previousLabel={'previous'}
-        nextLabel={'next'}
+        previousLabel={'<'}
+        nextLabel={'>'}
         pageCount={pageCount}
         onPageChange={changePage}
         containerClassName={'pagination'}

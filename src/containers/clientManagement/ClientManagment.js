@@ -3,8 +3,9 @@ import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 import EditClientPopupForm from './EditClientPopupForm';
 import AddClientPopupForm from './AddClientPopupForm';
-
-
+import ViewClientPopupForm from './ViewClientPopupForm';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 
 const ClientManagement = () => {
@@ -18,10 +19,40 @@ const ClientManagement = () => {
 
   const [openPopup, setOpenPopup] = useState(false);
   const [openAddClientPopup, setOpenAddClientPopup] = useState(false);
-
+  const [openViewClientPopup, setOpenViewClientPopup] = useState(false);
 
 const [selectedClient, setSelectedClient] = useState(null); // new state variable
-  
+const [me, setMe] = useState([]);
+
+
+
+
+useEffect(() => {
+    getMe() 
+  }, []);
+
+
+   const getMe = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/api/user/me`,
+          {
+            method: "GET",
+    
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => setMe(data));
+    return response;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
 
     const getClients = e => {
       axios.get(`${process.env.REACT_APP_API_URL}/api/clients/`, {
@@ -37,12 +68,12 @@ const [selectedClient, setSelectedClient] = useState(null); // new state variabl
   });
     }
 
-    const handleOpenReportPopup = () => {
-      setOpenPopup(true);
+    const handleOpenClientViewPopup = () => {
+      setOpenViewClientPopup(true);
     };
     const handleRowClick = (item) => {
       setSelectedClient(item);
-      handleOpenReportPopup();
+      handleOpenClientViewPopup();
     };
    
 
@@ -54,7 +85,11 @@ const handleEditClient = (client) => {
 
 // handle Delete client
 const handleDeleteClient =async (clientId) => {
+  const confirmation = window.confirm('Are you sure you want to delete this Client data?');
 
+  if (!confirmation) {
+    return;
+  }
   
   await axios.delete(`${process.env.REACT_APP_API_URL}/api/clients/${clientId}/`,
     
@@ -93,13 +128,25 @@ const handleDeleteClient =async (clientId) => {
         <td>{item.user.phone}</td>
         <td>{item.description}</td>
         <td>{item.inscription_date}</td>
-        <td ><button onClick={() => handleRowClick(item)}>Details</button></td>
-         <td>
-           <button onClick={() =>  {handleEditClient(item); handleOpenEditClient();}}>Edit</button>
-         </td>
-         <td>
-           <button onClick={() => handleDeleteClient(item.id)}>Delete</button>
-         </td>
+
+
+
+        {me.roles==="is_admin" && (
+    <td ><button onClick={() => handleRowClick(item)}>Details</button></td>
+    )} 
+       {me.roles==="is_admin" && (
+   <td className='tableEditTd'> 
+   <EditIcon onClick={() =>  {handleEditClient(item); handleOpenEditClient();}} />
+ 
+  </td>
+    )} 
+       {me.roles==="is_admin" && (
+     <td className='tableDeleteTd'> 
+     <DeleteIcon onClick={() => handleDeleteClient(item.id)}/>
+     
+    </td>
+    )} 
+
       </tr>
     ));
 
@@ -169,6 +216,11 @@ const handleOpenAddClient = () => {
 const handleCloseAddClient = () => {
   setOpenAddClientPopup(false);
 };
+
+const handleCloseViewClient = () => {
+  setOpenViewClientPopup(false);
+};
+    
     
 
 
@@ -177,6 +229,18 @@ const handleCloseAddClient = () => {
     <div className="table_container">
 
         <div>
+
+            <div>
+                      {openViewClientPopup && (
+                        <ViewClientPopupForm                    
+                          onClose={handleCloseViewClient}
+                          onOpen = {openViewClientPopup}
+                          clientId={selectedClient.id}
+                        />
+                      )}         
+              </div>
+
+
                   {selectedClient && (
                     <EditClientPopupForm
                       client={selectedClient}
@@ -192,27 +256,34 @@ const handleCloseAddClient = () => {
                     <AddClientPopupForm                    
                       onCancel={handleCloseAddClient}
                       onOpen = {openAddClientPopup}
+                      
                     />
                   )}         
           </div>
 
-          <h3>Client Management</h3>
-          <br/>
+          <div className="pageTitleContainer">  <h1>Clients Management</h1></div>
+       
+    
+        <div className="search-input">  
+        {me.roles==="is_admin" && (
+  <div id="addTableButtonContainer">  <button onClick={() => handleOpenAddClient()}>+ Add Client Data</button> </div>
+    )}     
       <div className="table-controls">
-        <div className="search-input">       
-        <button onClick={() => handleOpenAddClient()}>Add Client Data</button>
-          <label htmlFor="search">Search:</label>
-          <input type="text" id="search" value={searchTerm} onChange={handleSearchChange} />
+      
+        <div className="search-input">
+      
+      <label htmlFor="search">Search:</label>
+      <input type="search" id="search" value={searchTerm} onChange={handleSearchChange} placeholder="Search..."/>
+      <div class="icons-container">
+<div class="icon-search"></div>
+<div class="icon-close">
+  <div class="x-up"></div>
+  <div class="x-down"></div>
+</div>
+</div>
+    </div>
         </div>
-        <div className="role-filter">
-          <label htmlFor="role-filter">Filter by role:</label>
-          <select id="role-filter" value={selectedRole} onChange={handleRoleFilterChange}>
-            <option value="">All</option>
-            <option value="is_admin">Admin</option>
-            <option value="is_leaker">Leaker</option>
-            <option value="is_client">Client</option>
-          </select>
-        </div>
+        
       </div>
 
 
@@ -225,9 +296,16 @@ const handleCloseAddClient = () => {
             <th>Phone</th>
             <th>Description</th>
             <th>Inscription Date</th>
-            <th>Details</th>
-            <th>Edit</th>
-            <th>Delete</th>
+            {me.roles==="is_admin" && (
+   <th>Details</th>
+    )}
+      {me.roles==="is_admin" && (
+  <th>Edit</th>
+    )}
+      {me.roles==="is_admin" && (
+  <th>Delete</th>
+    )}
+          
           </tr>
         </thead>
         <tbody>
@@ -235,8 +313,8 @@ const handleCloseAddClient = () => {
         </tbody>
       </table>
       <ReactPaginate
-        previousLabel={'previous'}
-        nextLabel={'next'}
+        previousLabel={'<'}
+        nextLabel={'>'}
         pageCount={pageCount}
         onPageChange={changePage}
         containerClassName={'pagination'}
@@ -253,5 +331,3 @@ const handleCloseAddClient = () => {
 }
 
 export default ClientManagement
-
-

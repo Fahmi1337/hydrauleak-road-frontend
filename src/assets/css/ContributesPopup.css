@@ -1,0 +1,114 @@
+.contributesPopup {
+    zoom: 115%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    position: absolute;
+    top: 52%;
+    left: 20.6%;
+    transform: translate(-50%, -50%);
+    width: 25%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 1);
+    display: grid;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    justify-items: start;
+    
+   
+    }
+  
+    .contributesPopup h3{
+      margin-left: 5em;
+    }
+    .contributesPopup form {
+      width: 30em;
+      display: block;
+      margin-top: 0.5em;
+      overflow-y: auto;
+      overflow-x: hidden;
+      margin-bottom: 1em;
+      height: 45em;
+  }
+  textarea{
+    width: 100%;
+    height: 20% !important;
+    background-color: rgba(255, 255, 255, 0.75);
+  }
+  .formButtonsContainer{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+  .formButtonsContainer button{
+    margin: 0 8em;
+  }
+  input {
+    background-color: rgba(255, 255, 255, 0.75);
+    border: 1px solid #d5dae2;
+    border-radius: 8px;
+    box-sizing: border-box;
+    color: #23262d;
+    font-family: Cera PRO;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    margin: 0;
+    outline: none;
+    padding: 12px;
+    transition: border-color .3s ease;
+  }
+  .MuiBox-root{
+    zoom: 46%;
+    background-color: none;
+  }
+  
+  .contributesPopup input,
+  .contributesPopup label {
+  width: 100%;
+  display: block;
+  margin-bottom: 10px;
+  }
+  
+  .contributesPopup input {
+    border: 1px solid #d5dae2;
+    border-radius: 8px;
+    box-sizing: border-box;
+    color: #23262d;
+  
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    margin: 0;
+    outline: none;
+    padding: 12px;
+    transition: border-color .3s ease;
+  }
+  
+  .contributesPopup label {
+    font-weight: bold;
+    color: #555;
+  } 
+  
+  .contributesPopup button {
+  padding: 10px;
+  font-size: 14px;
+  background-color: #0087ff;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  width: 100%;
+  margin-top: 10px;
+  cursor: pointer;
+  }
+  
+  .contributesPopup button:hover {
+  background-color: #0064cc;
+  }
+  
+  
+  
+  

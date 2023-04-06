@@ -3,7 +3,8 @@ import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 import EditUserPopupForm from './EditUserPopupForm';
 import AddUserPopupForm from './AddUserPopupForm';
-
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 
 
@@ -46,7 +47,11 @@ const handleEditUser = (user) => {
 
 // handle Delete user
 const handleDeleteUser =async (userId) => {
+  const confirmation = window.confirm('Are you sure you want to delete this user?');
 
+  if (!confirmation) {
+    return;
+  }
   
   await axios.delete(`${process.env.REACT_APP_API_URL}/api/user/${userId}/`,
     
@@ -85,14 +90,21 @@ const handleDeleteUser =async (userId) => {
         <td>{item.email}</td>
         <td>{item.phone}</td>
         <td>{item.roles}</td>
-         <td>
-           <button onClick={() =>  {handleEditUser(item); handleOpenEditUser();}}>Edit</button>
-         </td>
-         <td>
-           <button onClick={() => handleDeleteUser(item.id)}>Delete</button>
-         </td>
+        <td className='tableEditTd'> 
+    <EditIcon onClick={() =>  {handleEditUser(item); handleOpenEditUser();}} />
+  
+   </td>
+   <td className='tableDeleteTd'> 
+    <DeleteIcon onClick={() => handleDeleteUser(item.id)}/>
+    
+   </td>
       </tr>
     ));
+
+
+
+   
+
 
   const pageCount = Math.ceil(data.length / itemsPerPage);
 
@@ -186,13 +198,23 @@ const handleCloseAddUser = () => {
                     />
                   )}         
           </div>
-
-      <div className="table-controls">
+          <div className="pageTitleContainer">  <h1>Users Management</h1></div>
+   
+       
+        <div id="addTableButtonContainer"> <button onClick={() => handleOpenAddUser()}>Add User</button> </div>
+        <div className="table-controls">
         <div className="search-input">
-        <button onClick={() => handleOpenAddUser()}>Add User</button>
-          <label htmlFor="search">Search:</label>
-          <input type="text" id="search" value={searchTerm} onChange={handleSearchChange} />
-        </div>
+      
+      <label htmlFor="search">Search:</label>
+      <input type="search" id="search" value={searchTerm} onChange={handleSearchChange} placeholder="Search..."/>
+      <div class="icons-container">
+<div class="icon-search"></div>
+<div class="icon-close">
+  <div class="x-up"></div>
+  <div class="x-down"></div>
+</div>
+</div>
+    </div>
         <div className="role-filter">
           <label htmlFor="role-filter">Filter by role:</label>
           <select id="role-filter" value={selectedRole} onChange={handleRoleFilterChange}>
@@ -223,8 +245,8 @@ const handleCloseAddUser = () => {
         </tbody>
       </table>
       <ReactPaginate
-        previousLabel={'previous'}
-        nextLabel={'next'}
+        previousLabel={'<'}
+        nextLabel={'>'}
         pageCount={pageCount}
         onPageChange={changePage}
         containerClassName={'pagination'}

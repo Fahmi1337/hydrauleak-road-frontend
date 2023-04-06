@@ -31,5 +31,61 @@
   form {
     display: block;
     margin-top: 2em;
-    overflow-y: scroll;
+   
 }
+.contributesButton{
+  zoom: 63%;
+  position: absolute !important;
+  color: white !important;
+  left: 34% !important;
+  top: 2% !important;
+  z-index: 999999999 !important;
+  font-size: 1.3em !important;
+  background-color: #0671E0 !important;
+  padding: 0.3em !important;
+  font-weight: 500 !important;
+  border-radius: 10px !important;
+}
+.layersButton{
+  zoom: 63%;
+  position: absolute !important;
+  color: white !important;
+  right: 19% !important;
+  top: 2% !important;
+  z-index: 999999999 !important;
+  font-size: 1.3em !important;
+  background-color: #0671E0 !important;
+  padding: 0.3em !important;
+  font-weight: 500 !important;
+  border-radius: 10px !important;
+}
+.contributesButtonsContainer{
+  display: grid;
+  grid-template-columns: 33% 33% 33%;
+}
+.contributesButtonsContainer button{
+ margin : 1em;
+  
+}
+.contributesButtonsContainer img{
+  cursor: pointer;
+}
+input[type="checkbox"]{
+  width: 25px;
+  height: 25px;
+}
+
+.mapLayersButtonContainer img{
+  cursor: pointer;
+  position: absolute;
+  width: 3em;
+  height: auto;
+  bottom: 2em;
+  margin-left: 4%;
+  z-index: 99;
+  }
+  .mapLayersContainer{
+    top: 46%;
+    left: 8%;
+    zoom: 60%;
+  }

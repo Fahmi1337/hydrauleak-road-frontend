@@ -1,0 +1,44 @@
+.ZonePopup button{
+    width: 90% !important;
+  }
+.ZonePopup{
+    left: 27.9% !important;
+    height: 74.2% !important;
+    top: 41.6% !important;
+  }
+  ul.pagination{
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+  }
+  ul{
+    list-style-type: none;
+  }
+  ul.pagination:hover {
+    cursor: pointer;
+  }
+  .table-controls{
+    display: flex;
+  }
+  #search{
+    width: 30em;
+    margin-right: 30px;
+    font-size: 22px;
+    background-color: white;
+    border-radius: 4px;
+  }
+
+  #status-filter{
+    font-size: 22px;
+    border-radius: 4px;
+    width: 10em;
+    padding: 0.5em;
+  }
+  #addTableButtonContainer button{
+    float: right;
+  }
+  #addTableButtonContainer{
+    margin-top: -3em;
+    margin-bottom: 10em;
+  }

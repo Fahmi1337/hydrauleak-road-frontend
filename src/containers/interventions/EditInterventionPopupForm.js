@@ -6,23 +6,23 @@ import Modal from '@mui/material/Modal';
 
 
 const EditInterventionPopupForm =({ intervention, onUpdateIntervention, onCancel, onOpen, getInterventions }) => {
-  const [contract, setContract] = useState(intervention.contract);
-  const [leaker, setLeaker] = useState(intervention.leaker);
+  // const [contract, setContract] = useState(intervention.contract);
+  // const [leaker, setLeaker] = useState(intervention.leaker);
   const [zone, setZone] = useState(intervention.zone);
-  const [title, setTitle] = useState(intervention.intervention_title);
-  const [description, setDescription] = useState(intervention.intervention_description);
+  const [intervention_title, setTitle] = useState(intervention.intervention_title);
+  const [intervention_description, setDescription] = useState(intervention.intervention_description);
   const [address, setAddress] = useState(intervention.address);
   const [city, setCity] = useState(intervention.city);
   const [state, setState] = useState(intervention.state);
-  const [zipCode, setZipCode] = useState(intervention.zipcode);
+  const [zipcode, setZipCode] = useState(intervention.zipcode);
   const [leakTool, setLeakTool] = useState(intervention.intervention_leak_tool);
-  const [date, setDate] = useState(intervention.intervention_date);  
-  const [estimateTime, setEstimateTime] = useState(intervention.intervention_estimate_time);
+  const [intervention_date, setDate] = useState(intervention.intervention_date);  
+  const [intervention_estimate_time, setEstimateTime] = useState(intervention.intervention_estimate_time);
  
-  const [type, setType] = useState(intervention.intervention_type);
+  const [intervention_type, setType] = useState(intervention.intervention_type);
   const [size, setSize] = useState(intervention.city_size);
-  const [status, setStatus] = useState(intervention.intervention_status);
-  const [published, setPublished] = useState(intervention.is_published);
+  const [intervention_status, setStatus] = useState(intervention.intervention_status);
+  const [is_published, setPublished] = useState(intervention.is_published);
   
 
   const style = {
@@ -37,13 +37,13 @@ const EditInterventionPopupForm =({ intervention, onUpdateIntervention, onCancel
     p: 4,
   };
 
-  const handleContractChange = (event) => {
-    setContract(event.target.value);
-  };
+  // const handleContractChange = (event) => {
+  //   setContract(event.target.value);
+  // };
 
-  const handleLeakerChange = (event) => {
-    setLeaker(event.target.value);
-  };
+  // const handleLeakerChange = (event) => {
+  //   setLeaker(event.target.value);
+  // };
 
   const handleZoneChange = (event) => {
     setZone(event.target.value);
@@ -108,27 +108,27 @@ const EditInterventionPopupForm =({ intervention, onUpdateIntervention, onCancel
     event.preventDefault();
     const updatedIntervention = {
       ...intervention,
-      contract, 
-      leaker, 
+      // contract, 
+      // leaker, 
       zone, 
-      title,
-      description,
-      type, 
+      intervention_title,
+      intervention_description,
+      intervention_type, 
       size, 
-      status, 
-      date, 
+      intervention_status, 
+      intervention_date, 
       address, 
       city, 
       state, 
-      zipCode, 
-      estimateTime, 
+      zipcode, 
+      intervention_estimate_time, 
       leakTool, 
-      published, 
+      is_published, 
     };
     onUpdateIntervention(updatedIntervention);
     getInterventions();
     onCancel(); // close the modal on successful form submission
-    
+    getInterventions();
     getInterventions();
   };
 
@@ -147,7 +147,7 @@ const EditInterventionPopupForm =({ intervention, onUpdateIntervention, onCancel
         open={onOpen}
        
         aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        aria-describedby="modal-modal-intervention_description"
       >
         <Box sx={style}>
             <div className="popup-form">
@@ -155,25 +155,25 @@ const EditInterventionPopupForm =({ intervention, onUpdateIntervention, onCancel
             <div className="popup-form-content">
                 <h2>Edit Intervention</h2>
                 <form onSubmit={handleSubmit}>
-                <label>
+                {/* <label>
                 contract:
                     <input type="text" value={contract} onChange={handleContractChange} />
                 </label>
                 <label>
                 leaker:
                     <input type="text" value={leaker} onChange={handleLeakerChange} />
-                </label>
-                <label>
+                </label> */}
+                {/* <label>
                 zone:
                     <input type="text" value={zone} onChange={handleZoneChange} />
-                </label>
+                </label> */}
                 <label>
                 title:
-                    <input type="text" value={title} onChange={handleTitleChange} />
+                    <input type="text" value={intervention_title} onChange={handleTitleChange} />
                 </label>
                 <label>
-                description:
-                    <input type="text" value={description} onChange={handleDescriptionChange} />
+                Intervention description:
+                    <input type="text" value={intervention_description} onChange={handleDescriptionChange} />
                 </label>
                 <label>
                 address:
@@ -188,8 +188,8 @@ const EditInterventionPopupForm =({ intervention, onUpdateIntervention, onCancel
                     <input type="text" value={state} onChange={handleStateChange} />
                 </label>
                 <label>
-                zipCode:
-                    <input type="text" value={zipCode} onChange={handleZipCodeChange} />
+                zipcode:
+                    <input type="text" value={zipcode} onChange={handleZipCodeChange} />
                 </label>
                 <label>
                 Leak Tool:
@@ -197,39 +197,32 @@ const EditInterventionPopupForm =({ intervention, onUpdateIntervention, onCancel
                 </label>
                 <label>
                 date:
-                    <input type="date" value={date} onChange={handleDateChange} />
+                    <input type="date" value={intervention_date} onChange={handleDateChange} />
                 </label>
                 <label>
                 estimate Time:
-                    <input type="date" value={estimateTime} onChange={handleEstimateTimeChange} />
+                    <input type="date" value={intervention_estimate_time} onChange={handleEstimateTimeChange} />
                 </label>
                 <label>
                 Intervention type:
-                    <select value={type} onChange={handleTypeChange}>
+                    <select value={intervention_type} onChange={handleTypeChange}>
                     <option value="Hight">Hight</option>
-                    <option value="Medium">Medium</option>
-                    <option value="Low">Low</option>
+                    <option value="Simple">Simple</option>
+                    <option value="PipeSearch">PipeSearch</option>
                     </select>
                 </label>
+                
                 <label>
-                City size:
-                    <select value={size} onChange={handleSizeChange}>
-                    <option value="BigCity">BigCity</option>
-                    <option value="MediumCity">MediumCity</option>
-                    <option value="LittleCity">LittleCity</option>
-                    </select>
-                </label>
-                <label>
-                Intervention status:
-                    <select value={status} onChange={handleStatusChange}>
-                    <option value="notStart">Not Started</option>
-                    <option value="In Progress">In Progress</option>
+                Intervention Status:
+                    <select value={intervention_status} onChange={handleStatusChange}>
+                    <option value="NotStart">Not Started</option>
+                    <option value="Pending">Pending</option>
                     <option value="Completed">Completed</option>
                     </select>
                 </label>
                 <label>
-                published:
-                    <select value={published} onChange={handlePublishedChange}>
+                Published:
+                    <select value={is_published} onChange={handlePublishedChange}>
                     <option value="Published">Published</option>
                     <option value="Not Published">Not Published</option>
                    

@@ -1,0 +1,12 @@
+.mapboxgl-popup-content{
+    width: max-content;
+    font-size: 20px;
+
+    -moz-transform: scale(0.80, 0.80); /* Moz-browsers */
+    zoom: 0.80; /* Other non-webkit browsers */
+    zoom: 80%; /* Webkit browsers */
+  }
+  .mapboxgl-popup-content p{
+    margin: 20px;
+    font-size: 20px;
+  }

@@ -13,47 +13,41 @@ import AddMapPopup from '../addmappopup/AddMapPopup'
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
+import sensor from "../../../assets/icons/contributes/sensor.png";
+import pipe from "../../../assets/icons/contributes/pipe.png";
+import pipeAccess from "../../../assets/icons/contributes/pipeAccess.png";
+import zone from "../../../assets/icons/contributes/zone.png";
+import mark from "../../../assets/icons/contributes/mark.png";
+import map from "../../../assets/icons/contributes/map.png";
 
+import ControlPointIcon from '@mui/icons-material/ControlPoint';
 
 const style = {
   position: 'absolute',
-  top: '32%',
-  left: '22%',
+  top: '27%',
+  left: '41%',
   
   transform: 'translate(-50%, -50%)',
   width: 400,
-  height: 200,
+  height: "auto",
   bgcolor: 'rgba(255, 255, 255, 0.75)',
   boxShadow: 24,
   p: 4,
+  padding: "32px",
+  zoom: "71%",
 };
 
-const style2 = {
-  position: 'absolute',
-  top: '52%',
-  left: '31%',
-  transform: 'translate(-50%, -50%)',
-  width: '34%',
- height: '96%',
-  bgcolor: 'rgba(255, 255, 255, 0.75)',
-  boxShadow: 24,
-  overflowY: 'scroll',
-  p: 4,
-};
+
 
 
     const AddButtonPopup = (props) => {
-    const [showPopup, setShowPopup] = useState(false);
-    
-    const [isRightPopupOpen, setIsRightPopupOpen] = useState(false);
 
 
 //POPUP1
     const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
+    const handleOpen = () => setOpen(!open);
     const handleClose = () => setOpen(false);
 //POPUP1
 
@@ -61,72 +55,47 @@ const style2 = {
 //POPUP Zone
 const [openZone, setOpenZone] = React.useState(false);
 const handleOpenZone = () => setOpenZone(true);
-const handleCloseZone = () => setOpenZone(false);
+const handleCloseZone = () => {props.HandleSetSubmitDeactivate(); setOpenZone(false);}
 
 // Add Pipe
 //POPUP Pipe
 const [openPipe, setOpenPipe] = React.useState(false);
 const handleOpenPipe = () => setOpenPipe(true);
-const handleClosePipe = () => setOpenPipe(false);
+const handleClosePipe = () => {props.HandleSetSubmitDeactivate(); setOpenPipe(false);}
 
 
 // Add Sensor
 //POPUP2
-const [open2, setOpen2] = React.useState(false);
-const handleOpen2 = () => setOpen2(true);
-const handleClose2 = () => setOpen2(false);
+const [openSensor, setOpenSensor] = React.useState(false);
+const handleOpenSensor = () => setOpenSensor(true);
+const handleCloseSensor = () =>{props.HandleSetSubmitDeactivate(); setOpenSensor(false);}
 
 // Add PipeAccess
 //POPUP PipeAccess
 const [openPipeAccess, setOpenPipeAccess] = React.useState(false);
 const handleOpenPipeAccess = () => setOpenPipeAccess(true);
-const handleClosePipeAccess = () => setOpenPipeAccess(false);
+const handleClosePipeAccess = () => {props.HandleSetSubmitDeactivate();setOpenPipeAccess(false);}
 
 // Add Mark
 //POPUP Mark
 const [openMark, setOpenMark] = React.useState(false);
 const handleOpenMark = () => setOpenMark(true);
-const handleCloseMark = () => setOpenMark(false);
+const handleCloseMark = () => {props.HandleSetSubmitDeactivate();setOpenMark(false);}
 
 
 // Add Map
 //POPUP Map
 const [openMap, setOpenMap] = React.useState(false);
 const handleOpenMap = () => setOpenMap(true);
-const handleCloseMap = () => setOpenMap(false);
-
-
-const [addSensorPop, setAddSensorPop] = useState(false)
+const handleCloseMap = () => {props.HandleSetSubmitDeactivate();setOpenMap(false);}
 
 
 
+    const {setSubmitActive} = props;
+    const {setSubmitZoneActive} = props;
+    const {setSubmitPipeActive} = props;
+    const {mapClickedCoordinates} = props;
 
-    const handleRightPopupOpen = () => {
-      setIsRightPopupOpen(true);
-     
-    };
-  
-    const handleRightPopupClose = () => {
-      setIsRightPopupOpen(false);
-    };
-
-    const togglePopup = () => {
-      setShowPopup(!showPopup);
-
-      
-    }
-
-
-
-   
-      const handleClickSensor = () => {
-        props.handleClickSensor(props.data);
-      };
-
-
-    const {setRunEffectSensor} = props;
-    const {setRunEffectPipe} = props;
-    const {setRunEffectZone} = props;
 
 
 
@@ -143,20 +112,48 @@ const handlePolygonCreated= props.handlePolygonCreated
 
     return (
         <>
+      {openZone && (<AddZonePopup 
+      zoneCoordinates={props.zoneCoordinates}
+      setSubmitZoneActive={setSubmitZoneActive} 
+      handlePolygonCreated={handlePolygonCreated} 
+      handleCloseZone={handleCloseZone} 
+      openZone={openZone} 
+      area = {props.area}/>)}
       
-      <AddZonePopup handlePolygonCreated={handlePolygonCreated} handleCloseZone={handleCloseZone} openZone={openZone}/>
+      {openPipe && (<AddPipePopup 
+      pipeCoordinates={props.pipeCoordinates}
+      setSubmitPipeActive={setSubmitPipeActive} 
+      handleClosePipe={handleClosePipe} 
+      openPipe={openPipe}
+      pipeLength={props.pipeLength}/>)}   
 
-      <AddPipePopup  handleClosePipe={handleClosePipe} openPipe={openPipe}/>
+      {openPipeAccess &&( <AddPipeAccessPopup  
+      handleClosePipeAccess={handleClosePipeAccess} 
+      openPipeAccess={openPipeAccess} 
+      mapClickedCoordinates = {mapClickedCoordinates}/>)} 
+     
+      {openMark && (<AddMarkPopup  
+      handleCloseMark={handleCloseMark} 
+      openMark={openMark} 
+      mapClickedCoordinates = {mapClickedCoordinates}/>)}
       
-      <AddPipeAccessPopup  handleClosePipeAccess={handleClosePipeAccess} openPipeAccess={openPipeAccess}/>
+      {openMap && (<AddMapPopup  
+      handleCloseMap={handleCloseMap} 
+      openMap={openMap} 
+      mapClickedCoordinates = {mapClickedCoordinates}/>)}
       
-      <AddMarkPopup  handleCloseMark={handleCloseMark} openMark={openMark}/>
-      
-      <AddMapPopup  handleCloseMap={handleCloseMap} openMap={openMap}/>
-
-      <RightAddSensorPopup handleClose2={handleClose2} handleClose={handleClose} getSensors={props.getSensors} open2={open2}/>
+      {openSensor && (<RightAddSensorPopup 
+      handleCloseSensor={handleCloseSensor} 
+      handleClose={handleClose} 
+      openSensor={openSensor} 
+      mapClickedCoordinates = {mapClickedCoordinates} />)}
+     
         
-        <Button onClick={handleOpen}>Contributes +</Button>
+    <Button className="contributesButton" 
+    onClick={handleOpen} 
+    variant="outlined" 
+    startIcon={<ControlPointIcon/>}> Contributes</Button>
+      
       <Modal
         disableEnforceFocus
         hideBackdrop
@@ -169,21 +166,45 @@ const handlePolygonCreated= props.handlePolygonCreated
       >
         <Box sx={style}>
         
-          <div>
+          <div className="contributesButtonsContainer">
             {/* MODAL 2 */}
+            <div className="contributesButtonsContainerImg">
+            <img  src={sensor} alt="sensor" onClick={() => { setSubmitActive(true); handleOpenSensor(); handleClose();}}/>
+              <h4>Sensors</h4>
+            </div>
+            <div className="contributesButtonsContainerImg">
+            <img src={pipe} alt="pipe" onClick={() => {setSubmitPipeActive(true);handleOpenPipe();  handleClose();}}/>
+             <h4>Pipes</h4>
+            </div>
+            <div className="contributesButtonsContainerImg">
+            <img src={pipeAccess} alt="pipeAccess" onClick={() => {setSubmitActive(true); handleOpenPipeAccess();  handleClose();}}/>
+              <h4>Pipe Access</h4>
+            </div>
+            <div className="contributesButtonsContainerImg">
+            <img src={mark} alt="mark" onClick={() => {setSubmitActive(true); handleOpenMark();  handleClose();}}/>
+            <h4>Marks</h4>
+            </div>
+            <div className="contributesButtonsContainerImg">
+            <img src={zone} alt="zone" onClick={() => {setSubmitZoneActive(true); handleOpenZone();  handleClose();}}/>
+            <h4>Zones</h4>
+            </div>
+            <div className="contributesButtonsContainerImg">
+            <img src={map} alt="map" onClick={() => {setSubmitActive(true); handleOpenMap();  handleClose();}}/>
+            <h4>Maps</h4>
+            </div>
 
-          <button onClick={() => {setRunEffectZone(true); handleOpenZone();  handleClose();}} >Add zone</button>
+          {/* <button onClick={() => {setSubmitZoneActive(true); handleOpenZone();  handleClose();}} >Add zone</button>
 
-          <button  onClick={() => {setRunEffectPipe(true); handleOpenPipe();  handleClose();}} >Add pipe</button>
+          <button  onClick={() => {setSubmitPipeActive(true);handleOpenPipe();  handleClose();}} >Add pipe</button>
 
-          <button onClick={() => {setRunEffectSensor(true); handleOpenPipeAccess();  handleClose();}} >Add pipe Access </button>
+          <button onClick={() => {setSubmitActive(true); handleOpenPipeAccess();  handleClose();}} >Add pipe Access </button>
 
-          <button onClick={() => { setRunEffectSensor(true); handleOpen2(); handleClose();}} >Add Sensor</button>
+          <button onClick={() => { setSubmitActive(true); handleOpenSensor(); handleClose();}} >Add Sensor</button>
           
-          <button onClick={() => {setRunEffectSensor(true); handleOpenMark();  handleClose();}} >Add mark</button>
+          <button onClick={() => {setSubmitActive(true); handleOpenMark();  handleClose();}} >Add mark</button>
 
-          <button onClick={() => {setRunEffectSensor(true); handleOpenMap();  handleClose();}}>Add Map</button>
-          <button onClick={() => { handleClose(); }}>Close</button>
+          <button onClick={() => {setSubmitActive(true); handleOpenMap();  handleClose();}}>Add Map</button> */}
+          {/* <button onClick={() => { handleClose(); }}>Close</button> */}
            
        
        
@@ -203,27 +224,13 @@ const handlePolygonCreated= props.handlePolygonCreated
      
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       </>
   );
 }
 
 
 AddButtonPopup.propTypes = {
-  setRunEffectSensor: PropTypes.func.isRequired,
+  setRunEffectSensor: PropTypes.func,
 };
 
 export default AddButtonPopup

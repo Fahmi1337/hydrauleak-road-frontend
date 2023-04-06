@@ -1,0 +1,57 @@
+/* profile.css */
+.profile-heading {
+  font-size: 2rem;
+  margin-bottom: -10rem;
+  margin-left: 9em;
+  margin-top: 5em;
+}
+
+.profile-container {
+ 
+  display: flex;
+  justify-content: space-between;
+
+  padding-left: 17em;
+    padding-top: 16rem;
+    padding-right: 14rem;
+  position: center;
+}
+
+.profile-body{
+  zoom: 60%;
+}
+
+.profile-container form {
+  display: flex;
+  flex-direction: column;
+  margin-right: 2rem;
+  width: 75%;
+}
+.changePasswordContainer{
+  width: 75%;
+}
+.profile-container label {
+  margin-bottom: 0.5rem;
+}
+
+.profile-container input {
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+}
+.profile-container button{
+  width: 40%;
+  margin-left: -0.1em;
+}
+
+
+.profile-container button:hover {
+  background-color: #0069d9;
+}
+
+.error-message {
+  color: red;
+  margin-bottom: 1rem;
+}

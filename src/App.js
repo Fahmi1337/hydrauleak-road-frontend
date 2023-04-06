@@ -1,21 +1,31 @@
-//needs
 import { Provider } from 'react-redux';
 import store from './store';
 import React, {useState, useEffect} from 'react'
 import { BrowserRouter as Router, Route, Routes,Navigate } from 'react-router-dom';
 //container
+
 import Test from './containers/Test'
+import Test2 from './containers/Test2'
+import Test3 from './containers/Test3'
+
 import Dashboard from './containers/Dashboard';
 import UserManagement from './containers/userManagement/UserManagement';
 import Login from './containers/login/Login';
 import Signup from './containers/Signup';
-import Contracts from './containers/Contracts'
+
+// import Contracts from './containers/Contracts'
+import Contracts from './containers/contracts/Contracts'
 // import ContractDetail from './containers/ContractDetail';
 import Reports from './containers/reports/Reports'
 import PostReport from './containers/reports/PostReport'
 import Interventions from './containers/interventions/Interventions'
+import AddZoneIntervention from './containers/interventions/AddZoneIntervention'
 import ClientManagement from './containers/clientManagement/ClientManagment';
 
+import AdminProfile from './containers/editProfiles/AdminProfile';
+import LeakerProfile from './containers/editProfiles/LeakerProfile';
+import ClientProfile from './containers/editProfiles/ClientProfile';
+import axios from 'axios';
 // import Activate from './containers/Activate';
 // import ResetPassword from './containers/ResetPassword';
 // import ResetPasswordConfirm from './containers/ResetPasswordConfirm';
@@ -44,12 +54,52 @@ const NoLayout = ({children}) => {
   }; 
 
 const App = () => {
+
+// //CHECK ME START
+const [me, setMe] = useState([]);
+
+
+// const getMe = async () => {
+//     try {
+//       const response = await fetch(
+//         `${process.env.REACT_APP_API_URL}/api/user/me`,
+//         {
+//           method: "GET",
+  
+//           headers: {
+//             "Content-Type": "application/json",
+//             Authorization: "Bearer " + localStorage.getItem("token"),
+//           },
+//         }
+//       )
+//         .then((response) => response.json())
+//         .then((data) => setMe(data));
+//   return response;
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   };
+
+
+// useEffect(() => {
+//     getMe();
+//     console.log("token me ", me.messages.message )
+//    if(me.messages.message.includes("invali")){
+//     localStorage.removeItem('token');
+//    }
+//   }, [me]);
+
+
+
     const [isToken, setIsToken]= useState(true)
-    
+
     useEffect(() => {
+      
         const token = localStorage.getItem('token');
+
         if (token) {
             setIsToken(true)
+            
         }
         else{
             setIsToken(false)
@@ -57,7 +107,7 @@ const App = () => {
 
       }, [isToken]);
       console.log("this is the auth",isToken )
-
+//TOKEN MANAGEMENT END
         return(
     <Provider store={store}>
         <Router>
@@ -68,9 +118,18 @@ const App = () => {
                     <Route path="/contracts" element={ !isToken ? <Navigate to="/login" /> : <Contracts/> }/>;
                     <Route path="/user-management" element={ !isToken ? <Navigate to="/login" /> : <UserManagement/> }/>;
                     <Route path="/client-management" element={ !isToken ? <Navigate to="/login" /> : <ClientManagement/> }/>;
+
+                    <Route path="/admin-profile" element={ !isToken ? <Navigate to="/login" /> : <AdminProfile/> }/>;
+                    <Route path="/leaker-profile" element={ !isToken ? <Navigate to="/login" /> : <LeakerProfile/> }/>;
+                    <Route path="/client-profile" element={ !isToken ? <Navigate to="/login" /> : <ClientProfile/> }/>;
+
                     <Route exact path='/test' element={<Test/>} />
+                    <Route exact path='/test2' element={<Test2/>} />
+                    <Route exact path='/test3' element={<Test3/>} />
 
                     <Route path="/interventions" element={ !isToken ? <Navigate to="/login" /> : <Interventions/> }/>;
+                    <Route path="/add-zone-intervention" element={ !isToken ? <Navigate to="/login" /> : <AddZoneIntervention/> }/>;
+                   
                     <Route path="/reports" element={ !isToken ? <Navigate to="/login" /> : <Reports/> }/>;
                     
                     <Route path="/post-report" element={ !isToken ? <Navigate to="/login" /> : <PostReport/> }/>;
