@@ -37,7 +37,7 @@
   zoom: 63%;
   position: absolute !important;
   color: white !important;
-  left: 34% !important;
+  left: 35% !important;
   top: 2% !important;
   z-index: 999999999 !important;
   font-size: 1.3em !important;
@@ -50,7 +50,7 @@
   zoom: 63%;
   position: absolute !important;
   color: white !important;
-  right: 19% !important;
+  right: 21% !important;
   top: 2% !important;
   z-index: 999999999 !important;
   font-size: 1.3em !important;
@@ -86,6 +86,6 @@ input[type="checkbox"]{
   }
   .mapLayersContainer{
     top: 46%;
-    left: 8%;
+    left: 11%;
     zoom: 60%;
   }

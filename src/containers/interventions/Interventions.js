@@ -38,7 +38,7 @@ const [openAddZoneInterventionPopup, setOpenAddZoneInterventionPopup] = useState
 
 
 const style = {
-
+  zoom:'83.5%',
   zIndex: 999,
 };
 

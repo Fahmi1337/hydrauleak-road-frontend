@@ -245,7 +245,16 @@ line-height: 32px;
           background-position: center;
           margin: 10px auto;
     }
+    .mapboxgl-ctrl-geocoder--pin-right{
+    display: none;
+    }
+    .mapboxgl-ctrl-geocoder--input{
+      padding: 1%;
+      font-size: 13px;
+    }
+    
     .mapboxgl-ctrl-group {
+      zoom: 70%;
       margin-right: 36px;
       background: #5a454500;
       border-radius: 4px;

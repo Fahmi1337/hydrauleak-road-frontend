@@ -61,9 +61,10 @@ body {
   .active{
     background-color: #5ca2eb;
     color: white;
-    width: 82%;
+    width: 92%;
     padding-left: 1.5em;
     margin-left: -0.22em;
+    padding: 20px;
   }
   /* .auth a {
     background-color: #e8491d;

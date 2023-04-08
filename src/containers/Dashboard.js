@@ -38,10 +38,11 @@ import MapViewPopup from '../components/mapPopups/addmappopup/MapViewPopup';
 import MapUpdatePopup from '../components/mapPopups/addmappopup/MapUpdatePopup';
 
 import { useGetMaps, useGetPipes,useGetPipeAccess, useGetMarkers, useGetZones, useGetSensors } from "../actions/ApiFunctions";
+import { Dashboard } from "@mui/icons-material";
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 
-const Test = () => {
+const NewDashboard = () => {
   // const [sensorsData, setSensorsData] = useState([]);
   const [showSensors, setShowSensors] = useState(true);
   const [showMarkers, setShowMarkers] = useState(true);
@@ -1254,4 +1255,4 @@ useEffect(() => {
   );
 };
 
-export default Test;
+export default NewDashboard;
