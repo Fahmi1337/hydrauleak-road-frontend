@@ -19,10 +19,13 @@ const AddContractPopupForm = ({ onCancel, onOpen }) => {
   const [contractData, setContractData] = useState({
    
     // contract: 1, 
-    // client: "1",
+      client: 2,
     // contract_title: '',
     // contract_description: '',
-    
+    address: '', 
+    city: '', 
+    state: '', 
+    zipcode: '', 
      
       contract_status: 'NotStart', 
       // contract_date: '', 
@@ -59,7 +62,7 @@ const AddContractPopupForm = ({ onCancel, onOpen }) => {
 
   const [clients, setClients] = useState([]);
  console.log("the client data :", clients.map((client) => (client.id))  )
-
+ console.log("the contract data :", contractData  )
   const getClients = async () => {
     try {
       const response = await fetch(
@@ -108,7 +111,7 @@ const AddContractPopupForm = ({ onCancel, onOpen }) => {
                  <label>
                  Select Client:
                 </label>
-                <select name="client" value={contractData.client} onChange={handleContractDataChange}>
+                <select type='number' name="client" value={contractData.client} onChange={handleContractDataChange}>
                 <option disabled value=""> -- select an option -- </option>
                 {clients.map((client) => (
                   <option key={client.id} value={client.id}>

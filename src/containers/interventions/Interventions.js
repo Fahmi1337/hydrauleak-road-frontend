@@ -271,11 +271,11 @@ console.log("selectedIntervention",selectedIntervention )
       
           <label htmlFor="search">Search:</label>
           <input type="search" id="search" value={searchTerm} onChange={handleSearchChange} placeholder="Search..."/>
-          <div class="icons-container">
-    <div class="icon-search"></div>
-    <div class="icon-close">
-      <div class="x-up"></div>
-      <div class="x-down"></div>
+          <div className="icons-container">
+    <div className="icon-search"></div>
+    <div className="icon-close">
+      <div className="x-up"></div>
+      <div className="x-down"></div>
     </div>
   </div>
         </div>
