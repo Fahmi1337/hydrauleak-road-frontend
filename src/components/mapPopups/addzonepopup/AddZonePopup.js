@@ -179,7 +179,7 @@ useEffect(() => {
       }, []);
 
    
-console.log("props.interventionId", selectedIntervention)
+// console.log("props.interventionId", selectedIntervention)
   return (
     <>
  

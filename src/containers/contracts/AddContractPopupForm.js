@@ -19,7 +19,7 @@ const AddContractPopupForm = ({ onCancel, onOpen }) => {
   const [contractData, setContractData] = useState({
    
     // contract: 1, 
-      // client: 1,
+    // client: "1",
     // contract_title: '',
     // contract_description: '',
     
@@ -31,11 +31,13 @@ const AddContractPopupForm = ({ onCancel, onOpen }) => {
   });
 
   const handleContractDataChange = (e) => {
+    const value = e.target.name === 'client' ? parseInt(e.target.value) : e.target.value;
     setContractData({
       ...contractData,
-      [e.target.name]: e.target.value,
+      [e.target.name]: value,
     });
   };
+  
 
   const handleSubmitData = (e) => {
     e.preventDefault(); // prevent the default form submission
@@ -56,12 +58,12 @@ const AddContractPopupForm = ({ onCancel, onOpen }) => {
   };
 
   const [clients, setClients] = useState([]);
- console.log("the client data :", clients.filter((client) => client.roles.includes("is_client")).map((client) => (client.id))  )
+ console.log("the client data :", clients.map((client) => (client.id))  )
 
   const getClients = async () => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/user/`,
+        `${process.env.REACT_APP_API_URL}/api/clients/`,
         {
           method: "GET",
   
@@ -108,9 +110,9 @@ const AddContractPopupForm = ({ onCancel, onOpen }) => {
                 </label>
                 <select name="client" value={contractData.client} onChange={handleContractDataChange}>
                 <option disabled value=""> -- select an option -- </option>
-                {clients.filter((client) => client.roles.includes("is_client")).map((client) => (
+                {clients.map((client) => (
                   <option key={client.id} value={client.id}>
-                    {client.name}
+                    {client.user.name}
                   </option>
                 ))}
               </select>
