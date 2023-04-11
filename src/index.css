@@ -360,6 +360,10 @@ line-height: 32px;
   grid-template-columns: 8vw 90vw;
 }
 
+.mapboxgl-popup-content {
+  zoom: 50%;
+}
+
 @media only screen and (max-width: 1700px) {
 
 }
