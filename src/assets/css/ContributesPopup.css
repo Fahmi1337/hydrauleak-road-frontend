@@ -62,6 +62,10 @@
     transition: border-color .3s ease;
   }
   .MuiBox-root{
+    background-color: white !important;
+    margin-top: 2%;
+    padding-right: 0% !important;
+    padding-left: 3.5% !important;
     zoom: 53%;
     background-color: none;
   }
