@@ -13,12 +13,13 @@ const EditUserPopupForm =({ user, onUpdateUser, onCancel, onOpen, getUsers }) =>
 
   const style = {
     position: 'absolute',
+    overflowY: 'hidden',
+    overflowX: 'hidden',
     top: '50%',
-    left: '60%',
-    
+    left: '50%',
+    width: '55em !important',
     transform: 'translate(-50%, -50%)',
-   
-    bgcolor: 'rgba(255, 255, 255, 0.75)',
+    bgcolor: 'rgba(255, 255, 255, 1)',
     boxShadow: 24,
     p: 4,
   };
@@ -74,7 +75,7 @@ const EditUserPopupForm =({ user, onUpdateUser, onCancel, onOpen, getUsers }) =>
       >
         <Box sx={style}>
             <div className="popup-form">
-            <div className="popup-form-overlay" onClick={onCancel}></div>
+            {/* <div className="popup-form-overlay" onClick={onCancel}></div> */}
             <div className="popup-form-content">
                 <h2>Edit User</h2>
                 <form onSubmit={handleSubmit}>

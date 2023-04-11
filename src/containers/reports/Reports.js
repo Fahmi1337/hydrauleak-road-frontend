@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'
 import ReactPaginate from 'react-paginate';
-import './reports.css';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Box from '@mui/material/Box';
+// import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
 
 import ReportPopup from './ReportPopup'
+import PostReport from './PostReport';
 const Reports = () => {
   
   const [selectedReport, setSelectedReport] = useState(null);
@@ -16,7 +19,14 @@ const Reports = () => {
   const itemsPerPage = 10;
   const pagesVisited = pageNumber * itemsPerPage;
   const [openPopup, setOpenPopup] = useState(false);
- 
+  const [openSubmitReportPopup, setOpenSubmitReportPopup] = useState(false);
+  
+
+  const style = {
+    zoom:'70%',
+    zIndex: 999,
+   
+  };
   
   const handleOpenReportPopup = () => {
     setOpenPopup(true);
@@ -101,6 +111,14 @@ const handleDeleteUser =async (reportId) => {
   ));
   const pageCount = Math.ceil(data.length / itemsPerPage);
 
+
+  const handleOpenSubmitReport = () => {
+    setOpenSubmitReportPopup(true);
+  };
+  const handleCloseSubmitReport = () => {
+    setOpenSubmitReportPopup(false);
+  };
+  
   const changePage = ({ selected }) => {
     setPageNumber(selected);
   };
@@ -136,8 +154,29 @@ const handleDeleteUser =async (reportId) => {
   };
   return (
     <div className="table_container">
+
+
+
+      <Modal
+        open={openSubmitReportPopup}
+        
+       
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+
+      >
+        <Box sx={style}>
+          {openSubmitReportPopup && (
+            <PostReport handleCloseSubmitReport= {handleCloseSubmitReport} />
+          )}
+        </Box>
+      </Modal>
+
+
+
       <div>
       <div className="pageTitleContainer">  <h1>Reports</h1></div>
+      <div id="addTableButtonContainer"> <button onClick={() => handleOpenSubmitReport()}>+ Submit Report</button></div>
         <div className="table-controls">
           <div className="search-input">
           {/* <button onClick={() => handleOpenAddUser()}>Add User</button> */}

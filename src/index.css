@@ -249,11 +249,14 @@ line-height: 32px;
     display: none;
     }
     .mapboxgl-ctrl-geocoder--input{
+       z-index: 999999999999 !important;
+      width: 10%;
       padding: 1%;
       font-size: 13px;
     }
     
     .mapboxgl-ctrl-group {
+      
       zoom: 70%;
       margin-right: 36px;
       background: #5a454500;
@@ -294,7 +297,7 @@ line-height: 32px;
   input, select{
     font-size: 22px;
     border-radius: 4px;
-    /* width: 10em; */
+    width: 26.5em;
     padding: 0.5em;
   }
   .popup-form p{
@@ -302,12 +305,13 @@ line-height: 32px;
     margin: 20px;
   }
   .popup-form button{
-    margin-top: 30px;
+    
+
   }
   .popup-form{
-    overflow-y: scroll;
-    height: 45em;
-    width: 60em;
+    overflow-y: scroll; 
+    height: 48em;
+    width: 77em;
     display: grid;
     grid-template-columns: auto auto;
   }
@@ -328,7 +332,7 @@ line-height: 32px;
  }
 
  .selectMapContainer select{ 
-
+    width: 100%;
     zoom: 65%;
     color: white !important;
     background-color:#0671E0 ;
@@ -341,7 +345,9 @@ line-height: 32px;
   zoom: 45%; /* Webkit browsers */
 }
 
-
+.mapboxgl-ctrl-geocoder--icon-search{
+  display: none;
+}
 
 .mapboxgl-marker{
   margin-top: 1.3%;

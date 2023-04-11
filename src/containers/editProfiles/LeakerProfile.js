@@ -53,6 +53,7 @@ function LeakerProfile() {
     })
     .then(response => {
       console.log(response);
+      window.location.reload();
     })
     .catch(error => {
       setErrorMessage(error.message);

@@ -10,11 +10,12 @@ const ViewInterventionPopup = ({ onCancel, onOpen, selectedIntervention, interve
   const style = {
     position: 'absolute',
     top: '50%',
-    left: '60%',
+    left: '50%',
     transform: 'translate(-50%, -50%)',
-    bgcolor: 'rgba(255, 255, 255, 0.75)',
+    bgcolor: 'rgba(255, 255, 255, 1)',
     boxShadow: 24,
     p: 4,
+    width: '50%'
   };
 
 

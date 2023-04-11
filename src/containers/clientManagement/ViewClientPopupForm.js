@@ -7,16 +7,16 @@ const ViewClientPopupForm = ({ clientId, onClose, onOpen }) => {
   const [client, setClient] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
+
   const style = {
     position: 'absolute',
     top: '50%',
-    left: '60%',
-    
+    left: '50%',
     transform: 'translate(-50%, -50%)',
-   
-    bgcolor: 'rgba(255, 255, 255, 0.75)',
+    bgcolor: 'rgba(255, 255, 255, 1)',
     boxShadow: 24,
     p: 4,
+    width: '20%'
   };
 
   useEffect(() => {
@@ -58,10 +58,10 @@ const ViewClientPopupForm = ({ clientId, onClose, onOpen }) => {
         {isLoading && <div>Loading...</div>}
         {!isLoading && client && (
           <>
-            <h2>{client.user.name}</h2>
-            <p>Phone: {client.user.phone}</p>
-            <p>Address: {client.address}</p>
-            <p>Inscription date: {client.inscription_date}</p>
+            <h1 style={{color:'blue'}}>{client.user.name}</h1>
+            <h2>Phone: {client.user.phone}</h2>
+            <h2>Address: {client.address}</h2>
+            <h2>Inscription date: {client.inscription_date}</h2>
             <button >Download File</button>
             <button onClick={onClose}>Close</button>
           </>

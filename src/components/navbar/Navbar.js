@@ -72,15 +72,15 @@ const getUserRoutes = () => {
                 <li> <PeopleOutlineIcon /> <a href="/user-management">users</a></li>
                 <li> <PersonIcon /> <a href="/admin-profile">Profile</a></li> */}
 
-                <Fragment>
-             <NavLink activeClassName="activeLink"  to='/'> <HomeIcon style={{ fill: 'white', marginBottom: '-0.5rem' }}/> <span className='nav-txt'>Dashboard</span> </NavLink>
-              <NavLink activeClassName="activeLink"  to='/contracts'><ReceiptLongIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }}/> <span className='nav-txt'> Contracts </span></NavLink>
-              <NavLink activeClassName="activeLink"  to='/interventions'><ContentPasteIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }} /> <span className='nav-txt'>Interventions </span></NavLink>
-              <NavLink activeClassName="activeLink"  to='/reports'><SummarizeIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }} /> <span className='nav-txt'>Reports </span></NavLink>
-             <NavLink activeClassName="activeLink"  to='/client-management'> <GroupsIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }} /><span className='nav-txt'> Clients </span></NavLink>
-             <NavLink activeClassName="activeLink"  to='/user-management'><PeopleOutlineIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }} /> <span className='nav-txt'> Users </span></NavLink>
-              <NavLink activeClassName="activeLink"  to='/admin-profile'><PersonIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }} /><span className='nav-txt'> Profile </span></NavLink>
-             </Fragment>
+            <Fragment>
+                <NavLink activeClassName="activeLink"  to='/'> <HomeIcon style={{ fill: 'white', marginBottom: '-0.5rem' }}/> <span className='nav-txt'>Dashboard</span> </NavLink>
+                <NavLink activeClassName="activeLink"  to='/contracts'><ReceiptLongIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }}/> <span className='nav-txt'> Contracts </span></NavLink>
+                <NavLink activeClassName="activeLink"  to='/interventions'><ContentPasteIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }} /> <span className='nav-txt'>Interventions </span></NavLink>
+                <NavLink activeClassName="activeLink"  to='/reports'><SummarizeIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }} /> <span className='nav-txt'>Reports </span></NavLink>
+                <NavLink activeClassName="activeLink"  to='/client-management'> <GroupsIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }} /><span className='nav-txt'> Clients </span></NavLink>
+                <NavLink activeClassName="activeLink"  to='/user-management'><PeopleOutlineIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }} /> <span className='nav-txt'> Users </span></NavLink>
+                <NavLink activeClassName="activeLink"  to='/admin-profile'><PersonIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }} /><span className='nav-txt'> Profile </span></NavLink>
+            </Fragment>
                 </>
         )
     }
@@ -89,10 +89,10 @@ const getUserRoutes = () => {
             <>
              <div id="logoContainer"> <img src={hydrauleaklogo} id="hydrauleak-logo" alt="hydrauleak"/></div>
              <Fragment>
-             <NavLink activeClassName="activeLink"  to='/'> <HomeIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }} /><span className='nav-txt'> Dashboard</span></NavLink>
-             <NavLink activeClassName="activeLink"  to='/contracts'> <ReceiptLongIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }} /><span className='nav-txt'> Contracts </span></NavLink>
+              <NavLink activeClassName="activeLink"  to='/'> <HomeIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }} /><span className='nav-txt'> Dashboard</span></NavLink>
+              <NavLink activeClassName="activeLink"  to='/contracts'> <ReceiptLongIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }} /><span className='nav-txt'> Contracts </span></NavLink>
               <NavLink activeClassName="activeLink"  to='/interventions'><ContentPasteIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }} /> <span className='nav-txt'>Interventions </span></NavLink>
-              <NavLink activeClassName="activeLink"  to='/post-report'><SummarizeIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }} /><span className='nav-txt'> Send Reports </span></NavLink>
+              <NavLink activeClassName="activeLink"  to='/reports'><SummarizeIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }} /> <span className='nav-txt'>Send Report</span></NavLink>
               <NavLink activeClassName="activeLink"  to='/leaker-profile'><PersonIcon  style={{ fill: 'white', marginBottom: '-0.5rem'  }} /><span className='nav-txt'> Profile </span></NavLink>
              </Fragment>
             {/* <li><a href="/">Dashboard</a></li>
@@ -113,7 +113,7 @@ const getUserRoutes = () => {
              <Fragment>
              <HomeIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }}  /> <NavLink activeClassName="activeLink"  to='/'> <span className='nav-txt'> Dashboard </span></NavLink>
              <ReceiptLongIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }} /> <NavLink activeClassName="activeLink"  to='/contracts'> <span className='nav-txt'> Contracts </span></NavLink>
-             <SummarizeIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }}  /> <NavLink activeClassName="activeLink"  to='/post-report'> <span className='nav-txt'> Send Reports </span></NavLink>
+             <NavLink activeClassName="activeLink"  to='/reports'><SummarizeIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }} /> <span className='nav-txt'>Send Report</span></NavLink>
              <PersonIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }}  /> <NavLink activeClassName="activeLink"  to='/client-profile'> <span className='nav-txt'> Profile </span></NavLink>
              </Fragment>
             {/* <li><a href="/">Dashboard</a></li>

@@ -6,12 +6,13 @@ import Modal from '@mui/material/Modal';
 import axios from 'axios';
 const style = {
   position: 'absolute',
+  // overflowY: 'hidden',
+  // overflowX: 'hidden',
   top: '50%',
-  left: '60%',
-  
+  left: '50%',
+  width: '55em !important',
   transform: 'translate(-50%, -50%)',
- 
-  bgcolor: 'rgba(255, 255, 255, 0.75)',
+  bgcolor: 'rgba(255, 255, 255, 1)',
   boxShadow: 24,
   p: 4,
 };
@@ -131,11 +132,11 @@ const AddContractPopupForm = ({ onCancel, onOpen }) => {
 
                 <label>
                 Contract work type:
-                    <select  type="text" name='contract_work_type' value={contractData.contract_work_type} onChange={handleContractDataChange} required>                   
-                    <option value="Fire_Hydrant_Inspection">Fire Hydrant Inspection</option>
-                    <option value=" All_City_Inspections">All City Inspections</option>
-                    <option value="Clarifying_the_location_of_the_leak">Clarifying the location of the leak</option>
-                    <option value="Solve_high_consumption_problem_but_the_leak_is_not_identified">Solve high consumption problem but the leak is not identified</option>
+                    <select  type="text" name='contract work type' value={contractData.contract_work_type} onChange={handleContractDataChange} required>                   
+                    <option value="Fire Hydrant Inspection">Fire Hydrant Inspection</option>
+                    <option value=" All City Inspections">All City Inspections</option>
+                    <option value="Clarifying the location of the leak">Clarifying the location of the leak</option>
+                    <option value="Solve high consumption problem but the leak is not identified">Solve high consumption problem but the leak is not identified</option>
                     </select>
                 </label>
                 {/*

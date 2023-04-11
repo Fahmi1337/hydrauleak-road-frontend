@@ -15,12 +15,12 @@ const EditContractPopupForm =({ contract, onUpdateContract, onCancel, onOpen, ge
   const [city, setCity] = useState(contract.city);
   const [state, setState] = useState(contract.state);
   const [zipcode, setZipCode] = useState(contract.zipcode);
-  const [leakTool, setLeakTool] = useState(contract.contract_leak_tool);
+  // const [leakTool, setLeakTool] = useState(contract.contract_leak_tool);
   const [contract_date, setDate] = useState(contract.contract_date);  
   const [contract_estimate_end_date, setEstimateTime] = useState(contract.contract_estimate_end_date);
  
   const [contract_work_type, setType] = useState(contract.contract_work_type);
-  const [size, setSize] = useState(contract.city_size);
+  
   const [contract_status, setStatus] = useState(contract.contract_status);
   const [is_published, setPublished] = useState(contract.is_published);
   
@@ -74,9 +74,9 @@ const EditContractPopupForm =({ contract, onUpdateContract, onCancel, onOpen, ge
     setZipCode(event.target.value);
   };
 
-  const handleLeakToolChange = (event) => {
-    setLeakTool(event.target.value);
-  };
+  // const handleLeakToolChange = (event) => {
+  //   setLeakTool(event.target.value);
+  // };
 
   const handleEstimateTimeChange = (event) => {
     setEstimateTime(event.target.value);
@@ -88,9 +88,6 @@ const EditContractPopupForm =({ contract, onUpdateContract, onCancel, onOpen, ge
     setType(event.target.value);
   };
 
-  const handleSizeChange = (event) => {
-    setSize(event.target.value);
-  };
 
   const handleStatusChange = (event) => {
     setStatus(event.target.value);
@@ -108,8 +105,7 @@ const EditContractPopupForm =({ contract, onUpdateContract, onCancel, onOpen, ge
       // leaker, 
       contract_title,
       contract_description,
-      contract_work_type, 
-      size, 
+      contract_work_type,  
       contract_status, 
       contract_date, 
       address, 
@@ -117,9 +113,10 @@ const EditContractPopupForm =({ contract, onUpdateContract, onCancel, onOpen, ge
       state, 
       zipcode, 
       contract_estimate_end_date, 
-      leakTool, 
+      // leakTool, 
       is_published, 
     };
+    // console.log("updatedContract", updatedContract)
     onUpdateContract(updatedContract);
     getContracts();
     onCancel(); // close the modal on successful form submission
@@ -152,11 +149,11 @@ const EditContractPopupForm =({ contract, onUpdateContract, onCancel, onOpen, ge
                 <form onSubmit={handleSubmit}>
                 <label>
                 Contract work type:
-                    <select value={contract_work_type} onChange={handleTypeChange}>
-                    <option value="Fire_Hydrant_Inspection">Fire Hydrant Inspection</option>
-                    <option value=" All_City_Inspections">All City Inspections</option>
-                    <option value="Clarifying_the_location_of_the_leak">Clarifying the location of the leak</option>
-                    <option value="Solve_high_consumption_problem_but_the_leak_is_not_identified">Solve high consumption problem but the leak is not identified</option>
+                <select value={contract_work_type} onChange={handleTypeChange}>                   
+                    <option value="Fire Hydrant Inspection">Fire Hydrant Inspection</option>
+                    <option value=" All City Inspections">All City Inspections</option>
+                    <option value="Clarifying the location of the leak">Clarifying the location of the leak</option>
+                    <option value="Solve high consumption problem but the leak is not identified">Solve high consumption problem but the leak is not identified</option>
                     </select>
                 </label>
                 
@@ -214,13 +211,14 @@ const EditContractPopupForm =({ contract, onUpdateContract, onCancel, onOpen, ge
                 </label>
                 
                
-                </form>
+               
                 <div className="popup-form-buttons">
                     <button type="submit">Update</button>
                     <button type="button" onClick={onCancel}>
                     Cancel
                     </button>
                 </div>
+                </form>
             </div>
             </div>
 

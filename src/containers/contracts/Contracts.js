@@ -210,7 +210,7 @@ const handleOpenAddMapContract = () => {
   setOpenAddMapContractPopup(true);
 };
 
-console.log("selectedContract",selectedContract )
+// console.log("selectedContract",selectedContract )
   return (
     <div className="table_container">
 

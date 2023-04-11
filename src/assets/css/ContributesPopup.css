@@ -46,7 +46,7 @@
     margin: 0 8em;
   }
   input {
-    background-color: rgba(255, 255, 255, 0.75);
+    background-color: rgba(255, 255, 255, 1);
     border: 1px solid #d5dae2;
     border-radius: 8px;
     box-sizing: border-box;
@@ -62,7 +62,7 @@
     transition: border-color .3s ease;
   }
   .MuiBox-root{
-    zoom: 46%;
+    zoom: 53%;
     background-color: none;
   }
   
