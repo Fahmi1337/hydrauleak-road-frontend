@@ -117,9 +117,11 @@ const { sensor_coordinates, sensor_description, sensor_Indication, sensor_type, 
         <div>
       
         <div className="contributesPopup">
-          <h3>Add Sensor</h3>
+          <h1>Add Sensor</h1>
+          <h2>Please ensure to zoom in as much as possible on the pipe's location before selecting the placement for the sensor. 
+            This will help to provide the most precise and accurate coordinates for the sensor's installation.</h2>
       <form>
-      <label>Select Pipe:</label>
+      <label>Select Pipe *</label>
         <input
         disabled
           type="text"
@@ -127,7 +129,7 @@ const { sensor_coordinates, sensor_description, sensor_Indication, sensor_type, 
           value={localStorage.getItem('selectedPipeId') ||  sensorData.pipe}
           onChange={e => handleSensorDataChange(e)}
         />
-        <label>Sensor coordinates:</label>
+        <label>Sensor coordinates *</label>
         
         <input
         disabled
@@ -137,7 +139,7 @@ const { sensor_coordinates, sensor_description, sensor_Indication, sensor_type, 
           onChange={e => handleSensorDataChange(e)}
         />
         
-        <label>Sensor title:</label>
+        <label>Sensor title *</label>
         <input
           type="text"
           name="sensor_title"
@@ -145,18 +147,18 @@ const { sensor_coordinates, sensor_description, sensor_Indication, sensor_type, 
           onChange={e => handleSensorDataChange(e)}
         />
     
-        <label>Sensor description:</label>
+        <label>Sensor description *</label>
             <textarea    type="text"
           name="sensor_description" value={sensorData.sensor_description} onChange={e => handleSensorDataChange(e)} />
         
-        <label>Sensor creation date:</label>
+        <label>Sensor creation date</label>
         <input
           type="datetime-local"
           name="sensor_creation_date"
           value={sensorData.sensor_creation_date}
           onChange={e => handleSensorDataChange(e)}
         />
-        <label>Sensor type:</label>
+        <label>Sensor type</label>
         <input
           type="text"
           name="sensor_type"
@@ -171,7 +173,7 @@ const { sensor_coordinates, sensor_description, sensor_Indication, sensor_type, 
           onChange={e => handleSensorDataChange(e)}
         />
 
-        <label>Sensor Indication:</label>
+        <label>Sensor Indication</label>
               <select type="text" name="sensor_Indication" value={sensorData.sensor_Indication} onChange={e => handleSensorDataChange(e)}>
               <option value="unknown">Unknown</option>
               <option value="good">Good</option>

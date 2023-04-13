@@ -8,9 +8,10 @@ const style = {
   position: 'absolute',
   // overflowY: 'hidden',
   // overflowX: 'hidden',
-  top: '50%',
-  left: '50%',
-  width: '55em !important',
+  top: '44%',
+  left: '53%',
+  width: '105em !important',
+  height:'50rem',
   transform: 'translate(-50%, -50%)',
   bgcolor: 'rgba(255, 255, 255, 1)',
   boxShadow: 24,
@@ -101,11 +102,12 @@ useEffect(() => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <div className="popup-form">
+          <div className="add-popup-form">
             {/* <div className="popup-form-overlay" onClick={onCancel}></div> */}
             <div className="popup-form-content">
               <h2>Add Intervention</h2>
               <form onSubmit={handleSubmitData}>
+                <div className="popup-form add-popup-form">
                  <label>
                 Contract:
                 </label>
@@ -194,7 +196,8 @@ useEffect(() => {
                    
                     </select>
                 </label>
-                
+
+                </div>
                 <div className="popup-form-buttons">
                     <button type="submit">Submit</button>
                     <button type="button" onClick={onCancel}>

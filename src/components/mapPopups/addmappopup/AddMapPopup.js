@@ -149,10 +149,12 @@ import Modal from '@mui/material/Modal';
         <Box >
         
         <div className="contributesPopup">
-          <h3>Add Map</h3>
+        <h1>Add Map Center</h1>
+          <h2>Please Zoom in as much as possible on the map before selecting a location to add as the map center. 
+            This will help us to obtain the most accurate coordinates for your desired location.</h2>
         <form>
         <label>
-                Contract:
+                Contract *
                 </label>
                 <select  
                 disabled={selectedContract.id > 0 ? true : false}
@@ -163,7 +165,7 @@ import Modal from '@mui/material/Modal';
                   <option key={contract.id} value={contract.id}>{contract.contract_title}</option>          
                   ))} 
             </select>
-        <label>Map title:</label>
+        <label>Map title *</label>
           <input
             type="text"
             name="map_title"
@@ -171,12 +173,12 @@ import Modal from '@mui/material/Modal';
             onChange={e => handleMapDataChange(e)}
           />
 
-          <label>Map description:</label>
+          <label>Map description *</label>
             <textarea type="text"
             name="map_description" value={mapData.map_description} onChange={e => handleMapDataChange(e)} />
           
 
-          <label>Map coordinates:</label>
+          <label>Map center coordinates *</label>
           <input
           disabled
             type="text"
@@ -184,7 +186,7 @@ import Modal from '@mui/material/Modal';
             value={mapData.map_coordinate}
             onChange={e => handleMapDataChange(e)}
           />
-          <label>Map creation date:</label>
+          <label>Map creation date</label>
           <input
             type="datetime-local"
             name="map_creation_date"

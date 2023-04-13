@@ -85,7 +85,7 @@ useEffect(() => {
         <Box>
           <div>
             <div className="contributesPopup">
-              <h3>Update Zone</h3>
+              <h1>Update Zone</h1>
               <form>
                 
               <label >Map:</label>        

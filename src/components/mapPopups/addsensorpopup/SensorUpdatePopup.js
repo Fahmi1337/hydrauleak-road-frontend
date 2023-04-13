@@ -18,9 +18,6 @@ const RightAddSensorPopup = ({onOpen,onCancel,sensor}) => {
 
 const { sensor_coordinates, sensor_description, sensor_Indication, sensor_type, sensor_creation_date, sensor_frequency, sensor_title, pipe } = sensorData;
   const handleSubmitData = () => {
-
-
-
     if (!sensorData.sensor_title || !sensorData.sensor_description || !sensorData.sensor_coordinates ) {
       alert("Please fill in all required fields.");
       return;
@@ -54,28 +51,22 @@ const { sensor_coordinates, sensor_description, sensor_Indication, sensor_type, 
   };
 
 
-
-
-console.log("sensor frequency", sensorData.sensor_frequency)
-
   return (
 <>
     <Modal
     disableEnforceFocus
     hideBackdrop
-    style={{ position: 'initial' }}
-    
-      open={onOpen}
-     
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
+    style={{ position: 'initial' }}   
+    open={onOpen}    
+    aria-labelledby="modal-modal-title"
+    aria-describedby="modal-modal-description"
     >
       <Box >
       
         <div>
       
         <div className="SensorPopup">
-          <h3>Update Sensor</h3>
+          <h1>Update Sensor</h1>
       <form>
       <label>Pipe:</label>
         <input

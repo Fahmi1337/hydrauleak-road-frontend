@@ -192,7 +192,7 @@ const handlePolygonCreated= props.handlePolygonCreated
             </div>
             <div className="contributesButtonsContainerImg">
             <img src={map} alt="map" onClick={() => {setSubmitActive(true); handleOpenMap();  handleClose();}}/>
-            <h4>Maps</h4>
+            <h4>Map Center</h4>
             </div>
 
           {/* <button onClick={() => {setSubmitZoneActive(true); handleOpenZone();  handleClose();}} >Add zone</button>

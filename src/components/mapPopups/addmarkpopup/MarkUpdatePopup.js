@@ -58,7 +58,7 @@ const MarkUpdatePopup = ({ onOpen, onCancel, mark }) => {
         <Box>
           <div>
             <div className="contributesPopup">
-              <h3>Update Mark</h3>
+              <h1>Update Mark</h1>
               <form>
 
               <label>Pipe:</label>

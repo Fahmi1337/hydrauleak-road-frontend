@@ -196,15 +196,17 @@ useEffect(() => {
         <Box sx={style}>
         
         <div className="contributesPopup">
-          <h3>Add Zone</h3>
+          <h1>Add Zone</h1>
        
+          <h2>Please ensure you zoom in on the map,
+            This will help to provide the most precise and accurate zone coordinates.</h2>
         <form>
 
 
 
 
         <div className='listinform__section'>
-            <label >Intervention :</label>        
+            <label >Intervention *</label>        
              
             <select  type="text"  
                   name="intervention" onChange={e => handleZoneDataChange(e)} value={zoneData.intervention || selectedIntervention.id} > <option disabled selected value> -- select an option -- </option>
@@ -219,7 +221,7 @@ useEffect(() => {
 
 
         <div className='listinform__section'>
-            <label >Map:</label>        
+            <label >Map Center *</label>        
              
             <select  type="text"  
                   name="map" onChange={e => handleZoneDataChange(e)} value={zoneData.map || 1} > <option disabled selected value> -- select an option -- </option>
@@ -233,7 +235,7 @@ useEffect(() => {
 
 
     
-        <label>Zone coordinates:</label>
+        <label>Zone coordinates *</label>
           <input
           disabled
             type="text"
@@ -242,7 +244,7 @@ useEffect(() => {
             onChange={e => handleZoneDataChange(e)}
           />
 
-<label>Zone area in km2:</label>
+<label>Zone area in km2 *</label>
           <input
           disabled
             type="text"
@@ -250,7 +252,7 @@ useEffect(() => {
             value={parseFloat(localStorage.getItem("zoneArea")) || parseFloat(zoneData.zone_area)}
             onChange={e => handleZoneDataChange(e)}
           />
-        <label>Zone title:</label>
+        <label>Zone title *</label>
           <input
             type="text"
             name="zone_title"
@@ -258,7 +260,7 @@ useEffect(() => {
             onChange={e => handleZoneDataChange(e)}
           />
 
-          <label>Zone description:</label>
+          <label>Zone description *</label>
             <textarea type="text" name="zone_description" value={zoneData.zone_description} onChange={e => handleZoneDataChange(e)} />
 
 
@@ -270,7 +272,7 @@ useEffect(() => {
             onChange={e => handleZoneDataChange(e)}
           /> */}
            
-          <label>Zone Status:</label>
+          <label>Zone Status</label>
               <select type="text" name="zone_status"
                 value={zoneData.zone_status}
                 onChange={e => handleZoneDataChange(e)}>
@@ -279,7 +281,7 @@ useEffect(() => {
               <option value="Completed">Completed</option>
               </select>
 
-          <label>Zone Color:</label>
+          <label>Zone Color</label>
               <select type="text" name="zone_color"
                 value={zoneData.zone_color}
                 onChange={e => handleZoneDataChange(e)}>

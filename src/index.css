@@ -301,22 +301,36 @@ line-height: 32px;
     padding: 0.5em;
   }
   .popup-form p{
+    padding-top: 3%;
     font-size: 24px;
     margin: 20px;
   }
-  .popup-form button{
-    
+  .popup-form label{
+    padding-top: 3%;
+  
+
+  }
+  .popup-form select{
 
   }
   .popup-form{
     overflow-y: scroll; 
-    height: 48em;
-    width: 77em;
+    grid-template-columns: auto auto;
+  }
+  .add-popup-form{
+    background-color: #ffffff;
+    margin-right: 12rem;
+    height: 38em;
+    width: 80em;
     display: grid;
     grid-template-columns: auto auto;
   }
-  .popup-form h2{
+  .add-popup-form h2{
     color: #0671E0;
+  }
+
+  .popup-form-buttons{
+    margin-top: 7%;
   }
  .selectMapContainer{
   position: absolute !important;

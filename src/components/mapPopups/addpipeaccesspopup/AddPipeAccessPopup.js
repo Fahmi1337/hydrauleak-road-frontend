@@ -100,10 +100,14 @@ const AddPipeAccessPopup = (props) => {
         <Box >
         
         <div className="contributesPopup">
-          <h3>Add Pipe Access</h3>
+          <h1>Add Pipe Access</h1>
+          <h2>Please make sure to zoom in as much as possible on the map before selecting the placement for the Pipe Access.
+          This will ensure that you get the most accurate coordinates for the Mark placement.
+          </h2>
+          
         <form>
                             
-        <label>Pipe:</label>
+        <label>Pipe *</label>
           <input
           disabled
             type="text"
@@ -112,7 +116,7 @@ const AddPipeAccessPopup = (props) => {
             onChange={e => handlePipeAccessDataChange(e)}
           />
                  
-        <label>Pipe Access coordinates:</label>
+        <label>Pipe Access coordinates *</label>
           <input
           disabled
             type="text"
@@ -121,7 +125,7 @@ const AddPipeAccessPopup = (props) => {
             onChange={e => handlePipeAccessDataChange(e)}
           />
 
-        <label>Pipe Access title:</label>
+        <label>Pipe Access title *</label>
           <input
             type="text"
             name="pipe_access_title"
@@ -129,13 +133,13 @@ const AddPipeAccessPopup = (props) => {
             onChange={e => handlePipeAccessDataChange(e)}
           />
 
-          <label>Pipe Access description:</label>
+          <label>Pipe Access description *</label>
             <textarea  type="text"
             name="pipe_access_description" value={pipeAccessData.pipe_access_description} onChange={e => handlePipeAccessDataChange(e)} />
           
 
 
-          <label>Pipe Access Type:</label>
+          <label>Pipe Access Type</label>
                     <select type="text" name="pipe_access_type" value={pipeAccessData.pipe_access_type} onChange={e => handlePipeAccessDataChange(e)}>
                     <option value="HouseValve">House Valve</option>
                     <option value="FirePole">Fire Pole</option>

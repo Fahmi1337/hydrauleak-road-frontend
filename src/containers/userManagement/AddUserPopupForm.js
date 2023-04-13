@@ -83,7 +83,7 @@ const AddUserPopupForm = ({ onCancel, onOpen }) => {
                   </select>
                 </label>
                 <div className="popup-form-buttons">
-                  <button type="submit">Add User</button>
+                  <button type="submit">+ Add User</button>
                   <button type="button" onClick={onCancel}>
                     Cancel
                   </button>

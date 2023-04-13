@@ -247,7 +247,7 @@ const [selectedStyle, setSelectedStyle] = useState('light-v11');
     if (selectedStyle){
     const  localSelectedStyle= localStorage.getItem('selectedStyle')
       setSelectedStyle(localSelectedStyle)
-      console.log("localSelectedStyle",localSelectedStyle)
+      // console.log("localSelectedStyle",localSelectedStyle)
       map.current.setStyle('mapbox://styles/mapbox/' + localSelectedStyle);
     }
 

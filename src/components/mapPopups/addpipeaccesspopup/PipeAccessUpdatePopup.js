@@ -57,7 +57,7 @@ const PipeAccessUpdatePopup = ({ onOpen, onCancel, pipeAccess }) => {
         <Box>
           <div>
             <div className="contributesPopup">
-              <h3>Update Pipe Access</h3>
+              <h1>Update Pipe Access</h1>
               <form>
               <label>Pipe:</label>
                 <input

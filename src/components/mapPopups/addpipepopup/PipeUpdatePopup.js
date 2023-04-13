@@ -87,7 +87,7 @@ const PipeUpdatePopup = ({ onOpen, onCancel, pipe }) => {
         <Box>
           <div>
             <div className="contributesPopup">
-              <h3>Update Pipe</h3>
+              <h1>Update Pipe</h1>
               <form>
                 
               <label >Map:</label>         

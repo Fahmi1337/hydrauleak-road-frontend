@@ -150,11 +150,13 @@ console.log("maps details", maps)
         <Box >
         
         <div className="contributesPopup">
-          <h3>Add Pipe</h3>
+          <h1>Add Pipe</h1>
+          <h2>Please make sure to zoom in as much as possible on the map before selecting a location to add a pipeline. 
+            This will ensure that you get the most accurate coordinates for the pipeline's placement.</h2>
         <form>
 
         <div className='listinform__section'>
-            <label >Map:</label>         
+            <label >Map Center *</label>         
             <select  type="text"
                   name="map" onChange={e => handlePipeDataChange(e)} value={pipeData.map}>
                   {maps.data?.map(map => (
@@ -163,7 +165,7 @@ console.log("maps details", maps)
             </select>
         </div>
 
-          <label>Pipe coordinates:</label>
+          <label>Pipe coordinates *</label>
           <input
           disabled
           
@@ -173,7 +175,7 @@ console.log("maps details", maps)
             onChange={e => handlePipeDataChange(e)}
           />
           
-          <label>Pipe Length:</label>
+          <label>Pipe Length *</label>
           <input
           disabled
           
@@ -184,7 +186,7 @@ console.log("maps details", maps)
             
           />
 
-        <label>Pipe title:</label>
+        <label>Pipe title *</label>
           <input
           
             type="text"
@@ -194,10 +196,10 @@ console.log("maps details", maps)
             required
           />
 
-          <label>Pipe description:</label>
+          <label>Pipe description *</label>
             <textarea type="text" name="pipe_description" value={pipeData.pipe_description} onChange={e => handlePipeDataChange(e)} required/>
 
-          <label>Pipe creation date:</label>
+          <label>Pipe creation date</label>
           <input
             type="datetime-local"
             name="pipe_creation_date"
@@ -205,7 +207,7 @@ console.log("maps details", maps)
             onChange={e => handlePipeDataChange(e)}
           />
 
-          <label>Pipe Status:</label>
+          <label>Pipe Status</label>
                     <select type="text" name="pipe_status" value={pipeData.pipe_status} onChange={e => handlePipeDataChange(e)} >
                     <option value="good">Good</option>
                     <option value="unknown">Unknown</option>
@@ -213,7 +215,7 @@ console.log("maps details", maps)
                     </select>
 
           
-          <label>Pipe Type:</label>
+          <label>Pipe Type</label>
           <input
             type="text"
             name="pipe_type"
@@ -222,7 +224,7 @@ console.log("maps details", maps)
             required
           />
 
-          <label>Pipe Diameter:</label>
+          <label>Pipe Diameter</label>
           <input
             type="number"
             name="pipe_diameter"
@@ -230,7 +232,7 @@ console.log("maps details", maps)
             onChange={e => handlePipeDataChange(e)}
             required
           />
-          <label>Pipe Material:</label>
+          <label>Pipe Material</label>
           <input
             type="text"
             name="pipe_material"

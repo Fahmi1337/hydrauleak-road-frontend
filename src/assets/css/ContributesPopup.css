@@ -4,11 +4,11 @@
   padding-top: 1%;
   padding-bottom: 1%;
   position: absolute;
-  top: 54%;
+  top: 49%;
   left: 22.15%;
   transform: translate(-50%, -50%);
   width: 25%;
-  height: 108%;
+  height: 118%;
   background-color: rgba(255, 255, 255, 1);
   display: grid;
   align-content: center;
@@ -18,9 +18,14 @@
     
    
     }
+       .contributesPopup h1{
+      margin-left: 2em;
+      color: #005aa8;
+    }
   
-    .contributesPopup h3{
-      margin-left: 5em;
+    .contributesPopup h2{
+      margin-left: 4em;
+       margin-right: 2em;
     }
     .contributesPopup form {
       width: 30em;
@@ -29,7 +34,7 @@
       overflow-y: auto;
       overflow-x: hidden;
       margin-bottom: 1em;
-      height: 45em;
+      height: 35em;
   }
   textarea{
     width: 100%;
@@ -37,6 +42,7 @@
     background-color: rgba(255, 255, 255, 0.75);
   }
   .formButtonsContainer{
+    margin-top: 6%;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -47,7 +53,7 @@
   }
   input {
     background-color: rgba(255, 255, 255, 1);
-    border: 1px solid #d5dae2;
+
     border-radius: 8px;
     box-sizing: border-box;
     color: #23262d;
@@ -78,7 +84,7 @@
   }
   
   .contributesPopup input {
-    border: 1px solid #d5dae2;
+  
     border-radius: 8px;
     box-sizing: border-box;
     color: #23262d;
@@ -92,8 +98,19 @@
     padding: 12px;
     transition: border-color .3s ease;
   }
-  
+  .contributesPopup textarea {
+    padding: 0px;
+    width: 100%;
+  }
+  .contributesPopup select {
+    padding: 11px;
+    width: 100%;
+    color: #005aa8;
+    border-color: #005aa8;
+  }
+
   .contributesPopup label {
+    padding-top: 3%;
     font-weight: bold;
     color: #555;
   } 

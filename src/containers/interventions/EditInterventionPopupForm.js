@@ -27,12 +27,14 @@ const EditInterventionPopupForm =({ intervention, onUpdateIntervention, onCancel
 
   const style = {
     position: 'absolute',
-    top: '50%',
-    left: '60%',
-    
+    // overflowY: 'hidden',
+    // overflowX: 'hidden',
+    top: '44%',
+    left: '53%',
+    width: '105em !important',
+    height:'50rem',
     transform: 'translate(-50%, -50%)',
-   
-    bgcolor: 'rgba(255, 255, 255, 0.75)',
+    bgcolor: 'rgba(255, 255, 255, 1)',
     boxShadow: 24,
     p: 4,
   };
@@ -150,11 +152,12 @@ const EditInterventionPopupForm =({ intervention, onUpdateIntervention, onCancel
         aria-describedby="modal-modal-intervention_description"
       >
         <Box sx={style}>
-            <div className="popup-form">
-            <div className="popup-form-overlay" onClick={onCancel}></div>
+            <div className="add-popup-form">
+            
             <div className="popup-form-content">
                 <h2>Edit Intervention</h2>
                 <form onSubmit={handleSubmit}>
+                <div className="popup-form add-popup-form">
                 {/* <label>
                 contract:
                     <input type="text" value={contract} onChange={handleContractChange} />
@@ -228,7 +231,7 @@ const EditInterventionPopupForm =({ intervention, onUpdateIntervention, onCancel
                    
                     </select>
                 </label>
-                
+                </div>
                 <div className="popup-form-buttons">
                     <button type="submit">Update</button>
                     <button type="button" onClick={onCancel}>

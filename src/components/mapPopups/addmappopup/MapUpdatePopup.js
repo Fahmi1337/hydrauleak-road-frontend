@@ -57,7 +57,7 @@ const MapUpdatePopup = ({ onOpen, onCancel, map }) => {
         <Box>
           <div>
             <div className="contributesPopup">
-              <h3>Update Map</h3>
+              <h1>Update Map</h1>
               <form>
                 <label>Map coordinates:</label>
                 <input

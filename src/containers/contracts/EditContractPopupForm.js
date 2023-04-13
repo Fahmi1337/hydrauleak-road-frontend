@@ -27,12 +27,14 @@ const EditContractPopupForm =({ contract, onUpdateContract, onCancel, onOpen, ge
 
   const style = {
     position: 'absolute',
-    top: '50%',
-    left: '60%',
-    
+    // overflowY: 'hidden',
+    // overflowX: 'hidden',
+    top: '44%',
+    left: '53%',
+    width: '105em !important',
+    height:'50rem',
     transform: 'translate(-50%, -50%)',
-   
-    bgcolor: 'rgba(255, 255, 255, 0.75)',
+    bgcolor: 'rgba(255, 255, 255, 1)',
     boxShadow: 24,
     p: 4,
   };
@@ -142,11 +144,12 @@ const EditContractPopupForm =({ contract, onUpdateContract, onCancel, onOpen, ge
         aria-describedby="modal-modal-contract_description"
       >
         <Box sx={style}>
-            <div className="popup-form ">
-            <div className="popup-form-overlay" onClick={onCancel}></div>
+            <div className="add-popup-form ">
+            
             <div className="popup-form-content">
                 <h2>Edit Contract</h2>
                 <form onSubmit={handleSubmit}>
+                <div className="popup-form add-popup-form"> 
                 <label>
                 Contract work type:
                 <select value={contract_work_type} onChange={handleTypeChange}>                   
@@ -211,7 +214,7 @@ const EditContractPopupForm =({ contract, onUpdateContract, onCancel, onOpen, ge
                 </label>
                 
                
-               
+                </div>
                 <div className="popup-form-buttons">
                     <button type="submit">Update</button>
                     <button type="button" onClick={onCancel}>

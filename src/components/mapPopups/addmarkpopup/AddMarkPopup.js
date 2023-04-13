@@ -124,11 +124,14 @@ console.log("mark data?", markData)
         <Box >
         
         <div className="contributesPopup">
-          <h3>Add Mark</h3>
+          <h1>Add Mark</h1>
+          <h2>Please make sure to zoom in as much as possible on the pipe's location before selecting the placement for the mark.
+          This will ensure that you get the most accurate coordinates for the Mark placement.
+          </h2>
         <form>
 
        
-          <label>Mark coordinates:</label>
+          <label>Mark coordinates *</label>
           <input
           disabled
           required
@@ -138,7 +141,7 @@ console.log("mark data?", markData)
             onChange={e => handleMarkDataChange(e)}
           />
 
-        <label>Pipe:</label>
+        <label>Pipe *</label>
           <input
           disabled
           required
@@ -148,7 +151,7 @@ console.log("mark data?", markData)
             onChange={e => handleMarkDataChange(e)}
           />
 
-        <label>Mark title:</label>
+        <label>Mark title *</label>
           <input
             type="text"
             name="mark_title"
@@ -160,7 +163,7 @@ console.log("mark data?", markData)
             <textarea   type="text"
             name="mark_description" value={markData.mark_description} onChange={e => handleMarkDataChange(e)} />
 
-          <label>Mark creation date:</label>
+          <label>Mark creation date</label>
           <input
           required
             type="datetime-local"
@@ -170,7 +173,7 @@ console.log("mark data?", markData)
           />
           
                     
-          <label>Image:</label>
+          <label>Image</label>
           <input type="file"  />
           
           

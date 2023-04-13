@@ -6,11 +6,11 @@ import '../assets/css/mapPopup.css';
 import ButtonWithPopup from "../components/mapPopups/contributes/AddButtonPopup"
 import MapLayersPopup from "../components/mapPopups/mapLayersPopup/MapLayersPopup"
 
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
+// import Box from '@mui/material/Box';
+// import Modal from '@mui/material/Modal';
 
 import sensorGreenIcon from '../assets/icons/sensorGreen.png';
-import sensorBlueIcon from '../assets/icons/sensorBlue.png';
+// import sensorBlueIcon from '../assets/icons/sensorBlue.png';
 import markIcon from '../assets/icons/Mark.png';
 import mapIcon from '../assets/icons/Map.png';
 import pipeAccessIcon from '../assets/icons/PipeAccess.png';
@@ -38,7 +38,7 @@ import MapViewPopup from '../components/mapPopups/addmappopup/MapViewPopup';
 import MapUpdatePopup from '../components/mapPopups/addmappopup/MapUpdatePopup';
 
 import { useGetMaps, useGetPipes,useGetPipeAccess, useGetMarkers, useGetZones, useGetSensors } from "../actions/ApiFunctions";
-import { Dashboard } from "@mui/icons-material";
+// import { Dashboard } from "@mui/icons-material";
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 
@@ -218,9 +218,9 @@ const [selectedStyle, setSelectedStyle] = useState('light-v11');
     if (localMapCenter) {
       
       const mapCenterArray = localMapCenter.split(',').map(str => parseFloat(str));
-      console.log("the map localMapCenter array", mapCenterArray);
-      console.log("the map localMapCenter", [localMapCenter])
-      console.log("the map mapCenter", mapCenter[0])
+      // console.log("the map localMapCenter array", mapCenterArray);
+      // console.log("the map localMapCenter", [localMapCenter])
+      // console.log("the map mapCenter", mapCenter[0])
       map.current.easeTo({
         center: mapCenterArray,
         speed: 0.05,
@@ -243,7 +243,7 @@ const [selectedStyle, setSelectedStyle] = useState('light-v11');
     const onClick = (layer) => {
 
       const layerId = layer.target.id;
-      console.log("layerId",layerId)
+      // console.log("layerId",layerId)
       localStorage.setItem("selectedStyle", layerId);
       
       
@@ -256,7 +256,7 @@ const [selectedStyle, setSelectedStyle] = useState('light-v11');
     if (selectedStyle){
     const  localSelectedStyle= localStorage.getItem('selectedStyle')
       setSelectedStyle(localSelectedStyle)
-      console.log("localSelectedStyle",localSelectedStyle)
+      // console.log("localSelectedStyle",localSelectedStyle)
       map.current.setStyle('mapbox://styles/mapbox/' + localSelectedStyle);
     }
 
@@ -318,11 +318,11 @@ const [selectedStyle, setSelectedStyle] = useState('light-v11');
 
     setZoneCoordinates(polygonCoordinates)
     setArea((polygonArea / 1000000).toFixed(2))
-    console.log(
-      'the Zonesss km²',
-      JSON.stringify(polygonCoordinates),
-      (polygonArea / 1000000).toFixed(2)
-    );
+    // console.log(
+    //   'the Zonesss km²',
+    //   JSON.stringify(polygonCoordinates),
+    //   (polygonArea / 1000000).toFixed(2)
+    // );
 
   
       
@@ -381,11 +381,11 @@ const [selectedStyle, setSelectedStyle] = useState('light-v11');
 
     setPipeCoordinates(lineCoordinates)
     setPipeLength(lineLength.toFixed(2))
-    console.log(
-      'the pipess m',
-      JSON.stringify(lineCoordinates),
-      lineLength
-    );
+    // console.log(
+    //   'the pipess m',
+    //   JSON.stringify(lineCoordinates),
+    //   lineLength
+    // );
   }, [lineCoordinates, lineLength, pipeCoordinates, pipeLength]);
 
   // Draw Pipe end
@@ -484,7 +484,7 @@ const [selectedStyle, setSelectedStyle] = useState('light-v11');
 
 
 
-  //MARK HANDLING START
+//MARK HANDLING START
   useEffect(() => {
     if (map.current) {
       markers.current.forEach(marker => {
@@ -904,7 +904,7 @@ useEffect(() => {
     map.current.on('load', () => {
       // Add pipes to the map
       pipesData.forEach((pipe) => {
-        console.log("???", 'pipe-' + pipe.id)
+        // console.log("???", 'pipe-' + pipe.id)
         const coordinates = pipe.pipe_coordinates;
         // create a GeoJSON feature with the pipe coordinates
         const pipeFeature = {
@@ -934,7 +934,7 @@ useEffect(() => {
             'line-width': 3,
           },
         });
-        console.log("showPipes?", showPipes ? 'visible' : 'none',)
+        // console.log("showPipes?", showPipes ? 'visible' : 'none',)
         // map.current.setLayoutProperty('pipe-' + pipe.id,'visibility',showPipes ? 'visible' : 'none');
         map.current.on('click', 'pipe-' + pipe.id, (e) => {
           const popupContent = document.createElement('div');
@@ -1022,6 +1022,8 @@ useEffect(() => {
     
       }
 
+      // console.log("openUpdateSensorPopup", openUpdateSensorPopup)
+
 
   return (
     <div>
@@ -1107,8 +1109,7 @@ useEffect(() => {
         />
 
       {/* sensor Popups start*/}
-
-         
+        
               <div>
                 <div id="popup-container"></div>
                 {openViewSensorPopup && selectedSensor && (
