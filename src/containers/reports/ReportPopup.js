@@ -45,7 +45,7 @@ const ReportPopup =({ onCancel, onOpen, selectedReport }) => {
         {/* <p> <b>Sensor Coordinates: </b>{selectedReport.add_sensor_coordinates}</p> 
         <p> <b>Pipe Coordinates: </b>{selectedReport.add_pipe_coordinates}</p>
         <p> <b>Pipe Access Coordinates: </b>{selectedReport.add_pipe_access_coordinates}</p> */}
-        <button type="button" onClick={onCancel}>
+        <button className="inside-view-popup-button" type="button" onClick={onCancel}>
                     Cancel
                     </button>
             </div>
