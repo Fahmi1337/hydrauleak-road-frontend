@@ -86,6 +86,7 @@ const Login = ({ login, isAuthenticated }) => {
                             value={password}
                             onChange={e => onChange(e)}
                             minLength='5'
+                            
                         />
                     </div>
                     <button className='auth__form__button'>Login</button>

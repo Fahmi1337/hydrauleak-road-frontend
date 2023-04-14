@@ -88,6 +88,7 @@ const SignUp = ({ setAlert, signup, isAuthenticated }) => {
                         value={password}
                         onChange={e => onChange(e)}
                         minLength='6'
+                        required 
                     />
                 </div>
                 <div className='auth__form__group'>
@@ -100,6 +101,7 @@ const SignUp = ({ setAlert, signup, isAuthenticated }) => {
                         value={re_password}
                         onChange={e => onChange(e)}
                         minLength='6'
+                        required 
                     />
                 </div>
                 <button className='auth__form__button'>Register</button>

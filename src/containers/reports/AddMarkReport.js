@@ -1019,9 +1019,9 @@ useEffect(() => {
       />
         <div     >
             <AddMarkPopup  
-           
-            mapClickedCoordinates={mapClickedCoordinates} 
-            handleCancelAddMarkReport={props.handleCancelAddMarkReport}
+                selectedReport={props.selectedReport}
+                mapClickedCoordinates={mapClickedCoordinates} 
+                handleCancelAddMarkReport={props.handleCancelAddMarkReport}
                 openMark={true} 
                 />
         </div>
