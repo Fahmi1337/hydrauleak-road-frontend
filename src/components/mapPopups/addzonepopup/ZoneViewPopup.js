@@ -43,7 +43,7 @@ const style = {
           <p>Zone Color: {zone.zone_color}</p>
           <p>Zone Coordinates: {JSON.stringify(zone.zone_coordinates)}</p>
           <p>Map: {zone.map}</p>
-          <button type="button" onClick={onCancel}>
+          <button  type="button" onClick={onCancel}>
             Cancel
           </button>
         </div>

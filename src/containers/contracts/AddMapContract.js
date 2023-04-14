@@ -203,9 +203,9 @@ const [selectedStyle, setSelectedStyle] = useState('light-v11');
     if (localMapCenter) {
       
       const mapCenterArray = localMapCenter.split(',').map(str => parseFloat(str));
-      console.log("the map localMapCenter array", mapCenterArray);
-      console.log("the map localMapCenter", [localMapCenter])
-      console.log("the map mapCenter", mapCenter[0])
+      // console.log("the map localMapCenter array", mapCenterArray);
+      // console.log("the map localMapCenter", [localMapCenter])
+      // console.log("the map mapCenter", mapCenter[0])
       map.current.easeTo({
         center: mapCenterArray,
         speed: 0.05,
@@ -228,7 +228,7 @@ const [selectedStyle, setSelectedStyle] = useState('light-v11');
     const onClick = (layer) => {
 
       const layerId = layer.target.id;
-      console.log("layerId",layerId)
+      // console.log("layerId",layerId)
       localStorage.setItem("selectedStyle", layerId);
       
       
@@ -241,7 +241,7 @@ const [selectedStyle, setSelectedStyle] = useState('light-v11');
     if (selectedStyle){
     const  localSelectedStyle= localStorage.getItem('selectedStyle')
       setSelectedStyle(localSelectedStyle)
-      console.log("localSelectedStyle",localSelectedStyle)
+      // console.log("localSelectedStyle",localSelectedStyle)
       map.current.setStyle('mapbox://styles/mapbox/' + localSelectedStyle);
     }
 
@@ -303,11 +303,11 @@ const [selectedStyle, setSelectedStyle] = useState('light-v11');
 
     setZoneCoordinates(polygonCoordinates)
     setArea((polygonArea / 1000000).toFixed(2))
-    console.log(
-      'the Zonesss km²',
-      JSON.stringify(polygonCoordinates),
-      (polygonArea / 1000000).toFixed(2)
-    );
+    // console.log(
+    //   'the Zonesss km²',
+    //   JSON.stringify(polygonCoordinates),
+    //   (polygonArea / 1000000).toFixed(2)
+    // );
 
   
       
@@ -366,11 +366,11 @@ const [selectedStyle, setSelectedStyle] = useState('light-v11');
 
     setPipeCoordinates(lineCoordinates)
     setPipeLength(lineLength.toFixed(2))
-    console.log(
-      'the pipess m',
-      JSON.stringify(lineCoordinates),
-      lineLength
-    );
+    // console.log(
+    //   'the pipess m',
+    //   JSON.stringify(lineCoordinates),
+    //   lineLength
+    // );
   }, [lineCoordinates, lineLength, pipeCoordinates, pipeLength]);
 
   // Draw Pipe end
@@ -889,7 +889,7 @@ useEffect(() => {
     map.current.on('load', () => {
       // Add pipes to the map
       pipesData.forEach((pipe) => {
-        console.log("???", 'pipe-' + pipe.id)
+        // console.log("???", 'pipe-' + pipe.id)
         const coordinates = pipe.pipe_coordinates;
         // create a GeoJSON feature with the pipe coordinates
         const pipeFeature = {
@@ -919,7 +919,7 @@ useEffect(() => {
             'line-width': 3,
           },
         });
-        console.log("showPipes?", showPipes ? 'visible' : 'none',)
+        // console.log("showPipes?", showPipes ? 'visible' : 'none',)
         // map.current.setLayoutProperty('pipe-' + pipe.id,'visibility',showPipes ? 'visible' : 'none');
         map.current.on('click', 'pipe-' + pipe.id, (e) => {
           const popupContent = document.createElement('div');
@@ -1017,7 +1017,11 @@ useEffect(() => {
        
       />
        <div id="addMapInterventionPopup">
-      <AddMapPopup openMap={true} mapClickedCoordinates={mapClickedCoordinates}  handleCancelAddMapContract={props.handleCancelAddMapContract} selectedContract={props.selectedContract}/>
+      <AddMapPopup 
+          openMap={true} 
+          mapClickedCoordinates={mapClickedCoordinates}  
+          handleCancelAddMapContract={props.handleCancelAddMapContract} 
+          selectedContract={props.selectedContract}/>
        </div>
 <style>
         {`
@@ -1044,9 +1048,7 @@ useEffect(() => {
           }
         `}
       </style>
-      <div className="mapLayersButtonContainer">
-      <img src={layersIcon} alt="layers" onClick={handleOpen}/>
-      </div>
+     
      
     
       <div id="menu" style={{display: open? "block" : "none"}} className="mapLayersContainer">

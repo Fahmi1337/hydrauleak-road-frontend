@@ -147,7 +147,7 @@ const AddClientPopupForm = ({ onCancel, onOpen }) => {
                     <input type="file"    />              
                 <div className="popup-form-buttons">
                   <button type="submit">Add Client Data</button>
-                  <button type="button" onClick={onCancel}>
+                  <button className="inside-view-popup-button" type="button" onClick={onCancel}>
                     Cancel
                   </button>
                 </div>

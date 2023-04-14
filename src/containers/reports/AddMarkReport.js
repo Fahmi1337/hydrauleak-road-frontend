@@ -6,8 +6,9 @@ import '../../assets/css/mapPopup.css';
 import ButtonWithPopup from "../../components/mapPopups/contributes/AddButtonPopup"
 import MapLayersPopup from "../../components/mapPopups/mapLayersPopup/MapLayersPopup"
 
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
+import AddMarkPopup from '../../components/mapPopups/addmarkpopup/AddMarkPopup'
+// import Box from '@mui/material/Box';
+// import Modal from '@mui/material/Modal';
 
 import sensorGreenIcon from '../../assets/icons/sensorGreen.png';
 import sensorBlueIcon from '../../assets/icons/sensorBlue.png';
@@ -43,7 +44,7 @@ import { useGetMaps, useGetPipes,useGetPipeAccess, useGetMarkers, useGetZones, u
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 
-const AddZoneIntervention = (props) => {
+const AddMapContract = (props) => {
   // const [sensorsData, setSensorsData] = useState([]);
   const [showSensors, setShowSensors] = useState(true);
   const [showMarkers, setShowMarkers] = useState(true);
@@ -67,8 +68,8 @@ const AddZoneIntervention = (props) => {
   const pipesData = useGetPipes();
   const zonesData = useGetZones();
 
-  const [submitActive, setSubmitActive] = useState(false);
-  const [submitZoneActive, setSubmitZoneActive] = useState(true);
+  const [submitActive, setSubmitActive] = useState(true);
+  const [submitZoneActive, setSubmitZoneActive] = useState(false);
   const [submitPipeActive, setSubmitPipeActive] = useState(false);
   const [mapClickedCoordinates, setMapClickedCoordinates] = useState([]);
   
@@ -106,13 +107,6 @@ const AddZoneIntervention = (props) => {
   const [zoneCoordinates, setZoneCoordinates] = useState([]);
   const [pipeCoordinates, setPipeCoordinates] = useState([]);
 
-  const HandleSetSubmitActive = ()=>{
-    setSubmitActive(true);
-  }
-  const HandleSetSubmitDeactivate = ()=>{
-    setSubmitActive(false);
-  }
-    
 
   // Get the maps coordinates center and details 
   const [mapCenter, setMapCenter] = useState([]); 
@@ -158,7 +152,7 @@ const [selectedStyle, setSelectedStyle] = useState('light-v11');
         zoom: 12,
       });
       
-   
+
   
       // Navigation Control
       map.current.addControl(
@@ -209,9 +203,9 @@ const [selectedStyle, setSelectedStyle] = useState('light-v11');
     if (localMapCenter) {
       
       const mapCenterArray = localMapCenter.split(',').map(str => parseFloat(str));
-      console.log("the map localMapCenter array", mapCenterArray);
-      console.log("the map localMapCenter", [localMapCenter])
-      console.log("the map mapCenter", mapCenter[0])
+      // console.log("the map localMapCenter array", mapCenterArray);
+      // console.log("the map localMapCenter", [localMapCenter])
+      // console.log("the map mapCenter", mapCenter[0])
       map.current.easeTo({
         center: mapCenterArray,
         speed: 0.05,
@@ -234,7 +228,7 @@ const [selectedStyle, setSelectedStyle] = useState('light-v11');
     const onClick = (layer) => {
 
       const layerId = layer.target.id;
-      console.log("layerId",layerId)
+      // console.log("layerId",layerId)
       localStorage.setItem("selectedStyle", layerId);
       
       
@@ -309,11 +303,11 @@ const [selectedStyle, setSelectedStyle] = useState('light-v11');
 
     setZoneCoordinates(polygonCoordinates)
     setArea((polygonArea / 1000000).toFixed(2))
-    console.log(
-      'the Zonesss km²',
-      JSON.stringify(polygonCoordinates),
-      (polygonArea / 1000000).toFixed(2)
-    );
+    // console.log(
+    //   'the Zonesss km²',
+    //   JSON.stringify(polygonCoordinates),
+    //   (polygonArea / 1000000).toFixed(2)
+    // );
 
   
       
@@ -372,11 +366,11 @@ const [selectedStyle, setSelectedStyle] = useState('light-v11');
 
     setPipeCoordinates(lineCoordinates)
     setPipeLength(lineLength.toFixed(2))
-    console.log(
-      'the pipess m',
-      JSON.stringify(lineCoordinates),
-      lineLength
-    );
+    // console.log(
+    //   'the pipess m',
+    //   JSON.stringify(lineCoordinates),
+    //   lineLength
+    // );
   }, [lineCoordinates, lineLength, pipeCoordinates, pipeLength]);
 
   // Draw Pipe end
@@ -895,7 +889,7 @@ useEffect(() => {
     map.current.on('load', () => {
       // Add pipes to the map
       pipesData.forEach((pipe) => {
-        console.log("???", 'pipe-' + pipe.id)
+        // console.log("???", 'pipe-' + pipe.id)
         const coordinates = pipe.pipe_coordinates;
         // create a GeoJSON feature with the pipe coordinates
         const pipeFeature = {
@@ -925,7 +919,7 @@ useEffect(() => {
             'line-width': 3,
           },
         });
-        console.log("showPipes?", showPipes ? 'visible' : 'none',)
+        // console.log("showPipes?", showPipes ? 'visible' : 'none',)
         // map.current.setLayoutProperty('pipe-' + pipe.id,'visibility',showPipes ? 'visible' : 'none');
         map.current.on('click', 'pipe-' + pipe.id, (e) => {
           const popupContent = document.createElement('div');
@@ -1016,15 +1010,22 @@ useEffect(() => {
 
   return (
     <div>
+        
       <div
         className="mapContainerZoneIntervention" 
         ref={mapContainer}
        id="map"
        
       />
-            <div id="addZoneInterventionPopup" className = "addZoneInterventionPopupStyle" >
-      <AddZonePopup openZone={true} setSubmitZoneActive={true} area = {area} zoneCoordinates={zoneCoordinates} selectedIntervention={props.selectedIntervention} handleCancelAddZoneIntervention={props.handleCancelAddZoneIntervention}/>
-      </div>
+        <div     >
+            <AddMarkPopup  
+           
+            mapClickedCoordinates={mapClickedCoordinates} 
+            handleCancelAddMarkReport={props.handleCancelAddMarkReport}
+                openMark={true} 
+                />
+        </div>
+
 <style>
         {`
           body {
@@ -1050,7 +1051,7 @@ useEffect(() => {
           }
         `}
       </style>
-
+     
      
     
       <div id="menu" style={{display: open? "block" : "none"}} className="mapLayersContainer">
@@ -1080,8 +1081,36 @@ useEffect(() => {
 
 
 
-    </div>
+      {/* sensor Popups start*/}
+
+         
+              <div>
+                <div id="popup-container"></div>
+                {openViewSensorPopup && selectedSensor && (
+                  <SensorViewPopup
+                    sensor={selectedSensor}
+                    onOpen={openViewSensorPopup}
+                    onCancel={() => setOpenViewSensorPopup(false)}
+                  />
+                )}
+              </div>
+              <div>
+                <div id="popup-container"></div>
+                {openUpdateSensorPopup && selectedSensor && (
+                  <SensorUpdatePopup
+                    sensor={selectedSensor}
+                    onOpen={openUpdateSensorPopup}
+                    onCancel={() => setOpenUpdateSensorPopup(false)}
+                  />
+                )}
+              </div>
+  {/* sensor Popups end*/}
+  </div>
   );
 };
 
-export default AddZoneIntervention;
+export default AddMapContract;
+
+
+
+

@@ -5,10 +5,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Box from '@mui/material/Box';
 // import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-
+import AddMarkReport from './AddMarkReport'
 import ReportPopup from './ReportPopup'
 import PostReport from './PostReport';
-const Reports = () => {
+
+const Reports = (props) => {
   
   const [selectedReport, setSelectedReport] = useState(null);
 
@@ -16,16 +17,21 @@ const Reports = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRole, setSelectedRole] = useState('');
   const [pageNumber, setPageNumber] = useState(0);
-  const itemsPerPage = 10;
+  const itemsPerPage = 3;
   const pagesVisited = pageNumber * itemsPerPage;
   const [openPopup, setOpenPopup] = useState(false);
   const [openSubmitReportPopup, setOpenSubmitReportPopup] = useState(false);
-  
+  const [openAddMarkReportPopup, setOpenAddMarkReportPopup] = useState(false);
 
   const style = {
     zoom:'70%',
+    widht:'50rem',
     zIndex: 999,
    
+  };
+  const style2 = {
+    zoom:'83.5%',
+    zIndex: 999,
   };
   
   const handleOpenReportPopup = () => {
@@ -57,7 +63,13 @@ const Reports = () => {
     setSelectedReport(report);
     handleOpenReportPopup();
   };
-
+  const handleCancelAddMarkReport = () => {
+    setOpenAddMarkReportPopup(false);
+    setSelectedReport(null);
+  };
+  const handleOpenAddMarkReport = () => {
+    setOpenAddMarkReportPopup(true);
+  };
 
   // handle Delete user
 const handleDeleteUser =async (reportId) => {
@@ -89,7 +101,7 @@ const handleDeleteUser =async (reportId) => {
 
 
 // display data table
-  const displayData = data
+  const displayData = [...data].reverse()
   .filter(report => report.user_name.toLowerCase().includes(searchTerm.toLowerCase()))
   .filter(report => selectedRole === '' || report.user_role === selectedRole)
   .slice(pagesVisited, pagesVisited + itemsPerPage)
@@ -101,6 +113,9 @@ const handleDeleteUser =async (reportId) => {
          <td>{report.report_date}</td>
          <td>{report.subject}</td>
          <td>{report.message}</td>
+         <td>
+           <button onClick={() => {handleOpenAddMarkReport(); setSelectedReport(report);}}>Add Mark</button>
+         </td>
          <td ><button onClick={() => handleRowClick(report)}>Details</button></td>
   
        <td className='tableDeleteTd'> 
@@ -158,9 +173,27 @@ const handleDeleteUser =async (reportId) => {
 
 
       <Modal
+            open={openAddMarkReportPopup}
+            // onClick={handleClose}
+            onClose={props.onCloseAddMark}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+              >
+            <Box sx={style2}>
+            {openAddMarkReportPopup && (
+                        <AddMarkReport
+                        handleCancelAddMarkReport={handleCancelAddMarkReport}                   
+                        selectedReport={selectedReport}
+                        
+                      />
+                      )}        
+          
+            </Box>
+      </Modal>
+
+      <Modal
         open={openSubmitReportPopup}
-        
-       
+            
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
 
@@ -201,7 +234,8 @@ const handleDeleteUser =async (reportId) => {
               <th>Sender Role</th>
               <th>Report Send Date</th>
               <th>Subject</th>
-              <th>Description</th>
+              <th>Message</th>
+              <th>Add Mark</th>
               <th>Details</th>
               <th>Delete</th>
             </tr>

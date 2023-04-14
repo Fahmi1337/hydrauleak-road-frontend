@@ -18,7 +18,7 @@ const Intervention = (props) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('');
   const [pageNumber, setPageNumber] = useState(0);
-  const itemsPerPage = 10;
+  const itemsPerPage = 5;
   const pagesVisited = pageNumber * itemsPerPage;
 
   const [openPopup, setOpenPopup] = useState(false);
@@ -94,7 +94,7 @@ const handleDeleteIntervention = async (interventionId) => {
 
 // display data table
 
-    const displayData = data
+    const displayData = [...data].reverse()
     .filter(item => item.intervention_title.toLowerCase().includes(searchTerm.toLowerCase()))
     .filter(item => selectedStatus === '' || item.intervention_status === selectedStatus)
     .slice(pagesVisited, pagesVisited + itemsPerPage)

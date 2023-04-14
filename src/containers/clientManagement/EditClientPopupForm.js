@@ -106,7 +106,7 @@ const EditClientPopupForm =({ client, onUpdateClient, onCancel, onOpen, getClien
 
                 <div className="popup-form-buttons">
                     <button type="submit">Update</button>
-                    <button type="button" onClick={onCancel}>
+                    <button className="inside-view-popup-button" type="button" onClick={onCancel}>
                     Cancel
                     </button>
                 </div>

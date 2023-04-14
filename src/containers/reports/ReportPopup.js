@@ -36,7 +36,7 @@ const ReportPopup =({ onCancel, onOpen, selectedReport }) => {
             <div className="popup-form">
           
             <h2>ID: {selectedReport.id} <br></br><br></br>Report Subject: {selectedReport.subject}</h2>
-        <p> <b>description:</b> {selectedReport.message}</p>
+        <p> <b>Message:</b> {selectedReport.message}</p>
         <p> <b>Report Sender Name:</b> {selectedReport.user_name}</p>
         <p> <b>Report Sender Role: </b>{selectedReport.user_role}</p>
         <p> <b>Report Date:</b> {selectedReport.report_date}</p>

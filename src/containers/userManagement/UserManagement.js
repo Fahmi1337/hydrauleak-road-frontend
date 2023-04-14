@@ -14,7 +14,7 @@ const UserManagement = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRole, setSelectedRole] = useState('');
   const [pageNumber, setPageNumber] = useState(0);
-  const itemsPerPage = 10;
+  const itemsPerPage = 5;
   const pagesVisited = pageNumber * itemsPerPage;
 
   const [openPopup, setOpenPopup] = useState(false);
@@ -79,7 +79,7 @@ const handleDeleteUser =async (userId) => {
 
 // display data table
 
-    const displayData = data
+    const displayData = [...data].reverse()
     .filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()))
     .filter(item => selectedRole === '' || item.roles === selectedRole)
     .slice(pagesVisited, pagesVisited + itemsPerPage)
@@ -201,7 +201,7 @@ const handleCloseAddUser = () => {
           <div className="pageTitleContainer">  <h1>Users Management</h1></div>
    
        
-        <div id="addTableButtonContainer"> <button onClick={() => handleOpenAddUser()}>Add User</button> </div>
+        <div id="addTableButtonContainer"> <button onClick={() => handleOpenAddUser()}>+ Add User</button> </div>
         <div className="table-controls">
         <div className="search-input">
       

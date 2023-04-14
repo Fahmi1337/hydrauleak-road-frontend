@@ -31,26 +31,34 @@ const ViewInterventionPopup = ({ onCancel, onOpen, selectedIntervention, interve
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <div className="popup-form">
+        <div className="view-popup-form">
+          <div className="inside-view-popup-form">
+            <div className="ColumnLeft">
             <h2>{selectedIntervention.intervention_title}</h2>
-            <p>Description: {selectedIntervention.intervention_description}</p>
-            <p>Estimate Time: {selectedIntervention.intervention_estimate_time}</p>
-            <p>Leak Tool: {selectedIntervention.intervention_leak_tool}</p>
-            <p>Type: {selectedIntervention.intervention_type}</p>
-            <p>Status: {selectedIntervention.intervention_status}</p>
-            <p>Date: {selectedIntervention.intervention_date}</p>
-            <p>Address: {selectedIntervention.address}</p>
-            <p>City: {selectedIntervention.city}</p>
-            <p>State: {selectedIntervention.state}</p>
-            <p>Zipcode: {selectedIntervention.zipcode}</p>
-            <p>Published: {selectedIntervention.is_published}</p>
-            <p>Contract: {selectedIntervention.contract}</p>
-
-            <GetZoneIntervention interventionId= {selectedIntervention.id} />
-            <button type="button" onClick={onCancel}>
+            <p> <b>Contract:</b> {selectedIntervention.contract}</p>
+            <p><b>Description:</b> {selectedIntervention.intervention_description}</p>
+            <p><b>Estimate Time:</b> {selectedIntervention.intervention_estimate_time}</p>
+            <p><b>Leak Tool:</b> {selectedIntervention.intervention_leak_tool}</p>
+            <p><b>Type:</b> {selectedIntervention.intervention_type}</p>
+            <p><b>Status:</b> {selectedIntervention.intervention_status}</p>
+            
+            <p><b>Date:</b> {selectedIntervention.intervention_date}</p>
+            <p><b>Address:</b> {selectedIntervention.address}</p>
+            <p><b>City:</b> {selectedIntervention.city}</p>
+            <p><b>State:</b> {selectedIntervention.state}</p>
+            <p><b>Zipcode:</b> {selectedIntervention.zipcode}</p>
+            <p><b>Published:</b> {selectedIntervention.is_published}</p>
+           
+            </div>
+                  <div className="ColumnRight">
+                  <GetZoneIntervention interventionId= {selectedIntervention.id} />
+                  </div>
+              </div>
+            </div>
+            <button className="inside-view-popup-button" type="button" onClick={onCancel}>
               Cancel
             </button>
-          </div>
+         
         </Box>
       </Modal>
     </>

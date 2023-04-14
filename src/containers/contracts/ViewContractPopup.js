@@ -31,35 +31,40 @@ const ViewContractPopup = ({ onCancel, onOpen, selectedContract, contractId }) =
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <div className="popup-form">
+        <div className="view-popup-form">
+          <div className="inside-view-popup-form">
             <div className="ColumnLeft">
-            <h2>Contract Details</h2>
-            <p>Title: {selectedContract.contract_title}</p>
-            <p>Description: {selectedContract.contract_description}</p>
-            <p>Client name: {selectedContract.client.user.name}</p>
-            <p>Contract start date: {selectedContract.contract_date}</p>
-            <p>Estimate Time: {selectedContract.contract_estimate_end_date}</p>
-            <p>Type: {selectedContract.contract_type}</p>
-            <p>Status: {selectedContract.contract_status}</p>
+                <h2>Contract Details</h2>
+                <p><b>Title:</b> {selectedContract.contract_title}</p>
+                <p><b>Description:</b> {selectedContract.contract_description}</p>
+                <p><b>Client name:</b> {selectedContract.client.user.name}</p>
+                <p><b>Contract start date:</b> {selectedContract.contract_date}</p>
+                <p><b>Estimate Time:</b> {selectedContract.contract_estimate_end_date}</p>
+                <p><b>Type:</b> {selectedContract.contract_type}</p>
+                <p><b>Status:</b> {selectedContract.contract_status}</p>
+                
+                <p><b>Address:</b> {selectedContract.address}</p>
+                <p><b>City:</b> {selectedContract.city}</p>
+                <p><b>State:</b> {selectedContract.state}</p>
+                <p><b>Zipcode:</b> {selectedContract.zipcode}</p>
+                <p><b>Published:</b> {selectedContract.is_published}</p>
+            </div>
+                <div className="ColumnRight">
+                <GetMapContract contractId= {selectedContract.id} />
+                </div>
+            </div>
+            </div>
+                  <button className="inside-view-popup-button" type="button" onClick={onCancel}>
+                    Cancel
+                  </button>
             
-            <p>Address: {selectedContract.address}</p>
-            <p>City: {selectedContract.city}</p>
-            <p>State: {selectedContract.state}</p>
-            <p>Zipcode: {selectedContract.zipcode}</p>
-            <p>Published: {selectedContract.is_published}</p>
-            </div>
-            <div className="ColumnRight">
-            <GetMapContract contractId= {selectedContract.id} />
-            <button type="button" onClick={onCancel}>
-              Cancel
-            </button>
-            </div>
+                  
             
             
 
            
            
-          </div>
+        
         </Box>
       </Modal>
     </>

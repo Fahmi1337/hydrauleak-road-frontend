@@ -14,7 +14,7 @@ const ClientManagement = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRole, setSelectedRole] = useState('');
   const [pageNumber, setPageNumber] = useState(0);
-  const itemsPerPage = 10;
+  const itemsPerPage = 5;
   const pagesVisited = pageNumber * itemsPerPage;
 
   const [openPopup, setOpenPopup] = useState(false);

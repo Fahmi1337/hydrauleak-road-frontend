@@ -119,7 +119,7 @@ const handleDeleteClient =async (clientId) => {
 
 // display data table
 
-    const displayData = data
+    const displayData = [...data].reverse()
     .filter(item => item.user.name.toLowerCase().includes(searchTerm.toLowerCase()))
     .filter(item => selectedRole === '' || item.roles === selectedRole)
     .slice(pagesVisited, pagesVisited + itemsPerPage)

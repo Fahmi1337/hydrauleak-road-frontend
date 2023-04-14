@@ -52,7 +52,7 @@ const AddMarkPopup = (props) => {
 
 
 
-console.log("mark data?", markData)
+// console.log("mark data?", markData)
   const handleSubmitData = () => {
 
     
@@ -105,6 +105,7 @@ console.log("mark data?", markData)
     const reloadPage = () => {
       props.handleCloseMark();
       localStorage.removeItem("selectedPipeId");    
+      props.handleCancelAddMarkReport();
       // window.location.reload();
     };
 
@@ -182,7 +183,7 @@ console.log("mark data?", markData)
 
         <div className='formButtonsContainer'>
           <button onClick={()=>{handleSubmitData();}}>Submit</button>
-          <button onClick={()=>{props.handleCloseMark();reloadPage();}}>Cancel</button>
+          <button onClick={()=>{props.handleCancelAddMarkReport();reloadPage();}}>Cancel</button>
         </div>
       
       </div>

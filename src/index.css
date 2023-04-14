@@ -203,7 +203,7 @@ line-height: 32px;
 
 .table_container {
 
-    margin: 10em 5em 13em 2em;
+    margin: 5em 5em 13em 2em;
 }
     .calculation-box {
         height: 75px;
@@ -300,13 +300,15 @@ line-height: 32px;
     width: 26.5em;
     padding: 0.5em;
   }
+
+    /*Add popup*/
   .popup-form p{
     padding-top: 3%;
     font-size: 24px;
     margin: 20px;
   }
   .popup-form label{
-    padding-top: 3%;
+
   
 
   }
@@ -314,8 +316,11 @@ line-height: 32px;
 
   }
   .popup-form{
-    overflow-y: scroll; 
-    grid-template-columns: auto auto;
+    overflow-y: scroll ; 
+
+    height: 5
+    3em;
+
   }
   .add-popup-form{
     background-color: #ffffff;
@@ -329,9 +334,63 @@ line-height: 32px;
     color: #0671E0;
   }
 
-  .popup-form-buttons{
-    margin-top: 7%;
+  .popup-form-buttons button{
+    margin-top: 8%;
   }
+
+
+  /*view popup*/
+
+  .inside-view-popup-form h2{
+    color: #0671E0;
+  }
+
+  .inside-view-popup-form p{
+    padding-top: 3%;
+    font-size: 24px;
+    margin: 20px;
+  }
+  .inside-view-popup-form label{
+    padding-top: 3%;
+  }
+  .inside-view-popup-button {
+    float: right;
+  margin-top: 4%;
+  margin-right: 5%;
+  }
+  .view-popup-form {
+    display: flex;
+    flex-direction: row;
+  }
+
+  
+  .inside-view-popup-form {
+   
+    overflow-y: scroll ; 
+    height: 45em;
+    width: 90em;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  
+  .ColumnLeft {
+    flex: 1;
+    padding-right: 20px;
+  }
+  
+  .ColumnRight {
+    flex: 1;
+  }
+
+
+
+
+
+
+
+
  .selectMapContainer{
   position: absolute !important;
   
@@ -376,6 +435,10 @@ line-height: 32px;
 
 .mapboxgl-popup-content {
   zoom: 50%;
+}
+
+.addMarkReportPopup{
+  margin-top: 20rem !important;
 }
 
 @media only screen and (max-width: 1700px) {
