@@ -446,6 +446,50 @@ line-height: 32px;
   margin-top: 20rem !important;
 }
 
+
+
+
 @media only screen and (max-width: 1700px) {
 
+}
+
+/* map Style radio buttons*/
+.mapLayersContainer input[type="radio"] {
+  display: none;
+}
+.mapLayersContainer {
+  margin-top: 14%;
+  margin-left: 7%;
+  height: 18%;
+  display: flex;
+}
+
+.mapLayerSelect {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 20px;
+
+}
+
+.mapLayerSelect h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  
+}
+
+.mapLayerSelect label {
+  background-size: cover;
+  width: 170px;
+  height: 130px;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+a.mapboxgl-ctrl-logo{
+  display: none !important;
+}
+
+
+.mapLayerSelect label.selected {
+  border-color: #0078d4;
 }

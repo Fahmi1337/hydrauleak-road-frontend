@@ -1061,17 +1061,43 @@ useEffect(() => {
      
     
       <div id="menu" style={{display: open? "block" : "none"}} className="mapLayersContainer">
-        <input id="light-v11" type="radio" name="rtoggle" value="light" defaultChecked />
-        <label htmlFor="light-v11">light</label>
-        <input id="satellite-streets-v12" type="radio" name="rtoggle" value="satellite"/>
-        <label htmlFor="satellite-streets-v12">satellite streets</label>
-        <input id="dark-v11" type="radio" name="rtoggle" value="dark" />
-        <label htmlFor="dark-v11">dark</label>
-        <input id="streets-v12" type="radio" name="rtoggle" value="streets" />
-        <label htmlFor="streets-v12">streets</label>
-        <input id="outdoors-v12" type="radio" name="rtoggle" value="outdoors" />
-        <label htmlFor="outdoors-v12">outdoors</label>
+
+      <div className="mapLayerSelect">
+        <h3>Light</h3>
+        <label htmlFor="light-v11" style={{backgroundImage: "url(https://assets.website-files.com/5e83362767d71ffd59a0c8a9/637758408fe63b723c693c64_Mapbox-Light.png)"}}></label>
+        <input id="light-v11" type="radio" name="rtoggle" value="light" 
+         defaultChecked />
       </div>
+      
+      <div className="mapLayerSelect">
+       <h3>Satellite streets</h3>
+       <label htmlFor="satellite-streets-v12" 
+       style={{backgroundImage: "url(https://assets.website-files.com/5e83362767d71ffd59a0c8a9/6377b0249bab82a13967e18f_hero%20image%20-%20Mapbox%20Satellite%20Streets.png)"}}></label>
+       <input id="satellite-streets-v12" type="radio" name="rtoggle" value="satellite"/>
+      </div>
+
+      <div className="mapLayerSelect">  
+        <h3>Dark</h3>
+        <label htmlFor="dark-v11" 
+        style={{backgroundImage: "url(https://assets.website-files.com/5e83362767d71ffd59a0c8a9/6377865c25cdcb31e14aa7e9_hero%20image%20-%20dark.png"}}></label>
+        <input id="dark-v11" type="radio" name="rtoggle" value="dark" />
+      </div>
+
+      <div className="mapLayerSelect"> 
+        <h3>Streets</h3>
+        <label htmlFor="streets-v12" 
+        style={{backgroundImage: "url(https://assets.website-files.com/5e83362767d71ffd59a0c8a9/6377a484ebbf13ec2f21c454_hero%20image%20-%20streets.png)"}}></label>
+        <input id="streets-v12" type="radio" name="rtoggle" value="streets" />
+      </div>
+        
+      <div className="mapLayerSelect">
+        <h3>Outdoors</h3>
+        <label htmlFor="outdoors-v12" 
+        style={{backgroundImage: "url(https://assets.website-files.com/5e83362767d71ffd59a0c8a9/6377ad5f7dad3909f056450d_hero%20image%20-%20outdoors.png)"}}></label>
+        <input id="outdoors-v12" type="radio" name="rtoggle" value="outdoors" />
+      </div>
+
+    </div>
       <script src="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js"></script>
 
       {/* map Center SELECT */}
