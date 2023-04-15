@@ -78,6 +78,7 @@ body {
   } */
 
   .left-nav {
+    z-index: 9999;
     width: 17em;
     height: 100%;
     position: fixed;

@@ -5,8 +5,8 @@ html * {
 }
 
 
-#root{
-  zoom: 98%;
+.loginRoot{
+  zoom: 97%;
 }
 textarea{
   height: 15em;
