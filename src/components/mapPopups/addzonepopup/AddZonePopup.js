@@ -23,14 +23,14 @@ zone_area: parseFloat(localStorage.getItem("zoneArea")),
   zone_status: 'notStart',
   zone_color: 'orange',
   zone_coordinates: '',
-  map: "3"
+  map: 1,
+  intervention: 1
 });
 const style = {
 
   zIndex: 999999999999
 };
 
-const { zone_title, zone_description, zone_num, zone_status, zone_color, map, zone_area, zone_coordinates } = zoneData;
 
 
 
@@ -64,25 +64,42 @@ if(selectedIntervention.id){
     localStorage.removeItem("zoneArea");
   };
 
+
   const handleZoneDataChange = (e) => {
+    if(selectedIntervention.id > 0){
+      setZoneData({
+        ...zoneData,
+        [e.target.name]: e.target.value,
+        intervention: selectedIntervention.id
+        
+      });
+    }
+    else{
     setZoneData({
       ...zoneData,
       [e.target.name]: e.target.value,
       
     });
+    }
+
+
 
   };
 
+
+  const {intervention, zone_title, zone_description, zone_num, zone_status, zone_color, map, zone_area, zone_coordinates } = zoneData;
+
   const handleSubmitData = () => {
-    if (!zoneData.zone_title || !zoneData.zone_description || !zoneData.zone_coordinates) {
+    if (!zoneData.zone_coordinates) {
       alert("Please fill in all required fields.");
       return;
     }
 
     const data = {
-      zone_title, zone_description, zone_num, zone_status, zone_color, map: parseInt(map), zone_area: parseFloat(zone_area), zone_coordinates
+      intervention: parseInt(intervention), zone_title, zone_description, zone_num, zone_status, zone_color, map: parseInt(map), zone_area: parseFloat(zone_area), zone_coordinates
     };
 
+    console.log("add zone data", data)
     axios
       .post(`${process.env.REACT_APP_API_URL}/api/zones/`,  data,
       
@@ -170,7 +187,9 @@ return response;
     console.log(error);
   }
 };
-
+useEffect(() => {   
+  getInterventions();
+}, []);
 useEffect(() => {   
   getInterventions();
     if (props.selectedIntervention){
@@ -208,8 +227,10 @@ useEffect(() => {
         <div className='listinform__section'>
             <label >Intervention *</label>        
              
-            <select  type="text"  
-                  name="intervention" onChange={e => handleZoneDataChange(e)} value={zoneData.intervention || selectedIntervention.id} > <option disabled selected value> -- select an option -- </option>
+            <select  
+            disabled={selectedIntervention.id > 0 ? true : false}
+            value={selectedIntervention.id > 0 ? selectedIntervention.id : zoneData.intervention}
+                  name="intervention" onChange={handleZoneDataChange} required > <option disabled selected value> -- select an option -- </option>
                   {interventions?.map(intervention => (
                     
                   <option key={intervention.id} value={intervention.id}>{intervention.intervention_title}</option>          
@@ -224,7 +245,7 @@ useEffect(() => {
             <label >Map Center *</label>        
              
             <select  type="text"  
-                  name="map" onChange={e => handleZoneDataChange(e)} value={zoneData.map || 1} > <option disabled selected value> -- select an option -- </option>
+                  name="map" onChange={e => handleZoneDataChange(e)} value={zoneData.map || 1} required > <option disabled selected value> -- select an option -- </option>
                   {maps.data?.map(map => (
                     
                   <option key={map.id} value={map.id}>{map.map_title}</option>          
@@ -242,6 +263,7 @@ useEffect(() => {
             name="reading_coordinates"
             value={zoneData.zone_coordinates}
             onChange={e => handleZoneDataChange(e)}
+            required
           />
 
 <label>Zone area in km2 *</label>
@@ -251,6 +273,7 @@ useEffect(() => {
             name="zone_area"
             value={parseFloat(localStorage.getItem("zoneArea")) || parseFloat(zoneData.zone_area)}
             onChange={e => handleZoneDataChange(e)}
+            required
           />
         <label>Zone title *</label>
           <input
@@ -258,6 +281,7 @@ useEffect(() => {
             name="zone_title"
             value={zoneData.zone_title}
             onChange={e => handleZoneDataChange(e)}
+            required
           />
 
           <label>Zone description *</label>
@@ -286,9 +310,8 @@ useEffect(() => {
                 value={zoneData.zone_color}
                 onChange={e => handleZoneDataChange(e)}>
                   <option value="orange">Orange</option>
-              <option value="green">Green</option>
-              
-              <option value="red">Red</option>
+                  <option value="green">Green</option>
+                  <option value="red">Red</option>
               </select>
 
           

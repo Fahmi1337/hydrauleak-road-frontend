@@ -119,7 +119,7 @@ const AddClientPopupForm = ({ onCancel, onOpen }) => {
               <form onSubmit={handleSubmitData}>
               <label >Client profile:</label>        
              
-              <select name="user" value={parseInt(clientData.user)} onChange={(e) => handleClientDataChange(e)}>
+              <select name="user" value={parseInt(clientData.user)} onChange={(e) => handleClientDataChange(e)} required>
                 <option disabled value=""> -- select an option -- </option>
                 {clients.filter((client) => client.roles.includes("is_client")).map((client) => (
                   <option key={client.id} value={client.id}>
@@ -130,8 +130,8 @@ const AddClientPopupForm = ({ onCancel, onOpen }) => {
 
 
               
-                <label> Description:</label>
-                  <textarea type="text" name="description" value={clientData.description} onChange={handleClientDataChange} />
+                <label> Description *</label>
+                  <textarea type="text" name="description" value={clientData.description} onChange={handleClientDataChange} required />
                 
                 <label>
                   Address:
@@ -139,8 +139,8 @@ const AddClientPopupForm = ({ onCancel, onOpen }) => {
                 </label>
 
                 <label>
-                Client data creation date:
-                    <input  type="datetime-local" name="inscription_date" value={clientData.inscription_date} onChange={handleClientDataChange} />
+                Client data creation date *
+                    <input  type="datetime-local" name="inscription_date" value={clientData.inscription_date} onChange={handleClientDataChange} required />
                 </label>
 
                 <label>File:</label>

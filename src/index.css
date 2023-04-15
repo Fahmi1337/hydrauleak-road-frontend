@@ -3,6 +3,11 @@ html * {
   font-family: 'Rubik', sans-serif;
 
 }
+
+
+#root{
+  zoom: 98%;
+}
 textarea{
   height: 15em;
 }

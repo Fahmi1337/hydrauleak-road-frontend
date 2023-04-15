@@ -35,7 +35,11 @@ const style = {
     >
       <Box sx={style}>
         <div className="popup-form">
+      
+        <h3>ID: {zone.id}</h3>
           <h3>Zone Title: {zone.zone_title}</h3>
+          <p>Zone Intervention ID: {zone.intervention}</p>
+          <p>Zone Map ID: {zone.map}</p>
           <p>Zone Description: {zone.zone_description}</p>
           <p>Zone Area: {zone.zone_area}</p>
           <p>Zone Date: {zone.zone_date}</p>
@@ -43,10 +47,13 @@ const style = {
           <p>Zone Color: {zone.zone_color}</p>
           <p>Zone Coordinates: {JSON.stringify(zone.zone_coordinates)}</p>
           <p>Map: {zone.map}</p>
-          <button  type="button" onClick={onCancel}>
+          </div>
+          
+          <button className="inside-view-popup-button" type="button" onClick={onCancel}>
             Cancel
           </button>
-        </div>
+         
+        
       </Box>
     </Modal>
   );

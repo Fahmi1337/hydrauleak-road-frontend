@@ -17,7 +17,7 @@ import Modal from '@mui/material/Modal';
   const initialState = '';
 
   const [mapData, setMapData] = useState({
-    id:100,
+   
     map_title:'',
     map_description: '',
     contract: 1,
@@ -55,16 +55,28 @@ import Modal from '@mui/material/Modal';
 
 
   const handleMapDataChange = (e) => {
-    setMapData({
-      ...mapData,
-      [e.target.name]: e.target.value,
-      
-    });
+
+    if(selectedContract.id > 0){
+      setMapData({
+        ...mapData,
+        [e.target.name]: e.target.value,
+        contract: selectedContract.id
+        
+      });
+    }
+    else{
+      setMapData({
+        ...mapData,
+        [e.target.name]: e.target.value,
+        
+      });
+    }
+
   };
   const { map_title, map_description, map_creation_date, map_coordinate, contract } = mapData;
   const handleSubmitData = () => {
 
-    if (!mapData.map_title || !mapData.map_description || !mapData.map_coordinate ) {
+    if (!mapData.map_coordinate ) {
       alert("Please fill in all required fields.");
       return;
     }
@@ -72,6 +84,9 @@ import Modal from '@mui/material/Modal';
     const data = {
       map_coordinate, map_creation_date, map_description, map_title, contract: parseInt(contract)
     };
+
+    console.log("add maps data", data)
+    console.log("add mapData data", mapData)
 
     axios
       .post(`${process.env.REACT_APP_API_URL}/api/maps/`, data,
@@ -90,8 +105,8 @@ import Modal from '@mui/material/Modal';
         console.error(err);
       });
     
-      reloadPage();
-      window.location.reload();
+      // reloadPage();
+      // window.location.reload();
   };
 
     // //Modal
@@ -153,13 +168,11 @@ import Modal from '@mui/material/Modal';
           <h2>Please Zoom in as much as possible on the map before selecting a location to add as the map center. 
             This will help us to obtain the most accurate coordinates for your desired location.</h2>
         <form>
-        <label>
-                Contract *
-                </label>
+        <label>Contract *</label>
                 <select  
                 disabled={selectedContract.id > 0 ? true : false}
                 value={selectedContract.id > 0 ? selectedContract.id : mapData.contract}
-                  name="contract" onChange={handleMapDataChange} > <option disabled selected value> -- select an option -- </option>
+                  name="contract" onChange={handleMapDataChange} required > <option disabled selected value> -- select an option -- </option>
                   {contracts?.map(contract => (
                     
                   <option key={contract.id} value={contract.id}>{contract.contract_title}</option>          
@@ -171,11 +184,12 @@ import Modal from '@mui/material/Modal';
             name="map_title"
             value={mapData.map_title}
             onChange={e => handleMapDataChange(e)}
+            required
           />
 
           <label>Map description *</label>
             <textarea type="text"
-            name="map_description" value={mapData.map_description} onChange={e => handleMapDataChange(e)} />
+            name="map_description" value={mapData.map_description} onChange={e => handleMapDataChange(e)} required />
           
 
           <label>Map center coordinates *</label>
@@ -185,6 +199,7 @@ import Modal from '@mui/material/Modal';
             name="map_coordinate"
             value={mapData.map_coordinate}
             onChange={e => handleMapDataChange(e)}
+            required
           />
           <label>Map creation date</label>
           <input
@@ -192,6 +207,7 @@ import Modal from '@mui/material/Modal';
             name="map_creation_date"
             value={mapData.map_creation_date}
             onChange={e => handleMapDataChange(e)}
+            
           />
         </form>
         <div className='formButtonsContainer'>

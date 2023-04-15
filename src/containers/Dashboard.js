@@ -1044,7 +1044,7 @@ useEffect(() => {
             bottom: 0;
             width: 91%;
             right: 0%;
-            left: 9.6%;
+            left: 9.4%;
           }
           #menu {
             position: absolute;

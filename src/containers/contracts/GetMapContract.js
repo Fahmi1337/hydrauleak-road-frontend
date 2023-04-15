@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const GetMapIntervention = (interventionId) => {
+const GetMapContract = (ContractId) => {
   
 
   const [maps, setMaps] = useState([]);
@@ -20,14 +20,15 @@ const GetMapIntervention = (interventionId) => {
     })
   }, []);
 
-  const interventionMaps = maps.filter(map => map.intervention === interventionId.interventionId);
+  const ContractMaps = maps.filter(mapOn => mapOn.contract === ContractId.contractId);
+
 
   return (
     <div>
-      <h2>Intervention Maps</h2>
-      {interventionMaps.length > 0 ? (
+      <h2>Contract Maps</h2>
+      {ContractMaps.length > 0 ? (
         <div>
-          {interventionMaps.map(map => (
+          {ContractMaps.map(map => (
             <div key={map.id}>
               <h3>ID: {map.id}</h3>
               <h3>{map.map_title}</h3>
@@ -40,10 +41,10 @@ const GetMapIntervention = (interventionId) => {
           ))}
         </div>
       ) : (
-        <p>No maps found for this intervention.</p>
+        <p>No maps found for this Contract.</p>
       )}
     </div>
   );
 }
 
-export default GetMapIntervention;
+export default GetMapContract;

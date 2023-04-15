@@ -217,7 +217,7 @@ const handleCloseAddUser = () => {
     </div>
         <div className="role-filter">
           <label htmlFor="role-filter">Filter by role:</label>
-          <select id="role-filter" value={selectedRole} onChange={handleRoleFilterChange}>
+          <select id="status-filter" value={selectedRole} onChange={handleRoleFilterChange}>
             <option value="">All</option>
             <option value="is_admin">Admin</option>
             <option value="is_leaker">Leaker</option>

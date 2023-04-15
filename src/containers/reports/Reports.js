@@ -214,11 +214,11 @@ const handleDeleteUser =async (reportId) => {
           <div className="search-input">
           {/* <button onClick={() => handleOpenAddUser()}>Add User</button> */}
             <label htmlFor="search">Search:</label>
-            <input type="text" id="search" value={searchTerm} onChange={handleSearchChange} />
+            <input placeholder='Search...' type="text" id="search" value={searchTerm} onChange={handleSearchChange} />
           </div>
           <div className="role-filter">
             <label htmlFor="role-filter">Filter by role:</label>
-            <select id="role-filter" value={selectedRole} onChange={handleRoleFilterChange}>
+            <select id="status-filter" value={selectedRole} onChange={handleRoleFilterChange}>
               <option value="">All</option>
               <option value="is_admin">Admin</option>
               <option value="is_leaker">Leaker</option>
