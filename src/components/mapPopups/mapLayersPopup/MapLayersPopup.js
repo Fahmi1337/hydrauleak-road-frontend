@@ -14,7 +14,7 @@ import mark from "../../../assets/icons/contributes/mark.png";
 import map from "../../../assets/icons/contributes/map.png";
 
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
-
+import VisibilityIcon from '@mui/icons-material/Visibility';
 const style = {
   position: 'absolute',
   top: '35%',
@@ -55,7 +55,7 @@ const style = {
     }, [props]);
     return (
         <>
-        <Button className="layersButton" onClick={handleOpen} variant="outlined" startIcon={<ControlPointIcon  />}> Layers</Button>
+        <Button className="layersButton" onClick={handleOpen} variant="outlined" startIcon={<VisibilityIcon  />}> View Layers</Button>
       <Modal
         disableEnforceFocus
         hideBackdrop
