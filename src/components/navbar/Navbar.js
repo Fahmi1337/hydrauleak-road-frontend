@@ -87,7 +87,9 @@ const getUserRoutes = () => {
     else if(me.roles==="is_leaker"){
         return(
             <>
-             <div id="logoContainer"> <img src={hydrauleaklogo} id="hydrauleak-logo" alt="hydrauleak"/></div>
+             <div id="logoContainer"> <img src={hydrauleaklogo} id="hydrauleak-logo" alt="hydrauleak"/>
+             <hr className="solid"></hr>
+             </div>
              <Fragment>
               <NavLink activeClassName="activeLink"  to='/'> <HomeIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }} /><span className='nav-txt'> Dashboard</span></NavLink>
               <NavLink activeClassName="activeLink"  to='/contracts'> <ReceiptLongIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }} /><span className='nav-txt'> Contracts </span></NavLink>
@@ -109,7 +111,9 @@ const getUserRoutes = () => {
     else if(me.roles==="is_client"){
         return(
             <>
-             <div id="logoContainer"> <img src={hydrauleaklogo} id="hydrauleak-logo" alt="hydrauleak"/></div>
+             <div id="logoContainer"> <img src={hydrauleaklogo} id="hydrauleak-logo" alt="hydrauleak"/>
+             <hr className="solid"></hr>
+             </div>
              <Fragment>
              <NavLink activeClassName="activeLink"  to='/'> <HomeIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }} /><span className='nav-txt'> Dashboard</span></NavLink>
              <NavLink activeClassName="activeLink"  to='/contracts'> <ReceiptLongIcon style={{ fill: 'white', marginBottom: '-0.5rem'  }} /><span className='nav-txt'> Contracts </span></NavLink>
