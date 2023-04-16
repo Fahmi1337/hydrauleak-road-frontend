@@ -1044,6 +1044,7 @@ useEffect(() => {
             top: 0;
             bottom: 0;
             width: 91%;
+            
             right: 0%;
             left: 9.6%;
           }

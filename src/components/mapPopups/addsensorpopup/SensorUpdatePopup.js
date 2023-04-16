@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import "../../../assets/css/ContributesPopup.css"
 import axios from 'axios';
 import Box from '@mui/material/Box';
@@ -23,6 +23,8 @@ const { sensor_coordinates, sensor_description, sensor_Indication, sensor_type, 
       return;
     }
 
+    console.log("sensor data" , sensorData)
+
     const data = {
       sensor_coordinates, sensor_description, sensor_Indication, sensor_type, sensor_creation_date, sensor_frequency, sensor_title, pipe
     };
@@ -30,7 +32,7 @@ const { sensor_coordinates, sensor_description, sensor_Indication, sensor_type, 
 
 
     axios
-      .put(`${process.env.REACT_APP_API_URL}/api/sensors/${sensorData.id}/`, data,
+      .put(`${process.env.REACT_APP_API_URL}/api/sensors/${sensorData.id}/`, sensorData,
       
       {
             headers: {
@@ -65,7 +67,7 @@ const { sensor_coordinates, sensor_description, sensor_Indication, sensor_type, 
       
         <div>
       
-        <div className="SensorPopup">
+        <div className="contributesPopup">
           <h1>Update Sensor</h1>
       <form>
       <label>Pipe:</label>
@@ -73,7 +75,7 @@ const { sensor_coordinates, sensor_description, sensor_Indication, sensor_type, 
         disabled
           type="text"
           name="pipe"
-          value={localStorage.getItem('selectedPipeId') ||  sensorData.pipe}
+          value={sensorData.pipe}
           onChange={e => handleSensorDataChange(e)}
         />
         <label>Sensor coordinates:</label>
@@ -132,10 +134,12 @@ const { sensor_coordinates, sensor_description, sensor_Indication, sensor_type, 
 
 
       </form>
-      <button onClick={handleSubmitData}>Submit</button>
-      <button onClick={onCancel}>Cancel</button>
-    </div>
+              <div className='formButtonsContainer'>
+                <button onClick={handleSubmitData}>Submit</button>
+                <button onClick={onCancel}>Cancel</button>
+              </div>
         </div>
+      </div>
       </Box>
     </Modal>
 
