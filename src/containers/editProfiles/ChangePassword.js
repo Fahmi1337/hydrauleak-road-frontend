@@ -25,7 +25,7 @@ const ChangePassword = () => {
 
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/user/edit/change_password/`,
+        `${process.env.REACT_APP_API_URL}/api/user/change_password/`,
         {
           method: "POST",
           headers: {
@@ -36,9 +36,8 @@ const ChangePassword = () => {
         }
       );
 
-      const data = await response.json();
+      const data = await response;
       
-
       if (response.ok) {
         setFormData({
           old_password: "",
