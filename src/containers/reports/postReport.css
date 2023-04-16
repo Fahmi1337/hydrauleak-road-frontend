@@ -3,9 +3,10 @@ body { margin-left: 2% !important; padding: 0;  }
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  margin-top: 3%;
+  
   max-width: 600px;
   padding: 16px;
+  padding-right: 10.5% !important;
   background-color: white;
   padding-bottom: 3%;
 }
@@ -33,7 +34,7 @@ form {
   }
   
 
-  textarea {
+   textarea {
    
     border-radius: 4px;
     font-size: 16px;
@@ -44,6 +45,19 @@ form {
     width: 90%;
     border: 2px solid #0671E0;
   }
+  .submitReportContainer textarea {
+   
+    border-radius: 4px;
+    font-size: 16px;
+    padding: 25px;
+    margin-top: 8px;
+    margin-left: 0%;
+    padding-left: 0%;
+    width: 88%;
+    height: 5em;
+    border: 2px solid #0671E0;
+  }
+
 
 
 .reportSubmitButton{

@@ -122,16 +122,10 @@ const AddContractPopupForm = ({ onCancel, onOpen }) => {
                   </option>
                 ))}
               </select>
-
-            <label>
-                Contract status:
-                    <select type="text" name='contract_status'  value={contractData.contract_status} onChange={handleContractDataChange} required>
-                    <option value="NotStart">Not Started</option>
-                    <option value="Pending">Pending</option>
-                    <option value="expired">expired</option>
-                    </select>
+              <label>
+                Title:
+                    <input type="text" name='contract_title' value={contractData.contract_title} onChange={handleContractDataChange}  required />
                 </label>
-
                 <label>
                 Contract work type:
                     <select  type="text" name='contract work type' value={contractData.contract_work_type} onChange={handleContractDataChange} required>                   
@@ -150,14 +144,20 @@ const AddContractPopupForm = ({ onCancel, onOpen }) => {
                 map:
                     <input type="text" name='map' value={contractData.map} onChange={handleContractDataChange} />
                 </label> */}
-                <label>
-                Title:
-                    <input type="text" name='contract_title' value={contractData.contract_title} onChange={handleContractDataChange}  required />
-                </label>
+
                 <label>
                 Description:
                     <textarea type="text" name='contract_description' value={contractData.contract_description} onChange={handleContractDataChange} required />
                 </label>
+            <label>
+                Contract status:
+                    <select type="text" name='contract_status'  value={contractData.contract_status} onChange={handleContractDataChange} required>
+                    <option value="NotStart">Not Started</option>
+                    <option value="Pending">Pending</option>
+                    <option value="expired">expired</option>
+                    </select>
+                </label>
+               
                 <label>
                 Start Date:
                     <input type="date" name='contract_date' value={contractData.contract_date} onChange={handleContractDataChange} required/>

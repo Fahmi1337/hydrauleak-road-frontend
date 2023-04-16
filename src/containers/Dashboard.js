@@ -127,23 +127,23 @@ const NewDashboard = () => {
   const [polygon, setPolygon] = useState(null);
   const [area, setArea] = useState(0);
 
-  //Map Layers Popup
-  const style = {
-    position: 'absolute',
-    top: '45%',
-    left: '22%',
+  // //Map Layers Popup
+  // const style = {
+  //   position: 'absolute',
+  //   top: '45%',
+  //   left: '22%',
     
-    transform: 'translate(-50%, -50%)',
-    width: "auto",
-    height: "auto",
-    bgcolor: 'rgba(255, 255, 255, 0.75)',
-    boxShadow: 24,
-    p: 4,
-  };
+  //   transform: 'translate(-50%, -50%)',
+  //   width: "auto",
+  //   height: "auto",
+  //   bgcolor: 'rgba(255, 255, 255, 0.75)',
+  //   boxShadow: 24,
+  //   p: 4,
+  // };
   //POPUP1
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(!open);
-  const handleClose = () => setOpen(false);
+  // const handleClose = () => setOpen(false);
 //POPUP1
 
 const [selectedStyle, setSelectedStyle] = useState('light-v11');
@@ -191,7 +191,7 @@ const [selectedStyle, setSelectedStyle] = useState('light-v11');
       if (submitActive) {
         const lngLat = [e.lngLat.lng, e.lngLat.lat];
         setMapClickedCoordinates(lngLat);
-        // const newMarker = new mapboxgl.Marker().setLngLat(lngLat).addTo(map.current);
+        //const newMarker = new mapboxgl.Marker().setLngLat(lngLat).addTo(map.current);
       }
     };
   

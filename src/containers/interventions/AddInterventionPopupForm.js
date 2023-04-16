@@ -131,37 +131,14 @@ useEffect(() => {
                 Title:
                     <input type="text" name='intervention_title' value={interventionData.intervention_title} onChange={handleInterventionDataChange}  required />
                 </label>
-                <label>
-                Description:
-                    <textarea type="text" name='intervention_description' value={interventionData.intervention_description} onChange={handleInterventionDataChange} required />
-                </label>
+                
                 <label>
                 Leak Tools:
                     <input type="text" name='intervention_leak_tool' value={interventionData.intervention_leak_tool} onChange={handleInterventionDataChange} />
                 </label>
                 <label>
-                Address:
-                    <input type="text" name='address' value={interventionData.address} onChange={handleInterventionDataChange} />
-                </label>
-                <label>
-                City:
-                    <input type="text" name='city' value={interventionData.city} onChange={handleInterventionDataChange} />
-                </label>
-                <label>
-                State:
-                    <input type="text" name='state' value={interventionData.state} onChange={handleInterventionDataChange} />
-                </label>
-                <label>
-                ZipCode:
-                    <input type="text" name='zipcode' value={interventionData.zipcode} onChange={handleInterventionDataChange} />
-                </label>
-                <label>
-                Start Date:
-                    <input type="date" name='intervention_date' value={interventionData.intervention_date} onChange={handleInterventionDataChange} required/>
-                </label>
-                <label>
-                Estimate Time:
-                    <input type="date" name='intervention_estimate_time' value={interventionData.intervention_estimate_time} onChange={handleInterventionDataChange} required/>
+                Description:
+                    <textarea type="text" name='intervention_description' value={interventionData.intervention_description} onChange={handleInterventionDataChange} required />
                 </label>
                 <label>
                 Intervention type:
@@ -187,6 +164,34 @@ useEffect(() => {
                     <option value="Completed">Completed</option>
                     </select>
                 </label>
+
+                <label>
+                Start Date:
+                    <input type="date" name='intervention_date' value={interventionData.intervention_date} onChange={handleInterventionDataChange} required/>
+                </label>
+
+                <label>
+                Address:
+                    <input type="text" name='address' value={interventionData.address} onChange={handleInterventionDataChange} />
+                </label>
+                <label>
+                Estimate Time:
+                    <input type="date" name='intervention_estimate_time' value={interventionData.intervention_estimate_time} onChange={handleInterventionDataChange} required/>
+                </label>
+                <label>
+                City:
+                    <input type="text" name='city' value={interventionData.city} onChange={handleInterventionDataChange} />
+                </label>
+                <label>
+                State:
+                    <input type="text" name='state' value={interventionData.state} onChange={handleInterventionDataChange} />
+                </label>
+                <label>
+                ZipCode:
+                    <input type="text" name='zipcode' value={interventionData.zipcode} onChange={handleInterventionDataChange} />
+                </label>
+                
+
                 <label>
                 Published:
                     <select  type="text" name='is_published' value={interventionData.is_published} onChange={handleInterventionDataChange} required>

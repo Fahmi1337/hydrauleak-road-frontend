@@ -23,11 +23,19 @@ const Reports = (props) => {
   const [openSubmitReportPopup, setOpenSubmitReportPopup] = useState(false);
   const [openAddMarkReportPopup, setOpenAddMarkReportPopup] = useState(false);
 
+
   const style = {
+    
     zoom:'70%',
     widht:'50rem',
     zIndex: 999,
-   
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    p: 4,
   };
   const style2 = {
     zoom:'83.5%',

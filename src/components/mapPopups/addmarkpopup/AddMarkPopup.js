@@ -138,21 +138,23 @@ const AddMarkPopup = (props) => {
           <label>Mark coordinates *</label>
           <input
           disabled
-          required
+          
             type="text"
             name="reading_coordinates"
             value={markData.mark_coordinates}
             onChange={e => handleMarkDataChange(e)}
+            required
           />
 
         <label>Pipe *</label>
           <input
           disabled
-          required
+          
             type="text"
             name="pipe"
             value={localStorage.getItem('selectedPipeId') || markData.pipe}
             onChange={e => handleMarkDataChange(e)}
+            required
           />
 
         <label>Mark title *</label>
@@ -161,15 +163,16 @@ const AddMarkPopup = (props) => {
             name="mark_title"
             value={markData.mark_title}
             onChange={e => handleMarkDataChange(e)}
+            required
           />
 
-        <label>Mark description:</label>
+        <label>Mark description *</label>
             <textarea   type="text"
-            name="mark_description" value={markData.mark_description} onChange={e => handleMarkDataChange(e)} />
+            name="mark_description" value={markData.mark_description} onChange={e => handleMarkDataChange(e)} required />
 
           <label>Mark creation date</label>
           <input
-          required
+          
             type="datetime-local"
             name="mark_creation_date"
             value={markData.mark_creation_date}

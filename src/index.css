@@ -8,9 +8,7 @@ html * {
 .loginRoot{
   zoom: 97%;
 }
-textarea{
-  height: 15em;
-}
+
 .map-container {
     height: 400px;
     }

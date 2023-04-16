@@ -1,13 +1,13 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { Link, Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { Link, Navigate, Route, Routes } from 'react-router-dom';
 import { NavLink } from "react-router-dom";
 import { connect } from 'react-redux';
 import { logout } from '../../actions/auth';
 import Alert from '../Alert';
 import PropTypes from 'prop-types';
-import axios from 'axios';
+// import axios from 'axios';
 import "./Navbar.css"
-import Login from "../../containers/login/Login"
+// import Login from "../../containers/login/Login"
 import hydrauleaklogo from "../../assets/icons/hydrauleak-logo.png"
 import HomeIcon from '@mui/icons-material/Home';
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
