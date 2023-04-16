@@ -90,7 +90,7 @@ if(selectedIntervention.id){
   const {intervention, zone_title, zone_description, zone_num, zone_status, zone_color, map, zone_area, zone_coordinates } = zoneData;
 
   const handleSubmitData = () => {
-    if (!zoneData.zone_coordinates) {
+    if (!zoneData.zone_coordinates || !zoneData.zone_title || !zoneData.zone_description || !zoneData.zone_coordinates ) {
       alert("Please fill in all required fields.");
       return;
     }

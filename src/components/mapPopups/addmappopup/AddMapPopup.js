@@ -76,7 +76,7 @@ import Modal from '@mui/material/Modal';
   const { map_title, map_description, map_creation_date, map_coordinate, contract } = mapData;
   const handleSubmitData = () => {
 
-    if (!mapData.map_coordinate ) {
+    if (!mapData.map_coordinate || !mapData.map_title || !mapData.map_description ) {
       alert("Please fill in all required fields.");
       return;
     }
