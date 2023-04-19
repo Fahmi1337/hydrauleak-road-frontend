@@ -261,7 +261,7 @@ const handleCloseViewClient = () => {
                   )}         
           </div>
 
-          <div className="pageTitleContainer">  <h1>Clients Management</h1></div>
+          <div className="pageTitleContainer">  <h1>Client data Management</h1></div>
        
     
         <div className="search-input">  
