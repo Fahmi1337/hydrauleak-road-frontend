@@ -46,7 +46,7 @@ const style = {
           <p>Zone Status: {zone.zone_status}</p>
           <p>Zone Color: {zone.zone_color}</p>
           <p>Zone Coordinates: {JSON.stringify(zone.zone_coordinates)}</p>
-          <p>Map: {zone.map}</p>
+          
           </div>
           
           <button className="inside-view-popup-button" type="button" onClick={onCancel}>

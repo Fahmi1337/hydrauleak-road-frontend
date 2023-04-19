@@ -419,8 +419,8 @@ const [selectedStyle, setSelectedStyle] = useState('light-v11');
         <p>Sensor diameter range: ${sensor.sensor_diameter_range}</p>             
         <p>Sensor indication: ${sensor.sensor_Indication}</p>
     
-        <button id="deleteSensor" data-sensor-id="${sensor.id}">Delete</button>
-        <button id="updateSensor" data-sensor-id="${sensor.id}">Update</button>
+        <button style ="background-color:red;" id="deleteSensor" data-sensor-id="${sensor.id}">Delete</button>
+        <button style ="background-color:green;" id="updateSensor" data-sensor-id="${sensor.id}">Update</button>
         <button id="viewSensor" data-sensor-id="${sensor.id}">View Details</button>
         `);
         const marker = new mapboxgl.Marker({
@@ -506,8 +506,8 @@ const [selectedStyle, setSelectedStyle] = useState('light-v11');
           <h3>ID: ${mark.id}</h3>
           <p>mark description: ${mark.mark_description}</p>
           <p>Pipe: ${mark.pipe}</p>
-          <button id="deleteMark" data-mark-id="${mark.id}">Delete</button>
-          <button id="updateMark" data-mark-id="${mark.id}">Update</button>
+          <button style ="background-color:red;" id="deleteMark" data-mark-id="${mark.id}">Delete</button>
+          <button style ="background-color:green;" id="updateMark" data-mark-id="${mark.id}">Update</button>
           <button id="viewMark" data-mark-id="${mark.id}">View Details</button>
         `);
         const marker = new mapboxgl.Marker({
@@ -594,8 +594,8 @@ const [selectedStyle, setSelectedStyle] = useState('light-v11');
           <p>Pipe access description: ${pipeaccess.pipe_access_description}</p>
           <p>Pipe access type: ${pipeaccess.pipe_access_type}</p>
           <p>Pipe: ${pipeaccess.pipe}</p>             
-          <button id="deletePipeaccess" data-pipeaccess-id="${pipeaccess.id}">Delete</button>
-          <button id="updatePipeaccess" data-pipeaccess-id="${pipeaccess.id}">Update</button>
+          <button style ="background-color:red;" id="deletePipeaccess" data-pipeaccess-id="${pipeaccess.id}">Delete</button>
+          <button style ="background-color:green;" id="updatePipeaccess" data-pipeaccess-id="${pipeaccess.id}">Update</button>
           <button id="viewPipeaccess" data-pipeaccess-id="${pipeaccess.id}">View Details</button>
         `);
         const marker = new mapboxgl.Marker({
@@ -682,8 +682,8 @@ const [selectedStyle, setSelectedStyle] = useState('light-v11');
         
           <p>Map description: ${mapData.map_description}</p>
 
-          <button id="deleteMap" data-map-id="${mapData.id}">Delete</button>
-          <button id="updateMap" data-map-id="${mapData.id}">Update</button>
+          <button style ="background-color:red;" id="deleteMap" data-map-id="${mapData.id}">Delete</button>
+          <button style ="background-color:green;" id="updateMap" data-map-id="${mapData.id}">Update</button>
           <button id="viewMap" data-map-id="${mapData.id}">View Details</button>
         `);
         const marker = new mapboxgl.Marker({
@@ -754,7 +754,7 @@ const [selectedStyle, setSelectedStyle] = useState('light-v11');
 
 useEffect(() => {
   
-  if (map.current) {
+  if (map.current ) {
     map.current.on('load', () => {
 // Add Zones to the map
 zonesData.forEach(zone => {
@@ -780,6 +780,11 @@ zonesData.forEach(zone => {
   }
   });
   
+  //disable view zones at first 
+  // map.current.setLayoutProperty('zone-'+zone.id, 'visibility', 'none');
+  // map.current.setLayoutProperty('zone-' + zone.id + 'outline', 'visibility', 'none');   
+ 
+ // add zone outline
   // map.current.addLayer({
   // id: 'zone-' + zone.id + 'outline',
   // type: 'line',
@@ -798,8 +803,8 @@ zonesData.forEach(zone => {
   <h3>ID : ${zone.id}</h3> 
   <P>Color : ${zone.zone_color}</P> 
   <p>Map : ${zone.map}</p> 
-  <button id="deleteZone" data-zone-id="${zone.id}">Delete</button> 
-  <button id="updateZone" >Update</button> 
+  <button style ="background-color:red;" id="deleteZone" data-zone-id="${zone.id}">Delete</button> 
+  <button style ="background-color:green;" id="updateZone" >Update</button> 
   <button id="viewZone" >View Details</button>` ;
   new mapboxgl.Popup()
   .setLngLat(e.lngLat)
@@ -865,6 +870,7 @@ viewButton.addEventListener('click', () => {
 
   }
   )}
+  
  
       }, [zonesData, showZones]);
       //ZONE HANDLING END
@@ -877,12 +883,13 @@ viewButton.addEventListener('click', () => {
         zonesData.forEach((zone) => {
     
             if (map.current) {
-                if (!showZones) {
+                if (showZones) {
+                  map.current.setLayoutProperty('zone-'+zone.id, 'visibility', 'none');
+                  map.current.setLayoutProperty('zone-' + zone.id + 'outline', 'visibility', 'none');             
+                } else {
                   map.current.setLayoutProperty('zone-'+zone.id, 'visibility', 'visible');
                   map.current.setLayoutProperty('zone-' + zone.id + 'outline', 'visibility', 'visible');
-                } else {
-                  map.current.setLayoutProperty('zone-'+zone.id, 'visibility', 'none');
-                  map.current.setLayoutProperty('zone-' + zone.id + 'outline', 'visibility', 'none');
+
                 }
               }
         })
@@ -944,8 +951,8 @@ useEffect(() => {
           <p>Pipe type: ${pipe.pipe_type}</p> 
           <p>Pipe status: ${pipe.pipe_status}</p> 
           <p>Pipe length: ${pipe.pipe_length}</p> 
-          <button id="deletePipe-${pipe.id}">Delete</button> 
-          <button id="updatePipe-${pipe.id}">Update</button> 
+          <button style ="background-color:red;" id="deletePipe-${pipe.id}">Delete</button> 
+          <button style ="background-color:green;" id="updatePipe-${pipe.id}">Update</button> 
           <button id="viewPipe-${pipe.id}">View Details</button>`;
           const popup = new mapboxgl.Popup()
             .setLngLat(e.lngLat)

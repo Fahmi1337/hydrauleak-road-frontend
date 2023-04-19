@@ -123,7 +123,14 @@ useEffect(() => {
                   value={zoneData.zone_description}
                   onChange={handleZoneDataChange}
                 />
-
+              <label>Zone Color</label>
+                <select type="text" name="zone_color"
+                  value={zoneData.zone_color}
+                  onChange={e => handleZoneDataChange(e)}>
+                  <option value="orange">Orange</option>
+                  <option value="green">Green</option>
+                  <option value="red">Red</option>
+              </select>
                 
               </form>
               <div className='formButtonsContainer'>

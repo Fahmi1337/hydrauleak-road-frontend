@@ -37,12 +37,12 @@ const ViewInterventionPopup = ({ onCancel, onOpen, selectedIntervention, interve
             <h2>{selectedIntervention.intervention_title}</h2>
             <p> <b>Contract:</b> {selectedIntervention.contract}</p>
             <p><b>Description:</b> {selectedIntervention.intervention_description}</p>
+            <p><b>Start Date:</b> {selectedIntervention.intervention_date}</p>
             <p><b>Estimate Time:</b> {selectedIntervention.intervention_estimate_time}</p>
             <p><b>Leak Tool:</b> {selectedIntervention.intervention_leak_tool}</p>
             <p><b>Type:</b> {selectedIntervention.intervention_type}</p>
             <p><b>Status:</b> {selectedIntervention.intervention_status}</p>
-            
-            <p><b>Date:</b> {selectedIntervention.intervention_date}</p>
+         
             <p><b>Address:</b> {selectedIntervention.address}</p>
             <p><b>City:</b> {selectedIntervention.city}</p>
             <p><b>State:</b> {selectedIntervention.state}</p>

@@ -1,5 +1,5 @@
-import React, { useState, useCallback } from "react";
-import { Container, Form } from "react-bootstrap";
+import React, { useCallback } from "react";
+import {  Form } from "react-bootstrap";
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -152,20 +152,17 @@ const style = {
 
 </div>
 <div>
-      
-      <Form.Check inline id="switch1" className="pl-5">
-      <img src={zone} alt="zone"/>
-      <Form.Check.Input
-        checked={props.showZones}
-        onChange={toggleShowZones}
-      />
-    
-    </Form.Check>
-    <Form.Label>Zones</Form.Label>
-
-
-
+  <Form.Check inline id="switch1" className="pl-5">
+    <img src={zone} alt="zone" />
+    <Form.Check.Input
+      checked={props.showZones}
+      onChange={toggleShowZones}
+      // defaultChecked={false} // add this line
+    />
+  </Form.Check>
+  <Form.Label>Zones</Form.Label>
 </div>
+
          
          {/* MODAL 2 */}
       
