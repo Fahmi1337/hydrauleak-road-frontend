@@ -63,6 +63,7 @@ const ChangePassword = () => {
         <div>
           <label htmlFor="old_password">Old Password</label>
           <input
+          placeholder="Old Password"
             type="password"
             id="old_password"
             name="old_password"
@@ -74,6 +75,7 @@ const ChangePassword = () => {
         <div>
           <label htmlFor="new_password">New Password</label>
           <input
+          placeholder="New Password"
             type="password"
             id="new_password"
             name="new_password"
@@ -85,6 +87,7 @@ const ChangePassword = () => {
         <div>
           <label htmlFor="confirm_password">Confirm Password</label>
           <input
+          placeholder="Confirm Password"
             type="password"
             id="confirm_password"
             name="confirm_password"
