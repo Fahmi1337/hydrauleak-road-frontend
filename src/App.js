@@ -10,8 +10,8 @@ import Test3 from './containers/Test3'
 
 import Dashboard from './containers/Dashboard';
 import UserManagement from './containers/userManagement/UserManagement';
-import Login from './containers/login/Login';
-import Signup from './containers/Signup';
+import Login from './containers/auth/Login';
+import Signup from './containers/auth/Signup';
 
 // import Contracts from './containers/Contracts'
 import Contracts from './containers/contracts/Contracts'

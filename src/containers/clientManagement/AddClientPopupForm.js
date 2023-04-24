@@ -114,10 +114,10 @@ const AddClientPopupForm = ({ onCancel, onOpen }) => {
           <div className="popup-form">
           
             <div className="popup-form-content">
-              <h2>Add Client Details</h2>
+              <h2>Add Client Data</h2>
               <p>{error}</p>
               <form onSubmit={handleSubmitData}>
-              <label >Client profile:</label>        
+              <label >Client profile *</label>        
              
               <select name="user" value={parseInt(clientData.user)} onChange={(e) => handleClientDataChange(e)} required>
                 <option disabled value=""> -- select an option -- </option>

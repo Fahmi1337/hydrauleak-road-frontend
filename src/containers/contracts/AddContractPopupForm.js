@@ -11,7 +11,7 @@ const style = {
   top: '44%',
   left: '53%',
   width: '105em !important',
-  height:'50rem',
+  height:'57rem',
   transform: 'translate(-50%, -50%)',
   bgcolor: 'rgba(255, 255, 255, 1)',
   boxShadow: 24,
@@ -108,11 +108,13 @@ const AddContractPopupForm = ({ onCancel, onOpen }) => {
           <div className="add-popup-form">
             {/* <div className="popup-form-overlay" onClick={onCancel}></div> */}
             <div className="popup-form-content">
-              <h2>Add Contract</h2>
+              <h2>Create Contract</h2>
+              <h3>Please take the time to carefully review the contract form and provide accurate and complete information. </h3>
+              <h3>This will help to understand the client's requirements.</h3>
               <form onSubmit={handleSubmitData}>
                 <div className="popup-form add-popup-form">
                  <label>
-                 Select Client:
+                 Select Client *
                 </label>
                 <select type='number' name="client" value={contractData.client} onChange={handleContractDataChange}>
                 <option disabled value=""> -- select an option -- </option>
@@ -123,11 +125,11 @@ const AddContractPopupForm = ({ onCancel, onOpen }) => {
                 ))}
               </select>
               <label>
-                Title:
+                Title *
                     <input type="text" name='contract_title' value={contractData.contract_title} onChange={handleContractDataChange}  required />
                 </label>
                 <label>
-                Contract work type:
+                Contract work type *
                     <select  type="text" name='contract work type' value={contractData.contract_work_type} onChange={handleContractDataChange} required>                   
                     <option value="Fire Hydrant Inspection">Fire Hydrant Inspection</option>
                     <option value=" All City Inspections">All City Inspections</option>
@@ -146,11 +148,11 @@ const AddContractPopupForm = ({ onCancel, onOpen }) => {
                 </label> */}
 
                 <label>
-                Description:
+                Description *
                     <textarea type="text" name='contract_description' value={contractData.contract_description} onChange={handleContractDataChange} required />
                 </label>
             <label>
-                Contract status:
+                Contract status *
                     <select type="text" name='contract_status'  value={contractData.contract_status} onChange={handleContractDataChange} required>
                     <option value="NotStart">Not Started</option>
                     <option value="Pending">Pending</option>
@@ -159,17 +161,17 @@ const AddContractPopupForm = ({ onCancel, onOpen }) => {
                 </label>
                
                 <label>
-                Start Date:
+                Start Date *
                     <input type="date" name='contract_date' value={contractData.contract_date} onChange={handleContractDataChange} required/>
                 </label>
                 <label>
-                Estimate Time:
+                Estimate Time *
                     <input type="date" name='contract_estimate_end_date' value={contractData.contract_estimate_end_date} onChange={handleContractDataChange} required/>
                 </label>
                 
                 <label>
-                Address:
-                    <input type="text" name='address' value={contractData.address} onChange={handleContractDataChange} />
+                Address *
+                    <input type="text" name='address' value={contractData.address} onChange={handleContractDataChange} required />
                 </label>
                 <label>
                 City:

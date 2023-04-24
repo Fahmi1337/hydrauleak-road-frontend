@@ -7,7 +7,7 @@ import { login } from '../../actions/auth';
 import hydraulogo from "../../assets/icons/Hydrauleak.png"
 import hydrauleakBackground from "../../assets/icons/hydrauleak-background.png"
 import '../../assets/css/login.css'
-import SignUp from "../Signup"
+import SignUp from "./Signup"
 const Login = ({ login, isAuthenticated }) => {
     const [formData, setFormData] = useState({
         email: '',

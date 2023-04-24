@@ -270,7 +270,7 @@ const handleOpenAddMapContract = () => {
                   )}         
           </div>
           <div className="pageTitleContainer">  <h1>Contracts</h1></div>
-          <div id="addTableButtonContainer"> <button onClick={() => handleOpenAddContract()}>+ Add Contract</button></div>
+          <div id="addTableButtonContainer"> <button onClick={() => handleOpenAddContract()}>+ Create Contract</button></div>
       <div className="table-controls">
      
         <div className="search-input">

@@ -11,7 +11,7 @@ const style = {
   top: '44%',
   left: '53%',
   width: '105em !important',
-  height:'50rem',
+  height:'57rem',
   transform: 'translate(-50%, -50%)',
   bgcolor: 'rgba(255, 255, 255, 1)',
   boxShadow: 24,
@@ -105,11 +105,13 @@ useEffect(() => {
           <div className="add-popup-form">
             {/* <div className="popup-form-overlay" onClick={onCancel}></div> */}
             <div className="popup-form-content">
-              <h2>Add Intervention</h2>
+              <h2>Create Intervention</h2>
+              <h3>Please take the time to carefully review the intervention form and provide accurate and complete information.</h3>
+              <h3>This will help to understand the intervention details.</h3>
               <form onSubmit={handleSubmitData}>
                 <div className="popup-form add-popup-form">
                  <label>
-                Contract:
+                Contract *
                 </label>
                 <select  type="text"  
                   name="contract" onChange={handleInterventionDataChange} value={interventionData.contract || 1} > <option disabled selected value> -- select an option -- </option>
@@ -128,20 +130,20 @@ useEffect(() => {
                     <input type="text" name='zone' value={interventionData.zone} onChange={handleInterventionDataChange} />
                 </label> */}
                 <label>
-                Title:
+                Title *
                     <input type="text" name='intervention_title' value={interventionData.intervention_title} onChange={handleInterventionDataChange}  required />
                 </label>
                 
                 <label>
-                Leak Tools:
-                    <input type="text" name='intervention_leak_tool' value={interventionData.intervention_leak_tool} onChange={handleInterventionDataChange} />
+                Leak Tools *
+                    <input type="text" name='intervention_leak_tool' value={interventionData.intervention_leak_tool} onChange={handleInterventionDataChange} required />
                 </label>
                 <label>
-                Description:
+                Description *
                     <textarea type="text" name='intervention_description' value={interventionData.intervention_description} onChange={handleInterventionDataChange} required />
                 </label>
                 <label>
-                Intervention type:
+                Intervention type *
                     <select  type="text" name='intervention_type' value={interventionData.intervention_type} onChange={handleInterventionDataChange} required>                   
                     <option value="Simple">Medium</option>
                     <option value="PipeSearch">Low</option>
@@ -157,7 +159,7 @@ useEffect(() => {
                     </select>
                 </label> */}
                 <label>
-                Intervention status:
+                Intervention status *
                     <select type="text" name='intervention_status'  value={interventionData.intervention_status} onChange={handleInterventionDataChange} required>
                     <option value="NotStart">Not Started</option>
                     <option value="Pending">Pending</option>
@@ -166,16 +168,16 @@ useEffect(() => {
                 </label>
 
                 <label>
-                Start Date:
+                Start Date *
                     <input type="date" name='intervention_date' value={interventionData.intervention_date} onChange={handleInterventionDataChange} required/>
                 </label>
 
                 <label>
-                Address:
-                    <input type="text" name='address' value={interventionData.address} onChange={handleInterventionDataChange} />
+                Address *
+                    <input type="text" name='address' value={interventionData.address} onChange={handleInterventionDataChange} required/>
                 </label>
                 <label>
-                Estimate Time:
+                Estimate Time *
                     <input type="date" name='intervention_estimate_time' value={interventionData.intervention_estimate_time} onChange={handleInterventionDataChange} required/>
                 </label>
                 <label>

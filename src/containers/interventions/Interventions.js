@@ -265,7 +265,7 @@ console.log("selectedIntervention",selectedIntervention )
    
       <div className="pageTitleContainer">  <h1>Interventions</h1></div>
       <div id="addTableButtonContainer">
-        <button onClick={() => handleOpenAddIntervention()}>+ Add Intervention</button>  </div>
+        <button onClick={() => handleOpenAddIntervention()}>+ Create Intervention</button>  </div>
         <div className="table-controls">
           <div className="search-input">
       
