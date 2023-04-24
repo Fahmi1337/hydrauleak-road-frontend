@@ -85,8 +85,8 @@ import Modal from '@mui/material/Modal';
       map_coordinate, map_creation_date, map_description, map_title, contract: parseInt(contract)
     };
 
-    console.log("add maps data", data)
-    console.log("add mapData data", mapData)
+    // console.log("add maps data", data)
+    // console.log("add mapData data", mapData)
 
     axios
       .post(`${process.env.REACT_APP_API_URL}/api/maps/`, data,
@@ -105,8 +105,8 @@ import Modal from '@mui/material/Modal';
         console.error(err);
       });
     
-      // reloadPage();
-      // window.location.reload();
+      reloadPage();
+      window.location.reload();
   };
 
     // //Modal
