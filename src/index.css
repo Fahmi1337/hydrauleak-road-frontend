@@ -102,14 +102,12 @@ html * {
       }
       td {
         color: #282A2E;
-
-        
         font-style: normal;
         font-weight: 400;
         font-size: 22px;
-        line-height: 2em;
+        line-height: 1em;
         text-align: left;
-        padding: 30px 30px;
+        padding: 15px 30px;
       }
       
       tr {
